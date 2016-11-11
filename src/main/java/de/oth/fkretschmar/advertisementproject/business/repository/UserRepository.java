@@ -1,0 +1,97 @@
+/*
+ * Copyright (C) 2016 fkre
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package de.oth.fkretschmar.advertisementproject.business.repository;
+
+import de.oth.fkretschmar.advertisementproject.business.repository.base.AbstractJPASetRepository;
+import de.oth.fkretschmar.advertisementproject.entity.User;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import javax.persistence.TypedQuery;
+
+/**
+ * Repository that defines the default CRUD methods for a {@link User}
+ * 
+ * @author  fkre    Floyd Kretschmar
+ */
+public class UserRepository extends AbstractJPASetRepository<User> {
+    
+    // --------------- Public constructors ---------------
+    
+    /**
+     * Creates a new instance of {@link UserRepository}.
+     */
+    public UserRepository() {
+        super(User.class);
+    }
+    
+    
+    // --------------- Public methods ---------------
+    
+    /**
+     * Checks whether or not an e-Mail is already in use.
+     * 
+     * @param   eMail   that will be validated.
+     * @return  <code>true</code> if the e-Mail is already in use.
+     *          <code>false</code> otherwise
+     */
+    public boolean iseMailAlreadyInUse(String eMail) {
+        TypedQuery<Integer> query = this.accessQuery(
+                Integer.class, 
+                User.IS_EMAIL_IN_USE_QUERY,
+                eMail);
+        
+        Integer result = query.getSingleResult();
+        return result == 1;
+    }
+    
+    
+    /**
+     * Finds a user using its unique e-mail.
+     * 
+     * @param   eMail   that uniqly identifies an user.
+     * @return  An <code>User</code> that is identified by the email or <code>
+     *          null</code> if no user with this e-mail exists.
+     */
+    public User findForEmail(String eMail) {
+        TypedQuery<User> query = this.accessQuery(
+                User.class, 
+                User.FIND_FOR_EMAIL_QUERY, 
+                eMail);
+        
+        List<User> users = query.getResultList();
+        
+        if(users.isEmpty())
+            return null;
+        else
+            return users.get(0);
+    }
+
+    
+    // --------------- Protected methods ---------------
+    
+    /**
+     * Creates a set to store multiple User.
+     * 
+     * @return  A set that can store multiple User.
+     */
+    @Override
+    protected Set<User> createCollection() {
+        return new HashSet<User>();
+    }
+}
