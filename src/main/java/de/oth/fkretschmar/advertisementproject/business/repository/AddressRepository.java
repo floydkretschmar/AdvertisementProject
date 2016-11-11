@@ -16,18 +16,18 @@
  */
 package de.oth.fkretschmar.advertisementproject.business.repository;
 
-import de.oth.fkretschmar.advertisementproject.business.repository.base.AbstractJPASetRepository;
+import de.oth.fkretschmar.advertisementproject.business.repository.base.AbstractJPARepository;
 import de.oth.fkretschmar.advertisementproject.entity.Address;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Repository that defines the default CRUD methods for a {@link Address}.
  * 
  * @author  fkre    Floyd Kretschmar
  */
-public class AddressRepository extends AbstractJPASetRepository<Address> {
+public class AddressRepository extends AbstractJPARepository<Address> {
     
     // --------------- Public constructors ---------------
     
@@ -47,7 +47,7 @@ public class AddressRepository extends AbstractJPASetRepository<Address> {
      * @return  A set that can store multiple addresses.
      */
     @Override
-    protected Set<Address> createCollection() {
-        return new HashSet<Address>();
+    protected Collection<Address> createCollection() {
+        return new ArrayList<Address>();
     }
 }

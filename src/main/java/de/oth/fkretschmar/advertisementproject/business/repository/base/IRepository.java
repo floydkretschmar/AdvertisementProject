@@ -27,11 +27,9 @@ import javax.enterprise.context.Dependent;
  * @author  fkre    Floyd Kretschmar
  * @param   <T>     The type that specifies which entity is being managed by the
  *                  repository.
- * @param   <S>     The type of the collection that multiple entities that are 
- *                  being managed by this repository can be stored in.
  */
 @Dependent
-public interface IRepository<T extends IEntity, S extends Collection<T>> {
+public interface IRepository<T extends IEntity> {
     
     // --------------- Public methods ---------------
     
@@ -67,7 +65,7 @@ public interface IRepository<T extends IEntity, S extends Collection<T>> {
      * @param   entities    that will be saved.
      * @return  The saved entities.
      */
-    public S save(S entities);
+    public Collection<T> save(Collection<T> entities);
     
     
     /**
@@ -85,5 +83,5 @@ public interface IRepository<T extends IEntity, S extends Collection<T>> {
      * @param   entities    that will be updated.
      * @return  The updated entities.
      */
-    public S update(S entities);
+    public Collection<T> update(Collection<T> entities);
 }

@@ -32,12 +32,10 @@ import javax.persistence.TypedQuery;
  * @author  fkre    Floyd Kretschmar
  * @param   <T>     The type that specifies which entity is being managed by the
  *                  repository.
- * @param   <S>     The type of the collection that multiple entities that are 
- *                  being managed by this repository can be stored in.
  */
 @Dependent
-public abstract class AbstractJPARepository<T extends IEntity, S extends Collection<T>> 
-        extends AbstractRepository<T, S> {
+public abstract class AbstractJPARepository<T extends IEntity> 
+        extends AbstractRepository<T> {
     
     // --------------- Private fields ---------------
 
@@ -129,8 +127,8 @@ public abstract class AbstractJPARepository<T extends IEntity, S extends Collect
      * @return  The saved entities.
      */
     @Override
-    public final S save(S entities) {     
-        S savedEntities = this.createCollection();
+    public final Collection<T> save(Collection<T> entities) {     
+        Collection<T> savedEntities = this.createCollection();
         
         for(T entity : entities) {
             savedEntities.add(this.save(entity));
@@ -168,8 +166,8 @@ public abstract class AbstractJPARepository<T extends IEntity, S extends Collect
      * @return  The updated entities.
      */
     @Override
-    public final S update(S entities) {
-        S updatedEntities = this.createCollection();
+    public final Collection<T> update(Collection<T> entities) {
+        Collection<T> updatedEntities = this.createCollection();
         
         for(T entity : entities) {
             updatedEntities.add(this.update(entity));
@@ -248,15 +246,6 @@ public abstract class AbstractJPARepository<T extends IEntity, S extends Collect
         
         return typedQuery;
     }
-    
-    
-    /**
-     * Creates a collection of the managed entity.
-     * 
-     * @return  A collection that can store multiple entries of the managed
-     *          entity.
-     */
-    protected abstract S createCollection();
     
     
     /**

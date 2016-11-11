@@ -16,18 +16,18 @@
  */
 package de.oth.fkretschmar.advertisementproject.business.repository;
 
-import de.oth.fkretschmar.advertisementproject.business.repository.base.AbstractJPASetRepository;
+import de.oth.fkretschmar.advertisementproject.business.repository.base.AbstractJPARepository;
 import de.oth.fkretschmar.advertisementproject.entity.Password;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Repository that defines the default CRUD methods for a {@link Password}
  * 
  * @author fkre Floyd Kretschmar
  */
-public class PasswordRepository extends AbstractJPASetRepository<Password> {
+public class PasswordRepository extends AbstractJPARepository<Password> {
     
     // --------------- Public constructors ---------------
     
@@ -47,7 +47,7 @@ public class PasswordRepository extends AbstractJPASetRepository<Password> {
      * @return  A set that can store multiple passwords.
      */
     @Override
-    protected Set<Password> createCollection() {
-        return new HashSet<Password>();
+    protected Collection<Password> createCollection() {
+        return new ArrayList<Password>();
     }
 }

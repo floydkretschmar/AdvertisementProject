@@ -16,7 +16,7 @@
  */
 package de.oth.fkretschmar.advertisementproject.entity;
 
-import de.oth.fkretschmar.advertisementproject.entity.base.AbstractStringKeyedEntity;
+import de.oth.fkretschmar.advertisementproject.entity.base.AbstractAutoGenerateKeyedEntity;
 
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
@@ -29,26 +29,14 @@ import javax.persistence.InheritanceType;
  */
 @Entity(name = "T_ACCOUNT")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public abstract class Account extends AbstractStringKeyedEntity {
-    
-    // --------------- Package-private constructors ---------------
-    
-    /**
-     * Creates a new instance of {@link Account}.
-     */
-    protected Account() {
-        super();
-    }
+public abstract class Account extends AbstractAutoGenerateKeyedEntity {
     
     // --------------- Public constructors ---------------
 
-    
     /**
      * Creates a new instance of {@link Account} using the specified identifier.
-     * 
-     * @param   accountId    that is used to identify an account.
      */
-    public Account(String accountId) {
-        super(accountId);
+    public Account() {
+        super();
     }
 }

@@ -16,12 +16,12 @@
  */
 package de.oth.fkretschmar.advertisementproject.business.repository;
 
-import de.oth.fkretschmar.advertisementproject.business.repository.base.AbstractJPASetRepository;
+import de.oth.fkretschmar.advertisementproject.business.repository.base.AbstractJPARepository;
 import de.oth.fkretschmar.advertisementproject.entity.User;
 
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 import javax.persistence.TypedQuery;
 
 /**
@@ -29,7 +29,7 @@ import javax.persistence.TypedQuery;
  * 
  * @author  fkre    Floyd Kretschmar
  */
-public class UserRepository extends AbstractJPASetRepository<User> {
+public class UserRepository extends AbstractJPARepository<User> {
     
     // --------------- Public constructors ---------------
     
@@ -91,7 +91,7 @@ public class UserRepository extends AbstractJPASetRepository<User> {
      * @return  A set that can store multiple User.
      */
     @Override
-    protected Set<User> createCollection() {
-        return new HashSet<User>();
+    protected Collection<User> createCollection() {
+        return new ArrayList<User>();
     }
 }

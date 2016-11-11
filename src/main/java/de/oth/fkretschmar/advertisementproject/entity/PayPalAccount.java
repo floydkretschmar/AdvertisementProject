@@ -16,9 +16,11 @@
  */
 package de.oth.fkretschmar.advertisementproject.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.validation.constraints.NotNull;
 
 /**
  * Represents a specific paypal account.
@@ -28,6 +30,16 @@ import javax.persistence.InheritanceType;
 @Entity(name = "T_PAYPAL_ACCOUNT")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class PayPalAccount extends Account {
+
+    // --------------- Private fields ---------------
+    
+
+    /**
+     * Stores the e-mail identifying the account.
+     */
+    @NotNull
+    @Column(name = "EMAIL", unique = true)
+    private String eMailAddress;
     
     // --------------- Package-private constructors ---------------
     
@@ -47,7 +59,8 @@ public class PayPalAccount extends Account {
      * @param   eMailAddress    that is used to identify an paypal account.
      */
     public PayPalAccount(String eMailAddress) {
-        super(eMailAddress);
+        this();
+        this.eMailAddress = eMailAddress;
     }
     
     // --------------- Public getters and setters ---------------
@@ -59,6 +72,6 @@ public class PayPalAccount extends Account {
      * @return  the text that identifies an account.
      */
     public String getEMailAddress() {
-        return this.getId();
+        return this.eMailAddress;
     }
 }

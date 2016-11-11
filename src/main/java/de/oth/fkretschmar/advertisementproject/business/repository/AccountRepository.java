@@ -16,24 +16,24 @@
  */
 package de.oth.fkretschmar.advertisementproject.business.repository;
 
-import de.oth.fkretschmar.advertisementproject.business.repository.base.AbstractJPASetRepository;
+import de.oth.fkretschmar.advertisementproject.business.repository.base.AbstractJPARepository;
 import de.oth.fkretschmar.advertisementproject.entity.Account;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  *
  * @author fkre
  */
-public class PayPalAccountRepository extends AbstractJPASetRepository<Account> {
+public class AccountRepository extends AbstractJPARepository<Account> {
     
     // --------------- Public constructors ---------------
 
     /**
      * Creates an new instance of {@link BankAccountRepository}.
      */
-    public PayPalAccountRepository() {
+    public AccountRepository() {
         super(Account.class);
     }
     
@@ -45,8 +45,8 @@ public class PayPalAccountRepository extends AbstractJPASetRepository<Account> {
      * @return  A set that can store multiple passwords.
      */
     @Override
-    protected Set<Account> createCollection() {
-        return new HashSet<Account>();
+    protected Collection<Account> createCollection() {
+        return new ArrayList<Account>();
     }
     
 }

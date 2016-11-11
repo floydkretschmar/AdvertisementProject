@@ -17,7 +17,7 @@
 package de.oth.fkretschmar.advertisementproject.business.service;
 
 import de.oth.fkretschmar.advertisementproject.business.repository.AddressRepository;
-import de.oth.fkretschmar.advertisementproject.business.repository.PayPalAccountRepository;
+import de.oth.fkretschmar.advertisementproject.business.repository.AccountRepository;
 import de.oth.fkretschmar.advertisementproject.business.repository.UserRepository;
 import de.oth.fkretschmar.advertisementproject.entity.Address;
 import de.oth.fkretschmar.advertisementproject.entity.Password;
@@ -44,7 +44,7 @@ public class UserService {
      * Stores the repository used to manage <code>BankAccount</code> entities.Í
      */
     @Inject
-    private PayPalAccountRepository accountRepository;
+    private AccountRepository accountRepository;
     
     /**
      * Stores the service that manages passwords.

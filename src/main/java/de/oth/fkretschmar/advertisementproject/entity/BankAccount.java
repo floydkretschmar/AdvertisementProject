@@ -33,6 +33,13 @@ public class BankAccount extends Account {
     // --------------- Private fields ---------------
 
     /**
+     * Stores the IBAN identifying the account.
+     */
+    @NotNull
+    @Column(name = "IBAN", unique = true)
+    private String iban;
+
+    /**
      * Stores the BIC identifying the banking institution where the account is
      * registered.
      */
@@ -60,7 +67,8 @@ public class BankAccount extends Account {
      * @param   bic     that identifies a banking institution.
      */
     public BankAccount(String iban, String bic) {
-        super(iban);
+        this();
+        this.iban = iban;
         this.bic = bic;
     }
 
@@ -84,6 +92,6 @@ public class BankAccount extends Account {
      * @return
      */
     public String getIban() {
-        return this.getId();
+        return this.iban;
     }
 }

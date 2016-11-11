@@ -18,9 +18,9 @@ package de.oth.fkretschmar.advertisementproject.entity;
 
 import de.oth.fkretschmar.advertisementproject.entity.base.AbstractAutoGenerateKeyedEntity;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
@@ -73,7 +73,7 @@ public class User extends AbstractAutoGenerateKeyedEntity {
     @OneToMany
     //@JoinColumn(name = "ACCOUNT_USER_ID")
     //@JoinColumn(name = "ACCOUNT_USER_ID", referencedColumnName = "ID")
-    private final Set<Account> accounts;
+    private final Collection<Account> accounts;
     
     /**
      * Stores the address of the user.
@@ -129,7 +129,7 @@ public class User extends AbstractAutoGenerateKeyedEntity {
      */
     protected User() {
         super();
-        this.accounts = new HashSet<Account>();
+        this.accounts = new ArrayList<Account>();
     }
     
     
@@ -180,8 +180,8 @@ public class User extends AbstractAutoGenerateKeyedEntity {
      * 
      * @return  the bank accounts of an user.
      */
-    public Set<Account> getAccounts() {
-        return Collections.unmodifiableSet(this.accounts);
+    public Collection<Account> getAccounts() {
+        return Collections.unmodifiableCollection(this.accounts);
     }
     
     
@@ -307,7 +307,7 @@ public class User extends AbstractAutoGenerateKeyedEntity {
      *                      should be cleared before the new accounts are being
      *                      added.
      */
-    public void addAccounts(Set<Account> accounts, boolean clear) {
+    public void addAccounts(Collection<Account> accounts, boolean clear) {
         if(clear)
             this.accounts.clear();
         

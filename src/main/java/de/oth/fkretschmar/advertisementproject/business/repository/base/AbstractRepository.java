@@ -29,12 +29,10 @@ import javax.enterprise.context.Dependent;
  * @author  fkre    Floyd Kretschmar
  * @param   <T>     The type that specifies which entity is being managed by the
  *                  repository.
- * @param   <S>     The type of the collection that multiple entities that are 
- *                  being managed by this repository can be stored in.
  */
 @Dependent
-public abstract class AbstractRepository<T extends IEntity, S extends Collection<T>> 
-        implements IRepository<T, S>, Serializable {
+public abstract class AbstractRepository<T extends IEntity> 
+        implements IRepository<T>, Serializable {
     
     // --------------- Private fields ---------------
     
@@ -107,7 +105,7 @@ public abstract class AbstractRepository<T extends IEntity, S extends Collection
      * @return  The saved entities.
      */
     @Override
-    public abstract S save(S entities);
+    public abstract Collection<T> save(Collection<T> entities);
     
     
     /**
@@ -127,5 +125,17 @@ public abstract class AbstractRepository<T extends IEntity, S extends Collection
      * @return  The updated entities.
      */
     @Override
-    public abstract S update(S entities);
+    public abstract Collection<T> update(Collection<T> entities);
+    
+    
+    // --------------- Protected methods ---------------
+    
+    
+    /**
+     * Creates a collection of the managed entity.
+     * 
+     * @return  A collection that can store multiple entries of the managed
+     *          entity.
+     */
+    protected abstract Collection<T> createCollection();
 }
