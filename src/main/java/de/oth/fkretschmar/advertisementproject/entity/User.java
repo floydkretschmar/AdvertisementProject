@@ -71,8 +71,6 @@ public class User extends AbstractAutoGenerateKeyedEntity {
      * Stores the accounts an user has specified.
      */
     @OneToMany
-    //@JoinColumn(name = "ACCOUNT_USER_ID")
-    //@JoinColumn(name = "ACCOUNT_USER_ID", referencedColumnName = "ID")
     private final Collection<Account> accounts;
     
     /**
@@ -80,7 +78,6 @@ public class User extends AbstractAutoGenerateKeyedEntity {
      */
     @NotNull
     @OneToOne
-    //@JoinColumn(name = "ADDRESS_ID", referencedColumnName = "ID")
     private Address address;
     
     /**
@@ -116,8 +113,6 @@ public class User extends AbstractAutoGenerateKeyedEntity {
      */
     @NotNull
     @OneToOne
-    //@JoinColumn(name = "PASSWORD_ID")
-    //@JoinColumn(name = "PASSWORD_ID", referencedColumnName = "ID")
     private Password password;
     
     

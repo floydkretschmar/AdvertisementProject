@@ -77,6 +77,9 @@ public class TestServlet extends HttpServlet {
             out.println("<body>");
             out.println("<h1>Servlet TestServlet at " + request.getContextPath() + "</h1>");
 
+            User user = this.userService.findForEMail("fkretschmar@googlemail.com");
+            this.userService.delete(user);
+            
             Address address = new Address(
                     "95689", 
                     "Regensburg", 
@@ -84,7 +87,7 @@ public class TestServlet extends HttpServlet {
             address.setCountry("Deutschland");
             
             //Password pw = userService.create("Testpassword".toCharArray());
-            User user = new User(
+            user = new User(
                     "fkretschmar@googlemail.com", 
                     passService.create("Testpw".toCharArray()), 
                     "Floyd", 
@@ -101,8 +104,7 @@ public class TestServlet extends HttpServlet {
             acc.setDescription("RB2");
             
             user.addAccount(acc);
-            
-            this.userService.create(user);
+            this.userService.save(user);
             
 //            authService.authenticateUser(user.geteMailAddress(), "Testpw4".toCharArray());
 //            

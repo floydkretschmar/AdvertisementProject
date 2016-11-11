@@ -85,8 +85,24 @@ public abstract class AbstractJPARepository<T extends IEntity>
         // make sure the entity manager has knowledge of the entity
         entity = this.getEntityManager().merge(entity);
         
+        // allow subclasses to delete their specific information
+        this.deleteCore(entity);
+        
         // actually remove the entity
         this.getEntityManager().remove(entity);
+    }
+    
+    
+    /**
+     * Deletes all specified entities.
+     * 
+     * @param   entities  that will be deleted.
+     */
+    @Override
+    public void delete(Collection<T> entities) {        
+        for(T entity : entities) {
+            this.delete(entity);
+        }
     }
     
     
@@ -249,12 +265,21 @@ public abstract class AbstractJPARepository<T extends IEntity>
     
     
     /**
-     * Performs all the subsequent saves that are needed to make sure the 
-     * relationships of the entity are in a persistent state before saving the
-     * entity.
+     * Performs all the subsequent delete operations that are nessecary.
      * 
      * @param   entity  whose relationships have to be brought into a persistent
-     *                  state
+     *                  state bevor deletion.
+     */
+    protected void deleteCore(T entity) {
+        // the default implementation has no relationships to manage
+    }
+    
+    
+    /**
+     * Performs all the subsequent save operations that are nessecary.
+     * 
+     * @param   entity  whose relationships have to be brought into a persistent
+     *                  state before saving.
      * @return  The entity with its relationships in a persistent state.
      */
     protected T saveCore(T entity) {
@@ -264,12 +289,10 @@ public abstract class AbstractJPARepository<T extends IEntity>
     
     
     /**
-     * Performs all the subsequent updates that are needed to make sure the 
-     * relationships of the entity are in a persistent state before updating the
-     * entity.
+     * Performs all the subsequent update operations that are nessecary.
      * 
      * @param   entity  whose relationships have to be brought into a persistent
-     *                  state
+     *                  state before updating.
      * @return  The entity with its relationships in a persistent state.
      */
     protected T updateCore(T entity) {

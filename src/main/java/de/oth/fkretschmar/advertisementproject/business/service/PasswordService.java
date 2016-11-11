@@ -44,26 +44,6 @@ public class PasswordService {
     
     
     /**
-     * Creates a new safe hashed password from an unsafe password.
-     * 
-     * @param   unsafePassword  that contains the unsafe password.
-     * @return  a safe hashed password.
-     */
-    public Password create(char[] unsafePassword) {
-        byte[] salt = HashHelper.generateSalt();
-        byte[] value = HashHelper.hashValue(unsafePassword, salt);
-        
-        // delete the unsafe password from memory
-        Arrays.fill(unsafePassword, '0');
-
-        String valueString = PasswordService.convertToHex(salt) + ":"
-                + PasswordService.convertToHex(value);
-        
-        return new Password(valueString);
-    }
-    
-    
-    /**
      * Deletes the specified password from persistance.
      * 
      * @param   password    that will be deleted.
@@ -85,6 +65,26 @@ public class PasswordService {
     
     
     // --------------- Punlic  static methods ---------------
+    
+    
+    /**
+     * Creates a new safe hashed password from an unsafe password.
+     * 
+     * @param   unsafePassword  that contains the unsafe password.
+     * @return  a safe hashed password.
+     */
+    public static Password create(char[] unsafePassword) {
+        byte[] salt = HashHelper.generateSalt();
+        byte[] value = HashHelper.hashValue(unsafePassword, salt);
+        
+        // delete the unsafe password from memory
+        Arrays.fill(unsafePassword, '0');
+
+        String valueString = PasswordService.convertToHex(salt) + ":"
+                + PasswordService.convertToHex(value);
+        
+        return new Password(valueString);
+    }
     
     
     /**

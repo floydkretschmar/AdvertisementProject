@@ -89,6 +89,15 @@ public abstract class AbstractRepository<T extends IEntity>
     
     
     /**
+     * Deletes all specified entities.
+     * 
+     * @param   entities  that will be deleted.
+     */
+    @Override
+    public abstract void delete(Collection<T> entities);
+    
+    
+    /**
      * Saves the specified entity.
      * 
      * @param   entity  that will be saved

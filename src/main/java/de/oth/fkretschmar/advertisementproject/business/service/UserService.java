@@ -19,6 +19,7 @@ package de.oth.fkretschmar.advertisementproject.business.service;
 import de.oth.fkretschmar.advertisementproject.business.repository.AddressRepository;
 import de.oth.fkretschmar.advertisementproject.business.repository.AccountRepository;
 import de.oth.fkretschmar.advertisementproject.business.repository.UserRepository;
+import de.oth.fkretschmar.advertisementproject.entity.Account;
 import de.oth.fkretschmar.advertisementproject.entity.Address;
 import de.oth.fkretschmar.advertisementproject.entity.Password;
 import de.oth.fkretschmar.advertisementproject.entity.User;
@@ -60,6 +61,107 @@ public class UserService {
 
     // --------------- Public methods ---------------
     
+    
+    /**
+     * Creates a new account and links it to the specified user.
+     * 
+     * @param   user        to which a new account will be added.
+     * @param   account     that will be added to the user.
+     * @return              the changed user.
+     */
+    public User addAccountToUser(User user, Account account) {        
+        account = this.accountRepository.save(account);
+        user.addAccount(account);
+        return this.userRepository.save(user);
+    }
+    
+    
+    /**
+     * Changes the password of the specified user.
+     * 
+     * @param   user                    whose password will be changed.
+     * @param   newPassword             that represents the new password in its
+     *                                  unsafe form.
+     * @return  the User whose password was changed.
+     * @throws  UserServiceException    if the user is null, or the validation
+     *                                  password does not match the password of
+     *                                  the current user, or the confirmation
+     *                                  password does not match the new password.
+     */
+    @Transactional
+    public User changePassword(
+            User user,
+            char[] newPassword)
+            throws UserServiceException {
+        // Create a safe version of the new password
+        Password newSafePassword = PasswordService.create(newPassword);
+        Password currentPassword = user.getPassword();
+
+        // remove the old password
+        this.passwordService.delete(currentPassword);
+
+        // save the new password
+        user.setPassword(this.passwordService.save(newSafePassword));
+
+        // save the user
+        user = this.userRepository.update(user);
+        return user;
+    }
+    
+    
+    /**
+     * Removes the user and all its subsequent data.
+     * 
+     * @param user 
+     */
+    @Transactional
+    public void delete(User user) {
+        // delete address
+        this.addressRepository.delete(user.getAddress());
+        user.setAddress(null);
+        
+        // delete password
+        this.passwordService.delete(user.getPassword());
+        user.setPassword(null);
+        
+        // delete all accounts
+        for (Account account : user.getAccounts()) {
+            user.removeAccount(account);
+            this.accountRepository.delete(account);
+        }
+        
+        this.userRepository.delete(user);
+    }
+    
+    /**
+     * Finds an user using the unique e-mail address.
+     * 
+     * @param   eMailAddress    used to identify the user.
+     * @return  the user with the specified e-mail address.
+     */
+    public User findForEMail(String eMailAddress) {
+        return this.userRepository.findForEmail(eMailAddress);
+    }
+
+    /**
+     * Deletes an account from an user.
+     * 
+     * @param   user    from which the account will be deleted.
+     * @param   account that will be deleted.
+     * @return          the changed user.
+     */
+    public User removeAccountFromUser(User user, Account account) {
+        if (user == null) {
+            throw new UserServiceException("The password change failed: "
+                    + "the user was not set.");
+        }
+        
+        user.removeAccount(account);
+        this.accountRepository.delete(account);
+        return this.userRepository.save(user);
+    }
+    
+    
     /**
      * Creates a new {@link User} using the data specified on the user object.
      *
@@ -68,7 +170,7 @@ public class UserService {
      * @throws UserServiceException
      */
     @Transactional
-    public User create(User user) {
+    public User save(User user) {
         if (this.userRepository.iseMailAlreadyInUse(user.geteMailAddress())) {
             throw new UserServiceException("The chosen e-mail is already in use");
         }
@@ -92,44 +194,6 @@ public class UserService {
 
         // save the user:
         return this.userRepository.save(user);
-    }
-
-    
-    /**
-     * Changes the password of the specified user.
-     * 
-     * @param   user                    whose password will be changed.
-     * @param   newPassword             that represents the new password in its
-     *                                  unsafe form.
-     * @return  the User whose password was changed.
-     * @throws  UserServiceException    if the user is null, or the validation
-     *                                  password does not match the password of
-     *                                  the current user, or the confirmation
-     *                                  password does not match the new password.
-     */
-    @Transactional
-    public User changePassword(
-            User user,
-            char[] newPassword)
-            throws UserServiceException {
-        if (user == null) {
-            throw new UserServiceException("The password change failed: "
-                    + "the user was not set.");
-        }
-
-        // Create a safe version of the new password
-        Password newSafePassword = this.passwordService.create(newPassword);
-        Password currentPassword = user.getPassword();
-
-        // remove the old password
-        this.passwordService.delete(currentPassword);
-
-        // save the new password
-        user.setPassword(this.passwordService.save(newSafePassword));
-
-        // save the user
-        user = this.userRepository.update(user);
-        return user;
     }
     
     

@@ -51,6 +51,14 @@ public interface IRepository<T extends IEntity> {
     
     
     /**
+     * Deletes all specified entities.
+     * 
+     * @param   entities  that will be deleted.
+     */
+    public void delete(Collection<T> entities);
+    
+    
+    /**
      * Saves the specified entity.
      * 
      * @param   entity  that will be saved
