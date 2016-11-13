@@ -113,7 +113,7 @@ public class UserService {
     /**
      * Removes the {@link User} and all its subsequent data.
      * 
-     * @param user 
+     * @param   user    that will be deleted.
      */
     @Transactional
     public void delete(User user) {
@@ -166,9 +166,11 @@ public class UserService {
     /**
      * Creates a new {@link User} using the data specified on the user object.
      *
-     * @param user that contains the data for the new user that will be created.
-     * @return
-     * @throws UserServiceException
+     * @param   user    that contains the data for the new user that will be 
+     *                  created.
+     * @return          the saved user.
+     * @throws  UserServiceException    if an error occurred during the saving
+     *                                  of an user.
      */
     @Transactional
     public User save(User user) {
@@ -205,7 +207,8 @@ public class UserService {
      * @param user                  whose password will be checked against.
      * @param validationPassword    that reprents the password that will be 
      *                              checked against the password of the user.
-     * @return 
+     * @return                      {@code true} if the password is valid for
+     *                              the user, otherwise {@code false}.
      */
     public boolean validatePassword(User user, char[] validationPassword) {
         Password currentPassword = user.getPassword();

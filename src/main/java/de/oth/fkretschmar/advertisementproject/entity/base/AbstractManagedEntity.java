@@ -84,7 +84,7 @@ abstract class AbstractManagedEntity<T> extends AbstractEntity<T> {
     /**
      * Gets the generation timestamp of the entity.
      *
-     * @return The generation timestamp of the entity as a {@link Calendar}.
+     * @return The generation timestamp of the entity as a {@link Date}.
      */
     public Date getGenerationDate() {
         return this.generationDate;

@@ -139,7 +139,8 @@ public abstract class AbstractRepository<T extends IEntity>
     
     /**
      * Gets the class type of the entity being managed by the repository.
-     * @return 
+     * 
+     * @return  the class type of the entity.
      */
     protected Class<T> getEntityClassType() {
         return this.classType;

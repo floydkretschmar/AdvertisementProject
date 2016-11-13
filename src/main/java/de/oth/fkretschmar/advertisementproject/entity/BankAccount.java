@@ -79,7 +79,7 @@ public class BankAccount extends Account {
      * Gets the BIC identifying the banking institution where the account is
      * registered.
      *
-     * @return
+     * @return  the BIC of the account.
      */
     public String getBic() {
         return this.bic;
@@ -89,7 +89,7 @@ public class BankAccount extends Account {
     /**
      * Gets the IBAN identifying the account of the transaction.
      *
-     * @return
+     * @return  the IBAN of the account.
      */
     public String getIban() {
         return this.iban;

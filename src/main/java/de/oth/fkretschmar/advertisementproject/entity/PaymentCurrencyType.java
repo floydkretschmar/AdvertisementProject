@@ -68,7 +68,7 @@ public enum PaymentCurrencyType {
     /**
      * Gets the descriptor of the currency.
      * 
-     * @return 
+     * @return  the descriptor.
      */
     public String getDescriptor() {
         return this.descriptor;

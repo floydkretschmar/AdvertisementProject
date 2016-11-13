@@ -53,7 +53,8 @@ public abstract class AbstractJPARepository<T extends IEntity>
      * Creates a new instance of {@link AbstractJPARepository} using the 
      * specified class type.
      * 
-     * @param classType 
+     * @param   classType   the class type of the entity being managed by the
+     *                      repository.
      */
     public AbstractJPARepository(Class<T> classType) {
         super(classType);
@@ -66,7 +67,7 @@ public abstract class AbstractJPARepository<T extends IEntity>
     /**
      * Gets the entity manager used to persist/load/remove/modify data.
      * 
-     * @return 
+     * @return  the entity manager.
      */
     protected EntityManager getEntityManager() {
         return this.entityManager;

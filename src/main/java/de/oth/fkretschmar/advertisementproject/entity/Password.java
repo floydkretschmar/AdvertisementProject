@@ -67,7 +67,7 @@ public class Password extends AbstractAutoGenerateKeyedEntity {
     /**
      * Gets the hashed presentation of the password.
      * 
-     * @return 
+     * @return  the hashed password.
      */
     public String getValue() {
         return value;

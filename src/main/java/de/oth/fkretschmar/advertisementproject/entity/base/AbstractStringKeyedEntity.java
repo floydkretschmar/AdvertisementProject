@@ -82,9 +82,9 @@ public abstract class AbstractStringKeyedEntity
     
     
     /**
-     * Returns a hash code for an {@link AbstractNumericKeyedEntity} object.
+     * Returns a hash code for an {@link AbstractStringKeyedEntity} object.
      * 
-     * @return  A hash code value for an {@link AbstractNumericKeyedEntity} object.
+     * @return  A hash code value for an {@link AbstractStringKeyedEntity} object.
      */
     @Override
     protected int hashCodeCore() {

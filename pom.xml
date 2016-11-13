@@ -56,6 +56,27 @@
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.10.1</version>
+               <!-- <configuration>
+                    <additionalJOptions>
+                        <additionalJOption>-docletpath "E:\Developement\UMLDoclet\lib\ydoc.jar"</additionalJOption>
+                        <additionalJOption>-resourcepath "E:\Developement\UMLDoclet\resources"</additionalJOption>
+                        <additionalJOption>-doclet ydoc.doclets.YStandard</additionalJOption>
+                        <additionalJOption>-umlautogen</additionalJOption>
+                    </additionalJOptions>
+                </configuration> -->
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.1</version>
                 <configuration>
