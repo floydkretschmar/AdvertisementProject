@@ -19,7 +19,6 @@ package de.oth.fkretschmar.advertisementproject.business;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
-import java.util.Arrays;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 
@@ -165,7 +164,7 @@ public class HashHelper {
             );
             
             // hash the password
-            SecretKeyFactory key = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
+            SecretKeyFactory key = SecretKeyFactory.getInstance(hashGenerationAlgorithm);
             byte[] hashedValue = key.generateSecret(spec).getEncoded();
             
             return hashedValue;
