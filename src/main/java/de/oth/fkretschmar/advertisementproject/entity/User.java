@@ -23,6 +23,8 @@ import java.util.Collection;
 import java.util.Collections;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -71,6 +73,13 @@ public class User extends AbstractAutoGenerateKeyedEntity {
      * Stores the accounts an user has specified.
      */
     @OneToMany
+    @JoinTable(
+        name="T_USER_ACCOUNT",
+        joinColumns=
+            @JoinColumn(name="USER_ID", referencedColumnName="ID"),
+        inverseJoinColumns=
+            @JoinColumn(name="ACCOUNT_ID", referencedColumnName="ID")
+    )
     private final Collection<Account> accounts;
     
     /**
