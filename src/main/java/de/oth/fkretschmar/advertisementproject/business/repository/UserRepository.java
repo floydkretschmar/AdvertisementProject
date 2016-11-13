@@ -44,7 +44,7 @@ public class UserRepository extends AbstractJPARepository<User> {
     // --------------- Public methods ---------------
     
     /**
-     * Checks whether or not an e-Mail is already in use.
+     * Checks whether or not an e-Mail is already in use with a different user.
      * 
      * @param   eMail   that will be validated.
      * @return  <code>true</code> if the e-Mail is already in use.
@@ -86,9 +86,9 @@ public class UserRepository extends AbstractJPARepository<User> {
     // --------------- Protected methods ---------------
     
     /**
-     * Creates a set to store multiple User.
+     * Creates a set to store multiple {@link User} instances.
      * 
-     * @return  A set that can store multiple User.
+     * @return  A set that can store multiple {@link User} instances.
      */
     @Override
     protected Collection<User> createCollection() {

@@ -56,18 +56,6 @@ public abstract class AbstractRepository<T extends IEntity>
     
     
     // --------------- Public methods ---------------
-
-    
-    /**
-     * Gets the class type of the entity being managed by the repository.
-     * @return 
-     */
-    protected Class<T> getClassType() {
-        return this.classType;
-    }
-    
-    
-    // --------------- Public methods ---------------
     
     /**
      * Finds the entity for the specified id.
@@ -147,4 +135,13 @@ public abstract class AbstractRepository<T extends IEntity>
      *          entity.
      */
     protected abstract Collection<T> createCollection();
+
+    
+    /**
+     * Gets the class type of the entity being managed by the repository.
+     * @return 
+     */
+    protected Class<T> getEntityClassType() {
+        return this.classType;
+    }
 }

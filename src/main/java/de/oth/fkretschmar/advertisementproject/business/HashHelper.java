@@ -52,14 +52,14 @@ public class HashHelper {
     private static final int ITERATIONS = 1000;
     
     /**
-     * Defines the number of bits the generated password hash will be long.
+     * Defines the number of bits the generated hash will be long.
      */
     private static final int KEY_LENGTH = 192; // bits
     
     // --------------- Public static methods ---------------
     
     /**
-     * Compares two hashed values with each other.  The result is {@code true} 
+     * Compares two hashed values with each other. The result is {@code true} 
      * if and only if the two given hashes are exactly the same. 
      *
      * @param   hash1   the first hash to compare with.
@@ -82,7 +82,7 @@ public class HashHelper {
     }
 
     /**
-     * Generates the salt used to randomize the result of the password hashing
+     * Generates the salt used to randomize the result of the hashing
      * using the SHA1PRNG algorithm.
      * 
      * @return  A {@code byte} array that contains the randomized salt.
@@ -96,7 +96,7 @@ public class HashHelper {
     }
     
     /**
-     * Generates the salt used to randomize the result of the password hashing
+     * Generates the salt used to randomize the result of the hashing
      * using the specified generation algorithm.
      * 
      * @param   saltGenerationAlgorithm The algorithm used to generate the salt.
@@ -124,10 +124,9 @@ public class HashHelper {
      * the PBKDF2W algorithm.
      * 
      * @param   unsecuredValue       that will be hashed.
-     * @param   salt                    The salt used to randomize the hash.
-     * @return  A String that contains the hashed password.
-     * @throws  HashingException    that indicates that the hashing of the
-     *                              password has failed.
+     * @param   salt                 The salt used to randomize the hash.
+     * @return  A String that contains the hash.
+     * @throws  HashingException     that indicates that the hashing has failed.
      */
     public static byte[] hashValue(
             char[] unsecuredValue, 
@@ -142,12 +141,12 @@ public class HashHelper {
      * Hashes the provided unsecured password using the specified salt and 
      * generation algorithm.
      * 
-     * @param   unsecuredValue       that will be hashed.
+     * @param   unsecuredValue          that will be hashed.
      * @param   salt                    The salt used to randomize the hash.
-     * @param   hashGenerationAlgorithm The salt used to randomize the hash.
+     * @param   hashGenerationAlgorithm The algorithm used for hashing.
      * @return  A String that contains the hashed password.
-     * @throws  HashingException    that indicates that the hashing of the
-     *                              password has failed.
+     * @throws  HashingException        that indicates that the hashing has 
+     *                                  failed.
      */
     public static byte[] hashValue(
             char[] unsecuredValue, 

@@ -35,19 +35,23 @@ import javax.inject.Inject;
 public class ApplicationService {
 
     // --------------- Private static fields ---------------
+    
+    
     /**
-     * Stores the <code>User</code> that is currently logged into the system.
+     * Stores the {@link User} that is currently logged into the system.
      */
     private static User currentUser;
 
     /**
-     * Stores the instance of <code>Lock</code> used to sychronize the class.
+     * Stores the instance of {@link Lock} used to sychronize the class.
      */
     private static final Lock lock = new ReentrantLock();
 
     // --------------- Private fields ---------------
+    
+    
     /**
-     * Stores the repository used to manage <code>User</code> entites.
+     * Stores the repository used to manage {@link User} entites.
      */
     @Inject
     UserRepository userRepository;
@@ -56,7 +60,7 @@ public class ApplicationService {
    
     
     /**
-     * Provides thread safe processing of the <code>User</code> that is
+     * Provides thread safe processing of the {@link User} that is
      * currently logged into the system.
      * 
      * @param   processCallback    The method used to process the current user.
@@ -74,7 +78,7 @@ public class ApplicationService {
             
     
     /**
-     * Provides thread safe processing of the <code>User</code> that is
+     * Provides thread safe processing of the {@link User} that is
      * currently logged into the system.
      *
      * @param   <T>                 that defines the result type of the 
@@ -99,27 +103,12 @@ public class ApplicationService {
     /**
      * Authenticates an user using the specified e-mail and password.
      *
-     * @param eMail
-     * @param password
-     * @return 
-     * @throws UserLoginFailedException
+     * @param   eMail       that identifies the user.
+     * @param   password    that is used to authenticate the user.
+     * @return  {@code true} if the authentication was a success, otherwise
+     *          {@code false}.
      */
     public boolean authenticateUser(String eMail, char[] password) {
-//        try {
-//            User user = this.userRepository.findForEmail(eMail);
-//
-//            if (user == null || !user.getPassword().equalsCore(password)) {
-//                throw new UserLoginFailedException();
-//            } else {
-//                ApplicationService.lock.lock();
-//                ApplicationService.currentUser = user;
-//            }
-//
-//        } catch (HashingException ex) {
-//            throw new UserLoginFailedException();
-//        } finally {
-//            ApplicationService.lock.unlock();
-//        }
         try {
             User user = this.userRepository.findForEmail(eMail);
 

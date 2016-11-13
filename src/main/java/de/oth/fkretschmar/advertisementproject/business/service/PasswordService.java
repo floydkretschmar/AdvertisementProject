@@ -34,7 +34,7 @@ public class PasswordService {
     // --------------- Private fields ---------------
 
     /**
-     * Stores the repository used to manage <code>Password</code> entites.
+     * Stores the repository used to manage {@link Password} entites.
      */
     @Inject
     PasswordRepository passwordRepository;
@@ -44,7 +44,7 @@ public class PasswordService {
     
     
     /**
-     * Deletes the specified password from persistance.
+     * Deletes the specified {@link Password} from the database.
      * 
      * @param   password    that will be deleted.
      */
@@ -54,7 +54,7 @@ public class PasswordService {
     
     
     /**
-     * Saves the specified password.
+     * Saves the specified {@link Password}.
      * 
      * @param   password    the password that will be saved.
      * @return              the saved password.
@@ -68,7 +68,7 @@ public class PasswordService {
     
     
     /**
-     * Creates a new safe hashed password from an unsafe password.
+     * Creates a new safe hashed {@link Password} from an unsafe password.
      * 
      * @param   unsafePassword  that contains the unsafe password.
      * @return  a safe hashed password.
@@ -143,5 +143,4 @@ public class PasswordService {
             return hex;
         }
     }
-    
 }

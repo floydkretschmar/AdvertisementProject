@@ -27,7 +27,7 @@ import javax.persistence.TypedQuery;
 
 /**
  * Represents an repository that defines the default CRUD methods when using
- * JPA
+ * the Java Persistance API.
  * 
  * @author  fkre    Floyd Kretschmar
  * @param   <T>     The type that specifies which entity is being managed by the
@@ -50,8 +50,8 @@ public abstract class AbstractJPARepository<T extends IEntity>
     
     
     /**
-     * Creates a new instance of {@link JPARepository} using the specified class
-     * type.
+     * Creates a new instance of {@link AbstractJPARepository} using the 
+     * specified class type.
      * 
      * @param classType 
      */
@@ -114,7 +114,7 @@ public abstract class AbstractJPARepository<T extends IEntity>
      */
     @Override
     public final T find(int id) {
-        return this.getEntityManager().find(this.getClassType(), id);
+        return this.getEntityManager().find(this.getEntityClassType(), id);
     }
     
     

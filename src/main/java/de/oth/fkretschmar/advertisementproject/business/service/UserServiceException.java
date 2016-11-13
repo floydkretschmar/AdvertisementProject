@@ -17,14 +17,14 @@
 package de.oth.fkretschmar.advertisementproject.business.service;
 
 /**
- * Represents the error that occurs when an e-mail is already in use.
+ * Represents the error that occurs when an error occurs within the user service.
  * 
  * @author  fkre    Floyd Kretschmar
  */
 public class UserServiceException extends RuntimeException {
 
     /**
-     * Creates a new instance of <code>EMailAlreadyInUseException</code> using
+     * Creates a new instance of {@link UserServiceException} using
      * the specified error message.
      * 
      * @param   errorMessage    that contains the detailed description of the 

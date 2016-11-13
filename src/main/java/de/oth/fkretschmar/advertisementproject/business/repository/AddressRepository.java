@@ -42,9 +42,9 @@ public class AddressRepository extends AbstractJPARepository<Address> {
     // --------------- Protected methods ---------------
     
     /**
-     * Creates a set to store multiple addresses.
+     * Creates a set to store multiple {@link Address} instances.
      * 
-     * @return  A set that can store multiple addresses.
+     * @return  A set that can store multiple {@link Address} instances.
      */
     @Override
     protected Collection<Address> createCollection() {

@@ -28,7 +28,8 @@ import javax.inject.Inject;
 import javax.transaction.Transactional;
 
 /**
- * The service that offers functionality related to user management.
+ * The service that offers functionality related to the management of {@link User}
+ * instances.
  * 
  * @author  fkre    Floyd Kretschmar
  */
@@ -36,25 +37,25 @@ public class UserService {
 
     // --------------- Private fields ---------------
     /**
-     * Stores the repository used to manage <code>Address</code> entites.
+     * Stores the repository used to manage {@link Address} entites.
      */
     @Inject
     private AddressRepository addressRepository;
     
     /**
-     * Stores the repository used to manage <code>BankAccount</code> entities.Í
+     * Stores the repository used to manage {@link Account} entities.
      */
     @Inject
     private AccountRepository accountRepository;
     
     /**
-     * Stores the service that manages passwords.
+     * Stores the service that manages {@link Password} entities.
      */
     @Inject
     private PasswordService passwordService;
 
     /**
-     * Stores the repository used to manage <code>User</code> entites.
+     * Stores the repository used to manage {@link User} entites.
      */
     @Inject
     private UserRepository userRepository;
@@ -63,7 +64,7 @@ public class UserService {
     
     
     /**
-     * Creates a new account and links it to the specified user.
+     * Creates a new {@link Account} and links it to the specified {@link User}.
      * 
      * @param   user        to which a new account will be added.
      * @param   account     that will be added to the user.
@@ -77,7 +78,7 @@ public class UserService {
     
     
     /**
-     * Changes the password of the specified user.
+     * Changes the {@link Password} of the specified {@link User}.
      * 
      * @param   user                    whose password will be changed.
      * @param   newPassword             that represents the new password in its
@@ -110,7 +111,7 @@ public class UserService {
     
     
     /**
-     * Removes the user and all its subsequent data.
+     * Removes the {@link User} and all its subsequent data.
      * 
      * @param user 
      */
@@ -134,7 +135,7 @@ public class UserService {
     }
     
     /**
-     * Finds an user using the unique e-mail address.
+     * Finds an {@link User} using the unique e-mail address.
      * 
      * @param   eMailAddress    used to identify the user.
      * @return  the user with the specified e-mail address.
@@ -144,7 +145,7 @@ public class UserService {
     }
 
     /**
-     * Deletes an account from an user.
+     * Deletes an {@link Account} from an {@link User}.
      * 
      * @param   user    from which the account will be deleted.
      * @param   account that will be deleted.
@@ -198,7 +199,8 @@ public class UserService {
     
     
     /**
-     * Validates that the specified password is valid for the specified user.
+     * Validates that the specified password is valid for the specified 
+     * {@link User}.
      * 
      * @param user                  whose password will be checked against.
      * @param validationPassword    that reprents the password that will be 

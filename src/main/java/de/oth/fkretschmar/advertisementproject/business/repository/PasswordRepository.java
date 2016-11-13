@@ -25,7 +25,7 @@ import java.util.Collection;
 /**
  * Repository that defines the default CRUD methods for a {@link Password}
  * 
- * @author fkre Floyd Kretschmar
+ * @author  fkre    Floyd Kretschmar
  */
 public class PasswordRepository extends AbstractJPARepository<Password> {
     
@@ -42,9 +42,9 @@ public class PasswordRepository extends AbstractJPARepository<Password> {
     
     
     /**
-     * Creates a set to store multiple passwords.
+     * Creates a set to store multiple {@link Password} instances.
      * 
-     * @return  A set that can store multiple passwords.
+     * @return  A set that can store multiple {@link Password} instances.
      */
     @Override
     protected Collection<Password> createCollection() {

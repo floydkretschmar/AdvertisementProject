@@ -31,7 +31,7 @@ public class AccountRepository extends AbstractJPARepository<Account> {
     // --------------- Public constructors ---------------
 
     /**
-     * Creates an new instance of {@link BankAccountRepository}.
+     * Creates an new instance of {@link AccountRepository}.
      */
     public AccountRepository() {
         super(Account.class);
@@ -40,9 +40,9 @@ public class AccountRepository extends AbstractJPARepository<Account> {
     // --------------- Protected methods ---------------
 
     /**
-     * Creates a set to store multiple passwords.
+     * Creates a set to store multiple {@link Account} instances.
      
-     * @return  A set that can store multiple passwords.
+     * @return  A set that can store multiple {@link Account} instances.
      */
     @Override
     protected Collection<Account> createCollection() {
