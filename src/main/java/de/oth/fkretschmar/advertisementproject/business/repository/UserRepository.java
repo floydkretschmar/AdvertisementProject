@@ -29,7 +29,7 @@ import javax.persistence.TypedQuery;
  * 
  * @author  fkre    Floyd Kretschmar
  */
-public class UserRepository extends AbstractJPARepository<User> {
+public class UserRepository extends AbstractJPARepository<Long, User> {
     
     // --------------- Public constructors ---------------
     

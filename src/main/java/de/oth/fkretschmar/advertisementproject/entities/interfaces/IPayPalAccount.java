@@ -20,21 +20,6 @@ package de.oth.fkretschmar.advertisementproject.entities.interfaces;
  *
  * @author fkre
  */
-public interface IBankAccount extends IAccount {
+public interface IPayPalAccount extends IAccount {
     
-    /**
-     * Gets the BIC identifying the banking institution where the account is
-     * registered.
-     *
-     * @return  the BIC of the account.
-     */
-    public String getBic();
-
-    
-    /**
-     * Gets the IBAN uniquely identifying the account of the transaction.
-     *
-     * @return  the IBAN of the account.
-     */
-    public String getIban();
 }

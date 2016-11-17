@@ -19,6 +19,7 @@ package de.oth.fkretschmar.advertisementproject.entities;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
+import jdk.nashorn.internal.ir.annotations.Immutable;
 
 /**
  *
@@ -64,8 +65,7 @@ public class BankAccount extends Account {
      * @param   bic     that identifies a banking institution.
      */
     public BankAccount(String iban, String bic) {
-        this();
-        this.iban = iban;
+        super(iban);
         this.bic = bic;
     }
 

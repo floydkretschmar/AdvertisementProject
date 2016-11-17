@@ -17,13 +17,13 @@
 package de.oth.fkretschmar.advertisementproject.entities.base;
 
 import de.oth.fkretschmar.advertisementproject.entities.interfaces.IEntity;
+
 import java.io.Serializable;
 import javax.persistence.Column;
-
 import javax.persistence.MappedSuperclass;
 
 /**
- * Represents the abstract base implementation of any entity.
+ * Abstract base implementation of any entity.
  * 
  * @author  fkre    Floyd Kretschmar
  * @param   <T>     the type of the unique identifier.

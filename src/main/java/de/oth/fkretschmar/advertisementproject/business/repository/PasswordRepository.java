@@ -27,7 +27,7 @@ import java.util.Collection;
  * 
  * @author  fkre    Floyd Kretschmar
  */
-public class PasswordRepository extends AbstractJPARepository<Password> {
+public class PasswordRepository extends AbstractJPARepository<Long, Password> {
     
     // --------------- Public constructors ---------------
     

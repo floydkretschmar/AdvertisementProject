@@ -26,7 +26,7 @@ import java.util.Collection;
  *
  * @author fkre
  */
-public class AccountRepository extends AbstractJPARepository<Account> {
+public class AccountRepository extends AbstractJPARepository<String, Account> {
     
     // --------------- Public constructors ---------------
 

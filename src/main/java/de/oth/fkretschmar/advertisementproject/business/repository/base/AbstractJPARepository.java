@@ -34,7 +34,7 @@ import javax.persistence.TypedQuery;
  *                  repository.
  */
 @Dependent
-public abstract class AbstractJPARepository<T extends IEntity> 
+public abstract class AbstractJPARepository<S, T extends IEntity<S>> 
         extends AbstractRepository<T> {
     
     // --------------- Private fields ---------------
@@ -170,7 +170,7 @@ public abstract class AbstractJPARepository<T extends IEntity>
         entity = this.updateCore(entity);
                 
         // save the actual entity
-        this.getEntityManager().persist(entity);
+        //this.getEntityManager().persist(entity);
         
         return entity;
     }

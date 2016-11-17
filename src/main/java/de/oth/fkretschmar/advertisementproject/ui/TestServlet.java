@@ -78,7 +78,12 @@ public class TestServlet extends HttpServlet {
             out.println("<h1>Servlet TestServlet at " + request.getContextPath() + "</h1>");
 
             User user = this.userService.findForEMail("fkretschmar@googlemail.com");
-            this.userService.delete(user);
+            
+            this.userService.changePassword(user, "HalloWelt".toCharArray());
+            
+            //this.userService.delete(user);
+            
+            
             
             
 //            Address address = new Address(

@@ -41,14 +41,15 @@ public class Address extends AbstractAutoGenerateKeyedEntity implements IAddress
     private String areaCode;
     
     /**
-     * Stores the name of the city.
+     * Stores the name of the city in which the street can be found.
      */
     @NotNull
     @Column(name = "CITY")
     private String city;
     
     /**
-     * Stores the name of the country.
+     * Stores the text that represents the country in which the address can be 
+     * found.
      */
     @Column(name = "COUNTRY")
     private String country;
@@ -74,20 +75,20 @@ public class Address extends AbstractAutoGenerateKeyedEntity implements IAddress
     
     // --------------- Public constructors ---------------
     
-    /**
-     * Creates a new instance of {@link Address} using the specified area code, 
-     * city and street.
-     * 
-     * @param   areaCode    that identifies the area of the address.
-     * @param   city        that contains the city name.
-     * @param   street      that contains the street.
-     */
-    public Address(String areaCode, String city, String street) {
-        this();
-        this.areaCode = areaCode;
-        this.city = city;
-        this.street = street;
-    }
+//    /**
+//     * Creates a new instance of {@link Address} using the specified area code, 
+//     * city and street.
+//     * 
+//     * @param   areaCode    that identifies the area of the address.
+//     * @param   city        that contains the city name.
+//     * @param   street      that contains the street.
+//     */
+//    public Address(String areaCode, String city, String street) {
+//        this();
+//        this.areaCode = areaCode;
+//        this.city = city;
+//        this.street = street;
+//    }
     
     // --------------- Public getters and setters ---------------
     
@@ -103,7 +104,7 @@ public class Address extends AbstractAutoGenerateKeyedEntity implements IAddress
     }
 
     /**
-     * Gets the name of the city.
+     * Gets the name of the city in which the street can be found.
      * 
      * @return  A String that contains the city name.
      */
@@ -112,7 +113,8 @@ public class Address extends AbstractAutoGenerateKeyedEntity implements IAddress
     }
 
     /**
-     * Gets the name of the country.
+     * Gets the text that represents the country in which the address can be 
+     * found.
      * 
      * @return  A String that contains the name of the country.
      */
@@ -140,7 +142,7 @@ public class Address extends AbstractAutoGenerateKeyedEntity implements IAddress
     }
 
     /**
-     * Sets the name of the city.
+     * Sets the name of the city in which the street can be found.
      * 
      * @param   city    that contains the name of the city.
      */
@@ -149,7 +151,8 @@ public class Address extends AbstractAutoGenerateKeyedEntity implements IAddress
     }
 
     /**
-     * Sets the name of the country.
+     * Sets the text that represents the country in which the address can be 
+     * found.
      * 
      * @param   country that contains the name of the county.
      */

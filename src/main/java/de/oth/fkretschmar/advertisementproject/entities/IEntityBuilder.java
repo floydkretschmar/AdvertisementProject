@@ -14,27 +14,19 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.oth.fkretschmar.advertisementproject.entities.interfaces;
+package de.oth.fkretschmar.advertisementproject.entities;
+
+import de.oth.fkretschmar.advertisementproject.entities.interfaces.IEntity;
 
 /**
+ * Interface that defines the methods that are being offered by an builder that
+ * creates entites.
  *
- * @author fkre
+ * @author  fkre    Floyd Kretschmar
+ * @param   <S>     the type of the id identifying the entity that is built by
+ *                  this builder.
+ * @param   <T>     the type of entity that is built by this builder.
  */
-public interface IBankAccount extends IAccount {
+public interface IEntityBuilder<S, T extends IEntity<S>> {
     
-    /**
-     * Gets the BIC identifying the banking institution where the account is
-     * registered.
-     *
-     * @return  the BIC of the account.
-     */
-    public String getBic();
-
-    
-    /**
-     * Gets the IBAN uniquely identifying the account of the transaction.
-     *
-     * @return  the IBAN of the account.
-     */
-    public String getIban();
 }

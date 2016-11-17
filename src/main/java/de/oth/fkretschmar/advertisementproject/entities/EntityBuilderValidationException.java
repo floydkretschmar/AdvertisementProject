@@ -14,27 +14,23 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.oth.fkretschmar.advertisementproject.entities.interfaces;
+package de.oth.fkretschmar.advertisementproject.entities;
 
 /**
- *
+ * The exception that is being thrown if the validation of the set data failed
+ * in the build method of a builder.
+ * 
  * @author fkre
  */
-public interface IBankAccount extends IAccount {
-    
-    /**
-     * Gets the BIC identifying the banking institution where the account is
-     * registered.
-     *
-     * @return  the BIC of the account.
-     */
-    public String getBic();
+public class EntityBuilderValidationException extends Exception {
 
-    
     /**
-     * Gets the IBAN uniquely identifying the account of the transaction.
+     * Creates an instance of {@link EntityBuilderValidationException} using the 
+     * specified detail message.
      *
-     * @return  the IBAN of the account.
+     * @param message the detail message.
      */
-    public String getIban();
+    public EntityBuilderValidationException(String message) {
+        super(message);
+    }
 }

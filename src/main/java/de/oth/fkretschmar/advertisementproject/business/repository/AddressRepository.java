@@ -27,7 +27,7 @@ import java.util.Collection;
  * 
  * @author  fkre    Floyd Kretschmar
  */
-public class AddressRepository extends AbstractJPARepository<Address> {
+public class AddressRepository extends AbstractJPARepository<Long, Address> {
     
     // --------------- Public constructors ---------------
     
