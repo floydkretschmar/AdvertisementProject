@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.oth.fkretschmar.advertisementproject.entity.base;
+package de.oth.fkretschmar.advertisementproject.entities.base;
 
 import java.util.Date;
 import javax.persistence.Column;

@@ -18,7 +18,7 @@ package de.oth.fkretschmar.advertisementproject.business.service;
 
 import de.oth.fkretschmar.advertisementproject.business.repository.UserRepository;
 import de.oth.fkretschmar.advertisementproject.business.service.base.AbstractService;
-import de.oth.fkretschmar.advertisementproject.entity.User;
+import de.oth.fkretschmar.advertisementproject.entities.User;
 
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;

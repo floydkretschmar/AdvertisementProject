@@ -16,7 +16,7 @@
  */
 package de.oth.fkretschmar.advertisementproject.business.repository.base;
 
-import de.oth.fkretschmar.advertisementproject.entity.base.IEntity;
+import de.oth.fkretschmar.advertisementproject.entities.interfaces.IEntity;
 import java.io.Serializable;
 
 import java.util.Collection;

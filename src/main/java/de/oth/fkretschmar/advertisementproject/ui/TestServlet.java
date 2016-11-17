@@ -21,12 +21,12 @@ import de.oth.fkretschmar.advertisementproject.business.service.ApplicationServi
 import de.oth.fkretschmar.advertisementproject.business.service.PasswordService;
 import de.oth.fkretschmar.advertisementproject.business.service.UserServiceException;
 import de.oth.fkretschmar.advertisementproject.business.service.UserService;
-import de.oth.fkretschmar.advertisementproject.entity.Account;
-import de.oth.fkretschmar.advertisementproject.entity.Address;
-import de.oth.fkretschmar.advertisementproject.entity.BankAccount;
-import de.oth.fkretschmar.advertisementproject.entity.Password;
-import de.oth.fkretschmar.advertisementproject.entity.PayPalAccount;
-import de.oth.fkretschmar.advertisementproject.entity.User;
+import de.oth.fkretschmar.advertisementproject.entities.Account;
+import de.oth.fkretschmar.advertisementproject.entities.Address;
+import de.oth.fkretschmar.advertisementproject.entities.BankAccount;
+import de.oth.fkretschmar.advertisementproject.entities.Password;
+import de.oth.fkretschmar.advertisementproject.entities.PayPalAccount;
+import de.oth.fkretschmar.advertisementproject.entities.User;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -80,32 +80,33 @@ public class TestServlet extends HttpServlet {
             User user = this.userService.findForEMail("fkretschmar@googlemail.com");
             this.userService.delete(user);
             
-            Address address = new Address(
-                    "95689", 
-                    "Regensburg", 
-                    "Dechbettener Straße 7");
-            address.setCountry("Deutschland");
             
-            //Password pw = userService.create("Testpassword".toCharArray());
-            user = new User(
-                    "fkretschmar@googlemail.com", 
-                    passService.create("Testpw".toCharArray()), 
-                    "Floyd", 
-                    "Kretschmar", 
-                    address);
-            user.setCompany("Optware");
-            
-            BankAccount acc = new BankAccount("DE948309535956456", "GENOD43945");
-            acc.setDescription("RB");
-            
-            user.addAccount(acc);
-            
-            acc = new BankAccount("DE555555555555555", "GENOD43945");
-            acc.setDescription("RB2");
-            
-            user.addAccount(acc);
-            this.userService.save(user);
-            
+//            Address address = new Address(
+//                    "95689", 
+//                    "Regensburg", 
+//                    "Dechbettener Straße 7");
+//            address.setCountry("Deutschland");
+//            
+//            //Password pw = userService.create("Testpassword".toCharArray());
+//            user = new User(
+//                    "fkretschmar@googlemail.com", 
+//                    passService.create("Testpw".toCharArray()), 
+//                    "Floyd", 
+//                    "Kretschmar", 
+//                    address);
+//            user.setCompany("Optware");
+//            
+//            BankAccount acc = new BankAccount("DE948309535956456", "GENOD43945");
+//            acc.setDescription("RB");
+//            
+//            user.addAccount(acc);
+//            
+//            acc = new BankAccount("DE555555555555555", "GENOD43945");
+//            acc.setDescription("RB2");
+//            
+//            user.addAccount(acc);
+//            this.userService.save(user);
+//            
 //            authService.authenticateUser(user.geteMailAddress(), "Testpw4".toCharArray());
 //            
 //            try {

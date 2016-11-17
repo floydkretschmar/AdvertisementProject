@@ -14,33 +14,29 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.oth.fkretschmar.advertisementproject.entity;
+package de.oth.fkretschmar.advertisementproject.entities;
 
-import java.util.Calendar;
+import de.oth.fkretschmar.advertisementproject.entities.base.AbstractAutoGenerateKeyedEntity;
 
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 
 /**
- *
+ * Represents an paypal account used to pay for orders.
+ * 
  * @author fkre
  */
-@Entity(name = "T_REGULAR_PAYMENT")
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public class RegularPayment extends Payment {
+@Entity(name = "T_ACCOUNT")
+@Inheritance(strategy = InheritanceType.JOINED)
+public abstract class Account extends AbstractAutoGenerateKeyedEntity {
     
-//    /**
-//     * Stores the end date of the regular payment.
-//     */
-//    private Calendar endDate;
-//    
-//    
-//    /**
-//     * Stores the 
-//     */
-//    private PaymentInterval interval;
-//    
-//    private Calendar startDate;
-    
+    // --------------- Public constructors ---------------
+
+    /**
+     * Creates a new instance of {@link Account} using the specified identifier.
+     */
+    public Account() {
+        super();
+    }
 }

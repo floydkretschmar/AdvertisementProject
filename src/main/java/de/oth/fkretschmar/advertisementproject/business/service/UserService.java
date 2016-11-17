@@ -20,10 +20,10 @@ import de.oth.fkretschmar.advertisementproject.business.repository.AddressReposi
 import de.oth.fkretschmar.advertisementproject.business.repository.AccountRepository;
 import de.oth.fkretschmar.advertisementproject.business.repository.UserRepository;
 import de.oth.fkretschmar.advertisementproject.business.service.base.AbstractService;
-import de.oth.fkretschmar.advertisementproject.entity.Account;
-import de.oth.fkretschmar.advertisementproject.entity.Address;
-import de.oth.fkretschmar.advertisementproject.entity.Password;
-import de.oth.fkretschmar.advertisementproject.entity.User;
+import de.oth.fkretschmar.advertisementproject.entities.Account;
+import de.oth.fkretschmar.advertisementproject.entities.Address;
+import de.oth.fkretschmar.advertisementproject.entities.Password;
+import de.oth.fkretschmar.advertisementproject.entities.User;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;

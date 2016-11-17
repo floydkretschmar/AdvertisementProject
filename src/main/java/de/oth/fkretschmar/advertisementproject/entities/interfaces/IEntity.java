@@ -14,29 +14,20 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.oth.fkretschmar.advertisementproject.entity;
-
-import de.oth.fkretschmar.advertisementproject.entity.base.AbstractAutoGenerateKeyedEntity;
-
-import javax.persistence.Entity;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
+package de.oth.fkretschmar.advertisementproject.entities.interfaces;
 
 /**
- * Represents an paypal account used to pay for orders.
+ * Defines the default methods that describe an entity.
  * 
- * @author fkre
+ * @author  fkre    Floyd Kretschmar
+ * @param   <T>     that defines the type of the id.
  */
-@Entity(name = "T_ACCOUNT")
-@Inheritance(strategy = InheritanceType.JOINED)
-public abstract class Account extends AbstractAutoGenerateKeyedEntity {
+public interface IEntity<T> {
     
-    // --------------- Public constructors ---------------
-
     /**
-     * Creates a new instance of {@link Account} using the specified identifier.
+     * Gets the unique identifier of the entity.
+     * 
+     * @return  The unique identifier of the entity as a {@code T}.
      */
-    public Account() {
-        super();
-    }
+    public T getId();
 }

@@ -14,20 +14,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.oth.fkretschmar.advertisementproject.entity.base;
+package de.oth.fkretschmar.advertisementproject.entities.interfaces;
 
 /**
- * Defines the default methods that describe an entity.
- * 
- * @author  fkre    Floyd Kretschmar
- * @param   <T>     that defines the type of the id.
+ * The interface that defines the methods of an account to other components of 
+ * the class.
+ *
+ * @author fkre
  */
-public interface IEntity<T> {
+public interface IAccount extends IEntity<String> {
     
-    /**
-     * Gets the unique identifier of the entity.
-     * 
-     * @return  The unique identifier of the entity as a {@code T}.
-     */
-    public T getId();
 }
