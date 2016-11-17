@@ -14,9 +14,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.oth.fkretschmar.advertisementproject.business.repository;
+package de.oth.fkretschmar.advertisementproject.business.repositories;
 
-import de.oth.fkretschmar.advertisementproject.business.repository.base.AbstractJPARepository;
+import de.oth.fkretschmar.advertisementproject.business.repositories.base.AbstractJPARepository;
 import de.oth.fkretschmar.advertisementproject.entities.User;
 
 import java.util.ArrayList;

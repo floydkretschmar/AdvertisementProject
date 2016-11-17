@@ -14,20 +14,23 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.oth.fkretschmar.advertisementproject.business.service;
+package de.oth.fkretschmar.advertisementproject.business.services;
 
 /**
- * Represents the error that occurs, when an user login fails.
+ * Represents the error that occurs when an error occurs within the user service.
  * 
  * @author  fkre    Floyd Kretschmar
  */
-public class UserLoginFailedException extends RuntimeException {
+public class UserServiceException extends RuntimeException {
 
     /**
-     * Creates a new instance of <code>UserNotFoundException</code>.
+     * Creates a new instance of {@link UserServiceException} using
+     * the specified error message.
+     * 
+     * @param   errorMessage    that contains the detailed description of the 
+     *                          error.
      */
-    public UserLoginFailedException() {
-        super("No account exists for the specified e-mail, or the specified"
-                + " password is wrong.");
+    public UserServiceException(String errorMessage) {
+        super(errorMessage);
     }
 }

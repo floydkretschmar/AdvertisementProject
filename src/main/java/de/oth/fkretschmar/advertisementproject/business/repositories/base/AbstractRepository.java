@@ -14,22 +14,46 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.oth.fkretschmar.advertisementproject.business.repository.base;
+package de.oth.fkretschmar.advertisementproject.business.repositories.base;
 
 import de.oth.fkretschmar.advertisementproject.entities.interfaces.IEntity;
+import java.io.Serializable;
 
 import java.util.Collection;
 import javax.enterprise.context.Dependent;
 
 /**
- * The interface that defines the methods that describe an repository.
+ * Represents an abstract base repository that defines the default CRUD methods
+ * that have to be offered when handling an entity.
  * 
  * @author  fkre    Floyd Kretschmar
  * @param   <T>     The type that specifies which entity is being managed by the
  *                  repository.
  */
 @Dependent
-public interface IRepository<T extends IEntity> {
+public abstract class AbstractRepository<T extends IEntity> 
+        implements IRepository<T>, Serializable {
+    
+    // --------------- Private fields ---------------
+    
+    /**
+     * Stores the class type of the entity being managed by the repository.
+     */
+    private Class<T> classType;
+    
+    // --------------- Public constructors ---------------
+    
+    
+    /**
+     * Creates a new instance of {@link AbstractRepository} using the specified
+     * class type.
+     * 
+     * @param   classType   of the entity being managed by the repository.
+     */
+    public AbstractRepository(Class<T> classType) {
+        this.classType = classType;
+    }
+    
     
     // --------------- Public methods ---------------
     
@@ -39,7 +63,8 @@ public interface IRepository<T extends IEntity> {
      * @param   id  that specifies the entity that will be found.
      * @return  The entity with the specified id.
      */
-    public T find(int id);
+    @Override
+    public abstract T find(int id);
     
     
     /**
@@ -47,7 +72,8 @@ public interface IRepository<T extends IEntity> {
      * 
      * @param   entity  that will be deleted.
      */
-    public void delete(T entity);
+    @Override
+    public abstract void delete(T entity);
     
     
     /**
@@ -55,7 +81,8 @@ public interface IRepository<T extends IEntity> {
      * 
      * @param   entities  that will be deleted.
      */
-    public void delete(Collection<T> entities);
+    @Override
+    public abstract void delete(Collection<T> entities);
     
     
     /**
@@ -64,7 +91,8 @@ public interface IRepository<T extends IEntity> {
      * @param   entity  that will be saved
      * @return  The saved entity.
      */
-    public T save(T entity);
+    @Override
+    public abstract T save(T entity);
     
     
     /**
@@ -73,7 +101,8 @@ public interface IRepository<T extends IEntity> {
      * @param   entities    that will be saved.
      * @return  The saved entities.
      */
-    public Collection<T> save(Collection<T> entities);
+    @Override
+    public abstract Collection<T> save(Collection<T> entities);
     
     
     /**
@@ -82,7 +111,8 @@ public interface IRepository<T extends IEntity> {
      * @param   entity  that will be updated.
      * @return  The updated entity.
      */
-    public T update(T entity);
+    @Override
+    public abstract T update(T entity);
     
     
     /**
@@ -91,5 +121,28 @@ public interface IRepository<T extends IEntity> {
      * @param   entities    that will be updated.
      * @return  The updated entities.
      */
-    public Collection<T> update(Collection<T> entities);
+    @Override
+    public abstract Collection<T> update(Collection<T> entities);
+    
+    
+    // --------------- Protected methods ---------------
+    
+    
+    /**
+     * Creates a collection of the managed entity.
+     * 
+     * @return  A collection that can store multiple entries of the managed
+     *          entity.
+     */
+    protected abstract Collection<T> createCollection();
+
+    
+    /**
+     * Gets the class type of the entity being managed by the repository.
+     * 
+     * @return  the class type of the entity.
+     */
+    protected Class<T> getEntityClassType() {
+        return this.classType;
+    }
 }

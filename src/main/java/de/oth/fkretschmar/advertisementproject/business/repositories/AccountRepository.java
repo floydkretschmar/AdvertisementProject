@@ -14,40 +14,39 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.oth.fkretschmar.advertisementproject.business.repository;
+package de.oth.fkretschmar.advertisementproject.business.repositories;
 
-import de.oth.fkretschmar.advertisementproject.business.repository.base.AbstractJPARepository;
-import de.oth.fkretschmar.advertisementproject.entities.Password;
+import de.oth.fkretschmar.advertisementproject.business.repositories.base.AbstractJPARepository;
+import de.oth.fkretschmar.advertisementproject.entities.Account;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * Repository that defines the default CRUD methods for a {@link Password}
- * 
- * @author  fkre    Floyd Kretschmar
+ *
+ * @author fkre
  */
-public class PasswordRepository extends AbstractJPARepository<Long, Password> {
+public class AccountRepository extends AbstractJPARepository<String, Account> {
     
     // --------------- Public constructors ---------------
-    
+
     /**
-     * Creates a new instance of {@link PasswordRepository}.
+     * Creates an new instance of {@link AccountRepository}.
      */
-    public PasswordRepository() {
-        super(Password.class);
+    public AccountRepository() {
+        super(Account.class);
     }
     
     // --------------- Protected methods ---------------
-    
-    
+
     /**
-     * Creates a set to store multiple {@link Password} instances.
-     * 
-     * @return  A set that can store multiple {@link Password} instances.
+     * Creates a set to store multiple {@link Account} instances.
+     
+     * @return  A set that can store multiple {@link Account} instances.
      */
     @Override
-    protected Collection<Password> createCollection() {
-        return new ArrayList<Password>();
+    protected Collection<Account> createCollection() {
+        return new ArrayList<Account>();
     }
+    
 }

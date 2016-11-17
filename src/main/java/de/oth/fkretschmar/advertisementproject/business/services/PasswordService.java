@@ -14,11 +14,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.oth.fkretschmar.advertisementproject.business.service;
+package de.oth.fkretschmar.advertisementproject.business.services;
 
 import de.oth.fkretschmar.advertisementproject.business.HashHelper;
-import de.oth.fkretschmar.advertisementproject.business.repository.PasswordRepository;
-import de.oth.fkretschmar.advertisementproject.business.service.base.AbstractService;
+import de.oth.fkretschmar.advertisementproject.business.repositories.PasswordRepository;
+import de.oth.fkretschmar.advertisementproject.business.services.base.AbstractService;
 import de.oth.fkretschmar.advertisementproject.entities.Password;
 
 import java.math.BigInteger;

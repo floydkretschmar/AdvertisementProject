@@ -17,10 +17,10 @@
 package de.oth.fkretschmar.advertisementproject.ui;
 
 import de.oth.fkretschmar.advertisementproject.business.HashingException;
-import de.oth.fkretschmar.advertisementproject.business.service.ApplicationService;
-import de.oth.fkretschmar.advertisementproject.business.service.PasswordService;
-import de.oth.fkretschmar.advertisementproject.business.service.UserServiceException;
-import de.oth.fkretschmar.advertisementproject.business.service.UserService;
+import de.oth.fkretschmar.advertisementproject.business.services.ApplicationService;
+import de.oth.fkretschmar.advertisementproject.business.services.PasswordService;
+import de.oth.fkretschmar.advertisementproject.business.services.UserServiceException;
+import de.oth.fkretschmar.advertisementproject.business.services.UserService;
 import de.oth.fkretschmar.advertisementproject.entities.Account;
 import de.oth.fkretschmar.advertisementproject.entities.Address;
 import de.oth.fkretschmar.advertisementproject.entities.BankAccount;
