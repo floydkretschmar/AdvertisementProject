@@ -18,18 +18,20 @@ package de.oth.fkretschmar.advertisementproject.business.service;
 
 import de.oth.fkretschmar.advertisementproject.business.HashHelper;
 import de.oth.fkretschmar.advertisementproject.business.repository.PasswordRepository;
+import de.oth.fkretschmar.advertisementproject.business.service.base.AbstractService;
 import de.oth.fkretschmar.advertisementproject.entity.Password;
 
 import java.math.BigInteger;
 import java.util.Arrays;
-
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 
 /**
  *
  * @author fkre
  */
-public class PasswordService {
+@RequestScoped
+public class PasswordService extends AbstractService {
 
     // --------------- Private fields ---------------
 

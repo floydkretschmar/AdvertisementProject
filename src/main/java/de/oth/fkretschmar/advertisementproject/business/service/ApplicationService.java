@@ -17,6 +17,7 @@
 package de.oth.fkretschmar.advertisementproject.business.service;
 
 import de.oth.fkretschmar.advertisementproject.business.repository.UserRepository;
+import de.oth.fkretschmar.advertisementproject.business.service.base.AbstractService;
 import de.oth.fkretschmar.advertisementproject.entity.User;
 
 import java.util.concurrent.locks.Lock;
@@ -24,6 +25,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
+import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 
 /**
@@ -32,7 +34,8 @@ import javax.inject.Inject;
  * 
  * @author  fkre    Floyd Kretschmar
  */
-public class ApplicationService {
+@SessionScoped
+public class ApplicationService extends AbstractService {
 
     // --------------- Private static fields ---------------
     

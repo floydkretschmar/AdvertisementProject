@@ -19,11 +19,13 @@ package de.oth.fkretschmar.advertisementproject.business.service;
 import de.oth.fkretschmar.advertisementproject.business.repository.AddressRepository;
 import de.oth.fkretschmar.advertisementproject.business.repository.AccountRepository;
 import de.oth.fkretschmar.advertisementproject.business.repository.UserRepository;
+import de.oth.fkretschmar.advertisementproject.business.service.base.AbstractService;
 import de.oth.fkretschmar.advertisementproject.entity.Account;
 import de.oth.fkretschmar.advertisementproject.entity.Address;
 import de.oth.fkretschmar.advertisementproject.entity.Password;
 import de.oth.fkretschmar.advertisementproject.entity.User;
 
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 
@@ -33,7 +35,8 @@ import javax.transaction.Transactional;
  * 
  * @author  fkre    Floyd Kretschmar
  */
-public class UserService {
+@RequestScoped
+public class UserService extends AbstractService {
 
     // --------------- Private fields ---------------
     /**
