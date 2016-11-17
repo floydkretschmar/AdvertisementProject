@@ -28,7 +28,6 @@ import javax.validation.constraints.NotNull;
  * @author fkre
  */
 @Entity(name = "T_PAYPAL_ACCOUNT")
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class PayPalAccount extends Account {
 
     // --------------- Private fields ---------------

@@ -27,7 +27,6 @@ import javax.validation.constraints.NotNull;
  * @author fkre
  */
 @Entity(name = "T_BANK_ACCOUNT")
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class BankAccount extends Account {
 
     // --------------- Private fields ---------------
