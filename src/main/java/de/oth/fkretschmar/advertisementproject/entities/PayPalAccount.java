@@ -16,9 +16,7 @@
  */
 package de.oth.fkretschmar.advertisementproject.entities;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.validation.constraints.NotNull;
 
 /**
  * Represents a specific paypal account.
@@ -27,16 +25,6 @@ import javax.validation.constraints.NotNull;
  */
 @Entity(name = "T_PAYPAL_ACCOUNT")
 public class PayPalAccount extends Account {
-
-    // --------------- Private fields ---------------
-    
-
-    /**
-     * Stores the e-mail identifying the account.
-     */
-    @NotNull
-    @Column(name = "EMAIL", unique = true)
-    private String eMailAddress;
     
     // --------------- Package-private constructors ---------------
     
@@ -44,7 +32,7 @@ public class PayPalAccount extends Account {
      * Creates a new instance of {@link PayPalAccount}.
      */
     protected PayPalAccount() {
-        super();
+        this("");
     }
     
     // --------------- Public constructors ---------------
@@ -56,8 +44,7 @@ public class PayPalAccount extends Account {
      * @param   eMailAddress    that is used to identify an paypal account.
      */
     public PayPalAccount(String eMailAddress) {
-        this();
-        this.eMailAddress = eMailAddress;
+        super(eMailAddress);
     }
     
     // --------------- Public getters and setters ---------------
@@ -69,6 +56,6 @@ public class PayPalAccount extends Account {
      * @return  the text that identifies an account.
      */
     public String getEMailAddress() {
-        return this.eMailAddress;
+        return this.getId();
     }
 }

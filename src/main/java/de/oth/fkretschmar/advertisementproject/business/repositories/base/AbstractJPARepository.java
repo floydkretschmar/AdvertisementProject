@@ -77,37 +77,6 @@ public abstract class AbstractJPARepository<S, T extends IEntity<S>>
     
     
     /**
-     * Deletes the specified entity.
-     * 
-     * @param   entity  that will be deleted.
-     */
-    @Override
-    public final void delete(T entity) {
-        // make sure the entity manager has knowledge of the entity
-        entity = this.getEntityManager().merge(entity);
-        
-        // allow subclasses to delete their specific information
-        this.deleteCore(entity);
-        
-        // actually remove the entity
-        this.getEntityManager().remove(entity);
-    }
-    
-    
-    /**
-     * Deletes all specified entities.
-     * 
-     * @param   entities  that will be deleted.
-     */
-    @Override
-    public void delete(Collection<T> entities) {        
-        for(T entity : entities) {
-            this.delete(entity);
-        }
-    }
-    
-    
-    /**
      * Finds the entity for the specified id.
      * 
      * @param   id  that specifies the entity that will be found.
@@ -120,56 +89,17 @@ public abstract class AbstractJPARepository<S, T extends IEntity<S>>
     
     
     /**
-     * Saves the specified entity.
-     * 
-     * @param   entity          that will be saved
-     * @return  The saved entity.
-     */
-    @Override
-    public final T save(T entity) {
-        // allow subclasses to save their specific information
-        entity = this.saveCore(entity);
-        
-        // save the actual entity
-        this.getEntityManager().persist(entity);
-        
-        return entity;
-    }
-    
-    
-    /**
-     * Saves all specified entities.
-     * 
-     * @param   entities        that will be saved.
-     * @return  The saved entities.
-     */
-    @Override
-    public final Collection<T> save(Collection<T> entities) {     
-        Collection<T> savedEntities = this.createCollection();
-        
-        for(T entity : entities) {
-            savedEntities.add(this.save(entity));
-        }
-        
-        return savedEntities;
-    }
-    
-    
-    /**
-     * Updates the specified entity.
+     * Merges the specified entity.
      * 
      * @param   entity              that will be updated.
      * @return  The updated entity.
      */
     @Override
-    public final T update(T entity) {
+    public final T merge(T entity) {
         // make sure the entity manager has knowledge of the entity
         entity = this.getEntityManager().merge(entity);
-        
-        // allow subclasses to update their specific information
-        entity = this.updateCore(entity);
                 
-        // save the actual entity
+        // persist the actual entity
         //this.getEntityManager().persist(entity);
         
         return entity;
@@ -177,21 +107,83 @@ public abstract class AbstractJPARepository<S, T extends IEntity<S>>
     
     
     /**
-     * Updates all specified entities.
+     * Merges all specified entities.
      * 
      * @param   entities            that will be updated.
      * @return  The updated entities.
      */
     @Override
-    public final Collection<T> update(Collection<T> entities) {
+    public final Collection<T> merge(Collection<T> entities) {
         Collection<T> updatedEntities = this.createCollection();
         
         for(T entity : entities) {
-            updatedEntities.add(this.update(entity));
+            updatedEntities.add(this.merge(entity));
         }
         
         return updatedEntities;
     }
+    
+    
+    /**
+     * Persists the specified entity.
+     * 
+     * @param   entity          that will be saved
+     * @return  The saved entity.
+     */
+    @Override
+    public final T persist(T entity) {        
+        // persist the actual entity
+        this.getEntityManager().persist(entity);
+        
+        return entity;
+    }
+    
+    
+    /**
+     * Persists all specified entities.
+     * 
+     * @param   entities        that will be saved.
+     * @return  The saved entities.
+     */
+    @Override
+    public final Collection<T> persist(Collection<T> entities) {     
+        Collection<T> savedEntities = this.createCollection();
+        
+        for(T entity : entities) {
+            savedEntities.add(this.persist(entity));
+        }
+        
+        return savedEntities;
+    }
+    
+    
+    /**
+     * Removes the specified entity.
+     * 
+     * @param   entity  that will be deleted.
+     */
+    @Override
+    public final void remove(T entity) {
+        // make sure the entity manager has knowledge of the entity
+        entity = this.getEntityManager().merge(entity);
+        
+        // actually remove the entity
+        this.getEntityManager().remove(entity);
+    }
+    
+    
+    /**
+     * Removes all specified entities.
+     * 
+     * @param   entities  that will be deleted.
+     */
+    @Override
+    public void remove(Collection<T> entities) {        
+        for(T entity : entities) {
+            this.remove(entity);
+        }
+    }
+    
     
     // --------------- Protected methods ---------------
     
@@ -262,43 +254,6 @@ public abstract class AbstractJPARepository<S, T extends IEntity<S>>
             this.setQueryParameters(typedQuery, parameters);
         
         return typedQuery;
-    }
-    
-    
-    /**
-     * Performs all the subsequent delete operations that are nessecary.
-     * 
-     * @param   entity  whose relationships have to be brought into a persistent
-     *                  state bevor deletion.
-     */
-    protected void deleteCore(T entity) {
-        // the default implementation has no relationships to manage
-    }
-    
-    
-    /**
-     * Performs all the subsequent save operations that are nessecary.
-     * 
-     * @param   entity  whose relationships have to be brought into a persistent
-     *                  state before saving.
-     * @return  The entity with its relationships in a persistent state.
-     */
-    protected T saveCore(T entity) {
-        // the default implementation has no relationships to manage
-        return entity;
-    }
-    
-    
-    /**
-     * Performs all the subsequent update operations that are nessecary.
-     * 
-     * @param   entity  whose relationships have to be brought into a persistent
-     *                  state before updating.
-     * @return  The entity with its relationships in a persistent state.
-     */
-    protected T updateCore(T entity) {
-        // the default implementation has no relationships to manage
-        return entity;
     }
     
     

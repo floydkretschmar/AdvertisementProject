@@ -75,20 +75,20 @@ public class Address extends AbstractAutoGenerateKeyedEntity implements IAddress
     
     // --------------- Public constructors ---------------
     
-//    /**
-//     * Creates a new instance of {@link Address} using the specified area code, 
-//     * city and street.
-//     * 
-//     * @param   areaCode    that identifies the area of the address.
-//     * @param   city        that contains the city name.
-//     * @param   street      that contains the street.
-//     */
-//    public Address(String areaCode, String city, String street) {
-//        this();
-//        this.areaCode = areaCode;
-//        this.city = city;
-//        this.street = street;
-//    }
+    /**
+     * Creates a new instance of {@link Address} using the specified area code, 
+     * city and street.
+     * 
+     * @param   areaCode    that identifies the area of the address.
+     * @param   city        that contains the city name.
+     * @param   street      that contains the street.
+     */
+    public Address(String areaCode, String city, String street) {
+        this();
+        this.areaCode = areaCode;
+        this.city = city;
+        this.street = street;
+    }
     
     // --------------- Public getters and setters ---------------
     

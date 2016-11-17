@@ -77,40 +77,40 @@ public class TestServlet extends HttpServlet {
             out.println("<body>");
             out.println("<h1>Servlet TestServlet at " + request.getContextPath() + "</h1>");
 
-            User user = this.userService.findForEMail("fkretschmar@googlemail.com");
-            
-            this.userService.changePassword(user, "HalloWelt".toCharArray());
+//            User user = this.userService.findForEMail("fkretschmar@googlemail.com");
+//            
+//            this.userService.changePassword(user, "HalloWelt".toCharArray());
             
             //this.userService.delete(user);
             
             
             
             
-//            Address address = new Address(
-//                    "95689", 
-//                    "Regensburg", 
-//                    "Dechbettener Straße 7");
-//            address.setCountry("Deutschland");
-//            
-//            //Password pw = userService.create("Testpassword".toCharArray());
-//            user = new User(
-//                    "fkretschmar@googlemail.com", 
-//                    passService.create("Testpw".toCharArray()), 
-//                    "Floyd", 
-//                    "Kretschmar", 
-//                    address);
-//            user.setCompany("Optware");
-//            
-//            BankAccount acc = new BankAccount("DE948309535956456", "GENOD43945");
-//            acc.setDescription("RB");
-//            
-//            user.addAccount(acc);
-//            
-//            acc = new BankAccount("DE555555555555555", "GENOD43945");
-//            acc.setDescription("RB2");
-//            
-//            user.addAccount(acc);
-//            this.userService.save(user);
+            Address address = new Address(
+                    "95689", 
+                    "Regensburg", 
+                    "Dechbettener Straße 7");
+            address.setCountry("Deutschland");
+            
+            //Password pw = userService.create("Testpassword".toCharArray());
+            User user = new User(
+                    "fkretschmar@googlemail.com", 
+                    passService.create("Testpw".toCharArray()), 
+                    "Floyd", 
+                    "Kretschmar", 
+                    address);
+            user.setCompany("Optware");
+            
+            BankAccount acc = new BankAccount("DE948309535956456", "GENOD43945");
+            acc.setDescription("RB");
+            
+            user.addAccount(acc);
+            
+            acc = new BankAccount("DE555555555555555", "GENOD43945");
+            acc.setDescription("RB2");
+            
+            user.addAccount(acc);
+            this.userService.create(user);
 //            
 //            authService.authenticateUser(user.geteMailAddress(), "Testpw4".toCharArray());
 //            

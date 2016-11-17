@@ -19,7 +19,6 @@ package de.oth.fkretschmar.advertisementproject.entities;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
-import jdk.nashorn.internal.ir.annotations.Immutable;
 
 /**
  *
@@ -29,13 +28,6 @@ import jdk.nashorn.internal.ir.annotations.Immutable;
 public class BankAccount extends Account {
 
     // --------------- Private fields ---------------
-
-    /**
-     * Stores the IBAN identifying the account.
-     */
-    @NotNull
-    @Column(name = "IBAN", unique = true)
-    private String iban;
 
     /**
      * Stores the BIC identifying the banking institution where the account is
@@ -89,6 +81,6 @@ public class BankAccount extends Account {
      * @return  the IBAN of the account.
      */
     public String getIban() {
-        return this.iban;
+        return this.getId();
     }
 }

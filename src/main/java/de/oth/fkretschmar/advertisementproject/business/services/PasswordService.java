@@ -46,23 +46,23 @@ public class PasswordService extends AbstractService {
     
     
     /**
+     * Creates the specified {@link Password}.
+     * 
+     * @param   password    the password that will be saved.
+     * @return              the saved password.
+     */
+    public Password create(Password password) {
+        return this.passwordRepository.persist(password);
+    }
+    
+    
+    /**
      * Deletes the specified {@link Password} from the database.
      * 
      * @param   password    that will be deleted.
      */
     public void delete(Password password) {
-        this.passwordRepository.delete(password);
-    }
-    
-    
-    /**
-     * Saves the specified {@link Password}.
-     * 
-     * @param   password    the password that will be saved.
-     * @return              the saved password.
-     */
-    public Password save(Password password) {
-        return this.passwordRepository.save(password);
+        this.passwordRepository.remove(password);
     }
     
     
@@ -79,7 +79,7 @@ public class PasswordService extends AbstractService {
         byte[] salt = HashHelper.generateSalt();
         byte[] value = HashHelper.hashValue(unsafePassword, salt);
         
-        // delete the unsafe password from memory
+        // remove the unsafe password from memory
         Arrays.fill(unsafePassword, '0');
 
         String valueString = PasswordService.convertToHex(salt) + ":"

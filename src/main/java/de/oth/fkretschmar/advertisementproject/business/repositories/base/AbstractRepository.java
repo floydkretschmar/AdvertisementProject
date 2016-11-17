@@ -63,66 +63,59 @@ public abstract class AbstractRepository<T extends IEntity>
      * @param   id  that specifies the entity that will be found.
      * @return  The entity with the specified id.
      */
-    @Override
     public abstract T find(int id);
     
     
     /**
-     * Deletes the specified entity.
-     * 
-     * @param   entity  that will be deleted.
-     */
-    @Override
-    public abstract void delete(T entity);
-    
-    
-    /**
-     * Deletes all specified entities.
-     * 
-     * @param   entities  that will be deleted.
-     */
-    @Override
-    public abstract void delete(Collection<T> entities);
-    
-    
-    /**
-     * Saves the specified entity.
-     * 
-     * @param   entity  that will be saved
-     * @return  The saved entity.
-     */
-    @Override
-    public abstract T save(T entity);
-    
-    
-    /**
-     * Saves all specified entities.
-     * 
-     * @param   entities    that will be saved.
-     * @return  The saved entities.
-     */
-    @Override
-    public abstract Collection<T> save(Collection<T> entities);
-    
-    
-    /**
-     * Updates the specified entity.
+     * Merges the specified entity.
      * 
      * @param   entity  that will be updated.
      * @return  The updated entity.
      */
-    @Override
-    public abstract T update(T entity);
+    public abstract T merge(T entity);
     
     
     /**
-     * Updates all specified entities.
+     * Merges all specified entities.
      * 
      * @param   entities    that will be updated.
      * @return  The updated entities.
      */
-    @Override
-    public abstract Collection<T> update(Collection<T> entities);
+    public abstract Collection<T> merge(Collection<T> entities);
+    
+    
+    /**
+     * Persists the specified entity.
+     * 
+     * @param   entity  that will be saved
+     * @return  The saved entity.
+     */
+    public abstract T persist(T entity);
+    
+    
+    /**
+     * Persists all specified entities.
+     * 
+     * @param   entities    that will be saved.
+     * @return  The saved entities.
+     */
+    public abstract Collection<T> persist(Collection<T> entities);
+    
+    
+    /**
+     * Removes the specified entity.
+     * 
+     * @param   entity  that will be deleted.
+     */
+    public abstract void remove(T entity);
+    
+    
+    /**
+     * Removes all specified entities.
+     * 
+     * @param   entities  that will be deleted.
+     */
+    public abstract void remove(Collection<T> entities);
     
     
     // --------------- Protected methods ---------------

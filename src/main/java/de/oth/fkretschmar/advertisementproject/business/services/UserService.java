@@ -67,16 +67,23 @@ public class UserService extends AbstractService {
     
     
     /**
-     * Creates a new {@link Account} and links it to the specified {@link User}.
+     * Creates a new {@link Account} and links it to the already existing 
+     * specified {@link User}.
      * 
      * @param   user        to which a new account will be added.
      * @param   account     that will be added to the user.
      * @return              the changed user.
      */
-    public User addAccountToUser(User user, Account account) {        
-        account = this.accountRepository.save(account);
+    public User addAccountToUser(User user, Account account) {
+        if (user == null) {
+            throw new UserServiceException("The password change failed: "
+                    + "the user was not set.");
+        }
+        
+        account = this.accountRepository.persist(account);
+        user = this.userRepository.merge(user);
         user.addAccount(account);
-        return this.userRepository.save(user);
+        return user;
     }
     
     
@@ -97,76 +104,14 @@ public class UserService extends AbstractService {
             User user,
             char[] newPassword)
             throws UserServiceException {
-        // Create a safe version of the new password
         Password newSafePassword = PasswordService.create(newPassword);
         Password currentPassword = user.getPassword();
-
-        // remove the old password
+        
         this.passwordService.delete(currentPassword);
-
-        // save the new password
-        user.setPassword(this.passwordService.save(newSafePassword));
-
-        // save the user
-        user = this.userRepository.update(user);
+        user = this.userRepository.merge(user);
+        user.setPassword(this.passwordService.create(newSafePassword));
+        
         return user;
-    }
-    
-    
-    /**
-     * Removes the {@link User} and all its subsequent data.
-     * 
-     * @param   user    that will be deleted.
-     */
-    @Transactional
-    public void delete(User user) {
-        // delete address
-        this.addressRepository.delete(user.getAddress());
-        user.setAddress(null);
-        
-        // delete password
-        this.passwordService.delete(user.getPassword());
-        user.setPassword(null);
-        
-        // delete all accounts
-        Object[] accounts = user.getAccounts().toArray();
-        
-        for (int i = 0; i < accounts.length; i++) {
-            if(accounts[0] instanceof Account){
-                user.removeAccount((Account)accounts[i]);
-                this.accountRepository.delete((Account)accounts[i]);
-            }
-        }
-        
-        this.userRepository.delete(user);
-    }
-    
-    /**
-     * Finds an {@link User} using the unique e-mail address.
-     * 
-     * @param   eMailAddress    used to identify the user.
-     * @return  the user with the specified e-mail address.
-     */
-    public User findForEMail(String eMailAddress) {
-        return this.userRepository.findForEmail(eMailAddress);
-    }
-
-    /**
-     * Deletes an {@link Account} from an {@link User}.
-     * 
-     * @param   user    from which the account will be deleted.
-     * @param   account that will be deleted.
-     * @return          the changed user.
-     */
-    public User removeAccountFromUser(User user, Account account) {
-        if (user == null) {
-            throw new UserServiceException("The password change failed: "
-                    + "the user was not set.");
-        }
-        
-        user.removeAccount(account);
-        this.accountRepository.delete(account);
-        return this.userRepository.save(user);
     }
     
     
@@ -180,30 +125,89 @@ public class UserService extends AbstractService {
      *                                  of an user.
      */
     @Transactional
-    public User save(User user) {
+    public User create(User user) {
         if (this.userRepository.iseMailAlreadyInUse(user.geteMailAddress())) {
             throw new UserServiceException("The chosen e-mail is already in use");
         }
 
-        // save data owned by user first:
         final Address address = user.getAddress();
         if (address == null) {
             throw new UserServiceException("The address of the user was not set");
         }
 
-        user.setAddress(this.addressRepository.save(address));
+        user.setAddress(this.addressRepository.persist(address));
 
         final Password password = user.getPassword();
         if (password == null) {
             throw new UserServiceException("The password of the user was not set");
         }
 
-        user.setPassword(this.passwordService.save(password));
+        user.setPassword(this.passwordService.create(password));
         
-        user.addAccounts(this.accountRepository.save(user.getAccounts()), true);
+        user.addAccounts(this.accountRepository.persist(user.getAccounts()), true);
 
-        // save the user:
-        return this.userRepository.save(user);
+        // persist the user:
+        return this.userRepository.persist(user);
+    }
+    
+    
+    /**
+     * Removes the {@link User} and all its subsequent data.
+     * 
+     * @param   user    that will be deleted.
+     */
+    @Transactional
+    public void delete(User user) {
+        // remove address
+        this.addressRepository.remove(user.getAddress());
+        user.setAddress(null);
+        
+        // remove password
+        this.passwordService.delete(user.getPassword());
+        user.setPassword(null);
+        
+        // remove all accounts
+        Object[] accounts = user.getAccounts().toArray();
+        
+        for (int i = 0; i < accounts.length; i++) {
+            if(accounts[0] instanceof Account){
+                user.removeAccount((Account)accounts[i]);
+                this.accountRepository.remove((Account)accounts[i]);
+            }
+        }
+        
+        this.userRepository.remove(user);
+    }
+    
+    
+    /**
+     * Finds an {@link User} using the unique e-mail address.
+     * 
+     * @param   eMailAddress    used to identify the user.
+     * @return  the user with the specified e-mail address.
+     */
+    public User findForEMail(String eMailAddress) {
+        return this.userRepository.findForEmail(eMailAddress);
+    }
+
+    
+    /**
+     * Deletes an {@link Account} from an already existing {@link User}.
+     * 
+     * @param   user    from which the account will be deleted.
+     * @param   account that will be deleted.
+     * @return          the changed user.
+     */
+    public User removeAccountFromUser(User user, Account account) {
+        if (user == null) {
+            throw new UserServiceException("The password change failed: "
+                    + "the user was not set.");
+        }
+        
+        user = this.userRepository.merge(user);
+        user.removeAccount(account);
+        this.accountRepository.remove(account);
+        return user;
     }
     
     
