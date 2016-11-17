@@ -129,9 +129,13 @@ public class UserService extends AbstractService {
         user.setPassword(null);
         
         // delete all accounts
-        for (Account account : user.getAccounts()) {
-            user.removeAccount(account);
-            this.accountRepository.delete(account);
+        Object[] accounts = user.getAccounts().toArray();
+        
+        for (int i = 0; i < accounts.length; i++) {
+            if(accounts[0] instanceof Account){
+                user.removeAccount((Account)accounts[i]);
+                this.accountRepository.delete((Account)accounts[i]);
+            }
         }
         
         this.userRepository.delete(user);
