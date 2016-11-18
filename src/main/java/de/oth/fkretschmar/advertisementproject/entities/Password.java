@@ -42,22 +42,14 @@ public class Password extends AbstractAutoGenerateKeyedEntity {
     // --------------- Protected constructors ---------------
     
     /**
-     * Creates an instance of {@link Password}.
-     */
-    protected Password() {
-        super();
-    }
-
-    // --------------- Public constructors ---------------
-    /**
      * Creates an instance of {@link Password} using the specified unsafe
      * password value.
      *
      * @param   value   that contains the user specified password in an unsafe
      *                  mannor.
      */
-    public Password(String value) {
-        this();
+    protected Password(String value) {
+        super();
         this.value = value;
     }
 

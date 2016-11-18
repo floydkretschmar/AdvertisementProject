@@ -109,17 +109,6 @@ public class User extends AbstractStringKeyedEntity {
     
     
     /**
-     * Creates a new instance of {@link User}.
-     */
-    protected User() {
-        this("");
-    }
-    
-    
-    // --------------- Protected constructor ---------------
-    
-    
-    /**
      * Creates a new instance of {@link User} using the email address.
      * 
      * @param eMailAddress  that can be used to contact and uniquely identify a 
