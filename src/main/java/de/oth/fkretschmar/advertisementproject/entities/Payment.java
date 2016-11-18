@@ -84,35 +84,6 @@ public class Payment extends AbstractAutoGenerateKeyedEntity {
     protected Payment() {
         super();
     }
-    
-    
-    // --------------- Public constructors ---------------
-    
-    
-    /**
-     * Creates a new instance of {@link Payment} using the specified amount, 
-     * currency, account of the sender, account of the recipient and payment 
-     * reason.
-     * 
-     * @param   amount      the payment amount in the smalled possible unit of 
-     *                      the currency specified in <code>currency</code>
-     * @param   currency    the currency in which the payment will be payed.
-     * @param   senderAccount      the account of the sender of the payment.
-     * @param   recipientAccount   the account of the recipient of the payment.
-     * @param   reason      the text that describes the reason for the payment.
-     */
-    public Payment(
-            long amount, 
-            PaymentCurrencyType currency,
-            Account senderAccount, 
-            Account recipientAccount,
-            String reason) {
-        this.amount = amount;
-        this.currency = currency;
-        this.senderAccount = senderAccount;
-        this.recipientAccount = recipientAccount;
-        this.reason = reason;
-    }
 
     
     // --------------- Public constructors ---------------
@@ -214,5 +185,19 @@ public class Payment extends AbstractAutoGenerateKeyedEntity {
      */
     public void setSenderAccount(Account senderAccount) {
         this.senderAccount = senderAccount;
+    }
+    
+    
+    // --------------- Static methods ---------------
+    
+    
+    /**
+     * Creates a new instance of {@link Payment} using the specified 
+     * {@link PaymentBuilder}.
+     * 
+     * @return  the address builder to create the {@link Payment} with.
+     */
+    public static PaymentBuilder create() {
+        return PaymentBuilder.create();
     }
 }

@@ -26,16 +26,7 @@ import javax.persistence.Entity;
 @Entity(name = "T_PAYPAL_ACCOUNT")
 public class PayPalAccount extends Account {
     
-    // --------------- Package-private constructors ---------------
-    
-    /**
-     * Creates a new instance of {@link PayPalAccount}.
-     */
-    protected PayPalAccount() {
-        this("");
-    }
-    
-    // --------------- Public constructors ---------------
+    // --------------- Protected constructors ---------------
 
     
     /**
@@ -43,7 +34,7 @@ public class PayPalAccount extends Account {
      * 
      * @param   eMailAddress    that is used to identify an paypal account.
      */
-    public PayPalAccount(String eMailAddress) {
+    protected PayPalAccount(String eMailAddress) {
         super(eMailAddress);
     }
     
@@ -57,5 +48,20 @@ public class PayPalAccount extends Account {
      */
     public String getEMailAddress() {
         return this.getId();
+    }
+    
+    // --------------- Public static methods ---------------
+
+    
+    /**
+     * Creates a new instance of {@link PayPalAccount} using the specified 
+     * {@link PayPalAccountBuilder}.
+     * 
+     * @param   eMailAddress    the email address that uniquely identifies the
+     *                          paypal account that is being built.
+     * @return  the address builder to create the {@link PayPalAccount} with.
+     */
+    public static PayPalAccountBuilder create(String eMailAddress) {
+        return PayPalAccountBuilder.create(eMailAddress);
     }
 }
