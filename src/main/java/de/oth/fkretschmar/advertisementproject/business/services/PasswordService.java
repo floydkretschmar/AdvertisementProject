@@ -27,6 +27,8 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 
 /**
+ * The service that offers functionality relatetd to the generation and 
+ * management of {@link Password} instances.
  *
  * @author fkre
  */
@@ -75,7 +77,7 @@ public class PasswordService extends AbstractService {
      * @param   unsafePassword  that contains the unsafe password.
      * @return  a safe hashed password.
      */
-    public static Password create(char[] unsafePassword) {
+    public static Password generate(char[] unsafePassword) {
         byte[] salt = HashHelper.generateSalt();
         byte[] value = HashHelper.hashValue(unsafePassword, salt);
         
@@ -85,7 +87,7 @@ public class PasswordService extends AbstractService {
         String valueString = PasswordService.convertToHex(salt) + ":"
                 + PasswordService.convertToHex(value);
         
-        return new Password(valueString);
+        return Password.create(valueString).build();
     }
     
     

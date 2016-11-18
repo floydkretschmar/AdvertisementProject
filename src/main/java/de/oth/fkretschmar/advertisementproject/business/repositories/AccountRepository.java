@@ -23,8 +23,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- *
- * @author fkre
+ * Repository that defines the default CRUD methods for an {@link Account}.
+ * 
+ * @author  fkre    Floyd Kretschmar
  */
 public class AccountRepository extends AbstractJPARepository<String, Account> {
     

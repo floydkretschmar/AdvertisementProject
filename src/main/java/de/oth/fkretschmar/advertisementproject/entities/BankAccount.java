@@ -27,6 +27,7 @@ import javax.validation.constraints.NotNull;
 @Entity(name = "T_BANK_ACCOUNT")
 public class BankAccount extends Account {
 
+    
     // --------------- Private fields ---------------
 
     /**
@@ -82,5 +83,22 @@ public class BankAccount extends Account {
      */
     public String getIban() {
         return this.getId();
+    }
+    
+    // --------------- Static methods ---------------
+    
+    
+    /**
+     * Creates a new instance of {@link BankAccount} using the specified 
+     * {@link BankAccountBuilder}.
+     * 
+     * @param   iban    the IBAN that uniquely identifies a bank account that is 
+     *                  being built.
+     * @param   bic     the BIC identifying the banking institution where the 
+     *                  account that is being built is registered.
+     * @return  the address builder to create the {@link BankAccount} with.
+     */
+    public static BankAccountBuilder create(String iban, String bic) {
+        return BankAccountBuilder.create(iban, bic);
     }
 }

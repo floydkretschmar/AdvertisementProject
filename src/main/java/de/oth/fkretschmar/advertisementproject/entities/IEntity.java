@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.oth.fkretschmar.advertisementproject.entities.interfaces;
+package de.oth.fkretschmar.advertisementproject.entities;
 
 /**
  * Defines the default methods that describe an entity.
@@ -24,10 +24,29 @@ package de.oth.fkretschmar.advertisementproject.entities.interfaces;
  */
 public interface IEntity<T> {
     
+    // --------------- Public getters and setters ---------------
+
+    
+    /**
+     * Gets a text used to describe the entity.
+     * 
+     * @return  the text used to describe the entity.
+     */
+    public String getDescription();
+    
+    
     /**
      * Gets the unique identifier of the entity.
      * 
      * @return  The unique identifier of the entity as a {@code T}.
      */
     public T getId();
+    
+    
+    /**
+     * Sets a text used to describe the entity.
+     * 
+     * @param   description that describes the entity.
+     */
+    public void setDescription(String description);
 }

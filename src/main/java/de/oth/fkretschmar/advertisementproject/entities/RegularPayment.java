@@ -16,8 +16,6 @@
  */
 package de.oth.fkretschmar.advertisementproject.entities;
 
-import java.util.Calendar;
-
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;

@@ -16,11 +16,10 @@
  */
 package de.oth.fkretschmar.advertisementproject.business.repositories.base;
 
-import de.oth.fkretschmar.advertisementproject.entities.interfaces.IEntity;
+import de.oth.fkretschmar.advertisementproject.entities.IEntity;
 import java.io.Serializable;
 
 import java.util.Collection;
-import javax.enterprise.context.Dependent;
 
 /**
  * Represents an abstract base repository that defines the default CRUD methods
@@ -30,9 +29,8 @@ import javax.enterprise.context.Dependent;
  * @param   <T>     The type that specifies which entity is being managed by the
  *                  repository.
  */
-@Dependent
-public abstract class AbstractRepository<T extends IEntity> 
-        implements IRepository<T>, Serializable {
+public abstract class AbstractRepository<S, T extends IEntity<S>> 
+        implements Serializable {
     
     // --------------- Private fields ---------------
     
@@ -63,7 +61,7 @@ public abstract class AbstractRepository<T extends IEntity>
      * @param   id  that specifies the entity that will be found.
      * @return  The entity with the specified id.
      */
-    public abstract T find(int id);
+    public abstract T find(S id);
     
     
     /**

@@ -113,7 +113,7 @@ public class ApplicationService extends AbstractService {
      */
     public boolean authenticateUser(String eMail, char[] password) {
         try {
-            User user = this.userRepository.findForEmail(eMail);
+            User user = this.userRepository.find(eMail);
 
             if (user == null || !user.getPassword().equals(password)) {
                 return false;

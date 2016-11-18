@@ -16,8 +16,6 @@
  */
 package de.oth.fkretschmar.advertisementproject.entities;
 
-import de.oth.fkretschmar.advertisementproject.entities.interfaces.IEntity;
-
 /**
  * The abstract base implementation of an builder to create entities.
  *
@@ -26,15 +24,14 @@ import de.oth.fkretschmar.advertisementproject.entities.interfaces.IEntity;
  *                  this builder.
  * @param   <T>     the type of entity that is built by this builder.
  */
-public abstract class AbstractEntityBuilder<S, T extends IEntity<S>> 
-        implements IEntityBuilder<S, T> {
+public abstract class AbstractEntityBuilder<S, T extends IEntity<S>> {
     
     // --------------- Private fields ---------------
     
     /**
      * Stores the entity that is being build by the builder.
      */
-    private T entity;
+    private final T entity;
     
     // --------------- Protected constructors ---------------
     
@@ -42,12 +39,12 @@ public abstract class AbstractEntityBuilder<S, T extends IEntity<S>>
     /**
      * Creates a new instance of {@link AbstractEntityBuilder}.
      */
-    protected AbstractEntityBuilder() {
-        this.entity = this.createEntity();
+    protected AbstractEntityBuilder(T entity) {
+        this.entity = entity;
     }
 
     
-    // --------------- Public methods ---------------
+    // --------------- Protected methods ---------------
     
     
     /**
@@ -67,30 +64,29 @@ public abstract class AbstractEntityBuilder<S, T extends IEntity<S>>
      * Builds an new entity using the data specified by the other builder
      * methods.
      * 
-     * @param   <U>             the type of the builder.
-     * @param   entityBuilder   the entity builder that is being used to build 
-     *                          the entity.
-     * @return                  the entity after it has been built.
+     * @return  the entity after it has been built.
      * @throws  EntityBuilderValidationException that occurs when the 
      *          validation of the values of an entity failed.
      */
-    public <U extends IEntityBuilder<S, T>> T build(U entityBuilder)
-            throws EntityBuilderValidationException {
+    public T build() throws EntityBuilderValidationException {
         this.validate(this.entity);
         return this.entity;
     }
     
     
-    // --------------- Protected methods ---------------
-    
     /**
-     * Initializes a new, empty instance of the entity being build by the 
-     * builder.
+     * Creates the entity using a specific description.
      * 
-     * @return  the new, empty instance of the entity.
+     * @param   description    the text that describes an entity.
+     * @return  the address builder used to build the entity.
      */
-    protected abstract T createEntity();
+    public AbstractEntityBuilder<S, T> withDescription(String description) {
+        this.getEntity().setDescription(description);
+        return this;
+    }
     
+    // --------------- Protected methods ---------------
+        
     
     /**
      * Validates whether or not the entity is in a consitent state before 

@@ -24,5 +24,4 @@ import de.oth.fkretschmar.advertisementproject.entities.base.AbstractAutoGenerat
  */
 public class Advertisement extends AbstractAutoGenerateKeyedEntity {
     
-    
 }

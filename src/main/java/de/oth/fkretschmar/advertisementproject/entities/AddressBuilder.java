@@ -20,19 +20,81 @@ package de.oth.fkretschmar.advertisementproject.entities;
  *
  * @author fkre
  */
-public class AddressBuilder extends AbstractEntityBuilder<Long, Address>{
+public class AddressBuilder extends AbstractEntityBuilder<Long, Address> {
+    
+    // --------------- Public constructors ---------------
+    
+    /**
+     * Creates a new instance of {@link AddressBuilder}.
+     */
+    private AddressBuilder() {
+        super(new Address());
+    }
+    
+    // --------------- Public static methods ---------------
+    
+    /**
+     * Creates a new instance of {@link AddressBuilder}.
+     * 
+     * @return 
+     */
+    public static AddressBuilder create() {
+        return new AddressBuilder();
+    }
+    
+    // --------------- Public methods ---------------
+    
+    /**
+     * Creates the address using the specified area code.
+     * 
+     * @param   areaCode    the textual representation of the area code.
+     * @return  the address builder used to build the address.
+     */
+    public AddressBuilder withAreaCode(String areaCode) {
+        this.getEntity().setAreaCode(areaCode);
+        return this;
+    }
+    
+    
+    /**
+     * Creates the address using the specified city.
+     * 
+     * @param   city    the name of the city in which the street can be found.
+     * @return  the address builder used to build the address.
+     */
+    public AddressBuilder withCity(String city) {
+        this.getEntity().setCity(city);
+        return this;
+    }
+    
+    
+    /**
+     * Creates the address using the specified country.
+     * 
+     * @param   country     the text that represents the country in which the 
+     *                      address can be found.
+     * @return  the address builder used to build the address.
+     */
+    public AddressBuilder withCountry(String country) {
+        this.getEntity().setCountry(country);
+        return this;
+    }
+    
+    
+    /**
+     * Creates the address using the specified street.
+     * 
+     * @param   street      the textual representation of the street including 
+     *                      the street number.
+     * @return  the address builder used to build the address.
+     */
+    public AddressBuilder withStreet(String street) {
+        this.getEntity().setStreet(street);
+        return this;
+    }
+    
     
     // --------------- Protected methods ---------------
-
-    /**
-     * Creates a new and empty address to further process.
-     * 
-     * @return  the address.
-     */
-    @Override
-    protected Address createEntity() {
-        return new Address();
-    }
 
     
     /**
@@ -47,15 +109,18 @@ public class AddressBuilder extends AbstractEntityBuilder<Long, Address>{
     protected void validate(Address entity) 
             throws EntityBuilderValidationException {
         if(entity.getAreaCode() == null || entity.getAreaCode().isEmpty())
-            throw new EntityBuilderValidationException("The area code can not be"
-                    + " null or empty.");
+            throw new EntityBuilderValidationException(
+                    AddressBuilder.class, 
+                    "The area code can not be null or empty.");
         
         if(entity.getCity() == null || entity.getCity().isEmpty())
-            throw new EntityBuilderValidationException("The city can not be null"
-                    + " or empty.");
+            throw new EntityBuilderValidationException(
+                    AddressBuilder.class, 
+                    "The city can not be null or empty.");
         
         if(entity.getStreet() == null || entity.getStreet().isEmpty())
-            throw new EntityBuilderValidationException("The street can not be "
-                    + " null or empty.");
+            throw new EntityBuilderValidationException(
+                    AddressBuilder.class, 
+                    "The street can not be null or empty.");
     }
 }

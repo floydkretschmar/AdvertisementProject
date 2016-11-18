@@ -16,7 +16,7 @@
  */
 package de.oth.fkretschmar.advertisementproject.entities;
 
-import de.oth.fkretschmar.advertisementproject.entities.base.AbstractAutoGenerateKeyedEntity;
+import de.oth.fkretschmar.advertisementproject.entities.base.AbstractStringKeyedEntity;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -43,29 +43,17 @@ import javax.validation.constraints.NotNull;
             query = " select case when (count(USR) > 0) then true "
                     + "      else false end "
                     + " from T_USER USR "
-                    + "where USR.eMailAddress = ?1"),
-    @NamedQuery(
-            name = User.FIND_FOR_EMAIL_QUERY, 
-            query = " select USR"
-                    + " from T_USER USR "
-                    + "where USR.eMailAddress = ?1")
+                    + "where USR.id = ?1")
 })
-public class User extends AbstractAutoGenerateKeyedEntity {
+public class User extends AbstractStringKeyedEntity {
     
-    // --------------- Public static constants ---------------
+    // --------------- Static constants ---------------
     
     /**
      * Defines the name of the query to check, whether or not an email is 
      * already in use by a different user.
      */
     public static final String IS_EMAIL_IN_USE_QUERY = "User.isEMailAlreadyInUse";
-    
-    
-    /**
-     * Defines the name of the query to select an user by its unique e-mail 
-     * address.
-     */
-    public static final String FIND_FOR_EMAIL_QUERY = "User.findForEMail";
     
     // --------------- Private fields ---------------
     
@@ -96,14 +84,6 @@ public class User extends AbstractAutoGenerateKeyedEntity {
     private String company;
     
     /**
-     * Stores the e-mail address of the user that also functions as the login
-     * name.
-     */
-    @NotNull
-    @Column(name = "E_MAIL", unique = true)
-    private String eMailAddress;
-    
-    /**
      * Stores the first name of the user.
      */
     @NotNull
@@ -132,36 +112,22 @@ public class User extends AbstractAutoGenerateKeyedEntity {
      * Creates a new instance of {@link User}.
      */
     protected User() {
-        super();
-        this.accounts = new ArrayList<Account>();
+        this("");
     }
     
     
-    // --------------- Public constructor ---------------
+    // --------------- Protected constructor ---------------
+    
     
     /**
-     * Creates a new instance of {@link User} using the specified e-mail address,
-     * password, first name, last name and address.
+     * Creates a new instance of {@link User} using the email address.
      * 
      * @param eMailAddress  that can be used to contact and uniquely identify a 
      *                      user.
-     * @param password      the user password.
-     * @param firstName     the first name of the user.
-     * @param lastName      the last name of the user.
-     * @param address       the address of the user.
      */
-    public User(
-            String eMailAddress, 
-            Password password,
-            String firstName,
-            String lastName,
-            Address address) {
-        this();
-        this.eMailAddress = eMailAddress;
-        this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.address = address;
+    protected User(String eMailAddress) {
+        super(eMailAddress);
+        this.accounts = new ArrayList<Account>();
     }
     
     
@@ -205,7 +171,7 @@ public class User extends AbstractAutoGenerateKeyedEntity {
      * @return  A String that contains the e-mail address.
      */
     public String geteMailAddress() {
-        return this.eMailAddress;
+        return this.getId();
     }
 
     
@@ -330,5 +296,22 @@ public class User extends AbstractAutoGenerateKeyedEntity {
      */
     public boolean removeAccount(Account account) {
         return this.accounts.remove(account);
+    }
+    
+    
+    // --------------- Static methods ---------------
+    
+    
+    /**
+     * Creates a new instance of {@link User} using the specified 
+     * {@link UserBuilder}.
+     * 
+     * @param   eMailAddress    the email address that can be used to contact 
+     *                          and uniquely identify the user that is being 
+     *                          built.
+     * @return  the user builder to create the {@link User} with.
+     */
+    public static UserBuilder create(String eMailAddress) {
+        return UserBuilder.create(eMailAddress);
     }
 }

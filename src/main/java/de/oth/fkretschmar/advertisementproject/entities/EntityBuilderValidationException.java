@@ -15,22 +15,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package de.oth.fkretschmar.advertisementproject.entities;
-
 /**
  * The exception that is being thrown if the validation of the set data failed
  * in the build method of a builder.
  * 
  * @author fkre
  */
-public class EntityBuilderValidationException extends Exception {
+public class EntityBuilderValidationException extends RuntimeException {
 
     /**
      * Creates an instance of {@link EntityBuilderValidationException} using the 
      * specified detail message.
      *
-     * @param message the detail message.
+     * @param   <T>             the type of the builder in which the exception
+     *                          occurred.
+     * @param   exceptionSource class in which the exception occurred.
+     * @param   message         the detail message.
      */
-    public EntityBuilderValidationException(String message) {
-        super(message);
+    public <T> EntityBuilderValidationException(
+            Class<T> exceptionSource, 
+            String message) {
+        super(String.format("%s: %s", exceptionSource.toString(), message));
     }
 }

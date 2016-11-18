@@ -16,7 +16,7 @@
  */
 package de.oth.fkretschmar.advertisementproject.entities.base;
 
-import de.oth.fkretschmar.advertisementproject.entities.interfaces.IEntity;
+import de.oth.fkretschmar.advertisementproject.entities.IEntity;
 
 import java.io.Serializable;
 import javax.persistence.Column;
@@ -47,7 +47,7 @@ abstract class AbstractEntity<T> implements Serializable, IEntity<T> {
         
     }
     
-    // --------------- Public getters ---------------
+    // --------------- Public getters and setters ---------------
 
     
     /**
@@ -55,6 +55,7 @@ abstract class AbstractEntity<T> implements Serializable, IEntity<T> {
      * 
      * @return  the text used to describe the entity.
      */
+    @Override
     public String getDescription() {
         return this.description;
     }
@@ -74,6 +75,7 @@ abstract class AbstractEntity<T> implements Serializable, IEntity<T> {
      * 
      * @param   description that describes the entity.
      */
+    @Override
     public void setDescription(String description) {
         this.description = description;
     }

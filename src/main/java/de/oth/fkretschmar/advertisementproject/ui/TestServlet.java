@@ -16,22 +16,16 @@
  */
 package de.oth.fkretschmar.advertisementproject.ui;
 
-import de.oth.fkretschmar.advertisementproject.business.HashingException;
 import de.oth.fkretschmar.advertisementproject.business.services.ApplicationService;
 import de.oth.fkretschmar.advertisementproject.business.services.PasswordService;
-import de.oth.fkretschmar.advertisementproject.business.services.UserServiceException;
 import de.oth.fkretschmar.advertisementproject.business.services.UserService;
-import de.oth.fkretschmar.advertisementproject.entities.Account;
+
 import de.oth.fkretschmar.advertisementproject.entities.Address;
 import de.oth.fkretschmar.advertisementproject.entities.BankAccount;
-import de.oth.fkretschmar.advertisementproject.entities.Password;
-import de.oth.fkretschmar.advertisementproject.entities.PayPalAccount;
 import de.oth.fkretschmar.advertisementproject.entities.User;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -84,30 +78,27 @@ public class TestServlet extends HttpServlet {
             //this.userService.delete(user);
             
             
-            
-            
-            Address address = new Address(
-                    "95689", 
-                    "Regensburg", 
-                    "Dechbettener Straße 7");
-            address.setCountry("Deutschland");
+            Address address = Address.create()
+                                .withAreaCode("95689")
+                                .withCity("Regensburg")
+                                .withCountry("Deutschland")
+                                .withStreet("Dechbettener Straße 7").build();
             
             //Password pw = userService.create("Testpassword".toCharArray());
-            User user = new User(
-                    "fkretschmar@googlemail.com", 
-                    passService.create("Testpw".toCharArray()), 
-                    "Floyd", 
-                    "Kretschmar", 
-                    address);
-            user.setCompany("Optware");
+            User user = User.create("fkretschmar@googlemail.com")
+                    .withPassword(PasswordService.generate("Testpw".toCharArray()))
+                    .withFirstName("Floyd") 
+                    .withLastName("Kretschmar") 
+                    .withAddress(address)
+                    .withCompany("OptWare").build();
             
-            BankAccount acc = new BankAccount("DE948309535956456", "GENOD43945");
-            acc.setDescription("RB");
+            BankAccount acc = BankAccount.create("DE948309535956456", "GENOD43945")
+                                .withDescription("RB").build();
             
             user.addAccount(acc);
             
-            acc = new BankAccount("DE555555555555555", "GENOD43945");
-            acc.setDescription("RB2");
+            acc = BankAccount.create("DE555555555555555", "GENOD43945")
+                                .withDescription("RB2").build();
             
             user.addAccount(acc);
             this.userService.create(user);

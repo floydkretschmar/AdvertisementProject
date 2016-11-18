@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * Repository that defines the default CRUD methods for a {@link Address}.
+ * Repository that defines the default CRUD methods for an {@link Address}.
  * 
  * @author  fkre    Floyd Kretschmar
  */

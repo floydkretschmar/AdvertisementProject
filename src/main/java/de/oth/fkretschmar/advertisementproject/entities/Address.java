@@ -17,7 +17,6 @@
 package de.oth.fkretschmar.advertisementproject.entities;
 
 import de.oth.fkretschmar.advertisementproject.entities.base.AbstractAutoGenerateKeyedEntity;
-import de.oth.fkretschmar.advertisementproject.entities.interfaces.IAddress;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -29,7 +28,7 @@ import javax.validation.constraints.NotNull;
  * @author  fkre    Floyd Kretschmar
  */
 @Entity(name = "T_ADDRESS")
-public class Address extends AbstractAutoGenerateKeyedEntity implements IAddress {
+public class Address extends AbstractAutoGenerateKeyedEntity {
     
     // --------------- Private fields ---------------
     
@@ -70,24 +69,6 @@ public class Address extends AbstractAutoGenerateKeyedEntity implements IAddress
      */
     protected Address() {
         super();
-    }
-    
-    
-    // --------------- Public constructors ---------------
-    
-    /**
-     * Creates a new instance of {@link Address} using the specified area code, 
-     * city and street.
-     * 
-     * @param   areaCode    that identifies the area of the address.
-     * @param   city        that contains the city name.
-     * @param   street      that contains the street.
-     */
-    public Address(String areaCode, String city, String street) {
-        this();
-        this.areaCode = areaCode;
-        this.city = city;
-        this.street = street;
     }
     
     // --------------- Public getters and setters ---------------
@@ -168,5 +149,18 @@ public class Address extends AbstractAutoGenerateKeyedEntity implements IAddress
      */
     public void setStreet(String street) {
         this.street = street;
+    }
+    
+    // --------------- Static methods ---------------
+    
+    
+    /**
+     * Creates a new instance of {@link Address} using the specified 
+     * {@link AddressBuilder}.
+     * 
+     * @return  the address builder to create the {@link Address} with.
+     */
+    public static AddressBuilder create() {
+        return AddressBuilder.create();
     }
 }

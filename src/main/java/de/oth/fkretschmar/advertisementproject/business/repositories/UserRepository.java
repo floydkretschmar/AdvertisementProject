@@ -21,15 +21,14 @@ import de.oth.fkretschmar.advertisementproject.entities.User;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import javax.persistence.TypedQuery;
 
 /**
- * Repository that defines the default CRUD methods for a {@link User}
+ * Repository that defines the default CRUD methods for an {@link User}
  * 
  * @author  fkre    Floyd Kretschmar
  */
-public class UserRepository extends AbstractJPARepository<Long, User> {
+public class UserRepository extends AbstractJPARepository<String, User> {
     
     // --------------- Public constructors ---------------
     
@@ -44,7 +43,8 @@ public class UserRepository extends AbstractJPARepository<Long, User> {
     // --------------- Public methods ---------------
     
     /**
-     * Checks whether or not an e-Mail is already in use with a different user.
+     * Checks whether or not an e-Mail is already in use with a different 
+     * {@link User}.
      * 
      * @param   eMail   that will be validated.
      * @return  <code>true</code> if the e-Mail is already in use.
@@ -58,28 +58,6 @@ public class UserRepository extends AbstractJPARepository<Long, User> {
         
         Integer result = query.getSingleResult();
         return result == 1;
-    }
-    
-    
-    /**
-     * Finds a user using its unique e-mail.
-     * 
-     * @param   eMail   that uniqly identifies an user.
-     * @return  An <code>User</code> that is identified by the email or <code>
-     *          null</code> if no user with this e-mail exists.
-     */
-    public User findForEmail(String eMail) {
-        TypedQuery<User> query = this.accessQuery(
-                User.class, 
-                User.FIND_FOR_EMAIL_QUERY, 
-                eMail);
-        
-        List<User> users = query.getResultList();
-        
-        if(users.isEmpty())
-            return null;
-        else
-            return users.get(0);
     }
 
     

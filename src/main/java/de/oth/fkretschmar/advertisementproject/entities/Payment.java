@@ -24,7 +24,6 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 
@@ -67,7 +66,6 @@ public class Payment extends AbstractAutoGenerateKeyedEntity {
      */
     @NotNull
     @OneToOne
-    //@JoinColumn(name = "RECIPIENT_ACCOUNT_ID", referencedColumnName = "ID")
     private Account recipientAccount;
     
     /**
@@ -75,7 +73,6 @@ public class Payment extends AbstractAutoGenerateKeyedEntity {
      */
     @NotNull
     @OneToOne
-    //@JoinColumn(name = "SENDER_ACCOUNT_ID", referencedColumnName = "ID")
     private Account senderAccount;
     
     // --------------- Protected constructors ---------------
@@ -127,7 +124,7 @@ public class Payment extends AbstractAutoGenerateKeyedEntity {
      * @return  the amount.
      */
     public long getAmount() {
-        return amount;
+        return this.amount;
     }
 
     
@@ -137,7 +134,7 @@ public class Payment extends AbstractAutoGenerateKeyedEntity {
      * @return  the currency of the payment.
      */
     public PaymentCurrencyType getCurrency() {
-        return currency;
+        return this.currency;
     }
 
     
@@ -147,7 +144,7 @@ public class Payment extends AbstractAutoGenerateKeyedEntity {
      * @return  the reason for which the payment was authorized.
      */
     public String getReason() {
-        return reason;
+        return this.reason;
     }
 
     
@@ -157,7 +154,7 @@ public class Payment extends AbstractAutoGenerateKeyedEntity {
      * @return  the account of the recipient.
      */
     public Account getRecipientAccount() {
-        return recipientAccount;
+        return this.recipientAccount;
     }
     
 
@@ -167,7 +164,7 @@ public class Payment extends AbstractAutoGenerateKeyedEntity {
      * @return the account of the sender.
      */
     public Account getSenderAccount() {
-        return senderAccount;
+        return this.senderAccount;
     }
     
 

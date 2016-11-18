@@ -30,8 +30,8 @@ import javax.inject.Inject;
 import javax.transaction.Transactional;
 
 /**
- * The service that offers functionality related to the management of {@link User}
- * instances.
+ * The service that offers functionality related to the management of 
+ * {@link User} instances.
  * 
  * @author  fkre    Floyd Kretschmar
  */
@@ -76,7 +76,7 @@ public class UserService extends AbstractService {
      */
     public User addAccountToUser(User user, Account account) {
         if (user == null) {
-            throw new UserServiceException("The password change failed: "
+            throw new IllegalArgumentException("The password change failed: "
                     + "the user was not set.");
         }
         
@@ -94,17 +94,15 @@ public class UserService extends AbstractService {
      * @param   newPassword             that represents the new password in its
      *                                  unsafe form.
      * @return  the User whose password was changed.
-     * @throws  UserServiceException    if the user is null, or the validation
-     *                                  password does not match the password of
-     *                                  the current user, or the confirmation
-     *                                  password does not match the new password.
      */
     @Transactional
-    public User changePassword(
-            User user,
-            char[] newPassword)
-            throws UserServiceException {
-        Password newSafePassword = PasswordService.create(newPassword);
+    public User changePassword(User user, char[] newPassword){
+        if (user == null) {
+            throw new IllegalArgumentException("The password change failed: "
+                    + "the user was not set.");
+        }
+        
+        Password newSafePassword = PasswordService.generate(newPassword);
         Password currentPassword = user.getPassword();
         
         this.passwordService.delete(currentPassword);
@@ -121,27 +119,18 @@ public class UserService extends AbstractService {
      * @param   user    that contains the data for the new user that will be 
      *                  created.
      * @return          the saved user.
-     * @throws  UserServiceException    if an error occurred during the saving
-     *                                  of an user.
      */
     @Transactional
     public User create(User user) {
-        if (this.userRepository.iseMailAlreadyInUse(user.geteMailAddress())) {
-            throw new UserServiceException("The chosen e-mail is already in use");
+        if (user == null) {
+            throw new IllegalArgumentException("The password change failed: "
+                    + "the user was not set.");
         }
-
+        
         final Address address = user.getAddress();
-        if (address == null) {
-            throw new UserServiceException("The address of the user was not set");
-        }
-
         user.setAddress(this.addressRepository.persist(address));
 
         final Password password = user.getPassword();
-        if (password == null) {
-            throw new UserServiceException("The password of the user was not set");
-        }
-
         user.setPassword(this.passwordService.create(password));
         
         user.addAccounts(this.accountRepository.persist(user.getAccounts()), true);
@@ -158,6 +147,11 @@ public class UserService extends AbstractService {
      */
     @Transactional
     public void delete(User user) {
+        if (user == null) {
+            throw new IllegalArgumentException("The password change failed: "
+                    + "the user was not set.");
+        }
+        
         // remove address
         this.addressRepository.remove(user.getAddress());
         user.setAddress(null);
@@ -187,7 +181,7 @@ public class UserService extends AbstractService {
      * @return  the user with the specified e-mail address.
      */
     public User findForEMail(String eMailAddress) {
-        return this.userRepository.findForEmail(eMailAddress);
+        return this.userRepository.find(eMailAddress);
     }
 
     
@@ -200,7 +194,7 @@ public class UserService extends AbstractService {
      */
     public User removeAccountFromUser(User user, Account account) {
         if (user == null) {
-            throw new UserServiceException("The password change failed: "
+            throw new IllegalArgumentException("The password change failed: "
                     + "the user was not set.");
         }
         

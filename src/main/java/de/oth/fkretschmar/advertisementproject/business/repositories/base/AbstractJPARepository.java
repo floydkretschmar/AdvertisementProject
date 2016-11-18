@@ -16,10 +16,9 @@
  */
 package de.oth.fkretschmar.advertisementproject.business.repositories.base;
 
-import de.oth.fkretschmar.advertisementproject.entities.interfaces.IEntity;
+import de.oth.fkretschmar.advertisementproject.entities.IEntity;
 
 import java.util.Collection;
-import javax.enterprise.context.Dependent;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -33,9 +32,8 @@ import javax.persistence.TypedQuery;
  * @param   <T>     The type that specifies which entity is being managed by the
  *                  repository.
  */
-@Dependent
 public abstract class AbstractJPARepository<S, T extends IEntity<S>> 
-        extends AbstractRepository<T> {
+        extends AbstractRepository<S, T> {
     
     // --------------- Private fields ---------------
 
@@ -83,7 +81,7 @@ public abstract class AbstractJPARepository<S, T extends IEntity<S>>
      * @return  The entity with the specified id.
      */
     @Override
-    public final T find(int id) {
+    public final T find(S id) {
         return this.getEntityManager().find(this.getEntityClassType(), id);
     }
     

@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * Repository that defines the default CRUD methods for a {@link Password}
+ * Repository that defines the default CRUD methods for an {@link Password}
  * 
  * @author  fkre    Floyd Kretschmar
  */

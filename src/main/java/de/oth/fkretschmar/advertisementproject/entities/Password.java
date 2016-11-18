@@ -72,4 +72,19 @@ public class Password extends AbstractAutoGenerateKeyedEntity {
     public String getValue() {
         return value;
     }
+    
+    // --------------- Static methods ---------------
+    
+    
+    /**
+     * Creates a new instance of {@link Password} using the specified 
+     * {@link PasswordBuilder}.
+     * 
+     * @param   value   the hashed string representation of the password that
+     *                  is being built.
+     * @return  the password builder to create the {@link Password} with.
+     */
+    public static PasswordBuilder create(String value) {
+        return PasswordBuilder.create(value);
+    }
 }

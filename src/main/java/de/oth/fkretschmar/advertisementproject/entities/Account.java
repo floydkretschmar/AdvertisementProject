@@ -17,7 +17,6 @@
 package de.oth.fkretschmar.advertisementproject.entities;
 
 import de.oth.fkretschmar.advertisementproject.entities.base.AbstractStringKeyedEntity;
-import de.oth.fkretschmar.advertisementproject.entities.interfaces.IAccount;
 
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
@@ -30,8 +29,7 @@ import javax.persistence.InheritanceType;
  */
 @Entity(name = "T_ACCOUNT")
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class Account 
-        extends AbstractStringKeyedEntity implements IAccount {
+public abstract class Account extends AbstractStringKeyedEntity {
     
     // --------------- Protected constructors ---------------
     
