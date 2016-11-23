@@ -105,6 +105,18 @@ public class User extends AbstractStringKeyedEntity {
     private Password password;
     
     
+    // --------------- Package-private constructor ---------------
+    
+    
+    /**
+     * Creates a new instance of {@link User}.
+     */
+    User() {
+        super();
+        this.accounts = new ArrayList<Account>();
+    }
+    
+    
     // --------------- Protected constructor ---------------
     
     

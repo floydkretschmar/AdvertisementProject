@@ -39,6 +39,15 @@ public class Password extends AbstractAutoGenerateKeyedEntity {
     @Column(name = "PASS_VALUE")
     private String value;
 
+    // --------------- Package-private constructors ---------------
+    
+    /**
+     * Creates an instance of {@link Password}.
+     */
+    Password() {
+        super();
+    }
+
     // --------------- Protected constructors ---------------
     
     /**

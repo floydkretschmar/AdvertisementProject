@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.oth.fkretschmar.advertisementproject.entities;
+package de.oth.fkretschmar.advertisementproject.entities.base;
 
 /**
  * Defines the default methods that describe an entity.
@@ -41,7 +41,6 @@ public interface IEntity<T> {
      * @return  The unique identifier of the entity as a {@code T}.
      */
     public T getId();
-    
     
     /**
      * Sets a text used to describe the entity.

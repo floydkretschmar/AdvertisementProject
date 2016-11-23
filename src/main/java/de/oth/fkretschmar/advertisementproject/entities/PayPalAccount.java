@@ -26,6 +26,15 @@ import javax.persistence.Entity;
 @Entity(name = "T_PAYPAL_ACCOUNT")
 public class PayPalAccount extends Account {
     
+    // --------------- Package-private constructors ---------------
+    
+    /**
+     * Creates a new instance of {@link PayPalAccount}.
+     */
+    PayPalAccount() {
+        super();
+    }
+    
     // --------------- Protected constructors ---------------
 
     

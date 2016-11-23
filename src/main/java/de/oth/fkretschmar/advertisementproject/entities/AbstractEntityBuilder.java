@@ -16,6 +16,8 @@
  */
 package de.oth.fkretschmar.advertisementproject.entities;
 
+import de.oth.fkretschmar.advertisementproject.entities.base.IEntity;
+
 /**
  * The abstract base implementation of an builder to create entities.
  *

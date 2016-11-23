@@ -73,12 +73,13 @@ public abstract class AbstractAutoGenerateKeyedEntity
     
     
     /**
-     * Returns a hash code for an {@link AbstractAutoGenerateKeyedEntity} object.
+     * Returns a hash code for the id of an 
+     * {@link AbstractAutoGenerateKeyedEntity} object.
      * 
-     * @return  A hash code value for an {@link AbstractAutoGenerateKeyedEntity} object.
+     * @return  A hash code value of the hash.
      */
     @Override
-    protected int hashCodeCore() {
+    protected final int hashCodeForId() {
         return Long.hashCode(this.id);
     }
 }

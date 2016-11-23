@@ -82,12 +82,14 @@ public abstract class AbstractStringKeyedEntity
     
     
     /**
-     * Returns a hash code for an {@link AbstractStringKeyedEntity} object.
+     * Returns a hash code for the id of an {@link AbstractStringKeyedEntity} 
+     * object.
      * 
-     * @return  A hash code value for an {@link AbstractStringKeyedEntity} object.
+     * @return  A hash code value for an {@link AbstractStringKeyedEntity} 
+     * object.
      */
     @Override
-    protected int hashCodeCore() {
+    protected final int hashCodeForId() {
         return this.id.hashCode();
     }
 }
