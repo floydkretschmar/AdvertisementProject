@@ -112,7 +112,7 @@ public class User extends AbstractStringKeyedEntity {
      * Creates a new instance of {@link User}.
      */
     User() {
-        super();
+        super("");
         this.accounts = new ArrayList<Account>();
     }
     
