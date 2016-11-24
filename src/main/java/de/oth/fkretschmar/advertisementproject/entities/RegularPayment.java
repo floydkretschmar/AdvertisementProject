@@ -16,29 +16,106 @@
  */
 package de.oth.fkretschmar.advertisementproject.entities;
 
+import java.util.Date;
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 
 /**
  *
  * @author fkre
  */
 @Entity(name = "T_REGULAR_PAYMENT")
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class RegularPayment extends Payment {
     
-//    /**
-//     * Stores the end date of the regular payment.
-//     */
-//    private Calendar endDate;
-//    
-//    
-//    /**
-//     * Stores the 
-//     */
-//    private PaymentInterval interval;
-//    
-//    private Calendar startDate;
+    /**
+     * Stores the end date of the regular payment.
+     */
+    @Column(name = "END_DATE")
+    @Temporal(TemporalType.DATE)
+    private Date endDate;
     
+    
+    /**
+     * Stores the interval in which the payment will be made.
+     */
+    @NotNull
+    @Column(name = "PAYMENT_INTERVAL")
+    private PaymentInterval interval;
+    
+    
+    /**
+     * Stores the start date of the regular payment.
+     */
+    @NotNull
+    @Column(name = "START_DATE")
+    @Temporal(TemporalType.DATE)
+    private Date startDate;
+    
+    
+    // --------------- Protected constructors ---------------
+    
+    
+    /**
+     * Creates a new instance of {@link Payment}.
+     */
+    protected RegularPayment() {
+        super();
+    }
+    
+    
+    // --------------- Public getters and setters ---------------
+
+    
+    /**
+     * Gets the end date of the regular payment.
+     * 
+     * @return the date when the regular payment will end.
+     */
+    public Date getEndDate() {
+        return this.endDate;
+    }
+
+    
+    /**
+     * Gets the interval in which the payment will be made.
+     * 
+     * @return  the interval in which payments will be made as defined in
+     *          {@link PaymentInterval}.
+     */
+    public PaymentInterval getInterval() {
+        return this.interval;
+    }
+    
+
+    /**
+     * Gets the start date of the regular payment.
+     * 
+     * @return  the date when the regular payment starts.
+     */
+    public Date getStartDate() {
+        return this.startDate;
+    }
+
+    
+    /**
+     * Sets the end date of the regular payment.
+     * 
+     * @param endDate the date when the regular payment will end.
+     */
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
+    
+    /**
+     * Sets the start date of the regular payment.
+     * 
+     * @param   interval  the date when the regular payment starts.
+     */
+    public void setInterval(PaymentInterval interval) {
+        this.interval = interval;
+    }
 }

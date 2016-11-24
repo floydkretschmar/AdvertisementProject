@@ -41,15 +41,6 @@ public abstract class AbstractStringKeyedEntity
     private String id;
     
     
-    // --------------- Protected constructors ---------------
-    
-    /**
-     * Creates a new instance of {@link AbstractStringKeyedEntity}.
-     */
-    protected AbstractStringKeyedEntity() {
-        super();
-    }
-    
     // --------------- Public constructors ---------------
     
     
@@ -60,7 +51,7 @@ public abstract class AbstractStringKeyedEntity
      * @param   id  that uniqely identifies the entity. 
      */
     public AbstractStringKeyedEntity(String id) {
-        this();
+        super();
         this.id = id;
     }
     

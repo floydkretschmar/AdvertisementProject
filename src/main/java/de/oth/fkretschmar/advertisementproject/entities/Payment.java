@@ -34,7 +34,7 @@ import javax.validation.constraints.NotNull;
  * @author  fkre    Floyd Kretschmar
  */
 @Entity(name = "T_PAYMENT")
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class Payment extends AbstractAutoGenerateKeyedEntity {
     
     // --------------- Private fields ---------------
@@ -86,7 +86,7 @@ public class Payment extends AbstractAutoGenerateKeyedEntity {
     }
 
     
-    // --------------- Public constructors ---------------
+    // --------------- Public getters and setters ---------------
     
     
     /**

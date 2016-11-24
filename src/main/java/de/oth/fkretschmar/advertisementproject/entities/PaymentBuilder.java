@@ -26,9 +26,11 @@ public class PaymentBuilder extends AbstractEntityBuilder<Long, Payment> {
     
     /**
      * Creates a new instance of {@link PaymentBuilder}.
+     * 
+     * @param payment the payment that is being build.
      */
-    private PaymentBuilder() {
-        super(new Payment());
+    protected PaymentBuilder(Payment payment) {
+        super(payment);
     }
     
     // --------------- Public static methods ---------------
@@ -39,7 +41,7 @@ public class PaymentBuilder extends AbstractEntityBuilder<Long, Payment> {
      * @return 
      */
     public static PaymentBuilder create() {
-        return new PaymentBuilder();
+        return new PaymentBuilder(new Payment());
     }
     
     // --------------- Public methods ---------------

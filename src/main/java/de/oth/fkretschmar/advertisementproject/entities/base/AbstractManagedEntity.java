@@ -49,26 +49,12 @@ abstract class AbstractManagedEntity<T> extends AbstractEntity<T> {
     @Temporal(value = TemporalType.TIMESTAMP)
     private Date generationDate;
 
-//    /**
-//     * Stores the unique identifier of the user that created the entity.
-//     */
-//    @Column(name = "GENUSER",
-//            insertable = true,
-//            updatable = false)
-//    private T generationUserId;
-
     /**
      * Stores the last modification timestamp of the entity.
      */
     @Column(name = "MODDATE")
     @Temporal(value = TemporalType.TIMESTAMP)
     private Date modificationDate;
-
-//    /**
-//     * Stores the unique identifier of the user that last modified the entity.
-//     */
-//    @Column(name = "MODUSER")
-//    private T modificationUserId;
 
     // --------------- Public constructors ---------------
     
@@ -90,16 +76,6 @@ abstract class AbstractManagedEntity<T> extends AbstractEntity<T> {
         return this.generationDate;
     }
 
-//    /**
-//     * Gets the unique identifier of the user that created the entity.
-//     *
-//     * @return A {@code long} that contains the unique identifier of the
-//     * generation user.
-//     */
-//    public long getGenerationUserId() {
-//        return this.generationUserId;
-//    }
-
     /**
      * Gets the last modification timestamp of the entity.
      *
@@ -109,16 +85,6 @@ abstract class AbstractManagedEntity<T> extends AbstractEntity<T> {
     public Date getModificationDate() {
         return this.modificationDate;
     }
-
-//    /**
-//     * Gets the unique identifier of the user that last modified the entity.
-//     *
-//     * @return A {@code long} that contains the unique identifier of the last
-//     * modification user.
-//     */
-//    public long getModificationUserId() {
-//        return this.modificationUserId;
-//    }
 
     // --------------- Protected methods ---------------
     /**
@@ -211,15 +177,6 @@ abstract class AbstractManagedEntity<T> extends AbstractEntity<T> {
         this.generationDate = new Date();
         this.modificationDate = this.generationDate;
 
-//        // TODO: build a construct, so I don't have to call the business layer
-//        //       from the enity layer which is ugly as fuck
-//        ApplicationService.processCurrentUser(user -> {
-//            if (user != null) {
-//                this.generationUserId = user.getId();
-//                this.modificationUserId = user.getId();
-//            }
-//        });
-
         this.prePersist();
     }
 
@@ -237,14 +194,6 @@ abstract class AbstractManagedEntity<T> extends AbstractEntity<T> {
     @PreUpdate
     private void onPreUpdate() {
         this.modificationDate = new Date();
-
-//        // TODO: build a construct, so I don't have to call the business layer
-//        //       from the enity layer which is ugly as fuck
-//        ApplicationService.processCurrentUser(user -> {
-//            if (user != null) {
-//                this.modificationUserId = user.getId();
-//            }
-//        });
 
         this.preUpdate();
     }
