@@ -16,7 +16,6 @@
  */
 package de.oth.fkretschmar.advertisementproject.entities.base;
 
-import de.oth.fkretschmar.advertisementproject.entities.IEntity;
 
 import java.io.Serializable;
 import javax.persistence.Column;
@@ -31,12 +30,13 @@ import javax.persistence.MappedSuperclass;
 @MappedSuperclass
 abstract class AbstractEntity<T> implements Serializable, IEntity<T> {
     
+    // --------------- Private fields ---------------
+    
     /**
      * Stores a text used to describe the entity.
      */
     @Column(name = "DESCRIPTION")
     private String description;
-    
     
     // --------------- Public constructors ---------------
     
@@ -112,7 +112,7 @@ abstract class AbstractEntity<T> implements Serializable, IEntity<T> {
      */
     @Override
     public final int hashCode() {
-        return this.hashCodeCore();
+        return this.hashCodeForId() | this.hashCodeForUniqueAttributes();
     }
     
     
@@ -144,9 +144,20 @@ abstract class AbstractEntity<T> implements Serializable, IEntity<T> {
 
     
     /**
-     * Returns a hash code for an {@link AbstractEntity} object.
+     * Returns a hash code for the unique identifier of the entity.
      * 
      * @return  A hash code value for an {@link AbstractEntity} object.
      */
-    protected abstract int hashCodeCore();
+    protected abstract int hashCodeForId();
+    
+    
+    /**
+     * Returns a hash code for the unique attributes on an entity other than the
+     * id.
+     * 
+     * @return  A hash code value for an {@link AbstractEntity} object.
+     */
+    protected int hashCodeForUniqueAttributes() {
+        return 0;
+    }
 }

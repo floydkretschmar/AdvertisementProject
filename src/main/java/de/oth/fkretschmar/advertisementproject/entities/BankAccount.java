@@ -38,17 +38,17 @@ public class BankAccount extends Account {
     @Column(name = "BIC")
     private String bic;
 
-    // --------------- Protected constructors ---------------
+    // --------------- Package-private constructors ---------------
     
     
     /**
      * Creates a new instance of {@link BankAccount}.
      */
-    protected BankAccount() {
+    BankAccount() {
         super();
     }
 
-    // --------------- Public constructors ---------------
+    // --------------- Protected constructors ---------------
     
     /**
      * Creates a new instance of {@link BankAccount} using the specified IBAN
@@ -57,7 +57,7 @@ public class BankAccount extends Account {
      * @param   iban    that uniquely identifies a bank account.
      * @param   bic     that identifies a banking institution.
      */
-    public BankAccount(String iban, String bic) {
+    protected BankAccount(String iban, String bic) {
         super(iban);
         this.bic = bic;
     }
