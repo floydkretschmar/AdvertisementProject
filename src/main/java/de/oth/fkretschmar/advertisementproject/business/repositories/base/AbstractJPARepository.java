@@ -35,12 +35,16 @@ import javax.persistence.TypedQuery;
 public abstract class AbstractJPARepository<S, T extends IEntity<S>> 
         extends AbstractRepository<S, T> {
     
+    // --------------- Private static fields ---------------
+    
+    private static final String PERSISTENCE_ID = "FKREWS1617_PU";
+    
     // --------------- Private fields ---------------
 
     /**
      * Stores the entity manager used to persist/load/remove/modify data.
      */
-    @PersistenceContext(name = "FKREWS1617_PU")
+    @PersistenceContext(name = AbstractJPARepository.PERSISTENCE_ID)
     private EntityManager entityManager;
 
     

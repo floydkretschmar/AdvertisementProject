@@ -18,8 +18,8 @@ package de.oth.fkretschmar.advertisementproject.business.services;
 
 import de.oth.fkretschmar.advertisementproject.business.HashHelper;
 import de.oth.fkretschmar.advertisementproject.business.repositories.PasswordRepository;
-import de.oth.fkretschmar.advertisementproject.business.services.base.AbstractService;
 import de.oth.fkretschmar.advertisementproject.entities.Password;
+import java.io.Serializable;
 
 import java.math.BigInteger;
 import java.util.Arrays;
@@ -33,7 +33,7 @@ import javax.inject.Inject;
  * @author fkre
  */
 @RequestScoped
-public class PasswordService extends AbstractService {
+public class PasswordService implements Serializable {
 
     // --------------- Private fields ---------------
 

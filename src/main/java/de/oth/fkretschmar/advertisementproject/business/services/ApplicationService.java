@@ -17,8 +17,8 @@
 package de.oth.fkretschmar.advertisementproject.business.services;
 
 import de.oth.fkretschmar.advertisementproject.business.repositories.UserRepository;
-import de.oth.fkretschmar.advertisementproject.business.services.base.AbstractService;
 import de.oth.fkretschmar.advertisementproject.entities.User;
+import java.io.Serializable;
 
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -35,7 +35,7 @@ import javax.inject.Inject;
  * @author  fkre    Floyd Kretschmar
  */
 @SessionScoped
-public class ApplicationService extends AbstractService {
+public class ApplicationService implements Serializable {
 
     // --------------- Private static fields ---------------
     
@@ -115,7 +115,7 @@ public class ApplicationService extends AbstractService {
         try {
             User user = this.userRepository.find(eMail);
 
-            if (user == null || !user.getPassword().equals(password)) {
+            if (user == null || !PasswordService.equals(user.getPassword(), password)) {
                 return false;
             } else {
                 ApplicationService.lock.lock();
