@@ -30,7 +30,7 @@ public class RegularPaymentBuilder extends PaymentStatementBuilder {
      * Creates a new instance of {@link RegularPaymentBuilder}.
      */
     private RegularPaymentBuilder() {
-        super(new RegularPayment());
+        super(new RegularPaymentStatement());
     }
     
     // --------------- Public static methods ---------------
@@ -48,25 +48,25 @@ public class RegularPaymentBuilder extends PaymentStatementBuilder {
     
     
     /**
-     * Creates the {@link RegularPayment} using the specified end date.
+     * Creates the {@link RegularPaymentStatement} using the specified end date.
      * 
      * @param   endDate     the end date of the regular payment.
-     * @return  the builder used to build the {@link RegularPayment}.
+     * @return  the builder used to build the {@link RegularPaymentStatement}.
      */
     public RegularPaymentBuilder withEndDate(Date endDate) {
-        ((RegularPayment)this.getObject()).setEndDate(endDate);
+        ((RegularPaymentStatement)this.getObject()).setEndDate(endDate);
         return this;
     }
     
     
     /**
-     * Creates the {@link RegularPayment} using the specified interval.
+     * Creates the {@link RegularPaymentStatement} using the specified interval.
      * 
      * @param   interval  the interval in which the payment will be made.
-     * @return  the builder used to build the {@link RegularPayment}.
+     * @return  the builder used to build the {@link RegularPaymentStatement}.
      */
     public RegularPaymentBuilder withPaymentInterval(PaymentInterval interval) {
-        ((RegularPayment)this.getObject()).setInterval(interval);
+        ((RegularPaymentStatement)this.getObject()).setInterval(interval);
         return this;
     }
     
@@ -85,7 +85,7 @@ public class RegularPaymentBuilder extends PaymentStatementBuilder {
     @Override
     protected void validate(PaymentStatement entity) 
             throws EntityBuilderValidationException {
-        RegularPayment regularPayment = (RegularPayment)entity;
+        RegularPaymentStatement regularPayment = (RegularPaymentStatement)entity;
         
         if(regularPayment.getStartDate() == null)
             throw new EntityBuilderValidationException(
