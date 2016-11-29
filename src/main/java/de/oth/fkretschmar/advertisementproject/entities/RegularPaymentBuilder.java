@@ -16,15 +16,13 @@
  */
 package de.oth.fkretschmar.advertisementproject.entities;
 
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 
 /**
  *
  * @author fkre
  */
-public class RegularPaymentBuilder extends PaymentBuilder {
+public class RegularPaymentBuilder extends PaymentStatementBuilder {
     
     // --------------- Public constructors ---------------
     
@@ -56,7 +54,7 @@ public class RegularPaymentBuilder extends PaymentBuilder {
      * @return  the builder used to build the {@link RegularPayment}.
      */
     public RegularPaymentBuilder withEndDate(Date endDate) {
-        ((RegularPayment)this.getEntity()).setEndDate(endDate);
+        ((RegularPayment)this.getObject()).setEndDate(endDate);
         return this;
     }
     
@@ -68,7 +66,7 @@ public class RegularPaymentBuilder extends PaymentBuilder {
      * @return  the builder used to build the {@link RegularPayment}.
      */
     public RegularPaymentBuilder withPaymentInterval(PaymentInterval interval) {
-        ((RegularPayment)this.getEntity()).setInterval(interval);
+        ((RegularPayment)this.getObject()).setInterval(interval);
         return this;
     }
     
@@ -77,7 +75,7 @@ public class RegularPaymentBuilder extends PaymentBuilder {
 
     
     /**
-     * Validates the {@link Payment} and makes sure the attributes are set
+     * Validates the {@link PaymentStatement} and makes sure the attributes are set
      * properly.
      * 
      * @param   entity  the address that will be validated.
@@ -85,18 +83,24 @@ public class RegularPaymentBuilder extends PaymentBuilder {
      *          validation of the values of an entity failed.
      */
     @Override
-    protected void validate(Payment entity) 
+    protected void validate(PaymentStatement entity) 
             throws EntityBuilderValidationException {
         RegularPayment regularPayment = (RegularPayment)entity;
         
         if(regularPayment.getStartDate() == null)
             throw new EntityBuilderValidationException(
                     RegularPaymentBuilder.class,
-                    "The currency type can not be null.");
+                    "The start date can not be null.");
         
-//        if(GregorianCalendar.getInstance().
-//            throw new EntityBuilderValidationException(
-//                    RegularPaymentBuilder.class,
-//                    "The currency type can not be null.");
+        if(regularPayment.getStartDate().compareTo(new Date()) < 0)
+            throw new EntityBuilderValidationException(
+                    RegularPaymentBuilder.class,
+                    "The start date can not be earlier than the current day.");
+            
+        if(regularPayment.getEndDate() != null 
+                && regularPayment.getEndDate().compareTo(new Date()) < 0)
+            throw new EntityBuilderValidationException(
+                    RegularPaymentBuilder.class,
+                    "The end date can not be earlier than the current day.");
     }
 }

@@ -26,55 +26,23 @@ import de.oth.fkretschmar.advertisementproject.entities.base.IEntity;
  *                  this builder.
  * @param   <T>     the type of entity that is built by this builder.
  */
-public abstract class AbstractEntityBuilder<S, T extends IEntity<S>> {
-    
-    // --------------- Private fields ---------------
-    
-    /**
-     * Stores the entity that is being build by the builder.
-     */
-    private final T entity;
+public abstract class AbstractEntityBuilder<S, T extends IEntity<S>> 
+        extends AbstractBuilder<T> {
     
     // --------------- Protected constructors ---------------
     
     
     /**
      * Creates a new instance of {@link AbstractEntityBuilder}.
+     * 
+     * @param   entity  the entity that is being created.
      */
     protected AbstractEntityBuilder(T entity) {
-        this.entity = entity;
-    }
-
-    
-    // --------------- Protected methods ---------------
-    
-    
-    /**
-     * Gets the entity that is being build by the builder
-     * 
-     * @return 
-     */
-    protected T getEntity() {
-        return this.entity;
+        super(entity);
     }
     
     
     // --------------- Public methods ---------------
-    
-    
-    /**
-     * Builds an new entity using the data specified by the other builder
-     * methods.
-     * 
-     * @return  the entity after it has been built.
-     * @throws  EntityBuilderValidationException that occurs when the 
-     *          validation of the values of an entity failed.
-     */
-    public T build() throws EntityBuilderValidationException {
-        this.validate(this.entity);
-        return this.entity;
-    }
-    
     
     /**
      * Creates the entity using a specific description.
@@ -83,21 +51,7 @@ public abstract class AbstractEntityBuilder<S, T extends IEntity<S>> {
      * @return  the address builder used to build the entity.
      */
     public AbstractEntityBuilder<S, T> withDescription(String description) {
-        this.getEntity().setDescription(description);
+        this.getObject().setDescription(description);
         return this;
     }
-    
-    // --------------- Protected methods ---------------
-        
-    
-    /**
-     * Validates whether or not the entity is in a consitent state before 
-     * returning it to the user via the build method.
-     * 
-     * @param   entity  that will be validated.
-     * @throws  EntityBuilderValidationException that occurs when the 
-     *          validation of the values of an entity failed.
-     */
-    protected abstract void validate(T entity) 
-            throws EntityBuilderValidationException;
 }

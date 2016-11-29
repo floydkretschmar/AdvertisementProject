@@ -60,7 +60,7 @@ public final class UserBuilder extends AbstractEntityBuilder<String, User> {
      * @return  the user builder used to build the user.
      */
     public UserBuilder withAddress(Address address) {
-        this.getEntity().setAddress(address);
+        this.getObject().setAddress(address);
         return this;
     }
 
@@ -73,7 +73,7 @@ public final class UserBuilder extends AbstractEntityBuilder<String, User> {
      * @return  the user builder used to build the user.
      */
     public UserBuilder withCompany(String company) {
-        this.getEntity().setCompany(company);
+        this.getObject().setCompany(company);
         return this;
     }
 
@@ -85,7 +85,7 @@ public final class UserBuilder extends AbstractEntityBuilder<String, User> {
      * @return  the user builder used to build the user.
      */
     public UserBuilder withFirstName(String firstName) {
-        this.getEntity().setFirstName(firstName);
+        this.getObject().setFirstName(firstName);
         return this;
     }
 
@@ -97,7 +97,7 @@ public final class UserBuilder extends AbstractEntityBuilder<String, User> {
      * @return  the user builder used to build the user.
      */
     public UserBuilder withLastName(String lastName) {
-        this.getEntity().setLastName(lastName);
+        this.getObject().setLastName(lastName);
         return this;
     }
 
@@ -109,7 +109,7 @@ public final class UserBuilder extends AbstractEntityBuilder<String, User> {
      * @return  the user builder used to build the user.
      */
     public UserBuilder withPassword(Password password) {
-        this.getEntity().setPassword(password);
+        this.getObject().setPassword(password);
         return this;
     }
     

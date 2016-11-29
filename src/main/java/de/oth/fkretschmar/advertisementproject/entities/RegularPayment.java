@@ -28,7 +28,7 @@ import javax.validation.constraints.NotNull;
  * @author fkre
  */
 @Entity(name = "T_REGULAR_PAYMENT")
-public class RegularPayment extends Payment {
+public class RegularPayment extends PaymentStatement {
     
     /**
      * Stores the end date of the regular payment.
@@ -59,7 +59,7 @@ public class RegularPayment extends Payment {
     
     
     /**
-     * Creates a new instance of {@link Payment}.
+     * Creates a new instance of {@link PaymentStatement}.
      */
     protected RegularPayment() {
         super();

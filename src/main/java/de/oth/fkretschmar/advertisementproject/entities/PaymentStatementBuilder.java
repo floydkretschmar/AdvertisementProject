@@ -16,94 +16,72 @@
  */
 package de.oth.fkretschmar.advertisementproject.entities;
 
+import javax.money.MonetaryAmount;
+
 /**
  *
  * @author fkre
  */
-public class PaymentBuilder extends AbstractEntityBuilder<Long, Payment> {
+public class PaymentStatementBuilder extends AbstractEntityBuilder<Long, PaymentStatement> {
     
     // --------------- Public constructors ---------------
     
     /**
-     * Creates a new instance of {@link PaymentBuilder}.
+     * Creates a new instance of {@link PaymentStatementBuilder}.
      * 
      * @param payment the payment that is being build.
      */
-    protected PaymentBuilder(Payment payment) {
+    protected PaymentStatementBuilder(PaymentStatement payment) {
         super(payment);
     }
     
     // --------------- Public static methods ---------------
     
     /**
-     * Creates a new instance of {@link PaymentBuilder}.
+     * Creates a new instance of {@link PaymentStatementBuilder}.
      * 
+     * @param   money   the amount of money that is being paid with the payment.
      * @return 
      */
-    public static PaymentBuilder create() {
-        return new PaymentBuilder(new Payment());
+    public static PaymentStatementBuilder create(MonetaryAmount money) {
+        return new PaymentStatementBuilder(new PaymentStatement(money));
     }
     
     // --------------- Public methods ---------------
     
     
     /**
-     * Creates the {@link Payment} using the specified amount.
-     * 
-     * @param   amount      the payment amount in the smallest possible unit of the 
-     *                      currency.
-     * @return  the builder used to build the {@link Payment}.
-     */
-    public PaymentBuilder withAmount(Long amount) {
-        this.getEntity().setAmount(amount);
-        return this;
-    }
-    
-    
-    /**
-     * Creates the {@link Payment} using the specified currency.
-     * 
-     * @param   currency  the currency in which the payment will be payed.
-     * @return  the builder used to build the {@link Payment}.
-     */
-    public PaymentBuilder withCurrency(PaymentCurrencyType currency) {
-        this.getEntity().setCurrency(currency);
-        return this;
-    }
-    
-    
-    /**
-     * Creates the {@link Payment} using the specified reason.
+     * Creates the {@link PaymentStatement} using the specified reason.
      * 
      * @param   reason  the text that describes the reason for the payment.
-     * @return  the builder used to build the {@link Payment}.
+     * @return  the builder used to build the {@link PaymentStatement}.
      */
-    public PaymentBuilder withReason(String reason) {
-        this.getEntity().setReason(reason);
+    public PaymentStatementBuilder withReason(String reason) {
+        this.getObject().setReason(reason);
         return this;
     }
     
     
     /**
-     * Creates the {@link Payment} using the specified recipient.
+     * Creates the {@link PaymentStatement} using the specified recipient.
      * 
      * @param   recipientAccount    the account of the recipient of the payment.
-     * @return  the builder used to build the {@link Payment}.
+     * @return  the builder used to build the {@link PaymentStatement}.
      */
-    public PaymentBuilder withRecipientAccount(Account recipientAccount) {
-        this.getEntity().setRecipientAccount(recipientAccount);
+    public PaymentStatementBuilder withRecipientAccount(Account recipientAccount) {
+        this.getObject().setRecipientAccount(recipientAccount);
         return this;
     }
     
     
     /**
-     * Creates the {@link Payment} using the specified sender.
+     * Creates the {@link PaymentStatement} using the specified sender.
      * 
      * @param   senderAccount   the account of the sender of the payment.
-     * @return  the builder used to build the {@link Payment}.
+     * @return  the builder used to build the {@link PaymentStatement}.
      */
-    public PaymentBuilder withSenderAccount(Account senderAccount) {
-        this.getEntity().setSenderAccount(senderAccount);
+    public PaymentStatementBuilder withSenderAccount(Account senderAccount) {
+        this.getObject().setSenderAccount(senderAccount);
         return this;
     }
     
@@ -111,7 +89,7 @@ public class PaymentBuilder extends AbstractEntityBuilder<Long, Payment> {
 
     
     /**
-     * Validates the {@link Payment} and makes sure the attributes are set
+     * Validates the {@link PaymentStatement} and makes sure the attributes are set
      * properly.
      * 
      * @param   entity  the address that will be validated.
@@ -119,26 +97,26 @@ public class PaymentBuilder extends AbstractEntityBuilder<Long, Payment> {
      *          validation of the values of an entity failed.
      */
     @Override
-    protected void validate(Payment entity) 
+    protected void validate(PaymentStatement entity) 
             throws EntityBuilderValidationException {
-        if(entity.getCurrency() == null)
+        if(entity.getMonetaryAmount() == null)
             throw new EntityBuilderValidationException(
-                    PaymentBuilder.class,
-                    "The currency type can not be null.");
+                    PaymentStatementBuilder.class,
+                    "The monetary amount can not be null.");
         
         if(entity.getReason() == null || entity.getReason().isEmpty())
             throw new EntityBuilderValidationException(
-                    PaymentBuilder.class,
+                    PaymentStatementBuilder.class,
                     "The reason can not be null or empty.");
         
         if(entity.getRecipientAccount() == null)
             throw new EntityBuilderValidationException(
-                    PaymentBuilder.class,
+                    PaymentStatementBuilder.class,
                     "The recipient account can not be null.");
         
         if(entity.getSenderAccount() == null)
             throw new EntityBuilderValidationException(
-                    PaymentBuilder.class,
+                    PaymentStatementBuilder.class,
                     "The sender account can not be null.");
     }
 }

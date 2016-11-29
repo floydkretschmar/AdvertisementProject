@@ -51,7 +51,7 @@ public class AddressBuilder extends AbstractEntityBuilder<Long, Address> {
      * @return  the address builder used to build the address.
      */
     public AddressBuilder withAreaCode(String areaCode) {
-        this.getEntity().setAreaCode(areaCode);
+        this.getObject().setAreaCode(areaCode);
         return this;
     }
     
@@ -63,7 +63,7 @@ public class AddressBuilder extends AbstractEntityBuilder<Long, Address> {
      * @return  the address builder used to build the address.
      */
     public AddressBuilder withCity(String city) {
-        this.getEntity().setCity(city);
+        this.getObject().setCity(city);
         return this;
     }
     
@@ -76,7 +76,7 @@ public class AddressBuilder extends AbstractEntityBuilder<Long, Address> {
      * @return  the address builder used to build the address.
      */
     public AddressBuilder withCountry(String country) {
-        this.getEntity().setCountry(country);
+        this.getObject().setCountry(country);
         return this;
     }
     
@@ -89,7 +89,7 @@ public class AddressBuilder extends AbstractEntityBuilder<Long, Address> {
      * @return  the address builder used to build the address.
      */
     public AddressBuilder withStreet(String street) {
-        this.getEntity().setStreet(street);
+        this.getObject().setStreet(street);
         return this;
     }
     

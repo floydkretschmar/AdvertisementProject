@@ -18,10 +18,9 @@ package de.oth.fkretschmar.advertisementproject.entities;
 
 import de.oth.fkretschmar.advertisementproject.entities.base.AbstractAutoGenerateKeyedEntity;
 
+import javax.money.MonetaryAmount;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.OneToOne;
@@ -35,24 +34,15 @@ import javax.validation.constraints.NotNull;
  */
 @Entity(name = "T_PAYMENT")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-public class Payment extends AbstractAutoGenerateKeyedEntity {
+public class PaymentStatement extends AbstractAutoGenerateKeyedEntity {
     
     // --------------- Private fields ---------------
     
     /**
-     * Stores the payment amount in the smallest possible unit of the currency.
+     * Stores the monetary value of the payment that consists of the amount and
+     * the currency type. 
      */
-    @NotNull
-    @Column(name = "AMOUNT")
-    private long amount;
-    
-    /**
-     * Stores the currency type of the payment amount.
-     */
-    @NotNull
-    @Enumerated(EnumType.STRING)
-    @Column(name = "CURRENCY")
-    private PaymentCurrencyType currency;
+    private Money moneyAmount;
     
     /**
      * Stores the reason for the payment.
@@ -75,39 +65,45 @@ public class Payment extends AbstractAutoGenerateKeyedEntity {
     @OneToOne
     private Account senderAccount;
     
+    // --------------- Package-private constructors ---------------
+    
+    /**
+     * Creates a new instance of {@link PaymentStatement}.
+     */
+    PaymentStatement() {
+        super();
+    }
+    
     // --------------- Protected constructors ---------------
     
     
     /**
-     * Creates a new instance of {@link Payment}.
+     * Creates a new instance of {@link PaymentStatement} using the specified monetary 
+     * amount.
+     * 
+     * @param   monetaryAmount   the amount of money that is being paid with the 
+     *                           payment.
      */
-    protected Payment() {
+    protected PaymentStatement(MonetaryAmount monetaryAmount) {
         super();
+        this.moneyAmount = Money.create()
+                .withMonetaryAmount(monetaryAmount)
+                .build();
     }
 
     
     // --------------- Public getters and setters ---------------
-    
-    
-    /**
-     * Gets the payment amount in the smallest possible unit of the currency.
-     * 
-     * @return  the amount.
-     */
-    public long getAmount() {
-        return this.amount;
-    }
 
-    
     /**
-     * Gets the currency type of the payment amount.
+     * Gets the monetary value of the payment that consists of the amount and
+     * the currency type. 
      * 
-     * @return  the currency of the payment.
+     * @return  the {@link MonetaryAmount} object that represents the monetary 
+     *          value.
      */
-    public PaymentCurrencyType getCurrency() {
-        return this.currency;
+    public MonetaryAmount getMonetaryAmount() {
+        return this.moneyAmount.getValue();
     }
-
     
     /**
      * Gets the reason for the payment.
@@ -137,27 +133,19 @@ public class Payment extends AbstractAutoGenerateKeyedEntity {
     public Account getSenderAccount() {
         return this.senderAccount;
     }
-    
-
-    /**
-     * Sets the payment amount in the smallest possible unit of the currency.
-     * 
-     * @param   amount  that will be set. 
-     */
-    public void setAmount(long amount) {
-        this.amount = amount;
-    }
 
     
     /**
-     * Sets the currency type of the payment amount.
+     * Sets the monetary value of the payment that consists of the amount and
+     * the currency type. 
      * 
-     * @param   currency    of the payment. 
+     * @param   monetaryAmount   the amount of money that is being paid with the 
+     *                           payment.
      */
-    public void setCurrency(PaymentCurrencyType currency) {
-        this.currency = currency;
+    public void setMonetaryAmount(MonetaryAmount monetaryAmount) {
+        this.moneyAmount.setValue(monetaryAmount);
     }
-
+    
     
     /**
      * Gets the reason for the payment.
@@ -188,16 +176,19 @@ public class Payment extends AbstractAutoGenerateKeyedEntity {
     }
     
     
-    // --------------- Static methods ---------------
+    // --------------- Public static methods ---------------
     
     
     /**
-     * Creates a new instance of {@link Payment} using the specified 
-     * {@link PaymentBuilder}.
+     * Creates a new instance of {@link PaymentStatement} using the specified 
+     * {@link PaymentStatementBuilder}.
      * 
-     * @return  the address builder to create the {@link Payment} with.
+     * @param   monetaryAmount   the amount of money that is being paid with the 
+     *                           payment.
+     * @return  the payment statement builder to create the 
+     *          {@link PaymentStatement} with.
      */
-    public static PaymentBuilder create() {
-        return PaymentBuilder.create();
+    public static PaymentStatementBuilder create(MonetaryAmount monetaryAmount) {
+        return PaymentStatementBuilder.create(monetaryAmount);
     }
 }
