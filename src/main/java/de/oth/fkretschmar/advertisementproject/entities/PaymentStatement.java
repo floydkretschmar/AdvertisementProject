@@ -65,30 +65,13 @@ public class PaymentStatement extends AbstractAutoGenerateKeyedEntity {
     @OneToOne
     private Account senderAccount;
     
-    // --------------- Package-private constructors ---------------
+    // --------------- Protected constructors ---------------
     
     /**
      * Creates a new instance of {@link PaymentStatement}.
      */
-    PaymentStatement() {
+    protected PaymentStatement() {
         super();
-    }
-    
-    // --------------- Protected constructors ---------------
-    
-    
-    /**
-     * Creates a new instance of {@link PaymentStatement} using the specified monetary 
-     * amount.
-     * 
-     * @param   monetaryAmount   the amount of money that is being paid with the 
-     *                           payment.
-     */
-    protected PaymentStatement(MonetaryAmount monetaryAmount) {
-        super();
-        this.moneyAmount = Money.create()
-                .withMonetaryAmount(monetaryAmount)
-                .build();
     }
 
     
@@ -183,12 +166,10 @@ public class PaymentStatement extends AbstractAutoGenerateKeyedEntity {
      * Creates a new instance of {@link PaymentStatement} using the specified 
      * {@link PaymentStatementBuilder}.
      * 
-     * @param   monetaryAmount   the amount of money that is being paid with the 
-     *                           payment.
      * @return  the payment statement builder to create the 
      *          {@link PaymentStatement} with.
      */
-    public static PaymentStatementBuilder create(MonetaryAmount monetaryAmount) {
-        return PaymentStatementBuilder.create(monetaryAmount);
+    public static PaymentStatementBuilder create() {
+        return PaymentStatementBuilder.create();
     }
 }

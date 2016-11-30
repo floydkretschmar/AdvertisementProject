@@ -17,11 +17,10 @@
 package de.oth.fkretschmar.advertisementproject.entities;
 
 /**
- * Defines the interval of a regular payment.
- * 
+ *
  * @author fkre
  */
-public enum PaymentInterval {
+public enum PaymentPlanType {
     
     // --------------- Enum fields ---------------
     
@@ -36,8 +35,12 @@ public enum PaymentInterval {
     QUATERLY,
     
     /**
-     * Indicates that the payment interval of the regular payment has not yet
-     * been defined.
+     * Indicates that there will only a singular payment.
+     */
+    SINGLE,
+    
+    /**
+     * Indicates that the type of the payment plan has not yet been defined.
      */
     UNDEFINED,
     

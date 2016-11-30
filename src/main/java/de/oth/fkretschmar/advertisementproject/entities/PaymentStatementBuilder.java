@@ -40,15 +40,25 @@ public class PaymentStatementBuilder extends AbstractEntityBuilder<Long, Payment
     /**
      * Creates a new instance of {@link PaymentStatementBuilder}.
      * 
-     * @param   money   the amount of money that is being paid with the payment.
-     * @return 
+     * @return  the builder used to build the {@link PaymentStatement}.
      */
-    public static PaymentStatementBuilder create(MonetaryAmount money) {
-        return new PaymentStatementBuilder(new PaymentStatement(money));
+    public static PaymentStatementBuilder create() {
+        return new PaymentStatementBuilder(new PaymentStatement());
     }
     
     // --------------- Public methods ---------------
     
+    
+    /**
+     * Creates the {@link PaymentStatement} using the specified monetary amount.
+     * 
+     * @param   money   the amount of money that is being paid with the payment.
+     * @return  the builder used to build the {@link PaymentStatement}.
+     */
+    public PaymentStatementBuilder withMonetaryAmount(MonetaryAmount money) {
+        this.getObject().setMonetaryAmount(money);
+        return this;
+    }
     
     /**
      * Creates the {@link PaymentStatement} using the specified reason.

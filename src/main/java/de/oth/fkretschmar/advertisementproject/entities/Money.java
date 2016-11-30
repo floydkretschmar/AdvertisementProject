@@ -36,14 +36,14 @@ class Money implements Serializable {
      * Stores the payment amount in the smallest possible unit of the currency.
      */
     @NotNull
-    @Column(name = "AMOUNT")
+    @Column(name = "MONEY_AMOUNT")
     private long amount;
     
     /**
      * Stores the currency type of the payment amount.
      */
     @NotNull
-    @Column(name = "CURRENCY")
+    @Column(name = "MONEY_CURRENCY")
     private String currencyCode;
     
         

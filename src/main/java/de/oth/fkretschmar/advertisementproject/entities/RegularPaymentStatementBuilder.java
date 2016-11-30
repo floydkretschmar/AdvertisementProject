@@ -22,26 +22,26 @@ import java.util.Date;
  *
  * @author fkre
  */
-public class RegularPaymentBuilder extends PaymentStatementBuilder {
+public class RegularPaymentStatementBuilder extends PaymentStatementBuilder {
     
     // --------------- Public constructors ---------------
     
     /**
      * Creates a new instance of {@link RegularPaymentBuilder}.
      */
-    private RegularPaymentBuilder() {
+    private RegularPaymentStatementBuilder() {
         super(new RegularPaymentStatement());
     }
     
     // --------------- Public static methods ---------------
     
     /**
-     * Creates a new instance of {@link RegularPaymentBuilder}.
+     * Creates a new instance of {@link RegularPaymentStatementBuilder}.
      * 
      * @return 
      */
-    public static RegularPaymentBuilder create() {
-        return new RegularPaymentBuilder();
+    public static RegularPaymentStatementBuilder create() {
+        return new RegularPaymentStatementBuilder();
     }
     
     // --------------- Public methods ---------------
@@ -53,7 +53,7 @@ public class RegularPaymentBuilder extends PaymentStatementBuilder {
      * @param   endDate     the end date of the regular payment.
      * @return  the builder used to build the {@link RegularPaymentStatement}.
      */
-    public RegularPaymentBuilder withEndDate(Date endDate) {
+    public RegularPaymentStatementBuilder withEndDate(Date endDate) {
         ((RegularPaymentStatement)this.getObject()).setEndDate(endDate);
         return this;
     }
@@ -65,7 +65,7 @@ public class RegularPaymentBuilder extends PaymentStatementBuilder {
      * @param   interval  the interval in which the payment will be made.
      * @return  the builder used to build the {@link RegularPaymentStatement}.
      */
-    public RegularPaymentBuilder withPaymentInterval(PaymentInterval interval) {
+    public RegularPaymentStatementBuilder withPaymentInterval(PaymentInterval interval) {
         ((RegularPaymentStatement)this.getObject()).setInterval(interval);
         return this;
     }
@@ -89,18 +89,25 @@ public class RegularPaymentBuilder extends PaymentStatementBuilder {
         
         if(regularPayment.getStartDate() == null)
             throw new EntityBuilderValidationException(
-                    RegularPaymentBuilder.class,
+                    RegularPaymentStatementBuilder.class,
                     "The start date can not be null.");
         
         if(regularPayment.getStartDate().compareTo(new Date()) < 0)
             throw new EntityBuilderValidationException(
-                    RegularPaymentBuilder.class,
+                    RegularPaymentStatementBuilder.class,
                     "The start date can not be earlier than the current day.");
             
         if(regularPayment.getEndDate() != null 
                 && regularPayment.getEndDate().compareTo(new Date()) < 0)
             throw new EntityBuilderValidationException(
-                    RegularPaymentBuilder.class,
+                    RegularPaymentStatementBuilder.class,
                     "The end date can not be earlier than the current day.");
+        
+        if(regularPayment.getInterval() == PaymentInterval.UNDEFINED) {
+            throw new EntityBuilderValidationException(
+                    RegularPaymentStatementBuilder.class,
+                    "The payment interval of the regular payment has to be "
+                            + "defined.");
+        }
     }
 }
