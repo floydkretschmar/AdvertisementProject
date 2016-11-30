@@ -126,6 +126,10 @@ public class UserService implements Serializable {
             throw new IllegalArgumentException("The password change failed: "
                     + "the user was not set.");
         }
+        else if (this.userRepository.find(user.geteMailAddress()) != null) {
+            throw new UserServiceException("An user already exists for the"
+                    + " specified e-mail address.");
+        }
         
         final Address address = user.getAddress();
         user.setAddress(this.addressRepository.persist(address));
