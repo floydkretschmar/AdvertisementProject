@@ -19,13 +19,25 @@ package de.oth.fkretschmar.advertisementproject.entities;
 import de.oth.fkretschmar.advertisementproject.entities.base.AbstractAutoGenerateKeyedEntity;
 import javax.money.MonetaryAmount;
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 /**
  *
  * @author fkre
  */
+@Entity(name = "T_PAYMENT_PLAN")
+@NoArgsConstructor(access = AccessLevel.PACKAGE)
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 public class PaymentPlan extends AbstractAutoGenerateKeyedEntity {
     
     // --------------- Private fields ---------------
@@ -42,6 +54,8 @@ public class PaymentPlan extends AbstractAutoGenerateKeyedEntity {
      */
     @Column(name = "TYPE")
     @Enumerated(EnumType.STRING)
+    @Getter
+    @Setter
     private PaymentPlanType type;
     
     
@@ -49,10 +63,16 @@ public class PaymentPlan extends AbstractAutoGenerateKeyedEntity {
     
     
     /**
-     * Creates a new instance of {@link PaymentPlan}.
+     * Creates a new instance of {@link PaymentPlan} using the amount and type.
+     * 
+     * @param   moneyAmount     the money value of the payment plan that 
+     *                          consists of the amount and the currency type. 
+     * @param   type            the kind of payment that this plan describes.
      */
-    protected PaymentPlan() {
+    private PaymentPlan(Money moneyAmount, PaymentPlanType type) {
         super();
+        this.moneyAmount = moneyAmount;
+        this.type = type;
     }
     
     
@@ -68,17 +88,6 @@ public class PaymentPlan extends AbstractAutoGenerateKeyedEntity {
     public MonetaryAmount getMonetaryAmount() {
         return this.moneyAmount.getValue();
     }
-
-    
-    /**
-     * Gets the kind of payment that this plan describes.
-     * 
-     * @return  the {@link PaymentPlanType} that describes the type of the 
-     *          payment.
-     */
-    public PaymentPlanType getType() {
-        return this.type;
-    }
     
     
     /**
@@ -91,29 +100,33 @@ public class PaymentPlan extends AbstractAutoGenerateKeyedEntity {
     public void setMonetaryAmount(MonetaryAmount monetaryAmount) {
         this.moneyAmount.setValue(monetaryAmount);
     }
-
-    
-    /**
-     * Sets the kind of payment that this plan describes.
-     * 
-     * @param   type    that describes the type of the payment.
-     */
-    public void setType(PaymentPlanType type) {
-        this.type = type;
-    }
     
     
     // --------------- Public static methods ---------------
     
     
     /**
-     * Creates a new instance of {@link PaymentPlan} using the specified 
-     * {@link PaymentPlanBuilder}.
+     * The method that builds the basis of the auto generated builder:
+     * Validates the input and creates the corresponding {@link PaymentPlan}.
      * 
-     * @return  the payment plan builder to create the 
-     *          {@link PaymentPlan} with.
+     * @param   eMailAddress    that is used to identify an paypal account.
+     * @return  the built {@link PaymentPlan}.
      */
-    public static PaymentPlanBuilder create() {
-        return PaymentPlanBuilder.create();
+    @Builder(
+            builderMethodName = "create", 
+            builderClassName = "PaymentPlanBuilder",
+            buildMethodName = "build")
+    private static PaymentPlan validateAndCreatePaymentPlan(
+            MonetaryAmount monetaryAmount, 
+            PaymentPlanType type) {
+        Money moneyAmount = Money.create()
+                .monetaryAmount(monetaryAmount).build();
+        
+        if(type == PaymentPlanType.UNDEFINED)
+            throw new BuilderValidationException(
+                    PaymentPlan.class,
+                    "The payment plan type has to be defined.");
+        
+        return new PaymentPlan(moneyAmount, type);
     }
 }

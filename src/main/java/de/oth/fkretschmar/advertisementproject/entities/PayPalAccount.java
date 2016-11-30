@@ -17,6 +17,11 @@
 package de.oth.fkretschmar.advertisementproject.entities;
 
 import javax.persistence.Entity;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 /**
  * Represents a specific paypal account.
@@ -24,18 +29,12 @@ import javax.persistence.Entity;
  * @author fkre
  */
 @Entity(name = "T_PAYPAL_ACCOUNT")
+@NoArgsConstructor(access = AccessLevel.PACKAGE)
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 public class PayPalAccount extends Account {
     
-    // --------------- Package-private constructors ---------------
-    
-    /**
-     * Creates a new instance of {@link PayPalAccount}.
-     */
-    PayPalAccount() {
-        super();
-    }
-    
-    // --------------- Protected constructors ---------------
+    // --------------- Private constructors ---------------
 
     
     /**
@@ -43,9 +42,10 @@ public class PayPalAccount extends Account {
      * 
      * @param   eMailAddress    that is used to identify an paypal account.
      */
-    protected PayPalAccount(String eMailAddress) {
+    private PayPalAccount(String eMailAddress) {
         super(eMailAddress);
     }
+    
     
     // --------------- Public getters and setters ---------------
 
@@ -63,14 +63,23 @@ public class PayPalAccount extends Account {
 
     
     /**
-     * Creates a new instance of {@link PayPalAccount} using the specified 
-     * {@link PayPalAccountBuilder}.
+     * The method that builds the basis of the auto generated builder:
+     * Validates the input and creates the corresponding {@link PayPalAccount}.
      * 
-     * @param   eMailAddress    the email address that uniquely identifies the
-     *                          paypal account that is being built.
-     * @return  the address builder to create the {@link PayPalAccount} with.
+     * @param   eMailAddress    that is used to identify an paypal account.
+     * @return  the built {@link PayPalAccount}.
      */
-    public static PayPalAccountBuilder create(String eMailAddress) {
-        return PayPalAccountBuilder.create(eMailAddress);
+    @Builder(
+            builderMethodName = "create", 
+            builderClassName = "PayPalAccountBuilder",
+            buildMethodName = "build")
+    private static PayPalAccount validateAndCreatePayPalAccount(
+            String eMailAddress) {
+        if(eMailAddress == null || eMailAddress.isEmpty())
+            throw new BuilderValidationException(
+                    PayPalAccount.class,
+                    "The e-mail address can not be null or empty.");
+        
+        return new PayPalAccount(eMailAddress);
     }
 }

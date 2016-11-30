@@ -17,9 +17,17 @@
 package de.oth.fkretschmar.advertisementproject.entities.base;
 
 
+import de.oth.fkretschmar.advertisementproject.entities.base.IEntity;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
+
+import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 /**
  * Abstract base implementation of any entity.
@@ -28,6 +36,9 @@ import javax.persistence.MappedSuperclass;
  * @param   <T>     the type of the unique identifier.
  */
 @MappedSuperclass
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
+@EqualsAndHashCode(exclude={"description"})
+@ToString
 abstract class AbstractEntity<T> implements Serializable, IEntity<T> {
     
     // --------------- Private fields ---------------
@@ -36,30 +47,11 @@ abstract class AbstractEntity<T> implements Serializable, IEntity<T> {
      * Stores a text used to describe the entity.
      */
     @Column(name = "DESCRIPTION")
+    @Getter
+    @Setter
     private String description;
     
-    // --------------- Public constructors ---------------
-    
-    /**
-     * Creates a new instance of {@link AbstractEntity}.
-     */
-    public AbstractEntity() {
-        
-    }
-    
     // --------------- Public getters and setters ---------------
-
-    
-    /**
-     * Gets a text used to describe the entity.
-     * 
-     * @return  the text used to describe the entity.
-     */
-    @Override
-    public String getDescription() {
-        return this.description;
-    }
-    
     
     /**
      * Gets the unique identifier of the entity.
@@ -68,96 +60,4 @@ abstract class AbstractEntity<T> implements Serializable, IEntity<T> {
      */
     @Override
     public abstract T getId();
-    
-    
-    /**
-     * Sets a text used to describe the entity.
-     * 
-     * @param   description that describes the entity.
-     */
-    @Override
-    public void setDescription(String description) {
-        this.description = description;
-    }
-    
-    
-    // --------------- Public methods ---------------
-    
-    /**
-     * Compares this object to the specified object.  The result is {@code true} 
-     * if and only if the argument is not {@code null} and is a 
-     * {@link AbstractEntity} object that is the same as 
-     * this object.
-     *
-     * @param   obj   the object to compare with.
-     * @return  {@code true} if the objects are the same;
-     *          {@code false} otherwise.
-     */
-    @Override
-    public final boolean equals(Object obj) {
-        if (obj == null)
-            return false;
-        
-        if (getClass() != obj.getClass())
-            return false;
-        
-        return this.equalsCore((AbstractEntity) obj);
-    }
-    
-    
-    /**
-     * Returns a hash code for an {@link AbstractEntity} object.
-     * 
-     * @return A hash code value for an {@link AbstractEntity} object.
-     */
-    @Override
-    public final int hashCode() {
-        return this.hashCodeForId() | this.hashCodeForUniqueAttributes();
-    }
-    
-    
-    /**
-     * Returns the default String representation of a entity.
-     * 
-     * @return  A String that represents a default entity.
-     */
-    @Override
-    public String toString() {
-        return "[" + this.getClass() + "ID: " + this.getId() + "]";
-    }
-    
-    // --------------- Protected methods ---------------
-    
-    /**
-     * Compares this entity to the specified entity. The result is {@code true} 
-     * if and only if the given entity is exactly the same as this entity. Per 
-     * default two entities are exactly the same, if the have the same unique
-     * identifier.
-     *
-     * @param   entity   the object to compare with.
-     * @return  {@code true} if the objects are the same;
-     *          {@code false} otherwise.
-     */
-    protected boolean equalsCore(AbstractEntity entity) {
-        return this.getId() == entity.getId();
-    }
-
-    
-    /**
-     * Returns a hash code for the unique identifier of the entity.
-     * 
-     * @return  A hash code value for an {@link AbstractEntity} object.
-     */
-    protected abstract int hashCodeForId();
-    
-    
-    /**
-     * Returns a hash code for the unique attributes on an entity other than the
-     * id.
-     * 
-     * @return  A hash code value for an {@link AbstractEntity} object.
-     */
-    protected int hashCodeForUniqueAttributes() {
-        return 0;
-    }
 }

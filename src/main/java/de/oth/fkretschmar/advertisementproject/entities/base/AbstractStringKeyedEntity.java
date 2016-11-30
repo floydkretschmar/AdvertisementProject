@@ -21,12 +21,22 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.NotNull;
 
+import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.ToString;
+import lombok.NonNull;
+
 /**
  * Represents an entity that is keyed by a uniqe string value.
  * 
  * @author  fkre    Floyd Kretschmar
  */
 @MappedSuperclass
+@RequiredArgsConstructor(access = AccessLevel.PUBLIC)
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 public abstract class AbstractStringKeyedEntity 
         extends AbstractManagedEntity<String> {   
     
@@ -37,50 +47,9 @@ public abstract class AbstractStringKeyedEntity
      */
     @Id
     @Column(name = "ID")
+    @NonNull
     @NotNull
+    @Getter
     private String id;
     
-    
-    // --------------- Public constructors ---------------
-    
-    
-    /** 
-     * Creates a new instance of {@link AbstractStringKeyedEntity} using the
-     * specified id.
-     * 
-     * @param   id  that uniqely identifies the entity. 
-     */
-    public AbstractStringKeyedEntity(String id) {
-        super();
-        this.id = id;
-    }
-    
-    // --------------- Public getters ---------------
-    
-    
-    /**
-     * Gets the unique identifier of the entity.
-     * 
-     * @return  The unique identifier of the entity as a {@link Long}.
-     */
-    @Override
-    public String getId() {
-        return this.id;
-    }
-    
-    
-    // --------------- Protected methods ---------------
-    
-    
-    /**
-     * Returns a hash code for the id of an {@link AbstractStringKeyedEntity} 
-     * object.
-     * 
-     * @return  A hash code value for an {@link AbstractStringKeyedEntity} 
-     * object.
-     */
-    @Override
-    protected final int hashCodeForId() {
-        return this.id.hashCode();
-    }
 }

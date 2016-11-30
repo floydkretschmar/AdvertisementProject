@@ -16,11 +16,18 @@
  */
 package de.oth.fkretschmar.advertisementproject.entities;
 
-import de.oth.fkretschmar.advertisementproject.entities.base.AbstractAutoGenerateKeyedEntity;
 
+import de.oth.fkretschmar.advertisementproject.entities.base.AbstractAutoGenerateKeyedEntity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
+
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 /**
  * Represents a password that was picked by the user to secure an account.
@@ -28,6 +35,9 @@ import javax.validation.constraints.NotNull;
  * @author fkre Floyd Kretschmar
  */
 @Entity(name = "T_PASSWORD")
+@NoArgsConstructor(access = AccessLevel.PACKAGE)
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 public class Password extends AbstractAutoGenerateKeyedEntity {
 
     // --------------- Private fields ---------------
@@ -37,17 +47,9 @@ public class Password extends AbstractAutoGenerateKeyedEntity {
      */
     @NotNull
     @Column(name = "PASS_VALUE")
+    @Getter
     private String value;
-
-    // --------------- Package-private constructors ---------------
     
-    /**
-     * Creates an instance of {@link Password}.
-     */
-    Password() {
-        super();
-    }
-
     // --------------- Protected constructors ---------------
     
     /**
@@ -57,35 +59,32 @@ public class Password extends AbstractAutoGenerateKeyedEntity {
      * @param   value   that contains the user specified password in an unsafe
      *                  mannor.
      */
-    protected Password(String value) {
+    private Password(String value) {
         super();
         this.value = value;
     }
-
-    // --------------- Public getters ---------------
-
     
-    /**
-     * Gets the hashed presentation of the password.
-     * 
-     * @return  the hashed password.
-     */
-    public String getValue() {
-        return value;
-    }
-    
-    // --------------- Static methods ---------------
+    // --------------- Private static methods ---------------
     
     
     /**
-     * Creates a new instance of {@link Password} using the specified 
-     * {@link PasswordBuilder}.
+     * The method that builds the basis of the auto generated builder:
+     * Validates the input and creates the corresponding {@link Password}.
      * 
-     * @param   value   the hashed string representation of the password that
-     *                  is being built.
-     * @return  the password builder to create the {@link Password} with.
+     * @param   value   that contains the user specified password in an unsafe
+     *                  mannor.
+     * @return the built {@link Password}.
      */
-    public static PasswordBuilder create(String value) {
-        return PasswordBuilder.create(value);
+    @Builder(
+            builderMethodName = "create", 
+            builderClassName = "PasswordBuilder",
+            buildMethodName = "build")
+    private static Password validateAndCreatePassword(String value) {
+        if(value == null || value.isEmpty())
+            throw new BuilderValidationException(
+                    Password.class, 
+                    "The password can not be null or empty.");
+        
+        return new Password(value);
     }
 }

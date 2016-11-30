@@ -16,8 +16,8 @@
  */
 package de.oth.fkretschmar.advertisementproject.entities;
 
-import de.oth.fkretschmar.advertisementproject.entities.base.AbstractStringKeyedEntity;
 
+import de.oth.fkretschmar.advertisementproject.entities.base.AbstractStringKeyedEntity;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;

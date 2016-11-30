@@ -23,12 +23,21 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.NotNull;
 
+import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
 /**
  * Represents an entity that is keyed by an auto generated numeric value.
  * 
  * @author  fkre  Floyd Kretschmar
  */
 @MappedSuperclass
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 public abstract class AbstractAutoGenerateKeyedEntity 
         extends AbstractManagedEntity<Long> {   
     
@@ -41,45 +50,6 @@ public abstract class AbstractAutoGenerateKeyedEntity
     @Column(name = "ID")
     @NotNull
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Getter
     private Long id;
-    
-    
-    // --------------- Public constructors ---------------
-    
-    
-    /**
-     * Creates a new instance of {@link AbstractAutoGenerateKeyedEntity}.
-     */
-    public AbstractAutoGenerateKeyedEntity() {
-        super();
-    }
-    
-    
-    // --------------- Public getters ---------------
-    
-    
-    /**
-     * Gets the unique identifier of the entity.
-     * 
-     * @return  The unique identifier of the entity as a {@link Long}.
-     */
-    @Override
-    public Long getId() {
-        return this.id;
-    }
-    
-    
-    // --------------- Protected methods ---------------
-    
-    
-    /**
-     * Returns a hash code for the id of an 
-     * {@link AbstractAutoGenerateKeyedEntity} object.
-     * 
-     * @return  A hash code value of the hash.
-     */
-    @Override
-    protected final int hashCodeForId() {
-        return Long.hashCode(this.id);
-    }
 }

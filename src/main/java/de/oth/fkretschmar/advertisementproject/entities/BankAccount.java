@@ -20,14 +20,23 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
 
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
 /**
  *
  * @author fkre
  */
 @Entity(name = "T_BANK_ACCOUNT")
+@NoArgsConstructor(access = AccessLevel.PACKAGE)
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 public class BankAccount extends Account {
 
-    
     // --------------- Private fields ---------------
 
     /**
@@ -36,19 +45,10 @@ public class BankAccount extends Account {
      */
     @NotNull
     @Column(name = "BIC")
+    @Getter
     private String bic;
 
-    // --------------- Package-private constructors ---------------
-    
-    
-    /**
-     * Creates a new instance of {@link BankAccount}.
-     */
-    BankAccount() {
-        super();
-    }
-
-    // --------------- Protected constructors ---------------
+    // --------------- Private constructors ---------------
     
     /**
      * Creates a new instance of {@link BankAccount} using the specified IBAN
@@ -57,23 +57,12 @@ public class BankAccount extends Account {
      * @param   iban    that uniquely identifies a bank account.
      * @param   bic     that identifies a banking institution.
      */
-    protected BankAccount(String iban, String bic) {
+    private BankAccount(String iban, String bic) {
         super(iban);
         this.bic = bic;
     }
 
     // --------------- Public getters and setters ---------------
-
-    
-    /**
-     * Gets the BIC identifying the banking institution where the account is
-     * registered.
-     *
-     * @return  the BIC of the account.
-     */
-    public String getBic() {
-        return this.bic;
-    }
 
     
     /**
@@ -85,20 +74,37 @@ public class BankAccount extends Account {
         return this.getId();
     }
     
-    // --------------- Static methods ---------------
+    
+    // --------------- Private static methods ---------------
     
     
     /**
-     * Creates a new instance of {@link BankAccount} using the specified 
-     * {@link BankAccountBuilder}.
+     * The method that builds the basis of the auto generated builder:
+     * Validates the input and creates the corresponding {@link BankAccount}.
      * 
      * @param   iban    the IBAN that uniquely identifies a bank account that is 
      *                  being built.
      * @param   bic     the BIC identifying the banking institution where the 
      *                  account that is being built is registered.
-     * @return  the address builder to create the {@link BankAccount} with.
+     * @return  the built {@link BankAccount}.
      */
-    public static BankAccountBuilder create(String iban, String bic) {
-        return BankAccountBuilder.create(iban, bic);
+    @Builder(
+            builderMethodName = "create", 
+            builderClassName = "BankAccountBuilder",
+            buildMethodName = "build")
+    private static BankAccount validateAndCreateBankAccount(
+            String iban, 
+            String bic) {
+        if(iban == null || iban.isEmpty())
+            throw new BuilderValidationException(
+                    BankAccount.class,
+                    "The IBAN can not be null or empty.");
+        
+        if(bic == null || bic.isEmpty())
+            throw new BuilderValidationException(
+                    BankAccount.class,
+                    "The BIC can not be null or empty.");
+        
+        return new BankAccount(iban, bic);
     }
 }

@@ -16,8 +16,8 @@
  */
 package de.oth.fkretschmar.advertisementproject.entities;
 
-import de.oth.fkretschmar.advertisementproject.entities.base.AbstractAutoGenerateKeyedEntity;
 
+import de.oth.fkretschmar.advertisementproject.entities.base.AbstractAutoGenerateKeyedEntity;
 import javax.money.MonetaryAmount;
 import javax.persistence.Column;
 import javax.persistence.Entity;

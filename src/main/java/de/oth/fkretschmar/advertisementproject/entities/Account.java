@@ -16,11 +16,15 @@
  */
 package de.oth.fkretschmar.advertisementproject.entities;
 
-import de.oth.fkretschmar.advertisementproject.entities.base.AbstractStringKeyedEntity;
 
+import de.oth.fkretschmar.advertisementproject.entities.base.AbstractStringKeyedEntity;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 /**
  * Represents an paypal account used to pay for orders.
@@ -29,21 +33,12 @@ import javax.persistence.InheritanceType;
  */
 @Entity(name = "T_ACCOUNT")
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class Account extends AbstractStringKeyedEntity {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
+public abstract class Account extends AbstractStringKeyedEntity {   
     
     // --------------- Protected constructors ---------------
-    
-
-    /**
-     * Creates a new instance of {@link Account} using the specified identifier.
-     */
-    protected Account() {
-        this("");
-    }
-    
-    
-    // --------------- Public constructors ---------------
-    
     
     /**
      * Creates a new instance of {@link Account} using the specified identifier
@@ -51,7 +46,7 @@ public abstract class Account extends AbstractStringKeyedEntity {
      * 
      * @param   accountId   that uniquely identifies an account.
      */
-    public Account(String accountId) {
+    protected Account(String accountId) {
         super(accountId);
     }
 }

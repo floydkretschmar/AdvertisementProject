@@ -16,11 +16,18 @@
  */
 package de.oth.fkretschmar.advertisementproject.entities;
 
-import de.oth.fkretschmar.advertisementproject.entities.base.AbstractAutoGenerateKeyedEntity;
 
+import de.oth.fkretschmar.advertisementproject.entities.base.AbstractAutoGenerateKeyedEntity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 /**
  * Represents an address of an user.
@@ -28,6 +35,9 @@ import javax.validation.constraints.NotNull;
  * @author  fkre    Floyd Kretschmar
  */
 @Entity(name = "T_ADDRESS")
+@NoArgsConstructor(access = AccessLevel.PACKAGE)
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 public class Address extends AbstractAutoGenerateKeyedEntity {
     
     // --------------- Private fields ---------------
@@ -37,6 +47,8 @@ public class Address extends AbstractAutoGenerateKeyedEntity {
      */
     @NotNull
     @Column(name = "AREA_CODE")
+    @Getter
+    @Setter
     private String areaCode;
     
     /**
@@ -44,6 +56,8 @@ public class Address extends AbstractAutoGenerateKeyedEntity {
      */
     @NotNull
     @Column(name = "CITY")
+    @Getter
+    @Setter
     private String city;
     
     /**
@@ -51,6 +65,8 @@ public class Address extends AbstractAutoGenerateKeyedEntity {
      * found.
      */
     @Column(name = "COUNTRY")
+    @Getter
+    @Setter
     private String country;
     
     /**
@@ -59,108 +75,78 @@ public class Address extends AbstractAutoGenerateKeyedEntity {
      */
     @NotNull
     @Column(name = "STREET")
+    @Getter
+    @Setter
     private String street;
     
     
-    // --------------- Protected constructors ---------------
+    // --------------- Private constructors ---------------
     
     /**
-     * Creates a new instance of {@link Address}.
+     * Creates a new instance of {@link Address} using the specified area code,
+     * city, country and street.
+     * 
+     * @param areaCode      the textual representation of the area code.
+     * @param city          the name of the city in which the street can be 
+     *                      found.
+     * @param countrythe    text that represents the country in which the 
+     *                      address can be found.
+     * @param street        the textual representation of the street including 
+     *                      the street number.
      */
-    protected Address() {
+    private Address(
+            String areaCode, 
+            String city, 
+            String country, 
+            String street) {
         super();
-    }
-    
-    // --------------- Public getters and setters ---------------
-    
-    
-    /**
-     * Gets the textual representation of the area code.
-     * 
-     * @return  A String that contains the textual represenation of the area 
-     *          code.
-     */
-    public String getAreaCode() {
-        return this.areaCode;
-    }
-
-    /**
-     * Gets the name of the city in which the street can be found.
-     * 
-     * @return  A String that contains the city name.
-     */
-    public String getCity() {
-        return this.city;
-    }
-
-    /**
-     * Gets the text that represents the country in which the address can be 
-     * found.
-     * 
-     * @return  A String that contains the name of the country.
-     */
-    public String getCountry() {
-        return this.country;
-    }
-
-    /**
-     * Gets the textual representation of the street including the street number.
-     * 
-     * @return  A String that contains the textual representation of the street 
-     *          including the streetnumber.
-     */
-    public String getStreet() {
-        return this.street;
-    }
-
-    /**
-     * Sets the textual representation of the area code.
-     * 
-     * @param   areaCode    that is the textual representation of the area code.
-     */
-    public void setAreaCode(String areaCode) {
         this.areaCode = areaCode;
-    }
-
-    /**
-     * Sets the name of the city in which the street can be found.
-     * 
-     * @param   city    that contains the name of the city.
-     */
-    public void setCity(String city) {
         this.city = city;
-    }
-
-    /**
-     * Sets the text that represents the country in which the address can be 
-     * found.
-     * 
-     * @param   country that contains the name of the county.
-     */
-    public void setCountry(String country) {
         this.country = country;
-    }
-
-    /**
-     * Sets the textual representation of the street including the street number.
-     * 
-     * @param   street  that contains the textual representation of the steet 
-     *                  including the street number.
-     */
-    public void setStreet(String street) {
         this.street = street;
     }
     
-    // --------------- Static methods ---------------
+    // --------------- Private static methods ---------------
     
     
     /**
-     * Creates a new instance of {@link Address} using the specified 
-     * {@link AddressBuilder}.
+     * The method that builds the basis of the auto generated builder:
+     * Validates the input and creates the corresponding {@link Address}.
      * 
-     * @return  the address builder to create the {@link Address} with.
+     * @param areaCode      the textual representation of the area code.
+     * @param city          the name of the city in which the street can be 
+     *                      found.
+     * @param countrythe    text that represents the country in which the 
+     *                      address can be found.
+     * @param street        the textual representation of the street including 
+     *                      the street number.
+     * @return the built {@link Address}.
      */
-    public static AddressBuilder create() {
-        return AddressBuilder.create();
+    @Builder(
+            builderMethodName = "create", 
+            builderClassName = "AddressBuilder",
+            buildMethodName = "build")
+    private static Address validateAndCreateAddress(
+            String areaCode, 
+            String city, 
+            String country, 
+            String street) {
+        if(areaCode == null || areaCode.isEmpty())
+            throw new BuilderValidationException(
+                    Address.class, 
+                    "The area code can not be null or empty.");
+        
+        if(city == null || city.isEmpty())
+            throw new BuilderValidationException(
+                    Address.class, 
+                    "The city can not be null or empty.");
+        
+        if(street == null || street.isEmpty())
+            throw new BuilderValidationException(
+                    Address.class, 
+                    "The street can not be null or empty.");
+        
+        return new Address(areaCode, city, country, street);
     }
+    
 }

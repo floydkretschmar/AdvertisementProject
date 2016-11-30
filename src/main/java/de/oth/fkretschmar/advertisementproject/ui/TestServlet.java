@@ -76,32 +76,35 @@ public class TestServlet extends HttpServlet {
 //            this.userService.changePassword(user, "HalloWelt".toCharArray());
             
             //this.userService.delete(user);
-            
-            
-            Address address = Address.create()
-                                .withAreaCode("95689")
-                                .withCity("Regensburg")
-                                .withCountry("Deutschland")
-                                .withStreet("Dechbettener Straße 7").build();
+//            
+//            
+//            Address address = Address.create()
+//                                .withAreaCode("95689")
+//                                .withCity("Regensburg")
+//                                .withCountry("Deutschland")
+//                                .withStreet("Dechbettener Straße 7").build();
             
             //Password pw = userService.create("Testpassword".toCharArray());
-            User user = User.create("fkretschmar@googlemail.com")
-                    .withPassword(PasswordService.generate("Testpw".toCharArray()))
-                    .withFirstName("Floyd") 
-                    .withLastName("Kretschmar") 
-                    .withAddress(address)
-                    .withCompany("OptWare").build();
+//            User user = User.create("fkretschmar@googlemail.com")
+//                    .withPassword(PasswordService.generate("Testpw".toCharArray()))
+//                    .withFirstName("Floyd") 
+//                    .withLastName("Kretschmar") 
+//                    .withAddress(address)
+//                    .withCompany("OptWare").build();
+//            
+//            BankAccount acc = BankAccount.create()
+//                    .iban("DE948309535956456")
+//                    .bic("GENOD43945").build();
             
-            BankAccount acc = BankAccount.create("DE948309535956456", "GENOD43945")
-                                .withDescription("RB").build();
+//            BankAccount acc = BankAccount.create("DE948309535956456", "GENOD43945")
+//                                .withDescription("RB").build();
+//            
+//            user.addAccount(acc);
+//            
+            BankAccount acc = BankAccount.builder().
             
-            user.addAccount(acc);
-            
-            acc = BankAccount.create("DE555555555555555", "GENOD43945")
-                                .withDescription("RB2").build();
-            
-            user.addAccount(acc);
-            this.userService.create(user);
+//            user.addAccount(acc);
+//            this.userService.create(user);
 //            
 //            authService.authenticateUser(user.geteMailAddress(), "Testpw4".toCharArray());
 //            

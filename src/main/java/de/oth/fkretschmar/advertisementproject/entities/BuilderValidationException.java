@@ -21,7 +21,7 @@ package de.oth.fkretschmar.advertisementproject.entities;
  * 
  * @author fkre
  */
-public class EntityBuilderValidationException extends RuntimeException {
+public class BuilderValidationException extends RuntimeException {
 
     /**
      * Creates an instance of {@link EntityBuilderValidationException} using the 
@@ -32,7 +32,7 @@ public class EntityBuilderValidationException extends RuntimeException {
      * @param   exceptionSource class in which the exception occurred.
      * @param   message         the detail message.
      */
-    public <T> EntityBuilderValidationException(
+    public <T> BuilderValidationException(
             Class<T> exceptionSource, 
             String message) {
         super(String.format("%s: %s", exceptionSource.toString(), message));

@@ -22,12 +22,20 @@ import javax.money.MonetaryAmount;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.validation.constraints.NotNull;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 /**
  *
  * @author fkre
  */
 @Embeddable
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@EqualsAndHashCode
+@ToString
 class Money implements Serializable {
     
     // --------------- Private fields ---------------
@@ -51,10 +59,13 @@ class Money implements Serializable {
     
     
     /**
-     * Creates a new instance of {@link Money}.
+     * Creates a new instance of {@link Money} using the monetary amount.
+     * 
+     * @param   monetaryAmount   the complex money representation.
      */
-    protected Money() {
+    private Money(MonetaryAmount monetaryAmount) {
         super();
+        this.setValue(monetaryAmount);
     }
     
     
@@ -88,13 +99,24 @@ class Money implements Serializable {
     // --------------- Public static methods ---------------
     
     
+    
     /**
-     * Creates a new instance of {@link Money} using the specified 
-     * {@link MoneyBuilder}.
+     * The method that builds the basis of the auto generated builder:
+     * Validates the input and creates the corresponding {@link Money}.
      * 
-     * @return  the money builder to create the {@link Money} with.
+     * @param   monetaryAmount   the complex money representation.
+     * @return the built {@link Money}.
      */
-    public static MoneyBuilder create() {
-        return MoneyBuilder.create();
+    @Builder(
+            builderMethodName = "create", 
+            builderClassName = "MoneyBuilder",
+            buildMethodName = "build")
+    private static Money validateAndCreateMoney(MonetaryAmount monetaryAmount) {
+        if(monetaryAmount == null)
+            throw new BuilderValidationException(
+                    Money.class, 
+                    "The monetary amount can not be null or empty.");
+        
+        return new Money(monetaryAmount);
     }
 }

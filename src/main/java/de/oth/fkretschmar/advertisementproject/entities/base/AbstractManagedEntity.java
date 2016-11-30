@@ -29,6 +29,12 @@ import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
 /**
  * Represents an entity that saves rudementary management information and allows
  * for simple data processing before and after persistence operations.
@@ -36,6 +42,9 @@ import javax.persistence.TemporalType;
  * @author  fkre    Floyd Kretschmar
  */
 @MappedSuperclass
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 abstract class AbstractManagedEntity<T> extends AbstractEntity<T> {
 
     // --------------- Private fields ---------------
@@ -47,6 +56,7 @@ abstract class AbstractManagedEntity<T> extends AbstractEntity<T> {
             insertable = true,
             updatable = false)
     @Temporal(value = TemporalType.TIMESTAMP)
+    @Getter
     private Date generationDate;
 
     /**
@@ -54,37 +64,8 @@ abstract class AbstractManagedEntity<T> extends AbstractEntity<T> {
      */
     @Column(name = "MODDATE")
     @Temporal(value = TemporalType.TIMESTAMP)
+    @Getter
     private Date modificationDate;
-
-    // --------------- Public constructors ---------------
-    
-    /**
-     * Creates a new instance of {@link AbstractManagedEntity}.
-     */
-    public AbstractManagedEntity() {
-        super();
-    }
-    
-
-    // --------------- Public getters ---------------
-    /**
-     * Gets the generation timestamp of the entity.
-     *
-     * @return The generation timestamp of the entity as a {@link Date}.
-     */
-    public Date getGenerationDate() {
-        return this.generationDate;
-    }
-
-    /**
-     * Gets the last modification timestamp of the entity.
-     *
-     * @return The last modification timestamp of the entity as a {@code
-     *          Calendar}.
-     */
-    public Date getModificationDate() {
-        return this.modificationDate;
-    }
 
     // --------------- Protected methods ---------------
     /**
