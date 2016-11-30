@@ -26,6 +26,13 @@ import javax.persistence.InheritanceType;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
 
 /**
  * Represents a payment used to pay for an advertisement order.
@@ -34,6 +41,8 @@ import javax.validation.constraints.NotNull;
  */
 @Entity(name = "T_PAYMENT")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@NoArgsConstructor(access = AccessLevel.PACKAGE)
+@ToString(callSuper = true)
 public class PaymentStatement extends AbstractAutoGenerateKeyedEntity {
     
     // --------------- Private fields ---------------
@@ -49,6 +58,8 @@ public class PaymentStatement extends AbstractAutoGenerateKeyedEntity {
      */
     @NotNull
     @Column(name = "REASON")
+    @Getter(AccessLevel.PUBLIC)
+    @Setter(AccessLevel.PUBLIC)
     private String reason;
     
     /**
@@ -56,6 +67,8 @@ public class PaymentStatement extends AbstractAutoGenerateKeyedEntity {
      */
     @NotNull
     @OneToOne
+    @Getter(AccessLevel.PUBLIC)
+    @Setter(AccessLevel.PUBLIC)
     private Account recipientAccount;
     
     /**
@@ -63,15 +76,32 @@ public class PaymentStatement extends AbstractAutoGenerateKeyedEntity {
      */
     @NotNull
     @OneToOne
+    @Getter(AccessLevel.PUBLIC)
+    @Setter(AccessLevel.PUBLIC)
     private Account senderAccount;
     
-    // --------------- Protected constructors ---------------
+    // --------------- Private constructors ---------------
     
     /**
-     * Creates a new instance of {@link PaymentStatement}.
+     * Creates a new instance of {@link PaymentStatement} using the specified
+     * money amount, reason, recipient and sender.
+     * 
+     * @param   moneyAmount         the monetary value of the payment that 
+     *                              consists of the amount and the currency type.
+     * @param   reason              the reason for the payment.
+     * @param   recipientAccount    the account of the recipient of the payment.
+     * @param   senderAccount       the account of the sender of the payment.
      */
-    protected PaymentStatement() {
+    protected PaymentStatement(
+            Money moneyAmount, 
+            String reason, 
+            Account recipientAccount, 
+            Account senderAccount) {
         super();
+        this.moneyAmount = moneyAmount;
+        this.reason = reason;
+        this.recipientAccount = recipientAccount;
+        this.senderAccount = senderAccount;
     }
 
     
@@ -87,35 +117,6 @@ public class PaymentStatement extends AbstractAutoGenerateKeyedEntity {
     public MonetaryAmount getMonetaryAmount() {
         return this.moneyAmount.getValue();
     }
-    
-    /**
-     * Gets the reason for the payment.
-     * 
-     * @return  the reason for which the payment was authorized.
-     */
-    public String getReason() {
-        return this.reason;
-    }
-
-    
-    /**
-     * Gets the account of the recipient of the payment.
-     * 
-     * @return  the account of the recipient.
-     */
-    public Account getRecipientAccount() {
-        return this.recipientAccount;
-    }
-    
-
-    /**
-     * Gets the account of the sender of the payment.
-     * 
-     * @return the account of the sender.
-     */
-    public Account getSenderAccount() {
-        return this.senderAccount;
-    }
 
     
     /**
@@ -130,46 +131,82 @@ public class PaymentStatement extends AbstractAutoGenerateKeyedEntity {
     }
     
     
+    // --------------- Protected static methods ---------------
+    
+    
     /**
-     * Gets the reason for the payment.
-     * 
-     * @param   reason  for which the payment was authorized. 
+     * Validates the input data.
+     *     
+     * @param   monetaryAmount      the monetary value of the payment that 
+     *                              consists of the amount and the currency type.
+     * @param   reason              the reason for the payment.
+     * @param   recipientAccount    the account of the recipient of the payment.
+     * @param   senderAccount       the account of the sender of the payment.
      */
-    public void setReason(String reason) {
-        this.reason = reason;
+    @Builder(
+            builderMethodName = "create", 
+            builderClassName = "PaymentStatementBuilder",
+            buildMethodName = "build")
+    static final Money validateStatementInputData(
+            MonetaryAmount monetaryAmount, 
+            String reason, 
+            Account recipientAccount, 
+            Account senderAccount) {
+        if(monetaryAmount == null)
+            throw new BuilderValidationException(
+                    PaymentStatement.class,
+                    "The monetary amount can not be null.");
+        
+        if(reason == null || reason.isEmpty())
+            throw new BuilderValidationException(
+                    PaymentStatement.class,
+                    "The reason can not be null or empty.");
+        
+        if(recipientAccount == null)
+            throw new BuilderValidationException(
+                    PaymentStatement.class,
+                    "The recipient account can not be null.");
+        
+        if(senderAccount == null)
+            throw new BuilderValidationException(
+                    PaymentStatement.class,
+                    "The sender account can not be null.");
+        
+        return Money.createMoney()
+                .monetaryAmount(monetaryAmount).build();
     }
-
-    /**
-     * Sets the account of the recipient of the payment.
-     * 
-     * @param recipientAccount that will be set on the payment.
-     */
-    public void setRecipientAccount(Account recipientAccount) {
-        this.recipientAccount = recipientAccount;
-    }
-
-    
-    /**
-     * Sets the account of the sender of the payment.
-     * 
-     * @param senderAccount that will be set on the payment.
-     */
-    public void setSenderAccount(Account senderAccount) {
-        this.senderAccount = senderAccount;
-    }
     
     
-    // --------------- Public static methods ---------------
+    // --------------- Private static methods ---------------
     
     
     /**
-     * Creates a new instance of {@link PaymentStatement} using the specified 
-     * {@link PaymentStatementBuilder}.
-     * 
-     * @return  the payment statement builder to create the 
-     *          {@link PaymentStatement} with.
+     * The method that builds the basis of the auto generated builder:
+     * Validates the input and creates the corresponding {@link PaymentStatement}.
+     *     
+     * @param   monetaryAmount      the monetary value of the payment that 
+     *                              consists of the amount and the currency type.
+     * @param   reason              the reason for the payment.
+     * @param   recipientAccount    the account of the recipient of the payment.
+     * @param   senderAccount       the account of the sender of the payment.
+     * @return  the built {@link PaymentStatement}.
      */
-    public static PaymentStatementBuilder create() {
-        return PaymentStatementBuilder.create();
+    @Builder(
+            builderMethodName = "createPaymentStatement", 
+            builderClassName = "PaymentStatementBuilder",
+            buildMethodName = "build")
+    private static PaymentStatement validateAndCreatePaymentStatement(
+            MonetaryAmount monetaryAmount, 
+            String reason, 
+            Account recipientAccount, 
+            Account senderAccount) {
+        Money moneyAmount = PaymentStatement.validateStatementInputData(
+                monetaryAmount, 
+                reason, 
+                recipientAccount, 
+                senderAccount);
+        
+        return new PaymentStatement(
+                moneyAmount, reason, recipientAccount, senderAccount);
     }
 }

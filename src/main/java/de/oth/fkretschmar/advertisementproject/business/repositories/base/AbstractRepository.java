@@ -20,6 +20,7 @@ import de.oth.fkretschmar.advertisementproject.entities.base.IEntity;
 import java.io.Serializable;
 
 import java.util.Collection;
+import javax.enterprise.context.Dependent;
 
 /**
  * Represents an abstract base repository that defines the default CRUD methods
@@ -29,6 +30,7 @@ import java.util.Collection;
  * @param   <T>     The type that specifies which entity is being managed by the
  *                  repository.
  */
+@Dependent
 public abstract class AbstractRepository<S, T extends IEntity<S>> 
         implements Serializable {
     

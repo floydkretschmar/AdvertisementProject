@@ -16,8 +16,6 @@
  */
 package de.oth.fkretschmar.advertisementproject.entities.base;
 
-
-import de.oth.fkretschmar.advertisementproject.entities.base.IEntity;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
@@ -36,7 +34,7 @@ import lombok.ToString;
  * @param   <T>     the type of the unique identifier.
  */
 @MappedSuperclass
-@NoArgsConstructor(access = AccessLevel.PUBLIC)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(exclude={"description"})
 @ToString
 abstract class AbstractEntity<T> implements Serializable, IEntity<T> {

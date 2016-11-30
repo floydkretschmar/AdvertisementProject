@@ -17,17 +17,27 @@
 package de.oth.fkretschmar.advertisementproject.entities;
 
 import java.util.Date;
+import javax.money.MonetaryAmount;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
 /**
  *
  * @author fkre
  */
 @Entity(name = "T_REGULAR_PAYMENT")
+@NoArgsConstructor(access = AccessLevel.PACKAGE)
+@ToString(callSuper = true)
 public class RegularPaymentStatement extends PaymentStatement {
     
     /**
@@ -35,6 +45,8 @@ public class RegularPaymentStatement extends PaymentStatement {
      */
     @Column(name = "END_DATE")
     @Temporal(TemporalType.DATE)
+    @Getter(AccessLevel.PUBLIC)
+    @Setter(AccessLevel.PUBLIC)
     private Date endDate;
     
     
@@ -43,6 +55,8 @@ public class RegularPaymentStatement extends PaymentStatement {
      */
     @NotNull
     @Column(name = "PAYMENT_INTERVAL")
+    @Getter(AccessLevel.PUBLIC)
+    @Setter(AccessLevel.PUBLIC)
     private PaymentInterval interval;
     
     
@@ -52,70 +66,114 @@ public class RegularPaymentStatement extends PaymentStatement {
     @NotNull
     @Column(name = "START_DATE")
     @Temporal(TemporalType.DATE)
+    @Getter(AccessLevel.PUBLIC)
     private Date startDate;
     
     
-    // --------------- Protected constructors ---------------
+    // --------------- Private constructors ---------------
     
     
     /**
-     * Creates a new instance of {@link RegularPaymentStatement}.
-     */
-    protected RegularPaymentStatement() {
-        super();
-    }
-    
-    
-    // --------------- Public getters and setters ---------------
-
-    
-    /**
-     * Gets the end date of the regular payment.
+     * Creates a new instance of {@link RegularPaymentStatement} using the 
+     * specified start date, end date and payment interval.
      * 
-     * @return the date when the regular payment will end.
+     * @param   moneyAmount         the monetary value of the payment that 
+     *                              consists of the amount and the currency type.
+     * @param   reason              the reason for the payment.
+     * @param   recipientAccount    the account of the recipient of the payment.
+     * @param   senderAccount       the account of the sender of the payment.
+     * @param   endDate             the end date of the regular payment.
+     * @param   startDate           the start date of the regular payment.
+     * @param   interval            the interval in which the payment will be 
+     *                              made.
      */
-    public Date getEndDate() {
-        return this.endDate;
-    }
-
-    
-    /**
-     * Gets the interval in which the payment will be made.
-     * 
-     * @return  the interval in which payments will be made as defined in
-     *          {@link PaymentInterval}.
-     */
-    public PaymentInterval getInterval() {
-        return this.interval;
-    }
-    
-
-    /**
-     * Gets the start date of the regular payment.
-     * 
-     * @return  the date when the regular payment starts.
-     */
-    public Date getStartDate() {
-        return this.startDate;
-    }
-
-    
-    /**
-     * Sets the end date of the regular payment.
-     * 
-     * @param endDate the date when the regular payment will end.
-     */
-    public void setEndDate(Date endDate) {
+    private RegularPaymentStatement(
+            Money moneyAmount, 
+            String reason, 
+            Account recipientAccount, 
+            Account senderAccount,
+            Date startDate, 
+            Date endDate, 
+            PaymentInterval interval) {
+        super(moneyAmount, reason, recipientAccount, senderAccount);
         this.endDate = endDate;
+        this.interval = interval;
+        this.startDate = startDate;
     }
-
+    
+    
+    // --------------- Public static methods ---------------
+    
+    
     
     /**
-     * Sets the start date of the regular payment.
-     * 
-     * @param   interval  the date when the regular payment starts.
+     * The method that builds the basis of the auto generated builder:
+     * Validates the input and creates the corresponding {@link RegularPaymentStatement}.
+     *     
+     * @param   monetaryAmount         the monetary value of the payment that 
+     *                              consists of the amount and the currency type.
+     * @param   reason              the reason for the payment.
+     * @param   recipientAccount    the account of the recipient of the payment.
+     * @param   senderAccount       the account of the sender of the payment.
+     * @param   endDate             the end date of the regular payment.
+     * @param   startDate           the start date of the regular payment.
+     * @param   interval            the interval in which the payment will be 
+     *                              made.
+     * @return  the built {@link RegularPaymentStatement}.
      */
-    public void setInterval(PaymentInterval interval) {
-        this.interval = interval;
+    @Builder(
+            builderMethodName = "createRegularPaymentStatement", 
+            builderClassName = "RegularPaymentStatementBuilder",
+            buildMethodName = "build")
+    private static RegularPaymentStatement validateAndCreateRegularPaymentStatement(
+            MonetaryAmount monetaryAmount, 
+            String reason, 
+            Account recipientAccount, 
+            Account senderAccount,
+            Date startDate, 
+            Date endDate, 
+            PaymentInterval interval) {
+        Money moneyAmount = PaymentStatement.validateStatementInputData(
+                monetaryAmount, 
+                reason, 
+                recipientAccount, 
+                senderAccount);
+        
+        if(startDate == null)
+            throw new BuilderValidationException(
+                    RegularPaymentStatement.class,
+                    "The start date can not be null.");
+        
+        if(startDate.compareTo(new Date()) < 0)
+            throw new BuilderValidationException(
+                    RegularPaymentStatement.class,
+                    "The start date can not be earlier than the current day.");
+            
+        if(endDate != null) 
+            throw new BuilderValidationException(
+                    RegularPaymentStatement.class,
+                    "The end date can not be null");
+            
+        if(endDate.compareTo(new Date()) < 0)
+            throw new BuilderValidationException(
+                    RegularPaymentStatement.class,
+                    "The end date can not be earlier than the current day.");
+        
+        if(interval == PaymentInterval.UNDEFINED) {
+            throw new BuilderValidationException(
+                    RegularPaymentStatement.class,
+                    "The payment interval of the regular payment has to be "
+                            + "defined.");
+        }
+        
+        return new RegularPaymentStatement(
+                moneyAmount, 
+                reason, 
+                recipientAccount, 
+                senderAccount,
+                startDate, 
+                endDate, 
+                interval);
     }
+
 }

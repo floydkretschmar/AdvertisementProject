@@ -36,7 +36,6 @@ import lombok.ToString;
  */
 @Entity(name = "T_PASSWORD")
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
-@EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 public class Password extends AbstractAutoGenerateKeyedEntity {
 
@@ -47,7 +46,7 @@ public class Password extends AbstractAutoGenerateKeyedEntity {
      */
     @NotNull
     @Column(name = "PASS_VALUE")
-    @Getter
+    @Getter(AccessLevel.PUBLIC)
     private String value;
     
     // --------------- Protected constructors ---------------
@@ -76,7 +75,7 @@ public class Password extends AbstractAutoGenerateKeyedEntity {
      * @return the built {@link Password}.
      */
     @Builder(
-            builderMethodName = "create", 
+            builderMethodName = "createPassword", 
             builderClassName = "PasswordBuilder",
             buildMethodName = "build")
     private static Password validateAndCreatePassword(String value) {

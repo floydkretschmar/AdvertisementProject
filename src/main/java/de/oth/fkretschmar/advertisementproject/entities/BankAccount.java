@@ -33,7 +33,6 @@ import lombok.ToString;
  */
 @Entity(name = "T_BANK_ACCOUNT")
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
-@EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 public class BankAccount extends Account {
 
@@ -45,7 +44,7 @@ public class BankAccount extends Account {
      */
     @NotNull
     @Column(name = "BIC")
-    @Getter
+    @Getter(AccessLevel.PUBLIC)
     private String bic;
 
     // --------------- Private constructors ---------------
@@ -89,7 +88,7 @@ public class BankAccount extends Account {
      * @return  the built {@link BankAccount}.
      */
     @Builder(
-            builderMethodName = "create", 
+            builderMethodName = "createBankAccount", 
             builderClassName = "BankAccountBuilder",
             buildMethodName = "build")
     private static BankAccount validateAndCreateBankAccount(

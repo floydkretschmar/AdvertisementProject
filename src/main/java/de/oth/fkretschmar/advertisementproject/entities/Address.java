@@ -36,7 +36,6 @@ import lombok.ToString;
  */
 @Entity(name = "T_ADDRESS")
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
-@EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 public class Address extends AbstractAutoGenerateKeyedEntity {
     
@@ -47,8 +46,8 @@ public class Address extends AbstractAutoGenerateKeyedEntity {
      */
     @NotNull
     @Column(name = "AREA_CODE")
-    @Getter
-    @Setter
+    @Getter(AccessLevel.PUBLIC)
+    @Setter(AccessLevel.PUBLIC)
     private String areaCode;
     
     /**
@@ -56,8 +55,8 @@ public class Address extends AbstractAutoGenerateKeyedEntity {
      */
     @NotNull
     @Column(name = "CITY")
-    @Getter
-    @Setter
+    @Getter(AccessLevel.PUBLIC)
+    @Setter(AccessLevel.PUBLIC)
     private String city;
     
     /**
@@ -65,8 +64,8 @@ public class Address extends AbstractAutoGenerateKeyedEntity {
      * found.
      */
     @Column(name = "COUNTRY")
-    @Getter
-    @Setter
+    @Getter(AccessLevel.PUBLIC)
+    @Setter(AccessLevel.PUBLIC)
     private String country;
     
     /**
@@ -75,8 +74,8 @@ public class Address extends AbstractAutoGenerateKeyedEntity {
      */
     @NotNull
     @Column(name = "STREET")
-    @Getter
-    @Setter
+    @Getter(AccessLevel.PUBLIC)
+    @Setter(AccessLevel.PUBLIC)
     private String street;
     
     
@@ -123,7 +122,7 @@ public class Address extends AbstractAutoGenerateKeyedEntity {
      * @return the built {@link Address}.
      */
     @Builder(
-            builderMethodName = "create", 
+            builderMethodName = "createAddress", 
             builderClassName = "AddressBuilder",
             buildMethodName = "build")
     private static Address validateAndCreateAddress(

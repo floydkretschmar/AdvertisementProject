@@ -19,7 +19,6 @@ package de.oth.fkretschmar.advertisementproject.entities;
 import javax.persistence.Entity;
 import lombok.AccessLevel;
 import lombok.Builder;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
@@ -30,7 +29,6 @@ import lombok.ToString;
  */
 @Entity(name = "T_PAYPAL_ACCOUNT")
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
-@EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 public class PayPalAccount extends Account {
     
@@ -70,7 +68,7 @@ public class PayPalAccount extends Account {
      * @return  the built {@link PayPalAccount}.
      */
     @Builder(
-            builderMethodName = "create", 
+            builderMethodName = "createPayPalAccount", 
             builderClassName = "PayPalAccountBuilder",
             buildMethodName = "build")
     private static PayPalAccount validateAndCreatePayPalAccount(

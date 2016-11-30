@@ -24,9 +24,10 @@ import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
-import lombok.NonNull;
 
 /**
  * Represents an entity that is keyed by a uniqe string value.
@@ -35,6 +36,7 @@ import lombok.NonNull;
  */
 @MappedSuperclass
 @RequiredArgsConstructor(access = AccessLevel.PUBLIC)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 public abstract class AbstractStringKeyedEntity 
@@ -47,8 +49,8 @@ public abstract class AbstractStringKeyedEntity
      */
     @Id
     @Column(name = "ID")
-    @NonNull
     @NotNull
+    @NonNull
     @Getter
     private String id;
     

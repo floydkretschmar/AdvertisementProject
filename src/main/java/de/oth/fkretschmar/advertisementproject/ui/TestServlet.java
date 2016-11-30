@@ -22,6 +22,7 @@ import de.oth.fkretschmar.advertisementproject.business.services.UserService;
 
 import de.oth.fkretschmar.advertisementproject.entities.Address;
 import de.oth.fkretschmar.advertisementproject.entities.BankAccount;
+import de.oth.fkretschmar.advertisementproject.entities.Password;
 import de.oth.fkretschmar.advertisementproject.entities.User;
 
 import java.io.IOException;
@@ -70,41 +71,42 @@ public class TestServlet extends HttpServlet {
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet TestServlet at " + request.getContextPath() + "</h1>");
+            
+            
 
 //            User user = this.userService.findForEMail("fkretschmar@googlemail.com");
 //            
 //            this.userService.changePassword(user, "HalloWelt".toCharArray());
             
             //this.userService.delete(user);
-//            
-//            
-//            Address address = Address.create()
-//                                .withAreaCode("95689")
-//                                .withCity("Regensburg")
-//                                .withCountry("Deutschland")
-//                                .withStreet("Dechbettener Straße 7").build();
             
-            //Password pw = userService.create("Testpassword".toCharArray());
-//            User user = User.create("fkretschmar@googlemail.com")
-//                    .withPassword(PasswordService.generate("Testpw".toCharArray()))
-//                    .withFirstName("Floyd") 
-//                    .withLastName("Kretschmar") 
-//                    .withAddress(address)
-//                    .withCompany("OptWare").build();
-//            
-//            BankAccount acc = BankAccount.create()
-//                    .iban("DE948309535956456")
-//                    .bic("GENOD43945").build();
             
-//            BankAccount acc = BankAccount.create("DE948309535956456", "GENOD43945")
-//                                .withDescription("RB").build();
-//            
-//            user.addAccount(acc);
-//            
-            BankAccount acc = BankAccount.builder().
+            Address address = Address.createAddress()
+                                .areaCode("95689")
+                                .city("Regensburg")
+                                .country("Deutschland")
+                                .street("Dechbettener Straße 7").build();
             
-//            user.addAccount(acc);
-//            this.userService.create(user);
+            User user = User.createUser()
+                    .eMailAddress("fkretschmar@googlemail.com")
+                    .password(PasswordService.generate("Testpw".toCharArray()))
+                    .firstName("Floyd") 
+                    .lastName("Kretschmar") 
+                    .address(address)
+                    .company("OptWare").build();
+            
+            BankAccount acc = BankAccount.createBankAccount()
+                    .iban("DE948309535956456")
+                    .bic("GENOD43945").build();
+            
+            user.addAccount(acc);
+            
+            acc = BankAccount.createBankAccount()
+                    .iban("DE55555555555555555555")
+                    .bic("GENOD43945").build();
+            
+            user.addAccount(acc);
+            this.userService.create(user);
 //            
 //            authService.authenticateUser(user.geteMailAddress(), "Testpw4".toCharArray());
 //            

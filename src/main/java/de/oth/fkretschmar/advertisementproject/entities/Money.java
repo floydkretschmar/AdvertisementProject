@@ -108,10 +108,10 @@ class Money implements Serializable {
      * @return the built {@link Money}.
      */
     @Builder(
-            builderMethodName = "create", 
+            builderMethodName = "createMoney", 
             builderClassName = "MoneyBuilder",
             buildMethodName = "build")
-    private static Money validateAndCreateMoney(MonetaryAmount monetaryAmount) {
+    static Money validateAndCreateMoney(MonetaryAmount monetaryAmount) {
         if(monetaryAmount == null)
             throw new BuilderValidationException(
                     Money.class, 

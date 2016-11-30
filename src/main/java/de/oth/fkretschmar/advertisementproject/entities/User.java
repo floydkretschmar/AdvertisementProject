@@ -16,13 +16,15 @@
  */
 package de.oth.fkretschmar.advertisementproject.entities;
 
-
 import de.oth.fkretschmar.advertisementproject.entities.base.AbstractStringKeyedEntity;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.NamedQueries;
@@ -30,6 +32,13 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
+
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 /**
  * Represents an user using the system.
@@ -45,6 +54,9 @@ import javax.validation.constraints.NotNull;
                     + " from T_USER USR "
                     + "where USR.id = ?1")
 })
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@NoArgsConstructor(access = AccessLevel.PACKAGE)
+@ToString(callSuper = true)
 public class User extends AbstractStringKeyedEntity {
     
     // --------------- Static constants ---------------
@@ -68,19 +80,23 @@ public class User extends AbstractStringKeyedEntity {
         inverseJoinColumns=
             @JoinColumn(name="ACCOUNT_ID", referencedColumnName="ID")
     )
-    private final Collection<Account> accounts;
+    private final Collection<Account> accounts = new ArrayList<Account>();
     
     /**
      * Stores the address of the user.
      */
     @NotNull
     @OneToOne
+    @Getter(AccessLevel.PUBLIC)
+    @Setter(AccessLevel.PUBLIC)
     private Address address;
     
     /**
      * Stores the name of the company the user is buying ads for.
      */
     @Column(name = "COMPANY")
+    @Getter(AccessLevel.PUBLIC)
+    @Setter(AccessLevel.PUBLIC)
     private String company;
     
     /**
@@ -88,6 +104,8 @@ public class User extends AbstractStringKeyedEntity {
      */
     @NotNull
     @Column(name = "FIRST_NAME")
+    @Getter(AccessLevel.PUBLIC)
+    @Setter(AccessLevel.PUBLIC)
     private String firstName;
     
     /**
@@ -95,6 +113,8 @@ public class User extends AbstractStringKeyedEntity {
      */
     @NotNull
     @Column(name = "LAST_NAME")
+    @Getter(AccessLevel.PUBLIC)
+    @Setter(AccessLevel.PUBLIC)
     private String lastName;
     
     /**
@@ -102,22 +122,12 @@ public class User extends AbstractStringKeyedEntity {
      */
     @NotNull
     @OneToOne
+    @Getter(AccessLevel.PUBLIC)
+    @Setter(AccessLevel.PUBLIC)
     private Password password;
+        
     
-    
-    // --------------- Package-private constructor ---------------
-    
-    
-    /**
-     * Creates a new instance of {@link User}.
-     */
-    User() {
-        super("");
-        this.accounts = new ArrayList<Account>();
-    }
-    
-    
-    // --------------- Protected constructor ---------------
+    // --------------- Private constructor ---------------
     
     
     /**
@@ -125,25 +135,29 @@ public class User extends AbstractStringKeyedEntity {
      * 
      * @param eMailAddress  that can be used to contact and uniquely identify a 
      *                      user.
+     * @param address       the address of the user.
+     * @param company       the name of the company the user is buying ads for.
+     * @param firstName     the first name of the user.
+     * @param lastName      the last name of the user.
+     * @param password      the current password of the user.
      */
-    protected User(String eMailAddress) {
+    private User(
+            String eMailAddress,
+            Address address, 
+            String company, 
+            String firstName,
+            String lastName,
+            Password password) {
         super(eMailAddress);
-        this.accounts = new ArrayList<Account>();
+        this.address = address;
+        this.company = company;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.password = password;
     }
     
     
     // --------------- Public getters and setters ---------------
-
-    
-    /**
-     * Gets the address information of the user.
-     * 
-     * @return  A instance of {@link Address} that contains all the address 
-     *          information of the user.
-     */
-    public Address getAddress() {
-        return this.address;
-    }
  
     
     /**
@@ -157,16 +171,6 @@ public class User extends AbstractStringKeyedEntity {
     
     
     /**
-     * Gets the name of the company the user is buying ads for.
-     * 
-     * @return  A String that contains the company name.
-     */
-    public String getCompany() {
-        return this.company;
-    }
-    
-    
-    /**
      * Gets the e-mail address of the user.
      * 
      * @return  A String that contains the e-mail address.
@@ -174,87 +178,6 @@ public class User extends AbstractStringKeyedEntity {
     public String geteMailAddress() {
         return this.getId();
     }
-
-    
-    /**
-     * Gets the first name of the user.
-     * 
-     * @return  A String that contains the first name. 
-     */
-    public String getFirstName() {
-        return this.firstName;
-    }
-
-    
-    /**
-     * Gets the last name of the user.
-     * 
-     * @return  A String that contains the last name.
-     */
-    public String getLastName() {
-        return this.lastName;
-    }
-
-    
-    /**
-     * Gets the password of the user.
-     * 
-     * @return  A {@link Password} that represents the current user password.
-     */
-    public Password getPassword() {
-        return this.password;
-    }
-
-    
-    /**
-     * Sets the address information of the user.
-     * 
-     * @param   address that contains all the address information of the user.
-     */
-    public void setAddress(Address address) {
-        this.address = address;
-    }
-
-    
-    /**
-     * Sets the name of the company the user is buying ads for.
-     * 
-     * @param company   that contains the company name.
-     */
-    public void setCompany(String company) {
-        this.company = company;
-    }
-
-    
-    /**
-     * Sets the first name of the user.
-     * 
-     * @param   firstName   that contains the first name.
-     */
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    
-    /**
-     * Sets the last name of the user.
-     * 
-     * @param   lastName    that contains the last name. 
-     */
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    
-    /**
-     * Sets the password of the user.
-     * 
-     * @param   password    that contains a new user password.
-     */
-    public void setPassword(Password password) {
-        this.password = password;
-    }   
-    
     
     // --------------- Public methods ---------------
     
@@ -304,15 +227,55 @@ public class User extends AbstractStringKeyedEntity {
     
     
     /**
-     * Creates a new instance of {@link User} using the specified 
-     * {@link UserBuilder}.
+     * The method that builds the basis of the auto generated builder:
+     * Validates the input and creates the corresponding {@link User}.
      * 
-     * @param   eMailAddress    the email address that can be used to contact 
-     *                          and uniquely identify the user that is being 
-     *                          built.
-     * @return  the user builder to create the {@link User} with.
+     * @param eMailAddress  that can be used to contact and uniquely identify a 
+     *                      user.
+     * @param address       the address of the user.
+     * @param company       the name of the company the user is buying ads for.
+     * @param firstName     the first name of the user.
+     * @param lastName      the last name of the user.
+     * @param password      the current password of the user.
+     * @return  the built {@link User}.
      */
-    public static UserBuilder create(String eMailAddress) {
-        return UserBuilder.create(eMailAddress);
+    @Builder(
+            builderMethodName = "createUser", 
+            builderClassName = "UserBuilder",
+            buildMethodName = "build")
+    private static User validateAndCreateUser(
+            String eMailAddress,
+            Address address, 
+            String company, 
+            String firstName,
+            String lastName,
+            Password password) {
+        if(address == null)
+            throw new BuilderValidationException(
+                    User.class,
+                    "The address can not be null.");
+        
+        if(firstName == null || firstName.isEmpty())
+            throw new BuilderValidationException(
+                    User.class,
+                    "The first name can not be null or empty.");
+        
+        if(lastName == null || lastName.isEmpty())
+            throw new BuilderValidationException(
+                    User.class,
+                    "The first name can not be null or empty.");
+        
+        if(password == null)
+            throw new BuilderValidationException(
+                    User.class,
+                    "The password can not be null.");
+        
+        return new User(
+                eMailAddress,
+                address,
+                company,
+                firstName,
+                lastName,
+                password);
     }
 }

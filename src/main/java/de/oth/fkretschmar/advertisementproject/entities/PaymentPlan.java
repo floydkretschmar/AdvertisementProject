@@ -17,11 +17,13 @@
 package de.oth.fkretschmar.advertisementproject.entities;
 
 import de.oth.fkretschmar.advertisementproject.entities.base.AbstractAutoGenerateKeyedEntity;
+
 import javax.money.MonetaryAmount;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -36,7 +38,6 @@ import lombok.ToString;
  */
 @Entity(name = "T_PAYMENT_PLAN")
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
-@EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 public class PaymentPlan extends AbstractAutoGenerateKeyedEntity {
     
@@ -54,8 +55,8 @@ public class PaymentPlan extends AbstractAutoGenerateKeyedEntity {
      */
     @Column(name = "TYPE")
     @Enumerated(EnumType.STRING)
-    @Getter
-    @Setter
+    @Getter(AccessLevel.PUBLIC)
+    @Setter(AccessLevel.PUBLIC)
     private PaymentPlanType type;
     
     
@@ -113,13 +114,13 @@ public class PaymentPlan extends AbstractAutoGenerateKeyedEntity {
      * @return  the built {@link PaymentPlan}.
      */
     @Builder(
-            builderMethodName = "create", 
+            builderMethodName = "createPaymentPlan", 
             builderClassName = "PaymentPlanBuilder",
             buildMethodName = "build")
     private static PaymentPlan validateAndCreatePaymentPlan(
             MonetaryAmount monetaryAmount, 
             PaymentPlanType type) {
-        Money moneyAmount = Money.create()
+        Money moneyAmount = Money.createMoney()
                 .monetaryAmount(monetaryAmount).build();
         
         if(type == PaymentPlanType.UNDEFINED)

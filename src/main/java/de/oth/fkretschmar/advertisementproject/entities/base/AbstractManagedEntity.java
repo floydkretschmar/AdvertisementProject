@@ -42,8 +42,9 @@ import lombok.ToString;
  * @author  fkre    Floyd Kretschmar
  */
 @MappedSuperclass
-@NoArgsConstructor(access = AccessLevel.PUBLIC)
-@EqualsAndHashCode(callSuper = true)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@EqualsAndHashCode(
+        callSuper = true, exclude={"generationDate", "modificationDate"})
 @ToString(callSuper = true)
 abstract class AbstractManagedEntity<T> extends AbstractEntity<T> {
 

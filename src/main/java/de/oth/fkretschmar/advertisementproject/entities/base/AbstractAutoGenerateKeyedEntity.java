@@ -35,7 +35,7 @@ import lombok.ToString;
  * @author  fkre  Floyd Kretschmar
  */
 @MappedSuperclass
-@NoArgsConstructor(access = AccessLevel.PUBLIC)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 public abstract class AbstractAutoGenerateKeyedEntity 

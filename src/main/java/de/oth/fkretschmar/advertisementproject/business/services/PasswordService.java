@@ -87,7 +87,7 @@ public class PasswordService implements Serializable {
         String valueString = PasswordService.convertToHex(salt) + ":"
                 + PasswordService.convertToHex(value);
         
-        return Password.create().value(valueString).build();
+        return Password.createPassword().value(valueString).build();
     }
     
     

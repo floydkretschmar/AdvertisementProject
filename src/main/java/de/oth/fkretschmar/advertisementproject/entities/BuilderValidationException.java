@@ -24,7 +24,7 @@ package de.oth.fkretschmar.advertisementproject.entities;
 public class BuilderValidationException extends RuntimeException {
 
     /**
-     * Creates an instance of {@link EntityBuilderValidationException} using the 
+     * Creates an instance of {@link BuilderValidationException} using the 
      * specified detail message.
      *
      * @param   <T>             the type of the builder in which the exception

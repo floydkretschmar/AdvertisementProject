@@ -34,7 +34,6 @@ import lombok.ToString;
 @Entity(name = "T_ACCOUNT")
 @Inheritance(strategy = InheritanceType.JOINED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 public abstract class Account extends AbstractStringKeyedEntity {   
     
