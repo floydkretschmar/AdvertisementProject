@@ -61,6 +61,11 @@
             <version>7.0</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>net.bootsfaces</groupId>
+            <artifactId>bootsfaces</artifactId>
+            <version>0.9.1</version>
+        </dependency>
     </dependencies>
 
     <build>
