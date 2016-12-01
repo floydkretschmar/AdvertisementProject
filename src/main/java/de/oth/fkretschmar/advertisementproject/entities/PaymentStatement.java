@@ -27,6 +27,7 @@ import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -42,6 +43,7 @@ import lombok.ToString;
 @Entity(name = "T_PAYMENT")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString(callSuper = true)
 public class PaymentStatement extends AbstractAutoGenerateKeyedEntity {
     
@@ -79,31 +81,6 @@ public class PaymentStatement extends AbstractAutoGenerateKeyedEntity {
     @Getter(AccessLevel.PUBLIC)
     @Setter(AccessLevel.PUBLIC)
     private Account senderAccount;
-    
-    // --------------- Private constructors ---------------
-    
-    /**
-     * Creates a new instance of {@link PaymentStatement} using the specified
-     * money amount, reason, recipient and sender.
-     * 
-     * @param   moneyAmount         the monetary value of the payment that 
-     *                              consists of the amount and the currency type.
-     * @param   reason              the reason for the payment.
-     * @param   recipientAccount    the account of the recipient of the payment.
-     * @param   senderAccount       the account of the sender of the payment.
-     */
-    protected PaymentStatement(
-            Money moneyAmount, 
-            String reason, 
-            Account recipientAccount, 
-            Account senderAccount) {
-        super();
-        this.moneyAmount = moneyAmount;
-        this.reason = reason;
-        this.recipientAccount = recipientAccount;
-        this.senderAccount = senderAccount;
-    }
-
     
     // --------------- Public getters and setters ---------------
 

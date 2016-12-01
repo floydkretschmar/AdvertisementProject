@@ -25,6 +25,7 @@ import java.math.BigInteger;
 import java.util.Arrays;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
+import javax.transaction.Transactional;
 
 /**
  * The service that offers functionality relatetd to the generation and 
@@ -53,6 +54,7 @@ public class PasswordService implements Serializable {
      * @param   password    the password that will be saved.
      * @return              the saved password.
      */
+    @Transactional
     public Password create(Password password) {
         return this.passwordRepository.persist(password);
     }
@@ -63,6 +65,7 @@ public class PasswordService implements Serializable {
      * 
      * @param   password    that will be deleted.
      */
+    @Transactional
     public void delete(Password password) {
         this.passwordRepository.remove(password);
     }

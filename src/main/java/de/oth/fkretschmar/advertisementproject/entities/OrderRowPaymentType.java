@@ -20,7 +20,7 @@ package de.oth.fkretschmar.advertisementproject.entities;
  *
  * @author fkre
  */
-public enum PaymentPlanType {
+public enum OrderRowPaymentType {
     
     // --------------- Enum fields ---------------
     

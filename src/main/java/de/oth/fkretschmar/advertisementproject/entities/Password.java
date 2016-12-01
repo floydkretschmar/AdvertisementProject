@@ -23,8 +23,8 @@ import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
 
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -36,6 +36,7 @@ import lombok.ToString;
  */
 @Entity(name = "T_PASSWORD")
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @ToString(callSuper = true)
 public class Password extends AbstractAutoGenerateKeyedEntity {
 
@@ -48,20 +49,6 @@ public class Password extends AbstractAutoGenerateKeyedEntity {
     @Column(name = "PASS_VALUE")
     @Getter(AccessLevel.PUBLIC)
     private String value;
-    
-    // --------------- Protected constructors ---------------
-    
-    /**
-     * Creates an instance of {@link Password} using the specified unsafe
-     * password value.
-     *
-     * @param   value   that contains the user specified password in an unsafe
-     *                  mannor.
-     */
-    private Password(String value) {
-        super();
-        this.value = value;
-    }
     
     // --------------- Private static methods ---------------
     

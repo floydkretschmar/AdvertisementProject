@@ -16,17 +16,28 @@
  */
 package de.oth.fkretschmar.advertisementproject.ui;
 
+import de.oth.fkretschmar.advertisementproject.business.SerializableRenderedImage;
+import de.oth.fkretschmar.advertisementproject.business.services.AdvertisementService;
 import de.oth.fkretschmar.advertisementproject.business.services.ApplicationService;
 import de.oth.fkretschmar.advertisementproject.business.services.PasswordService;
 import de.oth.fkretschmar.advertisementproject.business.services.UserService;
+import de.oth.fkretschmar.advertisementproject.entities.Account;
 
 import de.oth.fkretschmar.advertisementproject.entities.Address;
+import de.oth.fkretschmar.advertisementproject.entities.Advertisement;
+import de.oth.fkretschmar.advertisementproject.entities.AdvertisementContentType;
 import de.oth.fkretschmar.advertisementproject.entities.BankAccount;
 import de.oth.fkretschmar.advertisementproject.entities.Password;
+import de.oth.fkretschmar.advertisementproject.entities.TargetContext;
 import de.oth.fkretschmar.advertisementproject.entities.User;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.File;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URL;
+import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -49,6 +60,9 @@ public class TestServlet extends HttpServlet {
     
     @Inject
     private PasswordService passService;
+    
+    @Inject
+    private AdvertisementService adService;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -72,7 +86,27 @@ public class TestServlet extends HttpServlet {
             out.println("<body>");
             out.println("<h1>Servlet TestServlet at " + request.getContextPath() + "</h1>");
             
+            File file = new File("E:\\Augen_einer_Katze.jpg");
             
+            SerializableRenderedImage image = new SerializableRenderedImage(ImageIO.read(file));
+            
+            Advertisement ad = Advertisement.createAdvertisement()
+                        .content(image)
+                        .contentType(AdvertisementContentType.IMAGE)
+                        .targetUrl(new URL("https://www.google.de")).build();
+            
+            ad = this.adService.create(ad);
+            
+            Advertisement ad2 = this.adService.find(ad.getId());
+            
+            ad = Advertisement.createAdvertisement()
+                        .content(new URL("https://upload.wikimedia.org/wikipedia/commons/7/7b/Gr%C3%BCne_Augen_einer_Katze.JPG"))
+                        .contentType(AdvertisementContentType.IMAGE_URL)
+                        .targetUrl(new URL("https://www.google.de")).build();
+            
+            ad = this.adService.create(ad);
+            
+            ad2 = this.adService.find(ad.getId());
 
 //            User user = this.userService.findForEMail("fkretschmar@googlemail.com");
 //            
@@ -80,33 +114,35 @@ public class TestServlet extends HttpServlet {
             
             //this.userService.delete(user);
             
+//            
+//            Address address = Address.createAddress()
+//                                .areaCode("95689")
+//                                .city("Regensburg")
+//                                .country("Deutschland")
+//                                .street("Dechbettener Straße 7").build();
+//            
+//            User user = User.createUser()
+//                    .eMailAddress("fkretschmar@googlemail.com")
+//                    .password(PasswordService.generate("Testpw".toCharArray()))
+//                    .firstName("Floyd") 
+//                    .lastName("Kretschmar") 
+//                    .address(address)
+//                    .company("OptWare").build();
+//            
+//            Account acc = BankAccount.createBankAccount()
+//                    .iban("DE948309535956456")
+//                    .bic("GENOD43945").build();
+//            
+//            
+//            user.addAccount(acc);
+//            
+//            acc = BankAccount.createBankAccount()
+//                    .iban("DE55555555555555555555")
+//                    .bic("GENOD43945").build();
+//            
+//            user.addAccount(acc);
+//            this.userService.create(user);
             
-            Address address = Address.createAddress()
-                                .areaCode("95689")
-                                .city("Regensburg")
-                                .country("Deutschland")
-                                .street("Dechbettener Straße 7").build();
-            
-            User user = User.createUser()
-                    .eMailAddress("fkretschmar@googlemail.com")
-                    .password(PasswordService.generate("Testpw".toCharArray()))
-                    .firstName("Floyd") 
-                    .lastName("Kretschmar") 
-                    .address(address)
-                    .company("OptWare").build();
-            
-            BankAccount acc = BankAccount.createBankAccount()
-                    .iban("DE948309535956456")
-                    .bic("GENOD43945").build();
-            
-            user.addAccount(acc);
-            
-            acc = BankAccount.createBankAccount()
-                    .iban("DE55555555555555555555")
-                    .bic("GENOD43945").build();
-            
-            user.addAccount(acc);
-            this.userService.create(user);
 //            
 //            authService.authenticateUser(user.geteMailAddress(), "Testpw4".toCharArray());
 //            

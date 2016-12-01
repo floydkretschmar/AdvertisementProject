@@ -22,8 +22,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -36,6 +36,7 @@ import lombok.ToString;
  */
 @Entity(name = "T_ADDRESS")
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @ToString(callSuper = true)
 public class Address extends AbstractAutoGenerateKeyedEntity {
     
@@ -77,34 +78,7 @@ public class Address extends AbstractAutoGenerateKeyedEntity {
     @Getter(AccessLevel.PUBLIC)
     @Setter(AccessLevel.PUBLIC)
     private String street;
-    
-    
-    // --------------- Private constructors ---------------
-    
-    /**
-     * Creates a new instance of {@link Address} using the specified area code,
-     * city, country and street.
-     * 
-     * @param areaCode      the textual representation of the area code.
-     * @param city          the name of the city in which the street can be 
-     *                      found.
-     * @param countrythe    text that represents the country in which the 
-     *                      address can be found.
-     * @param street        the textual representation of the street including 
-     *                      the street number.
-     */
-    private Address(
-            String areaCode, 
-            String city, 
-            String country, 
-            String street) {
-        super();
-        this.areaCode = areaCode;
-        this.city = city;
-        this.country = country;
-        this.street = street;
-    }
-    
+        
     // --------------- Private static methods ---------------
     
     
