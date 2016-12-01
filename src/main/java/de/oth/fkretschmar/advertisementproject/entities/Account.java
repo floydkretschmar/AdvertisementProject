@@ -18,11 +18,12 @@ package de.oth.fkretschmar.advertisementproject.entities;
 
 
 import de.oth.fkretschmar.advertisementproject.entities.base.AbstractStringKeyedEntity;
+
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+
 import lombok.AccessLevel;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 

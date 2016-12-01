@@ -16,7 +16,6 @@
  */
 package de.oth.fkretschmar.advertisementproject.entities;
 
-import de.oth.fkretschmar.advertisementproject.entities.base.AbstractStringKeyedEntity;
 import java.io.Serializable;
 import java.util.EnumSet;
 import java.util.Set;
@@ -24,7 +23,6 @@ import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Embeddable;
-import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
@@ -58,8 +56,8 @@ public class TargetContext implements Serializable {
     @Enumerated(EnumType.STRING)
     @CollectionTable(
             name = "T_TARGET_AGE_GROUP", 
-            joinColumns = @JoinColumn(name = "ID"))
-    @Column(name = "TARGET_AGE_GROUPS", nullable = false)
+            joinColumns = @JoinColumn(name = "ORDER_ID", referencedColumnName = "ID"))
+    @Column(name = "TARGET_AGE_GROUP", nullable = false)
     @Getter(AccessLevel.PUBLIC)
     @Setter(AccessLevel.PUBLIC)
     private Set<TargetAge> age;
@@ -71,8 +69,8 @@ public class TargetContext implements Serializable {
     @Enumerated(EnumType.STRING)
     @CollectionTable(
             name = "T_TARGET_GENDER_GROUP", 
-            joinColumns = @JoinColumn(name = "ID"))
-    @Column(name = "TARGET_GENDER_GROUPS", nullable = false)
+            joinColumns = @JoinColumn(name = "ORDER_ID", referencedColumnName = "ID"))
+    @Column(name = "TARGET_GENDER_GROUP", nullable = false)
     @Getter(AccessLevel.PUBLIC)
     @Setter(AccessLevel.PUBLIC)
     private Set<TargetGender> gender;
@@ -84,8 +82,8 @@ public class TargetContext implements Serializable {
     @Enumerated(EnumType.STRING)
     @CollectionTable(
             name = "T_TARGET_MARTIAL_STATUS_GROUP", 
-            joinColumns = @JoinColumn(name = "ID"))
-    @Column(name = "TARGET_AGE_GROUPS", nullable = false)
+            joinColumns = @JoinColumn(name = "ORDER_ID", referencedColumnName = "ID"))
+    @Column(name = "TARGET_AGE_GROUP", nullable = false)
     @Getter(AccessLevel.PUBLIC)
     @Setter(AccessLevel.PUBLIC)
     private Set<TargetMaritalStatus> maritalStatus;
@@ -97,7 +95,7 @@ public class TargetContext implements Serializable {
     @Enumerated(EnumType.STRING)
     @CollectionTable(
             name = "T_TARGET_PURPOSE_OF_USE_GROUP", 
-            joinColumns = @JoinColumn(name = "ID"))
+            joinColumns = @JoinColumn(name = "ORDER_ID", referencedColumnName = "ID"))
     @Column(name = "TARGET_PURPOSE_OF_USE_GROUP", nullable = false)
     @Getter(AccessLevel.PUBLIC)
     @Setter(AccessLevel.PUBLIC)
