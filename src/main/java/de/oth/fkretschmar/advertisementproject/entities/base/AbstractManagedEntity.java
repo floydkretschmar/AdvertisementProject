@@ -16,8 +16,10 @@
  */
 package de.oth.fkretschmar.advertisementproject.entities.base;
 
-import java.util.Date;
+
+import java.time.LocalDateTime;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.PostLoad;
 import javax.persistence.PostPersist;
@@ -26,8 +28,6 @@ import javax.persistence.PostUpdate;
 import javax.persistence.PrePersist;
 import javax.persistence.PreRemove;
 import javax.persistence.PreUpdate;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
@@ -51,22 +51,22 @@ abstract class AbstractManagedEntity<T> extends AbstractEntity<T> {
     // --------------- Private fields ---------------
     
     /**
-     * Stores the generation timestamp of the entity.
+     * Stores the generation date of the entity.
      */
     @Column(name = "GENDATE",
             insertable = true,
             updatable = false)
-    @Temporal(value = TemporalType.TIMESTAMP)
     @Getter
-    private Date generationDate;
+    @Convert(converter = LocalDateTimeAttributeConverter.class)
+    private LocalDateTime generationDate;
 
     /**
      * Stores the last modification timestamp of the entity.
      */
     @Column(name = "MODDATE")
-    @Temporal(value = TemporalType.TIMESTAMP)
     @Getter
-    private Date modificationDate;
+    @Convert(converter = LocalDateTimeAttributeConverter.class)
+    private LocalDateTime modificationDate;
 
     // --------------- Protected methods ---------------
     /**
@@ -156,7 +156,7 @@ abstract class AbstractManagedEntity<T> extends AbstractEntity<T> {
      */
     @PrePersist
     private void onPrePersist() {
-        this.generationDate = new Date();
+        this.generationDate = LocalDateTime.now();
         this.modificationDate = this.generationDate;
 
         this.prePersist();
@@ -175,8 +175,7 @@ abstract class AbstractManagedEntity<T> extends AbstractEntity<T> {
      */
     @PreUpdate
     private void onPreUpdate() {
-        this.modificationDate = new Date();
-
+        this.modificationDate = LocalDateTime.now();
         this.preUpdate();
     }
 }

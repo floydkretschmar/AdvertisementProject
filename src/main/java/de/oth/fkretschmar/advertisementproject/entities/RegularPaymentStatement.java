@@ -16,12 +16,13 @@
  */
 package de.oth.fkretschmar.advertisementproject.entities;
 
-import java.util.Date;
+
+import de.oth.fkretschmar.advertisementproject.entities.base.LocalDateAttributeConverter;
+import java.time.LocalDate;
 import javax.money.MonetaryAmount;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
 import lombok.AccessLevel;
@@ -44,10 +45,10 @@ public class RegularPaymentStatement extends PaymentStatement {
      * Stores the end date of the regular payment.
      */
     @Column(name = "END_DATE")
-    @Temporal(TemporalType.DATE)
     @Getter(AccessLevel.PUBLIC)
     @Setter(AccessLevel.PUBLIC)
-    private Date endDate;
+    @Convert(converter = LocalDateAttributeConverter.class)
+    private LocalDate endDate;
     
     
     /**
@@ -65,9 +66,9 @@ public class RegularPaymentStatement extends PaymentStatement {
      */
     @NotNull
     @Column(name = "START_DATE")
-    @Temporal(TemporalType.DATE)
     @Getter(AccessLevel.PUBLIC)
-    private Date startDate;
+    @Convert(converter = LocalDateAttributeConverter.class)
+    private LocalDate startDate;
     
     
     // --------------- Private constructors ---------------
@@ -92,8 +93,8 @@ public class RegularPaymentStatement extends PaymentStatement {
             String reason, 
             Account recipientAccount, 
             Account senderAccount,
-            Date startDate, 
-            Date endDate, 
+            LocalDate startDate, 
+            LocalDate endDate, 
             PaymentInterval interval) {
         super(moneyAmount, reason, recipientAccount, senderAccount);
         this.endDate = endDate;
@@ -130,8 +131,8 @@ public class RegularPaymentStatement extends PaymentStatement {
             String reason, 
             Account recipientAccount, 
             Account senderAccount,
-            Date startDate, 
-            Date endDate, 
+            LocalDate startDate, 
+            LocalDate endDate, 
             PaymentInterval interval) {
         Money moneyAmount = PaymentStatement.validateStatementInputData(
                 monetaryAmount, 
@@ -144,17 +145,17 @@ public class RegularPaymentStatement extends PaymentStatement {
                     RegularPaymentStatement.class,
                     "The start date can not be null.");
         
-        if(startDate.compareTo(new Date()) < 0)
+        if(startDate.isBefore(LocalDate.now()))
             throw new BuilderValidationException(
                     RegularPaymentStatement.class,
                     "The start date can not be earlier than the current day.");
             
-        if(endDate != null) 
+        if(endDate == null) 
             throw new BuilderValidationException(
                     RegularPaymentStatement.class,
                     "The end date can not be null");
             
-        if(endDate.compareTo(new Date()) < 0)
+        if(endDate.isBefore(LocalDate.now()))
             throw new BuilderValidationException(
                     RegularPaymentStatement.class,
                     "The end date can not be earlier than the current day.");

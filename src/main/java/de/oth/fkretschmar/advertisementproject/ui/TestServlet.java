@@ -86,7 +86,7 @@ public class TestServlet extends HttpServlet {
             out.println("<body>");
             out.println("<h1>Servlet TestServlet at " + request.getContextPath() + "</h1>");
             
-            File file = new File("E:\\Augen_einer_Katze.jpg");
+            File file = new File("/Users/fkre/BAUM_GUT.JPG");
             
             SerializableRenderedImage image = new SerializableRenderedImage(ImageIO.read(file));
             
@@ -102,6 +102,15 @@ public class TestServlet extends HttpServlet {
             ad = Advertisement.createAdvertisement()
                         .content(new URL("https://upload.wikimedia.org/wikipedia/commons/7/7b/Gr%C3%BCne_Augen_einer_Katze.JPG"))
                         .contentType(AdvertisementContentType.IMAGE_URL)
+                        .targetUrl(new URL("https://www.google.de")).build();
+            
+            ad = this.adService.create(ad);
+            
+            ad2 = this.adService.find(ad.getId());
+            
+            ad = Advertisement.createAdvertisement()
+                        .content("Das ist mein Werbetext")
+                        .contentType(AdvertisementContentType.TEXT)
                         .targetUrl(new URL("https://www.google.de")).build();
             
             ad = this.adService.create(ad);
