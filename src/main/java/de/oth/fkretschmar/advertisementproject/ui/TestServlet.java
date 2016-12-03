@@ -17,16 +17,17 @@
 package de.oth.fkretschmar.advertisementproject.ui;
 
 import de.oth.fkretschmar.advertisementproject.business.SerializableRenderedImage;
-import de.oth.fkretschmar.advertisementproject.business.services.AdvertisementService;
+import de.oth.fkretschmar.advertisementproject.business.services.ContentService;
 import de.oth.fkretschmar.advertisementproject.business.services.ApplicationService;
 import de.oth.fkretschmar.advertisementproject.business.services.PasswordService;
 import de.oth.fkretschmar.advertisementproject.business.services.UserService;
 import de.oth.fkretschmar.advertisementproject.entities.Account;
 
 import de.oth.fkretschmar.advertisementproject.entities.Address;
-import de.oth.fkretschmar.advertisementproject.entities.Advertisement;
-import de.oth.fkretschmar.advertisementproject.entities.AdvertisementContentType;
+import de.oth.fkretschmar.advertisementproject.entities.Content;
+import de.oth.fkretschmar.advertisementproject.entities.ContentType;
 import de.oth.fkretschmar.advertisementproject.entities.BankAccount;
+import de.oth.fkretschmar.advertisementproject.entities.BuilderValidationException;
 import de.oth.fkretschmar.advertisementproject.entities.Password;
 import de.oth.fkretschmar.advertisementproject.entities.TargetContext;
 import de.oth.fkretschmar.advertisementproject.entities.User;
@@ -62,7 +63,7 @@ public class TestServlet extends HttpServlet {
     private PasswordService passService;
     
     @Inject
-    private AdvertisementService adService;
+    private ContentService adService;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -86,36 +87,41 @@ public class TestServlet extends HttpServlet {
             out.println("<body>");
             out.println("<h1>Servlet TestServlet at " + request.getContextPath() + "</h1>");
             
+            try {
             File file = new File("/Users/fkre/BAUM_GUT.JPG");
             
             SerializableRenderedImage image = new SerializableRenderedImage(ImageIO.read(file));
             
-            Advertisement ad = Advertisement.createAdvertisement()
-                        .content(image)
-                        .contentType(AdvertisementContentType.IMAGE)
+            Content ad = Content.createContent()
+                        .value(image)
+                        .contentType(ContentType.IMAGE)
                         .targetUrl(new URL("https://www.google.de")).build();
             
             ad = this.adService.create(ad);
             
-            Advertisement ad2 = this.adService.find(ad.getId());
+            //Content ad2 = this.adService.find(ad.getId());
             
-            ad = Advertisement.createAdvertisement()
-                        .content(new URL("https://upload.wikimedia.org/wikipedia/commons/7/7b/Gr%C3%BCne_Augen_einer_Katze.JPG"))
-                        .contentType(AdvertisementContentType.IMAGE_URL)
+            ad = Content.createContent()
+                        .value(new URL("https://upload.wikimedia.org/wikipedia/commons/7/7b/Gr%C3%BCne_Augen_einer_Katze.JPG"))
+                        .contentType(ContentType.IMAGE_URL)
                         .targetUrl(new URL("https://www.google.de")).build();
             
             ad = this.adService.create(ad);
             
-            ad2 = this.adService.find(ad.getId());
+            //ad2 = this.adService.find(ad.getId());
             
-            ad = Advertisement.createAdvertisement()
-                        .content("Das ist mein Werbetext")
-                        .contentType(AdvertisementContentType.TEXT)
+            ad = Content.createContent()
+                        .value("Das ist mein Werbetext")
+                        .contentType(ContentType.TEXT)
                         .targetUrl(new URL("https://www.google.de")).build();
             
             ad = this.adService.create(ad);
             
-            ad2 = this.adService.find(ad.getId());
+            //ad2 = this.adService.find(ad.getId());
+            }
+            catch (BuilderValidationException e) {
+                
+            }
 
 //            User user = this.userService.findForEMail("fkretschmar@googlemail.com");
 //            

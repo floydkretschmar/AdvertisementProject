@@ -27,6 +27,8 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 /**
+ * Represents the specific implementation of {@link Account} to interact with 
+ * banks.
  *
  * @author fkre
  */
@@ -43,7 +45,7 @@ public class BankAccount extends Account {
      */
     @NotNull
     @Column(name = "BIC")
-    @Getter(AccessLevel.PUBLIC)
+    @Getter
     private String bic;
 
     // --------------- Private constructors ---------------
@@ -85,14 +87,17 @@ public class BankAccount extends Account {
      * @param   bic     the BIC identifying the banking institution where the 
      *                  account that is being built is registered.
      * @return  the built {@link BankAccount}.
+     * @throws  BuilderValidationException  that indicates that one or more of 
+     *                                      of the given creation parameters are
+     *                                      invalid.
      */
     @Builder(
             builderMethodName = "createBankAccount", 
             builderClassName = "BankAccountBuilder",
-            buildMethodName = "build")
+            buildMethodName = "build") 
     private static BankAccount validateAndCreateBankAccount(
             String iban, 
-            String bic) {
+            String bic) throws BuilderValidationException {
         if(iban == null || iban.isEmpty())
             throw new BuilderValidationException(
                     BankAccount.class,

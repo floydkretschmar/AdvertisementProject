@@ -44,14 +44,14 @@ class Money implements Serializable {
      * Stores the payment amount in the smallest possible unit of the currency.
      */
     @NotNull
-    @Column(name = "MONEY_AMOUNT")
+    @Column(name = "MONEY_AMOUNT", nullable = false)
     private long amount;
     
     /**
      * Stores the currency type of the payment amount.
      */
     @NotNull
-    @Column(name = "MONEY_CURRENCY")
+    @Column(name = "MONEY_CURRENCY", nullable = false)
     private String currencyCode;
     
         
@@ -106,12 +106,16 @@ class Money implements Serializable {
      * 
      * @param   monetaryAmount   the complex money representation.
      * @return the built {@link Money}.
+     * @throws  BuilderValidationException  that indicates that one or more of 
+     *                                      of the given creation parameters are
+     *                                      invalid.
      */
     @Builder(
             builderMethodName = "createMoney", 
             builderClassName = "MoneyBuilder",
             buildMethodName = "build")
-    static Money validateAndCreateMoney(MonetaryAmount monetaryAmount) {
+    static Money validateAndCreateMoney(MonetaryAmount monetaryAmount) 
+            throws BuilderValidationException {
         if(monetaryAmount == null)
             throw new BuilderValidationException(
                     Money.class, 

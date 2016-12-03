@@ -16,66 +16,54 @@
  */
 package de.oth.fkretschmar.advertisementproject.business.services;
 
-import de.oth.fkretschmar.advertisementproject.business.HashHelper;
-import de.oth.fkretschmar.advertisementproject.business.repositories.AdvertisementRepository;
-import de.oth.fkretschmar.advertisementproject.entities.Advertisement;
+import de.oth.fkretschmar.advertisementproject.business.repositories.ContentRepository;
+import de.oth.fkretschmar.advertisementproject.entities.Content;
 import java.io.Serializable;
 
-import java.math.BigInteger;
-import java.util.Arrays;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 
 /**
  * The service that offers functionality relatetd to the generation and 
- * management of {@link Advertisement} instances.
+ * management of {@link Content} instances.
  *
  * @author fkre
  */
 @RequestScoped
-public class AdvertisementService implements Serializable {
+public class ContentService implements Serializable {
 
     // --------------- Private fields ---------------
 
     /**
-     * Stores the repository used to manage {@link Advertisement} entites.
+     * Stores the repository used to manage {@link Content} entites.
      */
     @Inject
-    AdvertisementRepository advertisementRepository;
+    ContentRepository contentRepository;
     
 
     // --------------- Public methods ---------------
     
     
     /**
-     * Creates the specified {@link Advertisement}.
+     * Creates the specified {@link Content}.
      * 
-     * @param   advertisement   the advertisement that will be saved.
-     * @return                  the saved advertisement.
+     * @param   content   the content that will be saved.
+     * @return            the saved content.
      */
     @Transactional
-    public Advertisement create(Advertisement advertisement) {
-        return this.advertisementRepository.persist(advertisement);
+    public Content create(Content content) {
+        return this.contentRepository.persist(content);
     }
     
     
     /**
-     * Deletes the specified {@link Advertisement} from the database.
+     * Deletes the specified {@link Content} from the database.
      * 
-     * @param   advertisement    that will be deleted.
+     * @param   content    that will be deleted.
      */
     @Transactional
-    public void delete(Advertisement advertisement) {
-        this.advertisementRepository.remove(advertisement);
-    }
-    
-    
-    /**
-     * @param   id 
-     */
-    @Transactional
-    public Advertisement find(long id) {
-        return this.advertisementRepository.find(id);
+    public void delete(Content content) {
+        this.contentRepository.remove(content);
     }
 }

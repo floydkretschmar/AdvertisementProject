@@ -20,7 +20,7 @@ package de.oth.fkretschmar.advertisementproject.entities;
  *
  * @author Floyd
  */
-public class AdvertisementDataCorrupted extends RuntimeException {
+public class ContentDataCorruptedException extends RuntimeException {
 
     /**
      * Constructs an instance of <code>AdvertisementDataCorrupted</code> using
@@ -28,7 +28,7 @@ public class AdvertisementDataCorrupted extends RuntimeException {
      *
      * @param msg the detail message.
      */
-    public AdvertisementDataCorrupted(String msg) {
+    public ContentDataCorruptedException(String msg) {
         super(msg);
     }
 }

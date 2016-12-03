@@ -48,8 +48,8 @@ public class Address extends AbstractAutoGenerateKeyedEntity {
      */
     @NotNull
     @Column(name = "AREA_CODE")
-    @Getter(AccessLevel.PUBLIC)
-    @Setter(AccessLevel.PUBLIC)
+    @Getter
+    @Setter
     private String areaCode;
     
     /**
@@ -57,8 +57,8 @@ public class Address extends AbstractAutoGenerateKeyedEntity {
      */
     @NotNull
     @Column(name = "CITY")
-    @Getter(AccessLevel.PUBLIC)
-    @Setter(AccessLevel.PUBLIC)
+    @Getter
+    @Setter
     private String city;
     
     /**
@@ -66,8 +66,8 @@ public class Address extends AbstractAutoGenerateKeyedEntity {
      * found.
      */
     @Column(name = "COUNTRY")
-    @Getter(AccessLevel.PUBLIC)
-    @Setter(AccessLevel.PUBLIC)
+    @Getter
+    @Setter
     private String country;
     
     /**
@@ -76,8 +76,8 @@ public class Address extends AbstractAutoGenerateKeyedEntity {
      */
     @NotNull
     @Column(name = "STREET")
-    @Getter(AccessLevel.PUBLIC)
-    @Setter(AccessLevel.PUBLIC)
+    @Getter
+    @Setter
     private String street;
         
     // --------------- Private static methods ---------------
@@ -95,6 +95,9 @@ public class Address extends AbstractAutoGenerateKeyedEntity {
      * @param street        the textual representation of the street including 
      *                      the street number.
      * @return the built {@link Address}.
+     * @throws  BuilderValidationException  that indicates that one or more of 
+     *                                      of the given creation parameters are
+     *                                      invalid.
      */
     @Builder(
             builderMethodName = "createAddress", 
@@ -104,7 +107,7 @@ public class Address extends AbstractAutoGenerateKeyedEntity {
             String areaCode, 
             String city, 
             String country, 
-            String street) {
+            String street) throws BuilderValidationException {
         if(areaCode == null || areaCode.isEmpty())
             throw new BuilderValidationException(
                     Address.class, 

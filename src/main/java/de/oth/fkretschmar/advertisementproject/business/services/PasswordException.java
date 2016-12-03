@@ -14,38 +14,22 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.oth.fkretschmar.advertisementproject.entities;
+package de.oth.fkretschmar.advertisementproject.business.services;
 
 /**
  *
  * @author fkre
  */
-public enum OrderRowPaymentType {
-    
-    // --------------- Enum fields ---------------
+public class PasswordException extends Exception {
     
     /**
-     * Indicates that the payment will be executed every month.
+     * Constructs an instance of <code>PasswordServiceException</code> with the
+     * specified detail message.
+     *
+     * @param msg the detail message.
+     * @param cause the actual cause.
      */
-    MONTHLY,
-    
-    /**
-     * Indicates that the payment will be executed every three months.
-     */
-    QUATERLY,
-    
-    /**
-     * Indicates that there will only a singular payment.
-     */
-    SINGLE,
-    
-    /**
-     * Indicates that the type of the payment plan has not yet been defined.
-     */
-    UNDEFINED,
-    
-    /** 
-     * Indicates that the payment will be executed every year.
-     */
-    YEARLY;
+    public PasswordException(String msg, Throwable cause) {
+        super(String.format("%s: %s", PasswordService.class, msg), cause);
+    }
 }

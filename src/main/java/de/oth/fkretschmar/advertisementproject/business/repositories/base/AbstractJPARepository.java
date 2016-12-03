@@ -23,6 +23,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import lombok.AccessLevel;
+import lombok.Getter;
 
 /**
  * Represents an repository that defines the default CRUD methods when using
@@ -45,6 +47,7 @@ public abstract class AbstractJPARepository<S, T extends IEntity<S>>
      * Stores the entity manager used to persist/load/remove/modify data.
      */
     @PersistenceContext(name = AbstractJPARepository.PERSISTENCE_ID)
+    @Getter(AccessLevel.PROTECTED)
     private EntityManager entityManager;
 
     
@@ -60,19 +63,6 @@ public abstract class AbstractJPARepository<S, T extends IEntity<S>>
      */
     public AbstractJPARepository(Class<T> classType) {
         super(classType);
-    }
-    
-    
-    // --------------- Public getters ---------------
-    
-    
-    /**
-     * Gets the entity manager used to persist/load/remove/modify data.
-     * 
-     * @return  the entity manager.
-     */
-    protected EntityManager getEntityManager() {
-        return this.entityManager;
     }
     
     // --------------- Public methods ---------------

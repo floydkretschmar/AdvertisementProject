@@ -17,37 +17,36 @@
 package de.oth.fkretschmar.advertisementproject.business.repositories;
 
 import de.oth.fkretschmar.advertisementproject.business.repositories.base.AbstractJPARepository;
-import de.oth.fkretschmar.advertisementproject.entities.Advertisement;
+import de.oth.fkretschmar.advertisementproject.entities.BillItem;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * Repository that defines the default CRUD methods for an {@link Advertisement}.
- * 
- * @author  fkre    Floyd Kretschmar
+ * Repository that defines the default CRUD methods for an {@link BillItem}.
+ *
+ * @author fkre
  */
-public class AdvertisementRepository extends AbstractJPARepository<Long, Advertisement> {
+public class BillItemRepository extends AbstractJPARepository<Long, BillItem> {
     
     // --------------- Public constructors ---------------
 
     /**
-     * Creates an new instance of {@link AdvertisementRepository}.
+     * Creates an new instance of {@link BillItemRepository}.
      */
-    public AdvertisementRepository() {
-        super(Advertisement.class);
+    public BillItemRepository() {
+        super(BillItem.class);
     }
     
     // --------------- Protected methods ---------------
 
     /**
-     * Creates a set to store multiple {@link Advertisement} instances.
+     * Creates a set to store multiple {@link BillItem} instances.
      
-     * @return  A set that can store multiple {@link Advertisement} instances.
+     * @return  A set that can store multiple {@link BillItem} instances.
      */
     @Override
-    protected Collection<Advertisement> createCollection() {
-        return new ArrayList<Advertisement>();
+    protected Collection<BillItem> createCollection() {
+        return new ArrayList<BillItem>();
     }
-    
 }

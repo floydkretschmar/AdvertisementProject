@@ -66,13 +66,16 @@ public class PayPalAccount extends Account {
      * 
      * @param   eMailAddress    that is used to identify an paypal account.
      * @return  the built {@link PayPalAccount}.
+     * @throws  BuilderValidationException  that indicates that one or more of 
+     *                                      of the given creation parameters are
+     *                                      invalid.
      */
     @Builder(
             builderMethodName = "createPayPalAccount", 
             builderClassName = "PayPalAccountBuilder",
             buildMethodName = "build")
     private static PayPalAccount validateAndCreatePayPalAccount(
-            String eMailAddress) {
+            String eMailAddress) throws BuilderValidationException {
         if(eMailAddress == null || eMailAddress.isEmpty())
             throw new BuilderValidationException(
                     PayPalAccount.class,

@@ -29,7 +29,7 @@ import lombok.RequiredArgsConstructor;
  * @author Floyd
  */
 @RequiredArgsConstructor
-public enum AdvertisementContentType {
+public enum ContentType {
     
     // --------------- Enum fields ---------------
     

@@ -87,34 +87,34 @@ public class User extends AbstractStringKeyedEntity {
      */
     @NotNull
     @OneToOne
-    @Getter(AccessLevel.PUBLIC)
-    @Setter(AccessLevel.PUBLIC)
+    @Getter
+    @Setter
     private Address address;
     
     /**
      * Stores the name of the company the user is buying ads for.
      */
     @Column(name = "COMPANY")
-    @Getter(AccessLevel.PUBLIC)
-    @Setter(AccessLevel.PUBLIC)
+    @Getter
+    @Setter
     private String company;
     
     /**
      * Stores the first name of the user.
      */
     @NotNull
-    @Column(name = "FIRST_NAME")
-    @Getter(AccessLevel.PUBLIC)
-    @Setter(AccessLevel.PUBLIC)
+    @Column(name = "FIRST_NAME", nullable = false)
+    @Getter
+    @Setter
     private String firstName;
     
     /**
      * Stores the last name of the user.
      */
     @NotNull
-    @Column(name = "LAST_NAME")
-    @Getter(AccessLevel.PUBLIC)
-    @Setter(AccessLevel.PUBLIC)
+    @Column(name = "LAST_NAME", nullable = false)
+    @Getter
+    @Setter
     private String lastName;
     
     /**
@@ -122,8 +122,8 @@ public class User extends AbstractStringKeyedEntity {
      */
     @NotNull
     @OneToOne
-    @Getter(AccessLevel.PUBLIC)
-    @Setter(AccessLevel.PUBLIC)
+    @Getter
+    @Setter
     private Password password;
         
     
@@ -249,7 +249,7 @@ public class User extends AbstractStringKeyedEntity {
             String company, 
             String firstName,
             String lastName,
-            Password password) {
+            Password password) throws BuilderValidationException {
         if(address == null)
             throw new BuilderValidationException(
                     User.class,

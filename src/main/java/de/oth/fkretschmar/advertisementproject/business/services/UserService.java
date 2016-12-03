@@ -94,9 +94,12 @@ public class UserService implements Serializable {
      * @param   newPassword             that represents the new password in its
      *                                  unsafe form.
      * @return  the User whose password was changed.
+     * @throws  PasswordException       that indicates an error during the 
+     *                                  processing of passwords.
      */
     @Transactional
-    public User changePassword(User user, char[] newPassword){
+    public User changePassword(
+            User user, char[] newPassword) throws PasswordException {
         if (user == null) {
             throw new IllegalArgumentException("The password change failed: "
                     + "the user was not set.");
@@ -168,7 +171,7 @@ public class UserService implements Serializable {
         Object[] accounts = user.getAccounts().toArray();
         
         for (int i = 0; i < accounts.length; i++) {
-            if(accounts[0] instanceof Account){
+            if(accounts[i] instanceof Account){
                 user.removeAccount((Account)accounts[i]);
                 this.accountRepository.remove((Account)accounts[i]);
             }
@@ -218,8 +221,11 @@ public class UserService implements Serializable {
      *                              checked against the password of the user.
      * @return                      {@code true} if the password is valid for
      *                              the user, otherwise {@code false}.
+     * @throws  PasswordException       that indicates an error during the 
+     *                                  processing of passwords.
      */
-    public boolean validatePassword(User user, char[] validationPassword) {
+    public boolean validatePassword(
+            User user, char[] validationPassword) throws PasswordException {
         Password currentPassword = user.getPassword();
         return PasswordService.equals(currentPassword, validationPassword);
     }

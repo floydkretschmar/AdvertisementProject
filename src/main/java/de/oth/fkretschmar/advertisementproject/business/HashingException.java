@@ -20,7 +20,7 @@ package de.oth.fkretschmar.advertisementproject.business;
  *
  * @author  fkre    Floyd Kretschmar
  */
-public class HashingException extends RuntimeException {
+public class HashingException extends Exception {
     
     /**
      * Creates a new instance of password exception using the original failure

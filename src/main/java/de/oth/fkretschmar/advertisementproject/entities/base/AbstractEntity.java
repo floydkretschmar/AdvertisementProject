@@ -39,16 +39,6 @@ import lombok.ToString;
 @ToString
 abstract class AbstractEntity<T> implements Serializable, IEntity<T> {
     
-    // --------------- Private fields ---------------
-    
-    /**
-     * Stores a text used to describe the entity.
-     */
-    @Column(name = "DESCRIPTION")
-    @Getter
-    @Setter
-    private String description;
-    
     // --------------- Public getters and setters ---------------
     
     /**

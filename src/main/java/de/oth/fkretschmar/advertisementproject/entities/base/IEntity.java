@@ -26,26 +26,10 @@ public interface IEntity<T> {
     
     // --------------- Public getters and setters ---------------
 
-    
-    /**
-     * Gets a text used to describe the entity.
-     * 
-     * @return  the text used to describe the entity.
-     */
-    public String getDescription();
-    
-    
     /**
      * Gets the unique identifier of the entity.
      * 
      * @return  The unique identifier of the entity as a {@code T}.
      */
     public T getId();
-    
-    /**
-     * Sets a text used to describe the entity.
-     * 
-     * @param   description that describes the entity.
-     */
-    public void setDescription(String description);
 }

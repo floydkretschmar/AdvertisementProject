@@ -46,8 +46,8 @@ public class Password extends AbstractAutoGenerateKeyedEntity {
      * Stores the hashed presentation of the password.
      */
     @NotNull
-    @Column(name = "PASS_VALUE")
-    @Getter(AccessLevel.PUBLIC)
+    @Column(name = "PASS_VALUE", nullable = false)
+    @Getter
     private String value;
     
     // --------------- Private static methods ---------------
@@ -60,14 +60,18 @@ public class Password extends AbstractAutoGenerateKeyedEntity {
      * @param   value   that contains the user specified password in an unsafe
      *                  mannor.
      * @return the built {@link Password}.
+     * @throws  BuilderValidationException  that indicates that one or more of 
+     *                                      of the given creation parameters are
+     *                                      invalid.
      */
     @Builder(
             builderMethodName = "createPassword", 
             builderClassName = "PasswordBuilder",
             buildMethodName = "build")
-    private static Password validateAndCreatePassword(String value) {
+    private static Password validateAndCreatePassword(String value) 
+            throws BuilderValidationException {
         if(value == null || value.isEmpty())
-            throw new BuilderValidationException(
+            throw new BuilderValidationException (
                     Password.class, 
                     "The password can not be null or empty.");
         

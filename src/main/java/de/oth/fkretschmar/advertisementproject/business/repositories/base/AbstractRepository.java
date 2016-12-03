@@ -17,10 +17,12 @@
 package de.oth.fkretschmar.advertisementproject.business.repositories.base;
 
 import de.oth.fkretschmar.advertisementproject.entities.base.IEntity;
-import java.io.Serializable;
 
+import java.io.Serializable;
 import java.util.Collection;
 import javax.enterprise.context.Dependent;
+import lombok.AllArgsConstructor;
+import lombok.ToString;
 
 /**
  * Represents an abstract base repository that defines the default CRUD methods
@@ -31,6 +33,8 @@ import javax.enterprise.context.Dependent;
  *                  repository.
  */
 @Dependent
+@ToString
+@AllArgsConstructor
 public abstract class AbstractRepository<S, T extends IEntity<S>> 
         implements Serializable {
     
@@ -39,21 +43,7 @@ public abstract class AbstractRepository<S, T extends IEntity<S>>
     /**
      * Stores the class type of the entity being managed by the repository.
      */
-    private Class<T> classType;
-    
-    // --------------- Public constructors ---------------
-    
-    
-    /**
-     * Creates a new instance of {@link AbstractRepository} using the specified
-     * class type.
-     * 
-     * @param   classType   of the entity being managed by the repository.
-     */
-    public AbstractRepository(Class<T> classType) {
-        this.classType = classType;
-    }
-    
+    private final Class<T> classType;
     
     // --------------- Public methods ---------------
     

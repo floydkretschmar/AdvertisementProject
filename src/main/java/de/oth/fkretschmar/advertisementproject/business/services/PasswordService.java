@@ -17,7 +17,9 @@
 package de.oth.fkretschmar.advertisementproject.business.services;
 
 import de.oth.fkretschmar.advertisementproject.business.HashHelper;
+import de.oth.fkretschmar.advertisementproject.business.HashingException;
 import de.oth.fkretschmar.advertisementproject.business.repositories.PasswordRepository;
+import de.oth.fkretschmar.advertisementproject.entities.BuilderValidationException;
 import de.oth.fkretschmar.advertisementproject.entities.Password;
 import java.io.Serializable;
 
@@ -79,8 +81,12 @@ public class PasswordService implements Serializable {
      * 
      * @param   unsafePassword  that contains the unsafe password.
      * @return  a safe hashed password.
+     * @throws PasswordException that indicates an error during the 
+     *                                  processing of passwords.
      */
-    public static Password generate(char[] unsafePassword) {
+    public static Password generate(
+            char[] unsafePassword) throws PasswordException {
+        try {
         byte[] salt = HashHelper.generateSalt();
         byte[] value = HashHelper.hashValue(unsafePassword, salt);
         
@@ -91,6 +97,17 @@ public class PasswordService implements Serializable {
                 + PasswordService.convertToHex(value);
         
         return Password.createPassword().value(valueString).build();
+        } 
+        catch (HashingException ex) {
+            throw new PasswordException(
+                    "The hashing of the new password failed.",
+                    ex);
+        }
+        catch (BuilderValidationException ex) {
+            throw new PasswordException(
+                    "The building of the new password failed.",
+                    ex);
+        }
     }
     
     
@@ -103,14 +120,25 @@ public class PasswordService implements Serializable {
      * @param compareUnsafePassword that will be compared with the password.
      * @return {@code true} if the passwords are the same; {@code false}
      * otherwise.
+     * @throws PasswordException that indicates an error during the 
+     *                                  processing of passwords.
      */
-    public static boolean equals(Password password, char[] compareUnsafePassword) {
+    public static boolean equals(
+            Password password, 
+            char[] compareUnsafePassword) throws PasswordException {
         String[] parts = password.getValue().split(":");
         byte[] salt = PasswordService.convertFromHex(parts[0]);
         byte[] value = PasswordService.convertFromHex(parts[1]);
         
-        byte[] testHash = HashHelper.hashValue(compareUnsafePassword, salt);
-        return HashHelper.equals(value, testHash);
+        try {
+            byte[] testHash = HashHelper.hashValue(compareUnsafePassword, salt);
+            return HashHelper.equals(value, testHash);
+        } 
+        catch (HashingException ex) {
+            throw new PasswordException(
+                    "The hashing of the unsafe comparison password failed.", 
+                    ex);
+        }
     }
     
 

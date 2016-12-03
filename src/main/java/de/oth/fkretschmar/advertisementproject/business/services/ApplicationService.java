@@ -110,8 +110,11 @@ public class ApplicationService implements Serializable {
      * @param   password    that is used to authenticate the user.
      * @return  {@code true} if the authentication was a success, otherwise
      *          {@code false}.
+     * @throws  PasswordException       that indicates an error during the 
+     *                                  processing of passwords.
      */
-    public boolean authenticateUser(String eMail, char[] password) {
+    public boolean authenticateUser(
+            String eMail, char[] password) throws PasswordException {
         try {
             User user = this.userRepository.find(eMail);
 

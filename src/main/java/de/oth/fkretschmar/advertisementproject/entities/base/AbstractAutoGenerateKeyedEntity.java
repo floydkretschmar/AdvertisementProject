@@ -47,9 +47,9 @@ public abstract class AbstractAutoGenerateKeyedEntity
      * Stores the unique identifier of an entity.
      */
     @Id
-    @Column(name = "ID")
     @NotNull
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "ID", nullable = false)
     @Getter
     private Long id;
 }

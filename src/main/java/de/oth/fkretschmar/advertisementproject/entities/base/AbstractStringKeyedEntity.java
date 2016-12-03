@@ -48,9 +48,8 @@ public abstract class AbstractStringKeyedEntity
      * Stores the unique identifier of an entity.
      */
     @Id
-    @Column(name = "ID")
-    @NotNull
     @NonNull
+    @Column(name = "ID", nullable = false)
     @Getter
     private String id;
     
