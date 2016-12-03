@@ -53,7 +53,8 @@ public class ContentService implements Serializable {
      */
     @Transactional
     public Content create(Content content) {
-        return this.contentRepository.persist(content);
+        this.contentRepository.persist(content);
+        return content;
     }
     
     

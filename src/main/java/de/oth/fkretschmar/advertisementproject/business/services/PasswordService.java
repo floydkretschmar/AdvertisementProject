@@ -58,7 +58,8 @@ public class PasswordService implements Serializable {
      */
     @Transactional
     public Password create(Password password) {
-        return this.passwordRepository.persist(password);
+        this.passwordRepository.persist(password);
+        return password;
     }
     
     

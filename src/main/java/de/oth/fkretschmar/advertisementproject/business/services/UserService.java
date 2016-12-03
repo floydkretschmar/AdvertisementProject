@@ -80,7 +80,7 @@ public class UserService implements Serializable {
                     + "the user was not set.");
         }
         
-        account = this.accountRepository.persist(account);
+        this.accountRepository.persist(account);
         user = this.userRepository.merge(user);
         user.addAccount(account);
         return user;
@@ -135,15 +135,16 @@ public class UserService implements Serializable {
         }
         
         final Address address = user.getAddress();
-        user.setAddress(this.addressRepository.persist(address));
+        this.addressRepository.persist(address);
 
         final Password password = user.getPassword();
-        user.setPassword(this.passwordService.create(password));
+        this.passwordService.create(password);
         
-        user.addAccounts(this.accountRepository.persist(user.getAccounts()), true);
+        this.accountRepository.persist(user.getAccounts());
 
         // persist the user:
-        return this.userRepository.persist(user);
+        this.userRepository.persist(user);
+        return user;
     }
     
     

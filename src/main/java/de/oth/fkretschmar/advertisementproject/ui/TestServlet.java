@@ -19,6 +19,7 @@ package de.oth.fkretschmar.advertisementproject.ui;
 import de.oth.fkretschmar.advertisementproject.business.SerializableRenderedImage;
 import de.oth.fkretschmar.advertisementproject.business.services.ContentService;
 import de.oth.fkretschmar.advertisementproject.business.services.ApplicationService;
+import de.oth.fkretschmar.advertisementproject.business.services.PasswordException;
 import de.oth.fkretschmar.advertisementproject.business.services.PasswordService;
 import de.oth.fkretschmar.advertisementproject.business.services.UserService;
 import de.oth.fkretschmar.advertisementproject.entities.Account;
@@ -118,10 +119,6 @@ public class TestServlet extends HttpServlet {
             ad = this.adService.create(ad);
             
             //ad2 = this.adService.find(ad.getId());
-            }
-            catch (BuilderValidationException e) {
-                
-            }
 
 //            User user = this.userService.findForEMail("fkretschmar@googlemail.com");
 //            
@@ -130,33 +127,43 @@ public class TestServlet extends HttpServlet {
             //this.userService.delete(user);
             
 //            
-//            Address address = Address.createAddress()
-//                                .areaCode("95689")
-//                                .city("Regensburg")
-//                                .country("Deutschland")
-//                                .street("Dechbettener Straße 7").build();
+            Address address = Address.createAddress()
+                                .areaCode("95689")
+                                .city("Regensburg")
+                                .country("Deutschland")
+                                .street("Dechbettener Straße 7").build();
+            
+            User user = User.createUser()
+                    .eMailAddress("fkretschmar@googlemail.com")
+                    .password(PasswordService.generate("Testpw".toCharArray()))
+                    .firstName("Floyd") 
+                    .lastName("Kretschmar") 
+                    .address(address)
+                    .company("OptWare").build();
+            
+            Account acc = BankAccount.createBankAccount()
+                    .iban("DE948309535956456")
+                    .bic("GENOD43945").build();
+            
+            
+            user.addAccount(acc);
 //            
-//            User user = User.createUser()
-//                    .eMailAddress("fkretschmar@googlemail.com")
-//                    .password(PasswordService.generate("Testpw".toCharArray()))
-//                    .firstName("Floyd") 
-//                    .lastName("Kretschmar") 
-//                    .address(address)
-//                    .company("OptWare").build();
-//            
-//            Account acc = BankAccount.createBankAccount()
-//                    .iban("DE948309535956456")
-//                    .bic("GENOD43945").build();
-//            
-//            
-//            user.addAccount(acc);
-//            
-//            acc = BankAccount.createBankAccount()
-//                    .iban("DE55555555555555555555")
-//                    .bic("GENOD43945").build();
-//            
-//            user.addAccount(acc);
-//            this.userService.create(user);
+            acc = BankAccount.createBankAccount()
+                    .iban("DE55555555555555555555")
+                    .bic("GENOD43945").build();
+            
+            user.addAccount(acc);
+            
+            this.userService.create(user);
+            
+            this.userService.removeAccountFromUser(user, acc);
+            }
+            catch (BuilderValidationException e) {
+                
+            }
+            catch (PasswordException e) {
+                
+            }
             
 //            
 //            authService.authenticateUser(user.geteMailAddress(), "Testpw4".toCharArray());

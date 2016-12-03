@@ -62,7 +62,8 @@ public class BillService implements Serializable {
     @Transactional
     public Bill create(Bill bill) {
         this.billItemRepository.persist(bill.getItems());
-        return this.billRepository.persist(bill);
+        this.billRepository.persist(bill);
+        return bill;
     }
     
     

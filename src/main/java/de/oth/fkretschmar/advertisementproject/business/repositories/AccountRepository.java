@@ -49,5 +49,4 @@ public class AccountRepository extends AbstractJPARepository<String, Account> {
     protected Collection<Account> createCollection() {
         return new ArrayList<Account>();
     }
-    
 }

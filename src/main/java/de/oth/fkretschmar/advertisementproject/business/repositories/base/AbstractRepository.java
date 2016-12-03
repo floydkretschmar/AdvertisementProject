@@ -78,18 +78,16 @@ public abstract class AbstractRepository<S, T extends IEntity<S>>
      * Persists the specified entity.
      * 
      * @param   entity  that will be saved
-     * @return  The saved entity.
      */
-    public abstract T persist(T entity);
+    public abstract void persist(T entity);
     
     
     /**
      * Persists all specified entities.
      * 
      * @param   entities    that will be saved.
-     * @return  The saved entities.
      */
-    public abstract Collection<T> persist(Collection<T> entities);
+    public abstract void persist(Collection<T> entities);
     
     
     /**
@@ -109,8 +107,7 @@ public abstract class AbstractRepository<S, T extends IEntity<S>>
     
     
     // --------------- Protected methods ---------------
-    
-    
+
     /**
      * Creates a collection of the managed entity.
      * 
@@ -118,7 +115,6 @@ public abstract class AbstractRepository<S, T extends IEntity<S>>
      *          entity.
      */
     protected abstract Collection<T> createCollection();
-
     
     /**
      * Gets the class type of the entity being managed by the repository.

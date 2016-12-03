@@ -17,12 +17,16 @@
 package de.oth.fkretschmar.advertisementproject.entities;
 
 import de.oth.fkretschmar.advertisementproject.entities.base.AbstractStringKeyedEntity;
+import de.oth.fkretschmar.advertisementproject.entities.base.EntityState;
+import de.oth.fkretschmar.advertisementproject.entities.base.IUndeletableEntity;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
@@ -57,7 +61,7 @@ import lombok.ToString;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 @ToString(callSuper = true)
-public class User extends AbstractStringKeyedEntity {
+public class User extends AbstractStringKeyedEntity implements IUndeletableEntity<String> {
     
     // --------------- Static constants ---------------
     
@@ -91,6 +95,14 @@ public class User extends AbstractStringKeyedEntity {
     @Setter
     private Address address;
     
+    
+    /**
+     * Stores the campaigns comissioned by the user.
+     */
+    @NotNull
+    @OneToMany(mappedBy = "comissioner")
+    private final Collection<Campaign> campaigns = new ArrayList<Campaign>();
+    
     /**
      * Stores the name of the company the user is buying ads for.
      */
@@ -98,6 +110,21 @@ public class User extends AbstractStringKeyedEntity {
     @Getter
     @Setter
     private String company;
+    
+    /**
+     * Stores the contents created by a user to be used by a campaign.
+     */
+    @NotNull
+    @OneToMany
+    @JoinColumn(name = "USER_ID", referencedColumnName = "ID")
+    private Collection<Content> contents = new ArrayList<Content>();
+    
+    /**
+     * Stores the state of the entity.
+     **/
+    @Column(name = IUndeletableEntity.ENTITY_STATE_COLUMN_NAME)
+    @Enumerated(EnumType.STRING)
+    private EntityState state = EntityState.CREATED;
     
     /**
      * Stores the first name of the user.
@@ -171,6 +198,43 @@ public class User extends AbstractStringKeyedEntity {
     
     
     /**
+     * Gets the campaigns comissioned by the user.
+     * 
+     * @return  the campaigns of an user.
+     */
+    public Collection<Campaign> getCampaigns() {
+        return Collections.unmodifiableCollection(this.campaigns);
+    }
+    
+    
+    /**
+     * Gets the contents created by a user to be used by a campaign.
+     * 
+     * @return  the contents of an user.
+     */
+    public Collection<Content> getContents() {
+        return Collections.unmodifiableCollection(this.contents);
+    }
+    
+    /**
+     * Gets the state of the entity.
+     * @return  the entity state.
+     */
+    @Override
+    public EntityState getEntityState() {
+        return this.state;
+    }
+
+    /**
+     * Sets the state of the entity.
+     * @param state     the new state of the entity.s
+     */
+    @Override
+    public void setEntityState(EntityState state) {
+        this.state = state;
+    }
+    
+    /**
      * Gets the e-mail address of the user.
      * 
      * @return  A String that contains the e-mail address.
@@ -194,20 +258,26 @@ public class User extends AbstractStringKeyedEntity {
     
     
     /**
-     * Adds a range of new accounts to the user.
+     * Adds a new campaign to the user.
      * 
-     * @param   accounts    that will be added.
-     * @param   clear       that indicates whether or not the old account list
-     *                      should be cleared before the new accounts are being
-     *                      added.
+     * @param   campaign     that will be added.
+     * @return  <code>true</code> if the campaign was added otherwise
+     *          <code>false</code>
      */
-    public void addAccounts(Collection<Account> accounts, boolean clear) {
-        if(clear)
-            this.accounts.clear();
-        
-        for (Account account : accounts) {
-            this.addAccount(account);
-        }
+    public boolean addCampaign(Campaign campaign) {
+        return this.campaigns.add(campaign);
+    }
+    
+    
+    /**
+     * Adds a new content to the user.
+     * 
+     * @param   content     that will be added.
+     * @return  <code>true</code> if the content was added otherwise
+     *          <code>false</code>
+     */
+    public boolean addContent(Content content) {
+        return this.contents.add(content);
     }
     
     
@@ -220,6 +290,30 @@ public class User extends AbstractStringKeyedEntity {
      */
     public boolean removeAccount(Account account) {
         return this.accounts.remove(account);
+    }
+    
+    
+    /**
+     * Removes an existing campaign from the user.
+     * 
+     * @param   campaign     that will be removed.
+     * @return  <code>true</code> if the campaign was removed otherwise
+     *          <code>false</code>
+     */
+    public boolean removeCampaign(Campaign campaign) {
+        return this.campaigns.remove(campaign);
+    }
+    
+    
+    /**
+     * Removes an existing content from the user.
+     * 
+     * @param   content     that will be removed.
+     * @return  <code>true</code> if the content was removed otherwise
+     *          <code>false</code>
+     */
+    public boolean removeContent(Content content) {
+        return this.contents.remove(content);
     }
     
     

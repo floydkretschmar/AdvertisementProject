@@ -16,7 +16,9 @@
  */
 package de.oth.fkretschmar.advertisementproject.business.repositories.base;
 
+import de.oth.fkretschmar.advertisementproject.entities.base.EntityState;
 import de.oth.fkretschmar.advertisementproject.entities.base.IEntity;
+import de.oth.fkretschmar.advertisementproject.entities.base.IUndeletableEntity;
 
 import java.util.Collection;
 import javax.persistence.EntityManager;
@@ -120,14 +122,11 @@ public abstract class AbstractJPARepository<S, T extends IEntity<S>>
      * Persists the specified entity.
      * 
      * @param   entity          that will be saved
-     * @return  The saved entity.
      */
     @Override
-    public final T persist(T entity) {        
+    public final void persist(T entity) {        
         // persist the actual entity
         this.getEntityManager().persist(entity);
-        
-        return entity;
     }
     
     
@@ -135,17 +134,12 @@ public abstract class AbstractJPARepository<S, T extends IEntity<S>>
      * Persists all specified entities.
      * 
      * @param   entities        that will be saved.
-     * @return  The saved entities.
      */
     @Override
-    public final Collection<T> persist(Collection<T> entities) {     
-        Collection<T> savedEntities = this.createCollection();
-        
+    public final void persist(Collection<T> entities) {     
         for(T entity : entities) {
-            savedEntities.add(this.persist(entity));
+            this.persist(entity);
         }
-        
-        return savedEntities;
     }
     
     
@@ -157,10 +151,18 @@ public abstract class AbstractJPARepository<S, T extends IEntity<S>>
     @Override
     public final void remove(T entity) {
         // make sure the entity manager has knowledge of the entity
-        entity = this.getEntityManager().merge(entity);
+        entity = this.merge(entity);
         
-        // actually remove the entity
-        this.getEntityManager().remove(entity);
+        // if the entity implements IUndeletableEntity only change the state to
+        // deleted and save the entity.
+        if(entity instanceof IUndeletableEntity) {
+            ((IUndeletableEntity)entity).setEntityState(EntityState.DELETED);
+        } 
+        else {
+
+            // actually remove the entity
+            this.getEntityManager().remove(entity);
+        }
     }
     
     
@@ -170,7 +172,7 @@ public abstract class AbstractJPARepository<S, T extends IEntity<S>>
      * @param   entities  that will be deleted.
      */
     @Override
-    public void remove(Collection<T> entities) {        
+    public final void remove(Collection<T> entities) {       
         for(T entity : entities) {
             this.remove(entity);
         }
