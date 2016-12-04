@@ -16,7 +16,7 @@
  */
 package de.oth.fkretschmar.advertisementproject.entities;
 
-import de.oth.fkretschmar.advertisementproject.entities.base.AbstractStringKeyedEntity;
+import de.oth.fkretschmar.advertisementproject.entities.base.AbstractAutoGenerateKeyedEntity;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -43,7 +43,7 @@ import lombok.ToString;
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 //@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @ToString(callSuper = true)
-public class Campaign extends AbstractStringKeyedEntity {
+public class Campaign extends AbstractAutoGenerateKeyedEntity {
     
     // --------------- Private fields ---------------
     

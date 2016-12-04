@@ -16,32 +16,59 @@
  */
 package de.oth.fkretschmar.advertisementproject.entities;
 
-import java.util.EnumSet;
+import de.oth.fkretschmar.advertisementproject.entities.base.IFlagField;
+import lombok.Getter;
 
 /**
  * Defines the different age groups that can be targeted with an advertisement.
  * 
  * @author fkre
  */
-public enum TargetAge {
+public enum TargetAge implements IFlagField {
+    
+    // --------------- Enum fields ---------------
+    
+    /**
+     * Indicates that no specific age group should be targeted.
+     **/
+    IRRELEVANT(1<<0),
     
     /**
      * Indicates that the target is an adult (ages between 25-64 years old).
      */
-    ADULTS,
+    ADULTS(1<<1),
     
     /**
      * Indicates that the target is a child (ages between 0-14 years old).
      */
-    CHILDREN,
+    CHILDREN(1<<2),
     
     /**
      * Indicates that the target is a youth (ages between 65 years and older).
      */
-    SENIORS,
+    SENIORS(1<<4),
     
     /**
      * Indicates that the target is a youth (ages between 15-24 years old).
      */
-    YOUTH;
+    YOUTH(1<<8);
+    
+    // --------------- Private fields ---------------
+    
+    /**
+     * Stores the integer representation of the flags of this enum.
+     */
+    @Getter
+    private final int flagValue;
+    
+    // --------------- Private constructors ---------------
+    
+    /**
+     * Creates a new instance of {@link TargetAge} using the specified value.
+     * 
+     * @param flagValue the value indicating the bit position of the flag.
+     */
+    private TargetAge(int flagValue){
+        this.flagValue = flagValue;
+    }
 }

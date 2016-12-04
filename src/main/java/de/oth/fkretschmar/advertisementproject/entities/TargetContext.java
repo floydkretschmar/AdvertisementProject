@@ -17,23 +17,19 @@
 package de.oth.fkretschmar.advertisementproject.entities;
 
 import de.oth.fkretschmar.advertisementproject.entities.base.AbstractAutoGenerateKeyedEntity;
-import java.io.Serializable;
+import de.oth.fkretschmar.advertisementproject.entities.base.IDeletable;
+import de.oth.fkretschmar.advertisementproject.entities.base.TargetAgeAttributeConverter;
+import de.oth.fkretschmar.advertisementproject.entities.base.TargetGenderAttributeConverter;
+import de.oth.fkretschmar.advertisementproject.entities.base.TargetMaritalStatusAttributeConverter;
+import de.oth.fkretschmar.advertisementproject.entities.base.TargetPurposeOfUseAttributeConverter;
 import java.util.EnumSet;
-import java.util.Set;
-import javax.persistence.CollectionTable;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Embeddable;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
 import javax.validation.constraints.NotNull;
 
 import lombok.AccessLevel;
 import lombok.Builder;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -47,7 +43,8 @@ import lombok.ToString;
 @Entity(name = "T_TARGET_CONTEXT")
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 @ToString(callSuper = true)
-public class TargetContext extends AbstractAutoGenerateKeyedEntity {
+public class TargetContext extends AbstractAutoGenerateKeyedEntity 
+        implements IDeletable<Long> {
     
     // --------------- Private fields ---------------
     
@@ -55,58 +52,41 @@ public class TargetContext extends AbstractAutoGenerateKeyedEntity {
      * Stores the targeted age group.
      */
     @NotNull
-    @ElementCollection(fetch = FetchType.EAGER)
-    @Enumerated(EnumType.STRING)
-    @CollectionTable(
-            name = "T_TARGET_AGE", 
-            joinColumns = @JoinColumn(
-                    name = "CONTEXT_ID", referencedColumnName = "ID"))
     @Column(name = "AGE", nullable = false)
     @Getter
     @Setter
-    private Set<TargetAge> age;
+    @Convert(converter = TargetAgeAttributeConverter.class)
+    private EnumSet<TargetAge> age;
     
     /**
      * Stores the targeted gender group.
      */
     @NotNull
-    @ElementCollection(fetch = FetchType.EAGER)
-    @Enumerated(EnumType.STRING)
-    @CollectionTable(
-            name = "T_TARGET_GENDER", 
-            joinColumns = @JoinColumn(name = "CONTEXT_ID", referencedColumnName = "ID"))
     @Column(name = "GENDER", nullable = false)
     @Getter
     @Setter
-    private Set<TargetGender> gender;
+    @Convert(converter = TargetGenderAttributeConverter.class)
+    private EnumSet<TargetGender> gender;
     
     /**
      * Stores the targeted marital status group.
      */
     @NotNull
-    @ElementCollection(fetch = FetchType.EAGER)
-    @Enumerated(EnumType.STRING)
-    @CollectionTable(
-            name = "T_TARGET_MARTIAL_STATUS", 
-            joinColumns = @JoinColumn(name = "CONTEXT_ID", referencedColumnName = "ID"))
     @Column(name = "MARITAL_STATUS", nullable = false)
     @Getter
     @Setter
-    private Set<TargetMaritalStatus> maritalStatus;
+    @Convert(converter = TargetMaritalStatusAttributeConverter.class)
+    private EnumSet<TargetMaritalStatus> maritalStatus;
     
     /**
      * Stores the targeted purposes of use.
      */
     @NotNull
-    @ElementCollection(fetch = FetchType.EAGER)
-    @Enumerated(EnumType.STRING)
-    @CollectionTable(
-            name = "T_TARGET_PURPOSE_OF_USE", 
-            joinColumns = @JoinColumn(name = "CONTEXT_ID", referencedColumnName = "ID"))
     @Column(name = "PURPOSE_OF_USE", nullable = false)
     @Getter
     @Setter
-    private Set<TargetPurposeOfUse> purposeOfUse;
+    @Convert(converter = TargetPurposeOfUseAttributeConverter.class)
+    private EnumSet<TargetPurposeOfUse> purposeOfUse;
     
     
     // --------------- Private fields ---------------
@@ -156,27 +136,25 @@ public class TargetContext extends AbstractAutoGenerateKeyedEntity {
             EnumSet<TargetMaritalStatus> targetMaritalStatus, 
             EnumSet<TargetPurposeOfUse> targetPurposeOfUses) 
             throws BuilderValidationException {
-        if(targetAges.isEmpty())
+        if(targetAges == null)
             throw new BuilderValidationException(
                     TargetContext.class,
-                    "At least one targeted age group hast to be chosen");
+                    "The set of target ages can not be null.");
         
-        if(targetGenders.isEmpty())
+        if(targetGenders == null)
             throw new BuilderValidationException(
                     TargetContext.class,
-                    "At least one targeted gender group hast to be chosen");
+                    "The set of target genders can not be null.");
         
-        if(targetMaritalStatus.isEmpty())
+        if(targetMaritalStatus == null)
             throw new BuilderValidationException(
                     TargetContext.class,
-                    "At least one targeted marital status group hast to be "
-                            + "chosen");
+                    "The set of target marital status can not be null.");
         
-        if(targetPurposeOfUses.isEmpty())
+        if(targetPurposeOfUses == null)
             throw new BuilderValidationException(
                     TargetContext.class,
-                    "At least one targeted purpose of use group hast to be "
-                            + "chosen");
+                    "The set of target purposes of use can not be null.");
         
         return new TargetContext(
                 targetAges, 

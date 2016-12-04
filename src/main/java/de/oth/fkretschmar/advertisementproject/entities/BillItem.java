@@ -18,6 +18,8 @@ package de.oth.fkretschmar.advertisementproject.entities;
 
 import de.oth.fkretschmar.advertisementproject.entities.base.AbstractAutoGenerateKeyedEntity;
 import javax.money.MonetaryAmount;
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -62,6 +64,12 @@ public class BillItem extends AbstractAutoGenerateKeyedEntity {
      * Stores the total price for this bill item.
      */
     @NotNull
+    @AttributeOverrides({
+        @AttributeOverride(name="amount",
+                           column=@Column(name="PRICE_PER_REQUEST_AMOUNT")),
+        @AttributeOverride(name="currencyCode",
+                           column=@Column(name="PRICE_PER_REQUEST_CURRENCY"))
+    })
     private Money itemPrice;
     
     // --------------- Public methods ---------------

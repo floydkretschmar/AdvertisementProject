@@ -18,7 +18,6 @@ package de.oth.fkretschmar.advertisementproject.business.repositories.base;
 
 import de.oth.fkretschmar.advertisementproject.entities.base.EntityState;
 import de.oth.fkretschmar.advertisementproject.entities.base.IEntity;
-import de.oth.fkretschmar.advertisementproject.entities.base.IUndeletableEntity;
 
 import java.util.Collection;
 import javax.persistence.EntityManager;
@@ -27,6 +26,7 @@ import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import lombok.AccessLevel;
 import lombok.Getter;
+import de.oth.fkretschmar.advertisementproject.entities.base.IDeletable;
 
 /**
  * Represents an repository that defines the default CRUD methods when using
@@ -153,15 +153,13 @@ public abstract class AbstractJPARepository<S, T extends IEntity<S>>
         // make sure the entity manager has knowledge of the entity
         entity = this.merge(entity);
         
-        // if the entity implements IUndeletableEntity only change the state to
-        // deleted and save the entity.
-        if(entity instanceof IUndeletableEntity) {
-            ((IUndeletableEntity)entity).setEntityState(EntityState.DELETED);
+        // only actually remove the entity if it is IDeletable
+        if(entity instanceof IDeletable) {
+            this.getEntityManager().remove(entity);
         } 
         else {
-
-            // actually remove the entity
-            this.getEntityManager().remove(entity);
+            // otherwise just set the state to deleted
+            entity.setState(EntityState.DELETED);
         }
     }
     

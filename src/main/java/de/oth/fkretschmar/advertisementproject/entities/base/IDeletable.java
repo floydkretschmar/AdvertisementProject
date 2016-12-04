@@ -20,23 +20,6 @@ package de.oth.fkretschmar.advertisementproject.entities.base;
  *
  * @author fkre
  */
-public interface IUndeletableEntity<T> extends IEntity<T> {
+public interface IDeletable<T> extends IEntity<T> {
     
-    // --------------- Static fields ---------------
-    
-    public static final String ENTITY_STATE_COLUMN_NAME = "ENTITY_STATE";
-    
-    // --------------- Methods ---------------
-    
-    /**
-     * Gets the underlying state of the undeletable entity.
-     * @return 
-     */
-    public EntityState getEntityState();
-    
-    /**
-     * Sets the underlying state of the undeletable entity.
-     * @param state 
-     */
-    public void setEntityState(EntityState state);
 }

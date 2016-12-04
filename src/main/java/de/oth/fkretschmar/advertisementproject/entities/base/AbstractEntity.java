@@ -18,6 +18,8 @@ package de.oth.fkretschmar.advertisementproject.entities.base;
 
 import java.io.Serializable;
 import javax.persistence.Column;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.MappedSuperclass;
 
 import lombok.AccessLevel;
@@ -38,6 +40,17 @@ import lombok.ToString;
 @EqualsAndHashCode(exclude={"description"})
 @ToString
 abstract class AbstractEntity<T> implements Serializable, IEntity<T> {
+    
+    // --------------- Private fields ---------------
+    
+    /**
+     * Stores the state of the entity.
+     **/
+    @Column(name = "ENTITY_STATE")
+    @Enumerated(EnumType.STRING)
+    @Getter
+    @Setter
+    private EntityState state = EntityState.CREATED;
     
     // --------------- Public getters and setters ---------------
     

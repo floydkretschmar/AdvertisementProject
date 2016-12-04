@@ -17,20 +17,15 @@
 package de.oth.fkretschmar.advertisementproject.entities;
 
 import de.oth.fkretschmar.advertisementproject.entities.base.AbstractStringKeyedEntity;
-import de.oth.fkretschmar.advertisementproject.entities.base.EntityState;
-import de.oth.fkretschmar.advertisementproject.entities.base.IUndeletableEntity;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -61,7 +56,7 @@ import lombok.ToString;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 @ToString(callSuper = true)
-public class User extends AbstractStringKeyedEntity implements IUndeletableEntity<String> {
+public class User extends AbstractStringKeyedEntity {
     
     // --------------- Static constants ---------------
     
@@ -77,13 +72,7 @@ public class User extends AbstractStringKeyedEntity implements IUndeletableEntit
      * Stores the accounts an user has specified.
      */
     @OneToMany
-    @JoinTable(
-        name="T_USER_ACCOUNT",
-        joinColumns=
-            @JoinColumn(name="USER_ID", referencedColumnName="ID"),
-        inverseJoinColumns=
-            @JoinColumn(name="ACCOUNT_ID", referencedColumnName="ID")
-    )
+    @JoinColumn(name = "USER_ID", referencedColumnName = "ID")
     private final Collection<Account> accounts = new ArrayList<Account>();
     
     /**
@@ -118,13 +107,6 @@ public class User extends AbstractStringKeyedEntity implements IUndeletableEntit
     @OneToMany
     @JoinColumn(name = "USER_ID", referencedColumnName = "ID")
     private Collection<Content> contents = new ArrayList<Content>();
-    
-    /**
-     * Stores the state of the entity.
-     **/
-    @Column(name = IUndeletableEntity.ENTITY_STATE_COLUMN_NAME)
-    @Enumerated(EnumType.STRING)
-    private EntityState state = EntityState.CREATED;
     
     /**
      * Stores the first name of the user.
@@ -214,24 +196,6 @@ public class User extends AbstractStringKeyedEntity implements IUndeletableEntit
      */
     public Collection<Content> getContents() {
         return Collections.unmodifiableCollection(this.contents);
-    }
-    
-    /**
-     * Gets the state of the entity.
-     * @return  the entity state.
-     */
-    @Override
-    public EntityState getEntityState() {
-        return this.state;
-    }
-
-    /**
-     * Sets the state of the entity.
-     * @param state     the new state of the entity.s
-     */
-    @Override
-    public void setEntityState(EntityState state) {
-        this.state = state;
     }
     
     /**

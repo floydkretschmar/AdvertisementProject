@@ -17,6 +17,7 @@
 package de.oth.fkretschmar.advertisementproject.ui;
 
 import de.oth.fkretschmar.advertisementproject.business.SerializableRenderedImage;
+import de.oth.fkretschmar.advertisementproject.business.repositories.TargetContextRepository;
 import de.oth.fkretschmar.advertisementproject.business.services.ContentService;
 import de.oth.fkretschmar.advertisementproject.business.services.ApplicationService;
 import de.oth.fkretschmar.advertisementproject.business.services.PasswordException;
@@ -30,7 +31,11 @@ import de.oth.fkretschmar.advertisementproject.entities.ContentType;
 import de.oth.fkretschmar.advertisementproject.entities.BankAccount;
 import de.oth.fkretschmar.advertisementproject.entities.BuilderValidationException;
 import de.oth.fkretschmar.advertisementproject.entities.Password;
+import de.oth.fkretschmar.advertisementproject.entities.TargetAge;
 import de.oth.fkretschmar.advertisementproject.entities.TargetContext;
+import de.oth.fkretschmar.advertisementproject.entities.TargetGender;
+import de.oth.fkretschmar.advertisementproject.entities.TargetMaritalStatus;
+import de.oth.fkretschmar.advertisementproject.entities.TargetPurposeOfUse;
 import de.oth.fkretschmar.advertisementproject.entities.User;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
@@ -39,6 +44,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URL;
+import java.util.EnumSet;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.servlet.ServletException;
@@ -46,6 +52,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.transaction.Transactional;
 
 /**
  *
@@ -65,6 +72,9 @@ public class TestServlet extends HttpServlet {
     
     @Inject
     private ContentService adService;
+    
+    @Inject
+    private TargetContextRepository targetRepo;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -75,6 +85,7 @@ public class TestServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    @Transactional
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -89,7 +100,7 @@ public class TestServlet extends HttpServlet {
             out.println("<h1>Servlet TestServlet at " + request.getContextPath() + "</h1>");
             
             try {
-            File file = new File("/Users/fkre/BAUM_GUT.JPG");
+            File file = new File("E:\\Augen_einer_Katze.jpg");
             
             SerializableRenderedImage image = new SerializableRenderedImage(ImageIO.read(file));
             
@@ -117,6 +128,21 @@ public class TestServlet extends HttpServlet {
                         .targetUrl(new URL("https://www.google.de")).build();
             
             ad = this.adService.create(ad);
+            
+            
+            TargetContext context = TargetContext.createTargetContext()
+                    .targetAges(EnumSet.of(TargetAge.CHILDREN, TargetAge.YOUTH))
+                    .targetGenders(EnumSet.of(TargetGender.FEMALE))
+                    .targetMaritalStatus(EnumSet.of(
+                            TargetMaritalStatus.IN_RELATIONSHIP, 
+                            TargetMaritalStatus.MARRIED))
+                    .targetPurposeOfUses(EnumSet.of(TargetPurposeOfUse.PRIVATE)).build();
+            
+            //this.targetRepo.persist(context);
+            
+            
+            
+            
             
             //ad2 = this.adService.find(ad.getId());
 
@@ -154,7 +180,7 @@ public class TestServlet extends HttpServlet {
             
             user.addAccount(acc);
             
-            this.userService.create(user);
+            user = this.userService.create(user);
             
             this.userService.removeAccountFromUser(user, acc);
             }

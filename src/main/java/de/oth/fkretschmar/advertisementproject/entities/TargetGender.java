@@ -16,25 +16,54 @@
  */
 package de.oth.fkretschmar.advertisementproject.entities;
 
+import de.oth.fkretschmar.advertisementproject.entities.base.IFlagField;
+import lombok.Getter;
+
 /**
  * Defines the different genders that can be targeted with an advertisement.
  * 
  * @author fkre
  */
-public enum TargetGender {
+public enum TargetGender implements IFlagField {
+    
+    // --------------- Enum fields ---------------
+    
+    /**
+     * Indicates no specific gender group should be targeted.
+     */
+    IRRELEVANT(1<<0),
     
     /**
      * Indicates that the target identifies as a female.
      */
-    FEMALE,
+    FEMALE(1<<1),
     
     /**
      * Indicates that the target identifies as a male.
      */
-    MALE,
+    MALE(1<<2),
     
     /**
      * Indicates that the target neither identifies as male or female.
      */
-    OTHER;
+    OTHER(1<<4);
+    
+    // --------------- Private fields ---------------
+    
+    /**
+     * Stores the integer representation of the flags of this enum.
+     */
+    @Getter
+    private final int flagValue;
+    
+    // --------------- Private constructors ---------------
+    
+    /**
+     * Creates a new instance of {@link TargetGender} using the specified value.
+     * 
+     * @param flagValue the flagValue indicating the bit position of the flag.
+     */
+    private TargetGender(int flagValue){
+        this.flagValue = flagValue;
+    }
 }

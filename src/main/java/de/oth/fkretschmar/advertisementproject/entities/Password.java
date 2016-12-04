@@ -18,6 +18,7 @@ package de.oth.fkretschmar.advertisementproject.entities;
 
 
 import de.oth.fkretschmar.advertisementproject.entities.base.AbstractAutoGenerateKeyedEntity;
+import de.oth.fkretschmar.advertisementproject.entities.base.IDeletable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
@@ -38,7 +39,8 @@ import lombok.ToString;
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @ToString(callSuper = true)
-public class Password extends AbstractAutoGenerateKeyedEntity {
+public class Password extends AbstractAutoGenerateKeyedEntity 
+        implements IDeletable<Long> {
 
     // --------------- Private fields ---------------
 

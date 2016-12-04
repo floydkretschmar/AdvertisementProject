@@ -32,6 +32,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import de.oth.fkretschmar.advertisementproject.entities.base.IDeletable;
 
 /**
  * Represents all billing information for one particular campaign payment.

@@ -17,6 +17,7 @@
 package de.oth.fkretschmar.advertisementproject.entities;
 
 import de.oth.fkretschmar.advertisementproject.entities.base.AbstractAutoGenerateKeyedEntity;
+import de.oth.fkretschmar.advertisementproject.entities.base.IDeletable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -39,7 +40,8 @@ import lombok.ToString;
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @ToString(callSuper = true)
-public class Address extends AbstractAutoGenerateKeyedEntity {
+public class Address extends AbstractAutoGenerateKeyedEntity 
+        implements IDeletable<Long> {
     
     // --------------- Private fields ---------------
     

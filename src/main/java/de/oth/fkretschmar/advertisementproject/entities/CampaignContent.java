@@ -16,11 +16,16 @@
  */
 package de.oth.fkretschmar.advertisementproject.entities;
 
+import de.oth.fkretschmar.advertisementproject.entities.base.AbstractAutoGenerateKeyedEntity;
 import java.io.Serializable;
 import java.net.URL;
 import javax.money.MonetaryAmount;
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 
@@ -38,9 +43,17 @@ import lombok.ToString;
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 //@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @ToString(callSuper = true)
-public class CampaignContent extends Content {
+public class CampaignContent extends AbstractAutoGenerateKeyedEntity {
     
     // --------------- Private fields ---------------
+    
+    /** 
+     * Stores the content that is being ordered for the campaign.
+     */
+    @ManyToOne
+    @Getter
+    @JoinColumn(name = "CONTENT_ID")
+    private Content content;
     
     /**
      * Stores the target context of the specified content that influinces the
@@ -49,6 +62,7 @@ public class CampaignContent extends Content {
     @NotNull
     @OneToOne
     @Getter
+    @JoinColumn(name = "CONTEXT_ID")
     private TargetContext context;
     
     /**
@@ -65,6 +79,12 @@ public class CampaignContent extends Content {
      * per request of this campaign content.
      **/
     @NotNull
+    @AttributeOverrides({
+        @AttributeOverride(name="amount",
+                           column=@Column(name="PRICE_PER_REQUEST_AMOUNT")),
+        @AttributeOverride(name="currencyCode",
+                           column=@Column(name="PRICE_PER_REQUEST_CURRENCY"))
+    })
     private Money pricePerRequest;
     
     
@@ -99,12 +119,7 @@ public class CampaignContent extends Content {
      * Creates a new instance of {@link Content} using the specified 
      * content, value type and target url.
      * 
-     * @param   contentType     the enum that indicates the actual type of the 
-     *                          object.
-     * @param   description     the text that gives a short description of the
-     *                          content.
-     * @param   targetUrl       the URL that redirects to the advertised page.
-     * @param   value           the actual value of the content.
+     * @param   content     the content that is being ordered for the campaign.
      * @param   numberOfRequests    the number of contents that have been 
      *                              ordered for the target context.
      * @param   context         the target context of the specified order row 
@@ -113,14 +128,12 @@ public class CampaignContent extends Content {
                           is willing to pay per request of this campaign 
      */
     private CampaignContent(
-            ContentType contentType, 
-            String description, 
-            URL targetUrl,
-            Serializable value,
+            Content content,
             TargetContext context,
             long numberOfRequests,
             Money pricePerRequest) {
-        super(contentType, description, targetUrl, value);
+        super();
+        this.content = content;
         this.context = context;
         this.numberOfRequests = numberOfRequests;
         this.pricePerRequest = pricePerRequest;
@@ -173,10 +186,7 @@ public class CampaignContent extends Content {
                 .monetaryAmount(pricePerRequest).build();
         
         return new CampaignContent(
-                content.getContentType(), 
-                content.getDescription(),
-                content.getTargetUrl(), 
-                content.getValue(), 
+                content, 
                 context, 
                 numberOfRequests, 
                 moneyAmount);

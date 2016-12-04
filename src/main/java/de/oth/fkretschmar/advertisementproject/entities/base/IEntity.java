@@ -32,4 +32,19 @@ public interface IEntity<T> {
      * @return  The unique identifier of the entity as a {@code T}.
      */
     public T getId();
+    
+    /**
+     * Gets the state of the entity
+     * 
+     * @return  the {@link EntityState} that defines the states an entity can be
+     *          in.
+     **/
+    public EntityState getState();
+    
+    /**
+     * Sets the state of the entity.
+     * 
+     * @param state     that defines the state of the entity.
+     */
+    public void setState(EntityState state);
 }

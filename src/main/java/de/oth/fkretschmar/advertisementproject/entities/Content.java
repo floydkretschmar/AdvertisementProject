@@ -17,6 +17,7 @@
 package de.oth.fkretschmar.advertisementproject.entities;
 
 import de.oth.fkretschmar.advertisementproject.entities.base.AbstractAutoGenerateKeyedEntity;
+import de.oth.fkretschmar.advertisementproject.entities.base.IDeletable;
 
 import java.io.Serializable;
 import java.net.MalformedURLException;
@@ -47,9 +48,9 @@ import org.apache.commons.lang3.SerializationUtils;
  */
 @Entity(name = "T_CONTENT")
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
-@Inheritance(strategy = InheritanceType.JOINED)
 @ToString(callSuper = true)
-public class Content extends AbstractAutoGenerateKeyedEntity {
+public class Content extends AbstractAutoGenerateKeyedEntity
+        implements IDeletable<Long> {
     
     // --------------- Private fields ---------------
 

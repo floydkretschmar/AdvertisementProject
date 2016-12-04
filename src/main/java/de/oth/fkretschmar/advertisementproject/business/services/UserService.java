@@ -18,9 +18,12 @@ package de.oth.fkretschmar.advertisementproject.business.services;
 
 import de.oth.fkretschmar.advertisementproject.business.repositories.AddressRepository;
 import de.oth.fkretschmar.advertisementproject.business.repositories.AccountRepository;
+import de.oth.fkretschmar.advertisementproject.business.repositories.ContentRepository;
 import de.oth.fkretschmar.advertisementproject.business.repositories.UserRepository;
 import de.oth.fkretschmar.advertisementproject.entities.Account;
 import de.oth.fkretschmar.advertisementproject.entities.Address;
+import de.oth.fkretschmar.advertisementproject.entities.Campaign;
+import de.oth.fkretschmar.advertisementproject.entities.Content;
 import de.oth.fkretschmar.advertisementproject.entities.Password;
 import de.oth.fkretschmar.advertisementproject.entities.User;
 import java.io.Serializable;
@@ -52,6 +55,12 @@ public class UserService implements Serializable {
     private AccountRepository accountRepository;
     
     /**
+     * Stores the repository used to manage {@link Content} entities.
+     */
+    @Inject
+    private ContentRepository contentRepository;
+    
+    /**
      * Stores the service that manages {@link Password} entities.
      */
     @Inject
@@ -74,10 +83,10 @@ public class UserService implements Serializable {
      * @param   account     that will be added to the user.
      * @return              the changed user.
      */
+    @Transactional
     public User addAccountToUser(User user, Account account) {
         if (user == null) {
-            throw new IllegalArgumentException("The password change failed: "
-                    + "the user was not set.");
+            throw new IllegalArgumentException("The user was not set.");
         }
         
         this.accountRepository.persist(account);
@@ -118,7 +127,7 @@ public class UserService implements Serializable {
     
     /**
      * Creates a new {@link User} using the data specified on the user object.
-     *
+     * 
      * @param   user    that contains the data for the new user that will be 
      *                  created.
      * @return          the saved user.
@@ -141,9 +150,13 @@ public class UserService implements Serializable {
         this.passwordService.create(password);
         
         this.accountRepository.persist(user.getAccounts());
-
-        // persist the user:
+        
+        this.contentRepository.persist(user.getContents());
+        
+        // TODO: persist campaigns
+        
         this.userRepository.persist(user);
+                
         return user;
     }
     
@@ -168,7 +181,7 @@ public class UserService implements Serializable {
         this.passwordService.delete(user.getPassword());
         user.setPassword(null);
         
-        // remove all accounts
+        // remove all contents
         Object[] accounts = user.getAccounts().toArray();
         
         for (int i = 0; i < accounts.length; i++) {
@@ -177,6 +190,18 @@ public class UserService implements Serializable {
                 this.accountRepository.remove((Account)accounts[i]);
             }
         }
+        
+        // remove all contents
+        Object[] contents = user.getContents().toArray();
+        
+        for (int i = 0; i < contents.length; i++) {
+            if(contents[i] instanceof Content){
+                user.removeContent((Content)contents[i]);
+                this.contentRepository.remove((Content)contents[i]);
+            }
+        }
+        
+        //TODO: remove all campaigns
         
         this.userRepository.remove(user);
     }
@@ -200,6 +225,7 @@ public class UserService implements Serializable {
      * @param   account that will be deleted.
      * @return          the changed user.
      */
+    @Transactional
     public User removeAccountFromUser(User user, Account account) {
         if (user == null) {
             throw new IllegalArgumentException("The password change failed: "

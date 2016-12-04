@@ -16,21 +16,49 @@
  */
 package de.oth.fkretschmar.advertisementproject.entities;
 
+import de.oth.fkretschmar.advertisementproject.entities.base.IFlagField;
+import lombok.Getter;
+
 /**
  * Defines the different purposes of use that can be targeted with an 
  * advertisement.
  * 
  * @author fkre
  */
-public enum TargetPurposeOfUse {
+public enum TargetPurposeOfUse implements IFlagField {
+    
+    /**
+     * Indicates no specific gender group should be targeted.
+     */
+    IRRELEVANT(1<<0),
     
     /**
      * Indicates that the target is operating in a business environment.
      */
-    BUSINESS,
+    BUSINESS(1<<1),
     
     /**
      * Indicates that the target is operating in a private environment.
      */
-    PRIVATE;
+    PRIVATE(1<<2);
+    
+    // --------------- Private fields ---------------
+    
+    /**
+     * Stores the integer representation of the flags of this enum.
+     */
+    @Getter
+    private final int flagValue;
+    
+    // --------------- Private constructors ---------------
+    
+    /**
+     * Creates a new instance of {@link TargetPurposeOfUse} using the specified 
+     * value.
+     * 
+     * @param flagValue the flagValue indicating the bit position of the flag.
+     */
+    private TargetPurposeOfUse(int flagValue){
+        this.flagValue = flagValue;
+    }
 }

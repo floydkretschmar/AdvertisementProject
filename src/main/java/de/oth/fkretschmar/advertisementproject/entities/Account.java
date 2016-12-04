@@ -19,7 +19,6 @@ package de.oth.fkretschmar.advertisementproject.entities;
 
 import de.oth.fkretschmar.advertisementproject.entities.base.AbstractStringKeyedEntity;
 import de.oth.fkretschmar.advertisementproject.entities.base.EntityState;
-import de.oth.fkretschmar.advertisementproject.entities.base.IUndeletableEntity;
 import javax.persistence.Column;
 
 import javax.persistence.Entity;
@@ -31,6 +30,7 @@ import javax.persistence.InheritanceType;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import de.oth.fkretschmar.advertisementproject.entities.base.IDeletable;
 
 /**
  * Represents an paypal account used to pay for orders.
@@ -41,17 +41,7 @@ import lombok.ToString;
 @Inheritance(strategy = InheritanceType.JOINED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString(callSuper = true)
-public abstract class Account extends AbstractStringKeyedEntity 
-        implements IUndeletableEntity<String> {   
-    
-    // --------------- Private fields ---------------
-    
-    /**
-     * Stores the state of the entity.
-     **/
-    @Column(name = IUndeletableEntity.ENTITY_STATE_COLUMN_NAME)
-    @Enumerated(EnumType.STRING)
-    private EntityState state = EntityState.CREATED;
+public abstract class Account extends AbstractStringKeyedEntity {   
     
     // --------------- Protected constructors ---------------
     
@@ -63,25 +53,5 @@ public abstract class Account extends AbstractStringKeyedEntity
      */
     protected Account(String accountId) {
         super(accountId);
-    }
-    
-    // --------------- Public getters and setters ---------------
-    
-    /**
-     * Gets the state of the entity.
-     * @return  the entity state.
-     */
-    @Override
-    public EntityState getEntityState() {
-        return this.state;
-    }
-
-    /**
-     * Sets the state of the entity.
-     * @param state     the new state of the entity.s
-     */
-    @Override
-    public void setEntityState(EntityState state) {
-        this.state = state;
     }
 }
