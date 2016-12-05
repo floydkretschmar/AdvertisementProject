@@ -74,6 +74,16 @@ public class Campaign extends AbstractAutoGenerateKeyedEntity {
             = new ArrayList<CampaignContent>();
     
     /**
+     * Stores the interval in which the order is being paid for.
+     */
+    @NotNull
+    @Column(name = "PAYMENT_INTERVAL", updatable = false)
+    @Enumerated(EnumType.STRING)
+    @Getter
+    @Setter
+    private PaymentInterval interval;
+    
+    /**
      * Stores the account used to make the payments for this campaign.
      */
     @NotNull
@@ -83,15 +93,15 @@ public class Campaign extends AbstractAutoGenerateKeyedEntity {
     @Setter
     private Account paymentAccount;
     
+    
     /**
-     * Stores the interval in which the order is being paid for.
+     * Stores the state of the campaign.
      */
     @NotNull
-    @Column(name = "PAYMENT_INTERVAL", updatable = false)
-    @Enumerated(EnumType.STRING)
+    @Column(name = "CAMPAIGN_STATE")
     @Getter
     @Setter
-    private PaymentInterval interval;
+    private CampaignState campaignState = CampaignState.RUNNING;
     
     // --------------- Private constructors ---------------
     
@@ -157,17 +167,6 @@ public class Campaign extends AbstractAutoGenerateKeyedEntity {
      */
     public boolean addContent(CampaignContent content) {
         return this.contents.add(content);
-    }
-    
-    
-    /**
-     * Removes a bill to the list of payed bill.
-     * 
-     * @param bill  that will be removed.
-     * @return      {@code true} if the bill was removed, otherwise {@code false}
-     */
-    public boolean removeBill(Bill bill) {
-        return this.bills.remove(bill);
     }
     
     /**

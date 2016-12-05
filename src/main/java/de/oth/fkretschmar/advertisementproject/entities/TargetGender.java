@@ -46,7 +46,7 @@ public enum TargetGender implements IFlagField {
     /**
      * Indicates that the target neither identifies as male or female.
      */
-    OTHER(1<<4);
+    OTHER(1<<3);
     
     // --------------- Private fields ---------------
     

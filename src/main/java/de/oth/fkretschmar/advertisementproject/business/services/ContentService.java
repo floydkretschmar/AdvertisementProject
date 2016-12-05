@@ -19,6 +19,7 @@ package de.oth.fkretschmar.advertisementproject.business.services;
 import de.oth.fkretschmar.advertisementproject.business.repositories.ContentRepository;
 import de.oth.fkretschmar.advertisementproject.entities.Content;
 import java.io.Serializable;
+import java.util.Collection;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -49,14 +50,21 @@ public class ContentService implements Serializable {
      * Creates the specified {@link Content}.
      * 
      * @param   content   the content that will be saved.
-     * @return            the saved content.
      */
     @Transactional
-    public Content create(Content content) {
+    public void create(Content content) {
         this.contentRepository.persist(content);
-        return content;
     }
     
+    /**
+     * Creates the specified instances of {@link Content}.
+     * 
+     * @param contents the content instances that will be saved.
+     */
+    @Transactional
+    public void create(Collection<Content> contents) {
+        this.contentRepository.persist(contents);
+    }
     
     /**
      * Deletes the specified {@link Content} from the database.

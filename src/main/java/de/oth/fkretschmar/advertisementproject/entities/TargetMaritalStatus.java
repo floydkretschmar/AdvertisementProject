@@ -44,17 +44,17 @@ public enum TargetMaritalStatus implements IFlagField {
     /**
      * Indicates that the target is married.
      */
-    MARRIED(4),
+    MARRIED(1<<3),
     
     /**
      * Indicates that the target is single.
      */
-    SINGLE(8),
+    SINGLE(1<<4),
     
     /**
      * Indicates that the target is widowed.
      */
-    WIDOWED(16);
+    WIDOWED(1<<5);
     
     // --------------- Private fields ---------------
     

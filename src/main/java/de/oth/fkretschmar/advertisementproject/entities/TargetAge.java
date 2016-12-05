@@ -46,12 +46,12 @@ public enum TargetAge implements IFlagField {
     /**
      * Indicates that the target is a youth (ages between 65 years and older).
      */
-    SENIORS(1<<4),
+    SENIORS(1<<3),
     
     /**
      * Indicates that the target is a youth (ages between 15-24 years old).
      */
-    YOUTH(1<<8);
+    YOUTH(1<<4);
     
     // --------------- Private fields ---------------
     

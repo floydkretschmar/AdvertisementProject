@@ -20,6 +20,7 @@ import de.oth.fkretschmar.advertisementproject.business.SerializableRenderedImag
 import de.oth.fkretschmar.advertisementproject.business.repositories.TargetContextRepository;
 import de.oth.fkretschmar.advertisementproject.business.services.ContentService;
 import de.oth.fkretschmar.advertisementproject.business.services.ApplicationService;
+import de.oth.fkretschmar.advertisementproject.business.services.CampaignService;
 import de.oth.fkretschmar.advertisementproject.business.services.PasswordException;
 import de.oth.fkretschmar.advertisementproject.business.services.PasswordService;
 import de.oth.fkretschmar.advertisementproject.business.services.UserService;
@@ -30,7 +31,10 @@ import de.oth.fkretschmar.advertisementproject.entities.Content;
 import de.oth.fkretschmar.advertisementproject.entities.ContentType;
 import de.oth.fkretschmar.advertisementproject.entities.BankAccount;
 import de.oth.fkretschmar.advertisementproject.entities.BuilderValidationException;
+import de.oth.fkretschmar.advertisementproject.entities.Campaign;
+import de.oth.fkretschmar.advertisementproject.entities.CampaignContent;
 import de.oth.fkretschmar.advertisementproject.entities.Password;
+import de.oth.fkretschmar.advertisementproject.entities.PaymentInterval;
 import de.oth.fkretschmar.advertisementproject.entities.TargetAge;
 import de.oth.fkretschmar.advertisementproject.entities.TargetContext;
 import de.oth.fkretschmar.advertisementproject.entities.TargetGender;
@@ -45,8 +49,11 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URL;
 import java.util.EnumSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
+import javax.money.Monetary;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -72,6 +79,9 @@ public class TestServlet extends HttpServlet {
     
     @Inject
     private ContentService adService;
+    
+    @Inject
+    private CampaignService campaignService;
     
     @Inject
     private TargetContextRepository targetRepo;
@@ -100,122 +110,148 @@ public class TestServlet extends HttpServlet {
             out.println("<h1>Servlet TestServlet at " + request.getContextPath() + "</h1>");
             
             try {
-            File file = new File("E:\\Augen_einer_Katze.jpg");
-            
-            SerializableRenderedImage image = new SerializableRenderedImage(ImageIO.read(file));
-            
-            Content ad = Content.createContent()
-                        .value(image)
-                        .contentType(ContentType.IMAGE)
-                        .targetUrl(new URL("https://www.google.de")).build();
-            
-            ad = this.adService.create(ad);
-            
-            //Content ad2 = this.adService.find(ad.getId());
-            
-            ad = Content.createContent()
-                        .value(new URL("https://upload.wikimedia.org/wikipedia/commons/7/7b/Gr%C3%BCne_Augen_einer_Katze.JPG"))
-                        .contentType(ContentType.IMAGE_URL)
-                        .targetUrl(new URL("https://www.google.de")).build();
-            
-            ad = this.adService.create(ad);
-            
-            //ad2 = this.adService.find(ad.getId());
-            
-            ad = Content.createContent()
-                        .value("Das ist mein Werbetext")
-                        .contentType(ContentType.TEXT)
-                        .targetUrl(new URL("https://www.google.de")).build();
-            
-            ad = this.adService.create(ad);
-            
-            
-            TargetContext context = TargetContext.createTargetContext()
-                    .targetAges(EnumSet.of(TargetAge.CHILDREN, TargetAge.YOUTH))
-                    .targetGenders(EnumSet.of(TargetGender.FEMALE))
-                    .targetMaritalStatus(EnumSet.of(
-                            TargetMaritalStatus.IN_RELATIONSHIP, 
-                            TargetMaritalStatus.MARRIED))
-                    .targetPurposeOfUses(EnumSet.of(TargetPurposeOfUse.PRIVATE)).build();
-            
-            //this.targetRepo.persist(context);
-            
-            
-            
-            
-            
-            //ad2 = this.adService.find(ad.getId());
-
-//            User user = this.userService.findForEMail("fkretschmar@googlemail.com");
-//            
-//            this.userService.changePassword(user, "HalloWelt".toCharArray());
-            
-            //this.userService.delete(user);
-            
-//            
-            Address address = Address.createAddress()
-                                .areaCode("95689")
-                                .city("Regensburg")
-                                .country("Deutschland")
-                                .street("Dechbettener Straße 7").build();
-            
-            User user = User.createUser()
-                    .eMailAddress("fkretschmar@googlemail.com")
-                    .password(PasswordService.generate("Testpw".toCharArray()))
-                    .firstName("Floyd") 
-                    .lastName("Kretschmar") 
-                    .address(address)
-                    .company("OptWare").build();
-            
-            Account acc = BankAccount.createBankAccount()
-                    .iban("DE948309535956456")
-                    .bic("GENOD43945").build();
-            
-            
-            user.addAccount(acc);
-//            
-            acc = BankAccount.createBankAccount()
-                    .iban("DE55555555555555555555")
-                    .bic("GENOD43945").build();
-            
-            user.addAccount(acc);
-            
-            user = this.userService.create(user);
-            
-            this.userService.removeAccountFromUser(user, acc);
-            }
-            catch (BuilderValidationException e) {
+                // Create user including address and password (register screen):
                 
-            }
-            catch (PasswordException e) {
-                
-            }
-            
-//            
-//            authService.authenticateUser(user.geteMailAddress(), "Testpw4".toCharArray());
-//            
-//            try {
-//                int test = ApplicationService.processCurrentUser(currentUser -> {
-//                    this.userService.changePassword(
-//                            currentUser,
-//                            "Testpw5".toCharArray());
-//                    return 17;
-//                });
-//                out.println("Changesuccess");
-//            } catch (UserServiceException ex) {
-//                out.println(ex.getMessage());
-//                Logger.getLogger(TestServlet.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-            
-            
-//            try {
-//                out.println(userService.create(user, user.getPassword(), user.getAddress()));
-//            } catch (UserServiceException ex) {
-//                Logger.getLogger(TestServlet.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-            
-            //out.println("Password-ID: " + pw.getId());
+                Address address = Address.createAddress()
+                                    .areaCode("95689")
+                                    .city("Regensburg")
+                                    .country("Deutschland")
+                                    .street("Dechbettener Straße 7").build();
 
+                User user = User.createUser()
+                        .eMailAddress("fkretschmar@googlemail.com")
+                        .password(PasswordService.generate("Testpw".toCharArray()))
+                        .firstName("Floyd") 
+                        .lastName("Kretschmar") 
+                        .address(address)
+                        .company("OptWare").build();
+
+                this.userService.create(user);
+
+                // Authenticate User:
+                
+                this.authService.authenticateUser(user.geteMailAddress(), "Testpw".toCharArray());
+
+                // Change password:
+                
+                ApplicationService.processCurrentUser(currentUser -> {
+                        try {
+                            this.userService.changePassword(
+                                    currentUser,
+                                    "Testpw5".toCharArray());
+                        }
+                        catch (PasswordException ex) {}
+                    });
+                
+                // create and remove accounts for user:
+                
+                Account acc = BankAccount.createBankAccount()
+                        .iban("DE948309535956456")
+                        .bic("GENOD43945").build();
+                
+                ApplicationService.processCurrentUser(currentUser -> {
+                    this.userService.addAccountToUser(currentUser, acc);
+                });
+                
+                
+                Account acc2 = BankAccount.createBankAccount()
+                        .iban("DE55555555555555555555")
+                        .bic("GENOD43945").build();
+
+                ApplicationService.processCurrentUser(currentUser -> {
+                    this.userService.addAccountToUser(user, acc2);
+                    this.userService.removeAccountFromUser(user, acc2);
+                });
+                
+
+                // Create contents and add/delete them to/from the user:
+                File file = new File("E:\\Augen_einer_Katze.jpg");
+
+                SerializableRenderedImage image = new SerializableRenderedImage(ImageIO.read(file));
+
+                Content ad = Content.createContent()
+                            .value(image)
+                            .contentType(ContentType.IMAGE)
+                            .targetUrl(new URL("https://www.google.de")).build();
+                ApplicationService.processCurrentUser(currentUser -> {
+                    this.userService.addContentToUser(currentUser, ad);
+                });
+
+                Content ad2 = Content.createContent()
+                            .value(new URL("https://upload.wikimedia.org/wikipedia/commons/7/7b/Gr%C3%BCne_Augen_einer_Katze.JPG"))
+                            .contentType(ContentType.IMAGE_URL)
+                            .targetUrl(new URL("https://www.google.de")).build();
+                
+                ApplicationService.processCurrentUser(currentUser -> {
+                    this.userService.addContentToUser(currentUser, ad2);
+                });
+
+                Content ad3 = Content.createContent()
+                            .value("Das ist mein Werbetext")
+                            .contentType(ContentType.TEXT)
+                            .targetUrl(new URL("https://www.google.de")).build();
+                
+                ApplicationService.processCurrentUser(currentUser -> {
+                    this.userService.addContentToUser(currentUser, ad3);
+                    this.userService.removeContentFromUser(currentUser, ad3);
+                });
+
+                
+                // Create campaign:
+                
+                TargetContext context = TargetContext.createTargetContext()
+                        .targetAges(EnumSet.of(TargetAge.IRRELEVANT))
+                        .targetGenders(EnumSet.of(TargetGender.IRRELEVANT))
+                        .targetMaritalStatus(EnumSet.of(
+                                TargetMaritalStatus.IRRELEVANT))
+                        .targetPurposeOfUses(EnumSet.of(TargetPurposeOfUse.IRRELEVANT)).build();
+                
+                CampaignContent ccon1 = CampaignContent.createCampaignContent()
+                            .content(ad)
+                            .context(context)
+                            .numberOfRequests(100000)
+                            .pricePerRequest(Monetary.getDefaultAmountFactory()
+                                    .setCurrency("EUR")
+                                    .setNumber(0.04).create()).build();
+
+                TargetContext context1 = TargetContext.createTargetContext()
+                        .targetAges(EnumSet.of(TargetAge.CHILDREN, TargetAge.YOUTH, TargetAge.ADULTS))
+                        .targetGenders(EnumSet.of(TargetGender.FEMALE, TargetGender.MALE, TargetGender.OTHER))
+                        .targetMaritalStatus(EnumSet.of(
+                                TargetMaritalStatus.SINGLE))
+                        .targetPurposeOfUses(EnumSet.of(TargetPurposeOfUse.BUSINESS)).build();
+                
+                CampaignContent ccon2 = CampaignContent.createCampaignContent()
+                            .content(ad2)
+                            .context(context1)
+                            .numberOfRequests(500000)
+                            .pricePerRequest(Monetary.getDefaultAmountFactory()
+                                    .setCurrency("EUR")
+                                    .setNumber(0.10).create()).build();
+                
+                Campaign campaign = ApplicationService.processCurrentUser(currentUser -> {
+                    try {
+                        return Campaign.createCampaign()
+                                .comissioner(user)
+                                .interval(PaymentInterval.MONTHLY)
+                                .paymentAccount(acc)
+                                .build();
+                    }
+                    catch (BuilderValidationException ex) {}
+                    return null;
+                });
+                
+                if (campaign != null) {
+                    campaign.addContent(ccon1);
+                    campaign.addContent(ccon2);
+                    
+                    this.campaignService.create(campaign);
+                }
+            }
+            catch (PasswordException ex) {}
+            catch (BuilderValidationException ex) {}
+            
+            
             out.println("</body>");
             out.println("</html>");
         }

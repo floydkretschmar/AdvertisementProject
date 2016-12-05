@@ -65,10 +65,12 @@ public class BillItem extends AbstractAutoGenerateKeyedEntity {
      */
     @NotNull
     @AttributeOverrides({
-        @AttributeOverride(name="amount",
-                           column=@Column(name="PRICE_PER_REQUEST_AMOUNT")),
-        @AttributeOverride(name="currencyCode",
-                           column=@Column(name="PRICE_PER_REQUEST_CURRENCY"))
+        @AttributeOverride(name="formattedValue",
+                           column=@Column(name="ITEM_PRICE"))
+//        @AttributeOverride(name="amount",
+//                           column=@Column(name="PRICE_PER_REQUEST_AMOUNT")),
+//        @AttributeOverride(name="currencyCode",
+//                           column=@Column(name="PRICE_PER_REQUEST_CURRENCY"))
     })
     private Money itemPrice;
     

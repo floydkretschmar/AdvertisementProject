@@ -52,7 +52,7 @@ public class TargetContext extends AbstractAutoGenerateKeyedEntity
      * Stores the targeted age group.
      */
     @NotNull
-    @Column(name = "AGE", nullable = false)
+    @Column(name = "AGE", nullable = false, columnDefinition = "BIGINT")
     @Getter
     @Setter
     @Convert(converter = TargetAgeAttributeConverter.class)
@@ -62,7 +62,7 @@ public class TargetContext extends AbstractAutoGenerateKeyedEntity
      * Stores the targeted gender group.
      */
     @NotNull
-    @Column(name = "GENDER", nullable = false)
+    @Column(name = "GENDER", nullable = false, columnDefinition = "BIGINT")
     @Getter
     @Setter
     @Convert(converter = TargetGenderAttributeConverter.class)
@@ -72,7 +72,7 @@ public class TargetContext extends AbstractAutoGenerateKeyedEntity
      * Stores the targeted marital status group.
      */
     @NotNull
-    @Column(name = "MARITAL_STATUS", nullable = false)
+    @Column(name = "MARITAL_STATUS", nullable = false, columnDefinition = "BIGINT")
     @Getter
     @Setter
     @Convert(converter = TargetMaritalStatusAttributeConverter.class)
@@ -82,7 +82,7 @@ public class TargetContext extends AbstractAutoGenerateKeyedEntity
      * Stores the targeted purposes of use.
      */
     @NotNull
-    @Column(name = "PURPOSE_OF_USE", nullable = false)
+    @Column(name = "PURPOSE_OF_USE", nullable = false, columnDefinition = "BIGINT")
     @Getter
     @Setter
     @Convert(converter = TargetPurposeOfUseAttributeConverter.class)

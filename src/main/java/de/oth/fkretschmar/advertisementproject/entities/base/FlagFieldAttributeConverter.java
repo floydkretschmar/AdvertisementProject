@@ -20,12 +20,15 @@ import java.util.EnumSet;
 import javax.persistence.AttributeConverter;
 
 /**
+ * Defines conversion operations for enum attributes that are representing flag
+ * fields.
  * 
- * @author Floyd
- * @param <T> 
+ * @author  Floyd Kretschmar
+ * @param   <T>     the type of the enum that is being managed by the enum set 
+ *                  that will be converted.
  */
 public abstract class FlagFieldAttributeConverter<T extends Enum<T> & IFlagField> 
-        implements AttributeConverter<EnumSet<T>, Integer> {
+        implements AttributeConverter<EnumSet<T>, Long> {
     
     
     // --------------- Private fields ---------------
@@ -53,32 +56,32 @@ public abstract class FlagFieldAttributeConverter<T extends Enum<T> & IFlagField
     // --------------- Public methods ---------------
 
     /**
-     * Converts a provided enum set of {@link IFlagField} to a {@link Integer} 
+     * Converts a provided enum set of {@link IFlagField} to a {@link Long} 
      * that will be used within for storage within the database.
      * 
      * @param   targetGroups  the set that will be converted.
      * @return                the converted {@link Integer}.
      */
     @Override
-    public Integer convertToDatabaseColumn(EnumSet<T> targetGroups) {
-    	int totalValue = 0;
+    public Long convertToDatabaseColumn(EnumSet<T> targetGroups) {
+    	Long totalValue = 0l;
         
         for (IFlagField targetGroup : targetGroups) {
-            totalValue = totalValue | targetGroup.getFlagValue();
+            totalValue |= targetGroup.getFlagValue();
         }
         
         return totalValue;
     }
 
     /**
-     * Converts a provided {@link Integer} to a enum set of {@link IFlagField} 
+     * Converts a provided {@link Long} to a enum set of {@link IFlagField} 
      * that will be used within for storage within the database.
      * 
      * @param   flagField   the flag field that will be converted.
      * @return              the converted enum set of {@link IFlagField}.
      */
     @Override
-    public EnumSet<T> convertToEntityAttribute(Integer flagField) {
+    public EnumSet<T> convertToEntityAttribute(Long flagField) {
         EnumSet<T> returnSet = EnumSet.noneOf(this.enumType);
         
         for (T enumValue : this.getAllEnumValues()) {

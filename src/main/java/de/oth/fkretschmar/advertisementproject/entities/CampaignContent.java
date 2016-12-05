@@ -33,6 +33,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
 /**
@@ -52,6 +53,7 @@ public class CampaignContent extends AbstractAutoGenerateKeyedEntity {
      */
     @ManyToOne
     @Getter
+    @Setter
     @JoinColumn(name = "CONTENT_ID")
     private Content content;
     
@@ -62,6 +64,7 @@ public class CampaignContent extends AbstractAutoGenerateKeyedEntity {
     @NotNull
     @OneToOne
     @Getter
+    @Setter
     @JoinColumn(name = "CONTEXT_ID")
     private TargetContext context;
     
@@ -80,10 +83,12 @@ public class CampaignContent extends AbstractAutoGenerateKeyedEntity {
      **/
     @NotNull
     @AttributeOverrides({
-        @AttributeOverride(name="amount",
-                           column=@Column(name="PRICE_PER_REQUEST_AMOUNT")),
-        @AttributeOverride(name="currencyCode",
-                           column=@Column(name="PRICE_PER_REQUEST_CURRENCY"))
+        @AttributeOverride(name="formattedValue",
+                           column=@Column(name="PRICE_PER_REQUEST"))
+//        @AttributeOverride(name="amount",
+//                           column=@Column(name="PRICE_PER_REQUEST_AMOUNT")),
+//        @AttributeOverride(name="currencyCode",
+//                           column=@Column(name="PRICE_PER_REQUEST_CURRENCY"))
     })
     private Money pricePerRequest;
     

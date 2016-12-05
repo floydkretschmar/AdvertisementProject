@@ -17,8 +17,11 @@
 package de.oth.fkretschmar.advertisementproject.entities;
 
 import java.io.Serializable;
+import java.util.Locale;
 import javax.money.Monetary;
 import javax.money.MonetaryAmount;
+import javax.money.format.MonetaryAmountFormat;
+import javax.money.format.MonetaryFormats;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.validation.constraints.NotNull;
@@ -40,20 +43,26 @@ class Money implements Serializable {
     
     // --------------- Private fields ---------------
     
-    /**
-     * Stores the payment amount in the smallest possible unit of the currency.
-     */
-    @NotNull
-    @Column(name = "MONEY_AMOUNT", nullable = false)
-    private long amount;
+//    /**
+//     * Stores the payment amount in the smallest possible unit of the currency.
+//     */
+//    @NotNull
+//    @Column(name = "MONEY_AMOUNT", nullable = false)
+//    private long amount;
+//    
+//    /**
+//     * Stores the currency type of the payment amount.
+//     */
+//    @NotNull
+//    @Column(name = "MONEY_CURRENCY", nullable = false)
+//    private String currencyCode;
     
     /**
-     * Stores the currency type of the payment amount.
+     * Stores the monetary amount as a formatted string.
      */
     @NotNull
-    @Column(name = "MONEY_CURRENCY", nullable = false)
-    private String currencyCode;
-    
+    @Column(name = "MONEY_VALUE", nullable = false)
+    private String formattedValue;
         
     // --------------- Protected constructors ---------------
     
@@ -78,10 +87,14 @@ class Money implements Serializable {
      *          money representation.
      */
     public MonetaryAmount getValue() {
-        return Monetary.getDefaultAmountFactory()
-                    .setCurrency(Monetary.getCurrency(this.currencyCode))
-                    .setNumber(this.amount)
-                    .create();
+        MonetaryAmountFormat germanFormat 
+                = MonetaryFormats.getAmountFormat(Locale.GERMANY);
+        
+        return germanFormat.parse(this.formattedValue);
+//        return Monetary.getDefaultAmountFactory()
+//                    .setCurrency(Monetary.getCurrency(this.currencyCode))
+//                    .setNumber(this.amount)
+//                    .create();
     }
     
     
@@ -91,8 +104,11 @@ class Money implements Serializable {
      * @param   monetaryAmount   the complex money representation.
      */
     public void setValue(MonetaryAmount monetaryAmount) {
-        this.amount = monetaryAmount.getNumber().longValueExact();
-        this.currencyCode = monetaryAmount.getCurrency().getCurrencyCode();
+        MonetaryAmountFormat germanFormat 
+                = MonetaryFormats.getAmountFormat(Locale.GERMANY);
+        this.formattedValue = germanFormat.format(monetaryAmount);
+//        this.amount = monetaryAmount.getNumber().longValueExact();
+//        this.currencyCode = monetaryAmount.getCurrency().getCurrencyCode();
     }
     
     
