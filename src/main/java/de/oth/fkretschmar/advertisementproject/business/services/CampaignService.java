@@ -40,10 +40,10 @@ public class CampaignService implements Serializable {
     // --------------- Private fields ---------------
 
     /**
-     * Stores the repository used to manage {@link Bill} entites.
+     * Stores the service used to manage {@link Bill} entites.
      */
     @Inject
-    BillRepository billRepository;
+    BillService billService;
     
     /**
      * Stores the repository used to manage {@link Campaign} entites.
@@ -70,7 +70,7 @@ public class CampaignService implements Serializable {
      */
     @Transactional
     public Campaign addBill(Campaign campaign, Bill bill) {
-        this.billRepository.persist(bill);
+        this.billService.create(bill);
         campaign = this.campaignRepository.merge(campaign);
         campaign.addBill(bill);
         return campaign;

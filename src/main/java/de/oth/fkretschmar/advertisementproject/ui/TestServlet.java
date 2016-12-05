@@ -18,7 +18,6 @@ package de.oth.fkretschmar.advertisementproject.ui;
 
 import de.oth.fkretschmar.advertisementproject.business.SerializableRenderedImage;
 import de.oth.fkretschmar.advertisementproject.business.repositories.TargetContextRepository;
-import de.oth.fkretschmar.advertisementproject.business.services.ContentService;
 import de.oth.fkretschmar.advertisementproject.business.services.ApplicationService;
 import de.oth.fkretschmar.advertisementproject.business.services.CampaignService;
 import de.oth.fkretschmar.advertisementproject.business.services.PasswordException;
@@ -77,8 +76,8 @@ public class TestServlet extends HttpServlet {
     @Inject
     private PasswordService passService;
     
-    @Inject
-    private ContentService adService;
+//    @Inject
+//    private ContentService adService;
     
     @Inject
     private CampaignService campaignService;

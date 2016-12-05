@@ -62,10 +62,10 @@ public class UserService implements Serializable {
     private CampaignService campaignService;
     
     /**
-     * Stores the service used to manage {@link Content} entities.
+     * Stores the repository used to manage {@link Content} entities.
      */
     @Inject
-    private ContentService contentService;
+    private ContentRepository contentRepository;
     
     /**
      * Stores the service that manages {@link Password} entities.
@@ -138,7 +138,7 @@ public class UserService implements Serializable {
             throw new IllegalArgumentException("The user was not set.");
         }
         
-        this.contentService.create(content);
+        this.contentRepository.persist(content);
         user = this.userRepository.merge(user);
         user.addContent(content);
         return user;
@@ -239,7 +239,7 @@ public class UserService implements Serializable {
         for (int i = 0; i < contents.length; i++) {
             if(contents[i] instanceof Content){
                 user.removeContent((Content)contents[i]);
-                this.contentService.delete((Content)contents[i]);
+                this.contentRepository.remove((Content)contents[i]);
             }
         }
         
@@ -253,8 +253,6 @@ public class UserService implements Serializable {
                 this.campaignService.cancel((Campaign)campaigns[i]);
             }
         }
-        
-        //TODO: remove all campaigns
         
         this.userRepository.remove(user);
     }
@@ -308,7 +306,7 @@ public class UserService implements Serializable {
         
         user = this.userRepository.merge(user);
         user.removeContent(content);
-        this.contentService.delete(content);
+        this.contentRepository.remove(content);
         return user;
     }
     
