@@ -17,11 +17,13 @@
 package de.oth.fkretschmar.advertisementproject.entities;
 
 import de.oth.fkretschmar.advertisementproject.entities.base.AbstractAutoGenerateKeyedEntity;
+import de.oth.fkretschmar.advertisementproject.entities.base.MonetaryAmountAttributeConverter;
 import javax.money.MonetaryAmount;
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
 
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
@@ -64,27 +66,11 @@ public class BillItem extends AbstractAutoGenerateKeyedEntity {
      * Stores the total price for this bill item.
      */
     @NotNull
-    @AttributeOverrides({
-        @AttributeOverride(name="formattedValue",
-                           column=@Column(name="ITEM_PRICE"))
-//        @AttributeOverride(name="amount",
-//                           column=@Column(name="PRICE_PER_REQUEST_AMOUNT")),
-//        @AttributeOverride(name="currencyCode",
-//                           column=@Column(name="PRICE_PER_REQUEST_CURRENCY"))
-    })
-    private Money itemPrice;
+    @Column(name = "ITEM_PRICE", nullable = false)
+    @Getter
+    @Convert(converter = MonetaryAmountAttributeConverter.class)
+    private MonetaryAmount itemPrice;
     
-    // --------------- Public methods ---------------
-    
-    
-    /**
-     * Gets the total price for this bill item.
-     * 
-     * @return the item price.
-     */
-    public MonetaryAmount getItemPrice() {
-        return this.itemPrice.getValue();
-    }
     
     // --------------- Private static methods ---------------
     
@@ -120,10 +106,8 @@ public class BillItem extends AbstractAutoGenerateKeyedEntity {
                     "The amount can not be smaller than 0.");
         }
         
-        Money itemPrice = Money.createMoney()
-                .monetaryAmount(
-                        campaignContent.getPricePerRequest().multiply(contentRequests))
-                .build();
+        MonetaryAmount itemPrice 
+                = campaignContent.getPricePerRequest().multiply(contentRequests);
         
         return new BillItem(campaignContent, contentRequests, itemPrice);
     }

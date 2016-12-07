@@ -17,12 +17,10 @@
 package de.oth.fkretschmar.advertisementproject.entities;
 
 import de.oth.fkretschmar.advertisementproject.entities.base.AbstractAutoGenerateKeyedEntity;
-import java.io.Serializable;
-import java.net.URL;
+import de.oth.fkretschmar.advertisementproject.entities.base.MonetaryAmountAttributeConverter;
 import javax.money.MonetaryAmount;
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -30,6 +28,7 @@ import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -42,7 +41,7 @@ import lombok.ToString;
  */
 @Entity(name = "T_CAMPAIGN_CONTENT")
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
-//@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @ToString(callSuper = true)
 public class CampaignContent extends AbstractAutoGenerateKeyedEntity {
     
@@ -82,67 +81,11 @@ public class CampaignContent extends AbstractAutoGenerateKeyedEntity {
      * per request of this campaign content.
      **/
     @NotNull
-    @AttributeOverrides({
-        @AttributeOverride(name="formattedValue",
-                           column=@Column(name="PRICE_PER_REQUEST"))
-//        @AttributeOverride(name="amount",
-//                           column=@Column(name="PRICE_PER_REQUEST_AMOUNT")),
-//        @AttributeOverride(name="currencyCode",
-//                           column=@Column(name="PRICE_PER_REQUEST_CURRENCY"))
-    })
-    private Money pricePerRequest;
-    
-    
-    // --------------- Public getters and setters ---------------
-
-    /**
-     * Gets the monetary amount tbe creator of the content is willing to pay
-     * per request of this campaign content.
-     * 
-     * @return  the {@link MonetaryAmount} object that represents the amount.
-     */
-    public MonetaryAmount getPricePerRequest() {
-        return this.pricePerRequest.getValue();
-    }
-    
-    
-    /**
-     * Sets the monetary amount tbe creator of the content is willing to pay
-     * per request of this campaign content.
-     * 
-     * @param   monetaryAmount   the amount.
-     */
-    public void setPricePerRequest(MonetaryAmount monetaryAmount) {
-        this.pricePerRequest.setValue(monetaryAmount);
-    }
-    
-    
-    // --------------- Private constructors ---------------
-    
-    
-    /**
-     * Creates a new instance of {@link Content} using the specified 
-     * content, value type and target url.
-     * 
-     * @param   content     the content that is being ordered for the campaign.
-     * @param   numberOfRequests    the number of contents that have been 
-     *                              ordered for the target context.
-     * @param   context         the target context of the specified order row 
-     *                          that influinces the price.
-     * @param   pricePerRequest the monetary amount tbe creator of the value 
-                          is willing to pay per request of this campaign 
-     */
-    private CampaignContent(
-            Content content,
-            TargetContext context,
-            long numberOfRequests,
-            Money pricePerRequest) {
-        super();
-        this.content = content;
-        this.context = context;
-        this.numberOfRequests = numberOfRequests;
-        this.pricePerRequest = pricePerRequest;
-    }
+    @Column(name = "ITEM_PRICE", nullable = false)
+    @Getter
+    @Setter
+    @Convert(converter = MonetaryAmountAttributeConverter.class)
+    private MonetaryAmount pricePerRequest;
     
     
     // --------------- Private static methods ---------------
@@ -187,13 +130,16 @@ public class CampaignContent extends AbstractAutoGenerateKeyedEntity {
                     "The target context can not be null.");
         }
         
-        Money moneyAmount = Money.createMoney()
-                .monetaryAmount(pricePerRequest).build();
+        if (pricePerRequest == null || pricePerRequest.isNegative()) {
+            throw new BuilderValidationException(
+                    CampaignContent.class,
+                    "The price per request can not be null or negative.");
+        }
         
         return new CampaignContent(
                 content, 
                 context, 
                 numberOfRequests, 
-                moneyAmount);
+                pricePerRequest);
     }
 }
