@@ -19,6 +19,7 @@ package de.oth.fkretschmar.advertisementproject.ui;
 import de.oth.fkretschmar.advertisementproject.business.SerializableRenderedImage;
 import de.oth.fkretschmar.advertisementproject.business.repositories.TargetContextRepository;
 import de.oth.fkretschmar.advertisementproject.business.services.ApplicationService;
+import de.oth.fkretschmar.advertisementproject.business.services.BillService;
 import de.oth.fkretschmar.advertisementproject.business.services.CampaignService;
 import de.oth.fkretschmar.advertisementproject.business.services.PasswordException;
 import de.oth.fkretschmar.advertisementproject.business.services.PasswordService;
@@ -29,6 +30,8 @@ import de.oth.fkretschmar.advertisementproject.entities.Address;
 import de.oth.fkretschmar.advertisementproject.entities.Content;
 import de.oth.fkretschmar.advertisementproject.entities.ContentType;
 import de.oth.fkretschmar.advertisementproject.entities.BankAccount;
+import de.oth.fkretschmar.advertisementproject.entities.Bill;
+import de.oth.fkretschmar.advertisementproject.entities.BillItem;
 import de.oth.fkretschmar.advertisementproject.entities.BuilderValidationException;
 import de.oth.fkretschmar.advertisementproject.entities.Campaign;
 import de.oth.fkretschmar.advertisementproject.entities.CampaignContent;
@@ -73,9 +76,6 @@ public class TestServlet extends HttpServlet {
     @Inject
     private ApplicationService authService;
     
-    @Inject
-    private PasswordService passService;
-    
 //    @Inject
 //    private ContentService adService;
     
@@ -83,7 +83,7 @@ public class TestServlet extends HttpServlet {
     private CampaignService campaignService;
     
     @Inject
-    private TargetContextRepository targetRepo;
+    private BillService billService;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -246,6 +246,26 @@ public class TestServlet extends HttpServlet {
                     
                     this.campaignService.create(campaign);
                 }
+                
+                // create bill:
+                
+                BillItem bi1 = BillItem.createBillItem()
+                        .campaignContent(ccon1)
+                        .contentRequests(500)
+                        .build();
+                
+                BillItem bi2 = BillItem.createBillItem()
+                        .campaignContent(ccon2)
+                        .contentRequests(3000)
+                        .build();
+                
+                BillItem[] bitems = { bi1, bi2 };
+                
+                Bill bill = Bill.createBill()
+                        .items(bitems)
+                        .build();
+                
+                this.billService.createBillForCampaign(campaign, bill);
             }
             catch (PasswordException ex) {}
             catch (BuilderValidationException ex) {}

@@ -32,7 +32,8 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import de.oth.fkretschmar.advertisementproject.entities.base.IDeletable;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Represents all billing information for one particular campaign payment.
@@ -49,7 +50,9 @@ public class Bill extends AbstractAutoGenerateKeyedEntity {
      */
     @NotNull
     @ManyToOne(optional = false)
-    @JoinColumn(name = "CAMPAIGN_ID", nullable = false)
+    @JoinColumn(name = "CAMPAIGN_ID")
+    @Getter
+    @Setter
     private Campaign campaign;
     
     
@@ -58,24 +61,28 @@ public class Bill extends AbstractAutoGenerateKeyedEntity {
      */
     @NotNull
     @OneToMany
-    @JoinColumn(name="BILL_ID", referencedColumnName="ID", nullable = false)
+    @JoinColumn(name="BILL_ID", referencedColumnName="ID")
     private final Collection<BillItem> items = new ArrayList<BillItem>();
     
     /**
      * Stores the total price of the bill.
      */
     @Transient
+    @Getter
     private MonetaryAmount totalPrice;
     
     // --------------- Private constructors ---------------
     
     /**
+     * Creates a new instance of {@link Bill} using the specified bill items.
      * 
      * @param campaign 
      */
-    private Bill(Campaign campaign) {
+    private Bill(BillItem[] items) {
         super();
-        this.campaign = campaign;
+        for (BillItem item : items) {
+            this.addItem(item);
+        }
     }
     
     // --------------- Public getters and setters ---------------
@@ -102,22 +109,6 @@ public class Bill extends AbstractAutoGenerateKeyedEntity {
     public boolean addItem(BillItem item) {
         if(this.items.add(item)) {
             this.addToTotalPrice(item);
-            return true;
-        }
-        
-        return false;
-    }
-    
-    
-    /**
-     * Removes an existing item from the bill.
-     * 
-     * @param item  the item that will be removed.
-     * @return {@code true} if the item was removed, otherwise {@code false}
-     */
-    public boolean removeItem(BillItem item) {
-        if(this.items.remove(item)) {
-            this.totalPrice.subtract(item.getItemPrice());
             return true;
         }
         
@@ -177,14 +168,7 @@ public class Bill extends AbstractAutoGenerateKeyedEntity {
             builderClassName = "BillBuilder",
             buildMethodName = "build")
     private static Bill validateAndCreateBill(
-            Campaign campaign) throws BuilderValidationException {
-        
-        if (campaign == null) {
-            throw new BuilderValidationException(
-                    Bill.class,
-                    "The campaign can not be null.");
-        }
-        
-        return new Bill(campaign);
+            BillItem...items) throws BuilderValidationException {
+        return new Bill(items);
     }
 }

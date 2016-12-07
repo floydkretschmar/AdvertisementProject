@@ -61,22 +61,6 @@ public class CampaignService implements Serializable {
     // --------------- Public methods ---------------
     
     /**
-     * Creates a new {@link Bill} and links it to the already existing 
-     * specified {@link Campaign}.
-     * 
-     * @param   campaign    to which the bill will be linked.
-     * @param   bill        that will be created.
-     * @return              the changed campaign.
-     */
-    @Transactional
-    public Campaign addBill(Campaign campaign, Bill bill) {
-        this.billService.create(bill);
-        campaign = this.campaignRepository.merge(campaign);
-        campaign.addBill(bill);
-        return campaign;
-    }
-    
-    /**
      * Creates the specified {@link Campaign}.
      * 
      * @param   campaign   the campaign that will be saved.

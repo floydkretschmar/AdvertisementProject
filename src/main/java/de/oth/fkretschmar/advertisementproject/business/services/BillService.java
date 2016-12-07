@@ -18,8 +18,10 @@ package de.oth.fkretschmar.advertisementproject.business.services;
 
 import de.oth.fkretschmar.advertisementproject.business.repositories.BillItemRepository;
 import de.oth.fkretschmar.advertisementproject.business.repositories.BillRepository;
+import de.oth.fkretschmar.advertisementproject.business.repositories.CampaignRepository;
 import de.oth.fkretschmar.advertisementproject.entities.Bill;
 import de.oth.fkretschmar.advertisementproject.entities.BillItem;
+import de.oth.fkretschmar.advertisementproject.entities.Campaign;
 import java.io.Serializable;
 
 import javax.enterprise.context.RequestScoped;
@@ -49,20 +51,39 @@ public class BillService implements Serializable {
     @Inject
     BillItemRepository billItemRepository;
     
+    /**
+     * Stores the repository used to manage {@link Campaign} entites.
+     */
+    @Inject
+    CampaignRepository campaignRepository;
+    
 
     // --------------- Public methods ---------------
     
-    
     /**
-     * Creates the specified {@link Bill}.
+     * Creates a new {@link Bill} and links it to the already existing 
+     * specified {@link Campaign}.
      * 
-     * @param   bill   the bill that will be saved.
-     * @return         the saved bill.
+     * @param   campaign    to which the bill will be linked.
+     * @param   bill        that will be created.
+     * @return              the changed campaign.
      */
     @Transactional
-    public Bill create(Bill bill) {
+    public Bill createBillForCampaign(Campaign campaign, Bill bill) {
+        
+        // 1. persist the bill items
         this.billItemRepository.persist(bill.getItems());
+        
+        // 2. set the campaign on the bill
+        campaign = this.campaignRepository.merge(campaign);
+        bill.setCampaign(campaign);
+        
+        // 3. persist the bill
         this.billRepository.persist(bill);
+        
+        // 4. set the bill on the campaign
+        campaign.addBill(bill);
+        
         return bill;
     }
     
@@ -74,12 +95,12 @@ public class BillService implements Serializable {
      */
     @Transactional
     public void delete(Bill bill) {
-        // remove all accounts
         Object[] items = bill.getItems().toArray();
         
         for (int i = 0; i < items.length; i++) {
             if(items[i] instanceof BillItem){
-                bill.removeItem((BillItem)items[i]);
+                // only call remove because the bill and bill items are 
+                // undeletable so still keep their connection
                 this.billItemRepository.remove((BillItem)items[i]);
             }
         }
