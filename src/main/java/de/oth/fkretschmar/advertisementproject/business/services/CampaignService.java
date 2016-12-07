@@ -118,6 +118,8 @@ public class CampaignService implements Serializable {
         campaign.setCampaignState(CampaignState.ENDED);
         this.deleteCampaignContents(campaign);
     }
+
+    // --------------- Private methods ---------------
     
     
     /**
