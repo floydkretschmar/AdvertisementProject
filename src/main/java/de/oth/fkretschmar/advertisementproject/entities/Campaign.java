@@ -62,6 +62,7 @@ public class Campaign extends AbstractAutoGenerateKeyedEntity {
     @ManyToOne
     @JoinColumn(name = "COMISSIONER_ID")
     @Getter
+    @Setter
     private User comissioner;
     
     /**
@@ -70,8 +71,8 @@ public class Campaign extends AbstractAutoGenerateKeyedEntity {
     @NotNull
     @OneToMany
     @JoinColumn(name = "CAMPAIGN_ID", referencedColumnName = "ID")
-    private final Collection<CampaignContent> contents
-            = new ArrayList<CampaignContent>();
+    private final Collection<Content> contents
+            = new ArrayList<Content>();
     
     /**
      * Stores the interval in which the order is being paid for.
@@ -110,15 +111,12 @@ public class Campaign extends AbstractAutoGenerateKeyedEntity {
      * Crreates a new {@link Campaign} using the specified comissioner, account
      * and payment interval.
      * 
-     * @param comissioner   the user hat has comissioned the campaign.
      * @param acount        the account used to make the payments for this 
      *                      campaign.
      * @param interval      the interval in which the order is being paid for.
      */
-    private Campaign(
-            User comissioner, Account paymentAccount, PaymentInterval interval) {
+    private Campaign(Account paymentAccount, PaymentInterval interval) {
         super();
-        this.comissioner = comissioner;
         this.paymentAccount = paymentAccount;
         this.interval = interval;
     }
@@ -141,7 +139,7 @@ public class Campaign extends AbstractAutoGenerateKeyedEntity {
      * 
      * @return the contents as an unmodifieable list.
      */
-    public Collection<CampaignContent> getContents() {
+    public Collection<Content> getContents() {
         return Collections.unmodifiableCollection(this.contents);
     }
     
@@ -165,7 +163,7 @@ public class Campaign extends AbstractAutoGenerateKeyedEntity {
      * @return          {@code true} if the content was added, otherwise 
      *                  {@code false}
      */
-    public boolean addContent(CampaignContent content) {
+    public boolean addContent(Content content) {
         return this.contents.add(content);
     }
     
@@ -176,7 +174,7 @@ public class Campaign extends AbstractAutoGenerateKeyedEntity {
      * @return          {@code true} if the content was removed, otherwise 
      *                  {@code false}
      */
-    public boolean removeContent(CampaignContent content) {
+    public boolean removeContent(Content content) {
         return this.contents.remove(content);
     }
     
@@ -198,15 +196,8 @@ public class Campaign extends AbstractAutoGenerateKeyedEntity {
             builderClassName = "CampaignBuilder",
             buildMethodName = "build")
     private static Campaign validateAndCreateCampaign(
-            User comissioner, 
             Account paymentAccount, 
             PaymentInterval interval) throws BuilderValidationException {
-        
-        if (comissioner == null) {
-            throw new BuilderValidationException(
-                    Campaign.class,
-                    "The comissioner can not be null.");
-        }
         
         if (paymentAccount == null) {
             throw new BuilderValidationException(
@@ -220,6 +211,6 @@ public class Campaign extends AbstractAutoGenerateKeyedEntity {
                     "The payment interval has to be defined.");
         }
         
-        return new Campaign(comissioner, paymentAccount, interval);
+        return new Campaign(paymentAccount, interval);
     }
 }

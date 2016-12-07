@@ -18,18 +18,23 @@ package de.oth.fkretschmar.advertisementproject.entities;
 
 import de.oth.fkretschmar.advertisementproject.entities.base.AbstractAutoGenerateKeyedEntity;
 import de.oth.fkretschmar.advertisementproject.entities.base.IDeletable;
+import de.oth.fkretschmar.advertisementproject.entities.base.MonetaryAmountAttributeConverter;
 
 import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
+import javax.money.MonetaryAmount;
 
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
@@ -66,12 +71,43 @@ public class Content extends AbstractAutoGenerateKeyedEntity
             = ContentType.UNDEFINED;
     
     /**
+     * Stores the target context of the specified content that influinces the
+     * price.
+     */
+    @NotNull
+    @OneToOne
+    @Getter
+    @Setter
+    @JoinColumn(name = "CONTEXT_ID")
+    private TargetContext context;
+    
+    /**
      * Stores a text used to describe the entity.
      */
     @Column(name = "DESCRIPTION")
     @Getter
     @Setter
     private String description;
+    
+    /**
+     * Stores the number of contents that have been ordered for the target 
+     * context.
+     */
+    @NotNull
+    @Column(name = "NUMER_OF_REQUESTS", nullable = false)
+    @Getter
+    private long numberOfRequests;
+    
+    /**
+     * Stores the monetary amount tbe creator of the content is willing to pay
+     * per request of this campaign content.
+     **/
+    @NotNull
+    @Column(name = "ITEM_PRICE", nullable = false)
+    @Getter
+    @Setter
+    @Convert(converter = MonetaryAmountAttributeConverter.class)
+    private MonetaryAmount pricePerRequest;
     
     /**
      * Stores the serialized value.
@@ -106,19 +142,32 @@ public class Content extends AbstractAutoGenerateKeyedEntity
      * 
      * @param   contentType     the enum that indicates the actual type of the 
      *                          object.
+     * @param   context         the target context of the specified order row 
+     *                          that influinces the price.
      * @param   description     the text that gives a short description of the
-     *                          content.
+     *                          content..
+     * @param   numberOfRequests    the number of contents that have been 
+     *                              ordered for the target context.
+     * @param   pricePerRequest     the monetary amount tbe creator of the value 
+     *                              is willing to pay per request of this campaign 
+     *                              value.
      * @param   targetUrl       the URL that redirects to the advertised page.
-     * @param   value           the actual value of the content.
+     * @param   value           the actual value of the content
      */
     protected Content(
-            ContentType contentType, 
+            ContentType contentType,
+            TargetContext context, 
             String description, 
+            long numberOfRequests,
+            MonetaryAmount pricePerRequest,
             URL targetUrl,
             Serializable value) {
         this.setValue(value, contentType);
         this.setTargetUrl(targetUrl);
         this.setDescription(description);
+        this.context = context;
+        this.numberOfRequests = numberOfRequests;
+        this.pricePerRequest = pricePerRequest;
     }
     
     
@@ -180,25 +229,43 @@ public class Content extends AbstractAutoGenerateKeyedEntity
         this.value = SerializationUtils.deserialize(this.serializedValue);
     }
     
+    // --------------- Public static methods ---------------
+    
+    
     /**
-     * Validates that the inputs for the content are valid.
+     * The method that builds the basis of the auto generated builder:
+     * Validates the input and creates the corresponding {@link Content}.
      * 
      * @param   contentType     the enum that indicates the actual type of the 
      *                          object.
+     * @param   context         the target context of the specified order row 
+     *                          that influinces the price.
      * @param   description     the text that gives a short description of the
-     *                          content.
+     *                          content..
+     * @param   numberOfRequests    the number of contents that have been 
+     *                              ordered for the target context.
+     * @param   pricePerRequest     the monetary amount tbe creator of the value 
+     *                              is willing to pay per request of this campaign 
+     *                              value.
      * @param   targetUrl       the URL that redirects to the advertised page.
-     * @param   value           the actual value of the content.
+     * @param   value           the actual value of the content
+     * @return  the built {@link Content}.
      * @throws  BuilderValidationException  that indicates that one or more of 
      *                                      of the given creation parameters are
      *                                      invalid.
      */
-    protected static void validateContentInput(
-            ContentType contentType, 
+    @Builder(
+            builderMethodName = "createContent", 
+            builderClassName = "ContentBuilder",
+            buildMethodName = "build")
+    private static Content validateAndCreateContent(
+            ContentType contentType,
+            TargetContext context, 
             String description, 
+            long numberOfRequests,
+            MonetaryAmount pricePerRequest,
             URL targetUrl,
-            Serializable value) 
-            throws BuilderValidationException {
+            Serializable value) throws BuilderValidationException {
         if (value == null) {
             throw new BuilderValidationException(
                     Content.class,
@@ -223,38 +290,32 @@ public class Content extends AbstractAutoGenerateKeyedEntity
                     Content.class,
                     "The target URL can not be null.");
         }
-    }
-    
-    // --------------- Public static methods ---------------
-    
-    
-    /**
-     * The method that builds the basis of the auto generated builder:
-     * Validates the input and creates the corresponding {@link Content}.
-     * 
-     * @param   contentType     the enum that indicates the actual type of the 
-     *                          object.
-     * @param   description     the text that gives a short description of the
-     *                          content.
-     * @param   targetUrl       the URL that redirects to the advertised page.
-     * @param   value           the actual value of the content.
-     * @return  the built {@link Content}.
-     * @throws  BuilderValidationException  that indicates that one or more of 
-     *                                      of the given creation parameters are
-     *                                      invalid.
-     */
-    @Builder(
-            builderMethodName = "createContent", 
-            builderClassName = "ContentBuilder",
-            buildMethodName = "build")
-    private static Content validateAndCreateContent(
-            ContentType contentType, 
-            String description, 
-            URL targetUrl,
-            Serializable value) throws BuilderValidationException {
-        Content.validateContentInput(
-                contentType, description, targetUrl, value);
         
-        return new Content(contentType, description, targetUrl, value);
+        if (numberOfRequests <= 0) {
+            throw new BuilderValidationException(
+                    Content.class,
+                    "The amount can not be smaller or equal to 0.");
+        }
+        
+        if (context == null) {
+            throw new BuilderValidationException(
+                    Content.class,
+                    "The target context can not be null.");
+        }
+        
+        if (pricePerRequest == null || pricePerRequest.isNegative()) {
+            throw new BuilderValidationException(
+                    Content.class,
+                    "The price per request can not be null or negative.");
+        }
+        
+        return new Content(
+                contentType, 
+                context, 
+                description, 
+                numberOfRequests, 
+                pricePerRequest, 
+                targetUrl, 
+                value);
     }
 }

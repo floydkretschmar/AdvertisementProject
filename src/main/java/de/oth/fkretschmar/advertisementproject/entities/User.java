@@ -101,14 +101,6 @@ public class User extends AbstractStringKeyedEntity {
     private String company;
     
     /**
-     * Stores the contents created by a user to be used by a campaign.
-     */
-    @NotNull
-    @OneToMany
-    @JoinColumn(name = "USER_ID", referencedColumnName = "ID")
-    private Collection<Content> contents = new ArrayList<Content>();
-    
-    /**
      * Stores the first name of the user.
      */
     @NotNull
@@ -188,16 +180,6 @@ public class User extends AbstractStringKeyedEntity {
         return Collections.unmodifiableCollection(this.campaigns);
     }
     
-    
-    /**
-     * Gets the contents created by a user to be used by a campaign.
-     * 
-     * @return  the contents of an user.
-     */
-    public Collection<Content> getContents() {
-        return Collections.unmodifiableCollection(this.contents);
-    }
-    
     /**
      * Gets the e-mail address of the user.
      * 
@@ -234,18 +216,6 @@ public class User extends AbstractStringKeyedEntity {
     
     
     /**
-     * Adds a new content to the user.
-     * 
-     * @param   content     that will be added.
-     * @return  <code>true</code> if the content was added otherwise
-     *          <code>false</code>
-     */
-    public boolean addContent(Content content) {
-        return this.contents.add(content);
-    }
-    
-    
-    /**
      * Removes an existing account from the user.
      * 
      * @param   account     that will be removed.
@@ -266,18 +236,6 @@ public class User extends AbstractStringKeyedEntity {
      */
     public boolean removeCampaign(Campaign campaign) {
         return this.campaigns.remove(campaign);
-    }
-    
-    
-    /**
-     * Removes an existing content from the user.
-     * 
-     * @param   content     that will be removed.
-     * @return  <code>true</code> if the content was removed otherwise
-     *          <code>false</code>
-     */
-    public boolean removeContent(Content content) {
-        return this.contents.remove(content);
     }
     
     

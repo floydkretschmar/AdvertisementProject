@@ -34,7 +34,7 @@ import de.oth.fkretschmar.advertisementproject.entities.Bill;
 import de.oth.fkretschmar.advertisementproject.entities.BillItem;
 import de.oth.fkretschmar.advertisementproject.entities.BuilderValidationException;
 import de.oth.fkretschmar.advertisementproject.entities.Campaign;
-import de.oth.fkretschmar.advertisementproject.entities.CampaignContent;
+import de.oth.fkretschmar.advertisementproject.entities.Content;
 import de.oth.fkretschmar.advertisementproject.entities.Password;
 import de.oth.fkretschmar.advertisementproject.entities.PaymentInterval;
 import de.oth.fkretschmar.advertisementproject.entities.TargetAge;
@@ -125,7 +125,7 @@ public class TestServlet extends HttpServlet {
                         .address(address)
                         .company("OptWare").build();
 
-                this.userService.create(user);
+                this.userService.createUser(user);
 
                 // Authenticate User:
                 
@@ -149,7 +149,7 @@ public class TestServlet extends HttpServlet {
                         .bic("GENOD43945").build();
                 
                 ApplicationService.processCurrentUser(currentUser -> {
-                    this.userService.addAccountToUser(currentUser, acc);
+                    this.userService.createAccountForUser(currentUser, acc);
                 });
                 
                 
@@ -158,43 +158,15 @@ public class TestServlet extends HttpServlet {
                         .bic("GENOD43945").build();
 
                 ApplicationService.processCurrentUser(currentUser -> {
-                    this.userService.addAccountToUser(user, acc2);
-                    this.userService.removeAccountFromUser(user, acc2);
+                    this.userService.createAccountForUser(user, acc2);
+                    this.userService.deleteAccountFromUser(user, acc2);
                 });
                 
 
-                // Create contents and add/delete them to/from the user:
-                File file = new File("/Users/fkre/BAUM_GUT.JPG");
-
-                SerializableRenderedImage image = new SerializableRenderedImage(ImageIO.read(file));
-
-                Content ad = Content.createContent()
-                            .value(image)
-                            .contentType(ContentType.IMAGE)
-                            .targetUrl(new URL("https://www.google.de")).build();
-                ApplicationService.processCurrentUser(currentUser -> {
-                    this.userService.addContentToUser(currentUser, ad);
-                });
-
-                Content ad2 = Content.createContent()
-                            .value(new URL("https://upload.wikimedia.org/wikipedia/commons/7/7b/Gr%C3%BCne_Augen_einer_Katze.JPG"))
-                            .contentType(ContentType.IMAGE_URL)
-                            .targetUrl(new URL("https://www.google.de")).build();
-                
-                ApplicationService.processCurrentUser(currentUser -> {
-                    this.userService.addContentToUser(currentUser, ad2);
-                });
-
-                Content ad3 = Content.createContent()
-                            .value("Das ist mein Werbetext")
-                            .contentType(ContentType.TEXT)
-                            .targetUrl(new URL("https://www.google.de")).build();
-                
-                ApplicationService.processCurrentUser(currentUser -> {
-                    this.userService.addContentToUser(currentUser, ad3);
-                    this.userService.removeContentFromUser(currentUser, ad3);
-                });
-
+//                Content ad3 = Content.createContent()
+//                            .value("Das ist mein Werbetext")
+//                            .contentType(ContentType.TEXT)
+//                            .targetUrl(new URL("https://www.google.de")).build();
                 
                 // Create campaign:
                 
@@ -204,9 +176,16 @@ public class TestServlet extends HttpServlet {
                         .targetMaritalStatus(EnumSet.of(
                                 TargetMaritalStatus.IRRELEVANT))
                         .targetPurposeOfUses(EnumSet.of(TargetPurposeOfUse.IRRELEVANT)).build();
+
+                // Create contents and add/delete them to/from the user:
+                File file = new File("E:\\Augen_einer_Katze.jpg");
+
+                SerializableRenderedImage image = new SerializableRenderedImage(ImageIO.read(file));
                 
-                CampaignContent ccon1 = CampaignContent.createCampaignContent()
-                            .content(ad)
+                Content ad = Content.createContent()
+                            .value(image)
+                            .contentType(ContentType.IMAGE)
+                            .targetUrl(new URL("https://www.google.de"))
                             .context(context)
                             .numberOfRequests(100000)
                             .pricePerRequest(Monetary.getDefaultAmountFactory()
@@ -220,8 +199,10 @@ public class TestServlet extends HttpServlet {
                                 TargetMaritalStatus.SINGLE))
                         .targetPurposeOfUses(EnumSet.of(TargetPurposeOfUse.BUSINESS)).build();
                 
-                CampaignContent ccon2 = CampaignContent.createCampaignContent()
-                            .content(ad2)
+                Content ad2 = Content.createContent()
+                            .value(new URL("https://upload.wikimedia.org/wikipedia/commons/7/7b/Gr%C3%BCne_Augen_einer_Katze.JPG"))
+                            .contentType(ContentType.IMAGE_URL)
+                            .targetUrl(new URL("https://www.google.de"))
                             .context(context1)
                             .numberOfRequests(500000)
                             .pricePerRequest(Monetary.getDefaultAmountFactory()
@@ -231,7 +212,6 @@ public class TestServlet extends HttpServlet {
                 Campaign campaign = ApplicationService.processCurrentUser(currentUser -> {
                     try {
                         return Campaign.createCampaign()
-                                .comissioner(user)
                                 .interval(PaymentInterval.MONTHLY)
                                 .paymentAccount(acc)
                                 .build();
@@ -241,21 +221,23 @@ public class TestServlet extends HttpServlet {
                 });
                 
                 if (campaign != null) {
-                    campaign.addContent(ccon1);
-                    campaign.addContent(ccon2);
+                    campaign.addContent(ad);
+                    campaign.addContent(ad2);
                     
-                    this.campaignService.create(campaign);
+                    ApplicationService.processCurrentUser(currentUser -> {
+                        this.campaignService.createCampaignForUser(currentUser, campaign);
+                    });
                 }
                 
                 // create bill:
                 
                 BillItem bi1 = BillItem.createBillItem()
-                        .campaignContent(ccon1)
+                        .content(ad)
                         .contentRequests(500)
                         .build();
                 
                 BillItem bi2 = BillItem.createBillItem()
-                        .campaignContent(ccon2)
+                        .content(ad2)
                         .contentRequests(3000)
                         .build();
                 

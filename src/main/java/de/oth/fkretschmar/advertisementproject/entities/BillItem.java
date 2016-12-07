@@ -52,7 +52,7 @@ public class BillItem extends AbstractAutoGenerateKeyedEntity {
     @OneToOne(optional = false)
     @NotNull
     @Getter
-    private CampaignContent campaignContent;
+    private Content content;
     
     /**
      * Stores the number of time the content was requestet since the last bill.
@@ -79,8 +79,8 @@ public class BillItem extends AbstractAutoGenerateKeyedEntity {
      * The method that builds the basis of the auto generated builder:
      * Validates the input and creates the corresponding {@link BillItem}.
      * 
-     * @param campaignContent 
-     * @param contentRequests 
+     * @param   content             the content that is being billed.
+     * @param   contentRequests     the number of times the content was requested.
      * @return  the built {@link BillItem}.
      * @throws  BuilderValidationException  that indicates that one or more of 
      *                                      of the given creation parameters are
@@ -91,10 +91,10 @@ public class BillItem extends AbstractAutoGenerateKeyedEntity {
             builderClassName = "BillItemBuilder",
             buildMethodName = "build")
     private static BillItem validateAndCreateBillItem(
-            CampaignContent campaignContent, 
+            Content content, 
             long contentRequests) throws BuilderValidationException {
         
-        if (campaignContent == null) {
+        if (content == null) {
             throw new BuilderValidationException(
                     BillItem.class,
                     "The content can not be null.");
@@ -107,8 +107,8 @@ public class BillItem extends AbstractAutoGenerateKeyedEntity {
         }
         
         MonetaryAmount itemPrice 
-                = campaignContent.getPricePerRequest().multiply(contentRequests);
+                = content.getPricePerRequest().multiply(contentRequests);
         
-        return new BillItem(campaignContent, contentRequests, itemPrice);
+        return new BillItem(content, contentRequests, itemPrice);
     }
 }

@@ -18,7 +18,6 @@ package de.oth.fkretschmar.advertisementproject.business.services;
 
 import de.oth.fkretschmar.advertisementproject.business.repositories.AddressRepository;
 import de.oth.fkretschmar.advertisementproject.business.repositories.AccountRepository;
-import de.oth.fkretschmar.advertisementproject.business.repositories.ContentRepository;
 import de.oth.fkretschmar.advertisementproject.business.repositories.UserRepository;
 import de.oth.fkretschmar.advertisementproject.entities.Account;
 import de.oth.fkretschmar.advertisementproject.entities.Address;
@@ -62,12 +61,6 @@ public class UserService implements Serializable {
     private CampaignService campaignService;
     
     /**
-     * Stores the repository used to manage {@link Content} entities.
-     */
-    @Inject
-    private ContentRepository contentRepository;
-    
-    /**
      * Stores the service that manages {@link Password} entities.
      */
     @Inject
@@ -81,68 +74,6 @@ public class UserService implements Serializable {
 
     // --------------- Public methods ---------------
     
-    
-    /**
-     * Creates a new {@link Account} and links it to the already existing 
-     * specified {@link User}.
-     * 
-     * @param   user        to which a new account will be added.
-     * @param   account     that will be added to the user.
-     * @return              the changed user.
-     */
-    @Transactional
-    public User addAccountToUser(User user, Account account) {
-        if (user == null) {
-            throw new IllegalArgumentException("The user was not set.");
-        }
-        
-        this.accountRepository.persist(account);
-        user = this.userRepository.merge(user);
-        user.addAccount(account);
-        return user;
-    }
-    
-    
-    /**
-     * Creates a new {@link Campaign} and links it to the already existing 
-     * specified {@link User}.
-     * 
-     * @param user      to which the new campaign will be added.
-     * @param campaign  that will be added to the user.
-     * @return          the changed user.
-     */
-    @Transactional
-    public User addCampaignToUser(User user, Campaign campaign) {
-        if (user == null) {
-            throw new IllegalArgumentException("The user was not set.");
-        }
-        
-        this.campaignService.create(campaign);
-        user = this.userRepository.merge(user);
-        user.addCampaign(campaign);
-        return user;
-    }
-    
-    
-    /**
-     * Creates a new {@link Content} and links it to the already existing 
-     * specified {@link User}.
-     * 
-     * @param user      to which the new content will be added.
-     * @param content   that will be added to the user.
-     * @return          the changed user.
-     */
-    @Transactional
-    public User addContentToUser(User user, Content content) {
-        if (user == null) {
-            throw new IllegalArgumentException("The user was not set.");
-        }
-        
-        this.contentRepository.persist(content);
-        user = this.userRepository.merge(user);
-        user.addContent(content);
-        return user;
-    }
     
     /**
      * Changes the {@link Password} of the specified {@link User}.
@@ -174,13 +105,34 @@ public class UserService implements Serializable {
     
     
     /**
+     * Creates a new {@link Account} and links it to the already existing 
+     * specified {@link User}.
+     * 
+     * @param   user        to which a new account will be added.
+     * @param   account     that will be added to the user.
+     * @return              the changed user.
+     */
+    @Transactional
+    public User createAccountForUser(User user, Account account) {
+        if (user == null) {
+            throw new IllegalArgumentException("The user was not set.");
+        }
+        
+        this.accountRepository.persist(account);
+        user = this.userRepository.merge(user);
+        user.addAccount(account);
+        return user;
+    }
+    
+    
+    /**
      * Creates a new {@link User} using the data specified on the user object.
      * 
      * @param   user    that contains the data for the new user that will be 
      *                  created.§
      */
     @Transactional
-    public void create(User user) {
+    public void createUser(User user) {
         // the creation of accounts, campaigns and contents need a logged in 
         // user -> therefore: the user cannot have accounts, campaigns or 
         // contents during creation.
@@ -209,7 +161,7 @@ public class UserService implements Serializable {
      * @param   user    that will be deleted.
      */
     @Transactional
-    public void delete(User user) {
+    public void deleteUser(User user) {
         if (user == null) {
             throw new IllegalArgumentException("The password change failed: "
                     + "the user was not set.");
@@ -233,16 +185,6 @@ public class UserService implements Serializable {
             }
         }
         
-        // remove all contents
-        Object[] contents = user.getContents().toArray();
-        
-        for (int i = 0; i < contents.length; i++) {
-            if(contents[i] instanceof Content){
-                user.removeContent((Content)contents[i]);
-                this.contentRepository.remove((Content)contents[i]);
-            }
-        }
-        
         // cancel all campaigns
         Object[] campaigns = user.getCampaigns().toArray();
         
@@ -250,7 +192,7 @@ public class UserService implements Serializable {
             if(campaigns[i] instanceof Campaign 
                     && ((Campaign)campaigns[i]).getCampaignState() == CampaignState.RUNNING){
                 user.removeCampaign((Campaign)campaigns[i]);
-                this.campaignService.cancel((Campaign)campaigns[i]);
+                this.campaignService.cancelCampaign((Campaign)campaigns[i]);
             }
         }
         
@@ -277,7 +219,7 @@ public class UserService implements Serializable {
      * @return          the changed user.
      */
     @Transactional
-    public User removeAccountFromUser(User user, Account account) {
+    public User deleteAccountFromUser(User user, Account account) {
         if (user == null) {
             throw new IllegalArgumentException("The password change failed: "
                     + "the user was not set.");
@@ -286,27 +228,6 @@ public class UserService implements Serializable {
         user = this.userRepository.merge(user);
         user.removeAccount(account);
         this.accountRepository.remove(account);
-        return user;
-    }
-    
-    
-    /**
-     * Deletes an {@link Content} from an already existing {@link User}.
-     * 
-     * @param   user    from which the content will be deleted.
-     * @param   content that will be deleted.
-     * @return          the changed user.
-     */
-    @Transactional
-    public User removeContentFromUser(User user, Content content) {
-        if (user == null) {
-            throw new IllegalArgumentException("The password change failed: "
-                    + "the user was not set.");
-        }
-        
-        user = this.userRepository.merge(user);
-        user.removeContent(content);
-        this.contentRepository.remove(content);
         return user;
     }
     
