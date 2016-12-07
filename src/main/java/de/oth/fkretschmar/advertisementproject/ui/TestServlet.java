@@ -164,7 +164,7 @@ public class TestServlet extends HttpServlet {
                 
 
                 // Create contents and add/delete them to/from the user:
-                File file = new File("E:\\Augen_einer_Katze.jpg");
+                File file = new File("/Users/fkre/BAUM_GUT.JPG");
 
                 SerializableRenderedImage image = new SerializableRenderedImage(ImageIO.read(file));
 

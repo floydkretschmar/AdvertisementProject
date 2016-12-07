@@ -28,7 +28,7 @@ import javax.persistence.AttributeConverter;
  *                  that will be converted.
  */
 public abstract class FlagFieldAttributeConverter<T extends Enum<T> & IFlagField> 
-        implements AttributeConverter<EnumSet<T>, Long> {
+        implements AttributeConverter<EnumSet<T>, Integer> {
     
     
     // --------------- Private fields ---------------
@@ -56,15 +56,15 @@ public abstract class FlagFieldAttributeConverter<T extends Enum<T> & IFlagField
     // --------------- Public methods ---------------
 
     /**
-     * Converts a provided enum set of {@link IFlagField} to a {@link Long} 
+     * Converts a provided enum set of {@link IFlagField} to a {@link Integer} 
      * that will be used within for storage within the database.
      * 
      * @param   targetGroups  the set that will be converted.
      * @return                the converted {@link Integer}.
      */
     @Override
-    public Long convertToDatabaseColumn(EnumSet<T> targetGroups) {
-    	Long totalValue = 0l;
+    public Integer convertToDatabaseColumn(EnumSet<T> targetGroups) {
+    	Integer totalValue = 0;
         
         for (IFlagField targetGroup : targetGroups) {
             totalValue |= targetGroup.getFlagValue();
@@ -74,14 +74,14 @@ public abstract class FlagFieldAttributeConverter<T extends Enum<T> & IFlagField
     }
 
     /**
-     * Converts a provided {@link Long} to a enum set of {@link IFlagField} 
+     * Converts a provided {@link Integer} to a enum set of {@link IFlagField} 
      * that will be used within for storage within the database.
      * 
      * @param   flagField   the flag field that will be converted.
      * @return              the converted enum set of {@link IFlagField}.
      */
     @Override
-    public EnumSet<T> convertToEntityAttribute(Long flagField) {
+    public EnumSet<T> convertToEntityAttribute(Integer flagField) {
         EnumSet<T> returnSet = EnumSet.noneOf(this.enumType);
         
         for (T enumValue : this.getAllEnumValues()) {

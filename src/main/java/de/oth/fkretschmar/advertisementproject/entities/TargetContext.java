@@ -26,6 +26,7 @@ import java.util.EnumSet;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
+import javax.persistence.Enumerated;
 import javax.validation.constraints.NotNull;
 
 import lombok.AccessLevel;
@@ -52,17 +53,18 @@ public class TargetContext extends AbstractAutoGenerateKeyedEntity
      * Stores the targeted age group.
      */
     @NotNull
-    @Column(name = "AGE", nullable = false, columnDefinition = "BIGINT")
+    @Column(name = "AGE", columnDefinition = "INTEGER")
     @Getter
     @Setter
     @Convert(converter = TargetAgeAttributeConverter.class)
+    //@Enumerated
     private EnumSet<TargetAge> age;
     
     /**
      * Stores the targeted gender group.
      */
     @NotNull
-    @Column(name = "GENDER", nullable = false, columnDefinition = "BIGINT")
+    @Column(name = "GENDER", columnDefinition = "INTEGER")
     @Getter
     @Setter
     @Convert(converter = TargetGenderAttributeConverter.class)
@@ -72,7 +74,7 @@ public class TargetContext extends AbstractAutoGenerateKeyedEntity
      * Stores the targeted marital status group.
      */
     @NotNull
-    @Column(name = "MARITAL_STATUS", nullable = false, columnDefinition = "BIGINT")
+    @Column(name = "MARITAL_STATUS", columnDefinition = "INTEGER")
     @Getter
     @Setter
     @Convert(converter = TargetMaritalStatusAttributeConverter.class)
@@ -82,7 +84,7 @@ public class TargetContext extends AbstractAutoGenerateKeyedEntity
      * Stores the targeted purposes of use.
      */
     @NotNull
-    @Column(name = "PURPOSE_OF_USE", nullable = false, columnDefinition = "BIGINT")
+    @Column(name = "PURPOSE_OF_USE", columnDefinition = "INTEGER")
     @Getter
     @Setter
     @Convert(converter = TargetPurposeOfUseAttributeConverter.class)
