@@ -56,6 +56,15 @@ public class Campaign extends AbstractAutoGenerateKeyedEntity {
             = new ArrayList<Bill>();
     
     /**
+     * Stores the state of the campaign.
+     */
+    @NotNull
+    @Column(name = "CAMPAIGN_STATE")
+    @Getter
+    @Setter
+    private CampaignState campaignState = CampaignState.RUNNING;
+    
+    /**
      * Stores the user hat has comissioned the campaign.
      */
     @NotNull
@@ -70,7 +79,6 @@ public class Campaign extends AbstractAutoGenerateKeyedEntity {
      */
     @NotNull
     @OneToMany(mappedBy = "campaign")
-    //@JoinColumn(name = "CAMPAIGN_ID", referencedColumnName = "ID")
     private final Collection<Content> contents
             = new ArrayList<Content>();
     
@@ -93,16 +101,6 @@ public class Campaign extends AbstractAutoGenerateKeyedEntity {
     @Getter
     @Setter
     private Account paymentAccount;
-    
-    
-    /**
-     * Stores the state of the campaign.
-     */
-    @NotNull
-    @Column(name = "CAMPAIGN_STATE")
-    @Getter
-    @Setter
-    private CampaignState campaignState = CampaignState.RUNNING;
     
     // --------------- Private constructors ---------------
     

@@ -64,7 +64,7 @@ public class TargetContext extends AbstractAutoGenerateKeyedEntity
             joinColumns = @JoinColumn(name = "CONTEXT_ID"))
     @Column(name = "AGE", nullable = false)
     @Setter
-    private Set<TargetAge> age;
+    private Set<TargetAge> targetAges;
     
     /**
      * Stores the targeted gender group.
@@ -77,7 +77,7 @@ public class TargetContext extends AbstractAutoGenerateKeyedEntity
             joinColumns = @JoinColumn(name = "CONTEXT_ID"))
     @Column(name = "GENDER", nullable = false)
     @Setter
-    private Set<TargetGender> gender;
+    private Set<TargetGender> targetGenders;
     
     /**
      * Stores the targeted marital status group.
@@ -90,7 +90,7 @@ public class TargetContext extends AbstractAutoGenerateKeyedEntity
             joinColumns = @JoinColumn(name = "CONTEXT_ID"))
     @Column(name = "MARITAL_STATUS", nullable = false)
     @Setter
-    private Set<TargetMaritalStatus> maritalStatus;
+    private Set<TargetMaritalStatus> targetMaritalStatus;
     
     /**
      * Stores the targeted purposes of use.
@@ -103,7 +103,7 @@ public class TargetContext extends AbstractAutoGenerateKeyedEntity
             joinColumns = @JoinColumn(name = "CONTEXT_ID"))
     @Column(name = "PURPOSE_OF_USE", nullable = false)
     @Setter
-    private Set<TargetPurposeOfUse> purposeOfUse;
+    private Set<TargetPurposeOfUse> targetPurposesOfUse;
     
     // --------------- Public getters ---------------
 
@@ -114,7 +114,7 @@ public class TargetContext extends AbstractAutoGenerateKeyedEntity
      * @return the {@link EnumSet} of target ages.
      */
     public EnumSet<TargetAge> getAge() {
-        return EnumSet.copyOf(this.age);
+        return EnumSet.copyOf(this.targetAges);
     }
 
     
@@ -124,7 +124,7 @@ public class TargetContext extends AbstractAutoGenerateKeyedEntity
      * @return the {@link EnumSet} of target genders.
      */
     public EnumSet<TargetGender> getGender() {
-        return EnumSet.copyOf(this.gender);
+        return EnumSet.copyOf(this.targetGenders);
     }
 
     
@@ -134,7 +134,7 @@ public class TargetContext extends AbstractAutoGenerateKeyedEntity
      * @return the {@link EnumSet} of target marital status.
      */
     public EnumSet<TargetMaritalStatus> getMaritalStatus() {
-        return EnumSet.copyOf(this.maritalStatus);
+        return EnumSet.copyOf(this.targetMaritalStatus);
     }
 
     
@@ -144,7 +144,7 @@ public class TargetContext extends AbstractAutoGenerateKeyedEntity
      * @return the {@link EnumSet} of target purposes of use.
      */
     public EnumSet<TargetPurposeOfUse> getPurposeOfUse() {
-        return EnumSet.copyOf(this.purposeOfUse);
+        return EnumSet.copyOf(this.targetPurposesOfUse);
     }
     
     
