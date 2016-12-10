@@ -29,11 +29,6 @@ public enum TargetGender implements IFlagField {
     // --------------- Enum fields ---------------
     
     /**
-     * Indicates no specific gender group should be targeted.
-     */
-    IRRELEVANT(1<<0),
-    
-    /**
      * Indicates that the target identifies as a female.
      */
     FEMALE(1<<1),

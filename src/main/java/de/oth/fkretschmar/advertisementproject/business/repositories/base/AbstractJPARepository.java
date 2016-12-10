@@ -179,16 +179,16 @@ public abstract class AbstractJPARepository<S, T extends IEntity<S>>
     
     // --------------- Protected methods ---------------
     
-    /**
-     * Accesses any named query using the specified query identifier.
-     * 
-     * @param   queryIdentifier that identifies the query within the entity
-     *                          manager.
-     * @return  The query specified by the identifier.
-     */
-    protected final Query accessQuery(String queryIdentifier) {
-        return this.accessQuery(Object.class, queryIdentifier); 
-    }
+//    /**
+//     * Accesses any named query using the specified query identifier.
+//     * 
+//     * @param   queryIdentifier that identifies the query within the entity
+//     *                          manager.
+//     * @return  The query specified by the identifier.
+//     */
+//    protected final Query accessQuery(String queryIdentifier) {
+//        return this.accessQuery(Object.class, queryIdentifier); 
+//    }
     
     
     /**
@@ -208,20 +208,20 @@ public abstract class AbstractJPARepository<S, T extends IEntity<S>>
     }
     
     
-    /**
-     * Accesses any named query using the specified query identifier and 
-     * parameters.
-     * 
-     * @param   queryIdentifier that identifies the query within the entity
-     *                          manager.
-     * @param   parameters      that are used during the execution of the query.
-     * @return  The query specified by the identifier.
-     */
-    protected final Query accessQuery(
-            String queryIdentifier, 
-            Object... parameters) {
-        return this.accessQuery(Object.class, queryIdentifier, parameters);
-    }
+//    /**
+//     * Accesses any named query using the specified query identifier and 
+//     * parameters.
+//     * 
+//     * @param   queryIdentifier that identifies the query within the entity
+//     *                          manager.
+//     * @param   parameters      that are used during the execution of the query.
+//     * @return  The query specified by the identifier.
+//     */
+//    protected final Query accessQuery(
+//            String queryIdentifier, 
+//            Object... parameters) {
+//        return this.accessQuery(Object.class, queryIdentifier, parameters);
+//    }
     
     
     /**
@@ -241,6 +241,45 @@ public abstract class AbstractJPARepository<S, T extends IEntity<S>>
             Object... parameters) {
         TypedQuery<S> typedQuery = 
                 this.entityManager.createNamedQuery(queryIdentifier, resultType);
+        
+        if(parameters != null && parameters.length > 0)
+            this.setQueryParameters(typedQuery, parameters);
+        
+        return typedQuery;
+    }
+    
+    
+    /**
+     * Create a query using the specified result type and query string.
+     * 
+     * @param   <S>             that specifies the result type of the query.
+     * @param   resultType      that defines the result type of the query.
+     * @param   queryString     that contains the SQL statement.
+     * @return  The query specified by the identifier.
+     */
+    protected final <S extends Object> TypedQuery<S> createQuery(
+            Class<S> resultType, 
+            String queryString) {
+        return this.createQuery(resultType, queryString, null); 
+    }
+    
+    
+    /**
+     * Create a query using the specified result type, query string and 
+     * parameters.
+     * 
+     * @param   <S>             that specifies the result type of the query.
+     * @param   resultType      that defines the result type of the query.
+     * @param   queryString     that contains the SQL statement.
+     * @param   parameters      that are used during the execution of the query.
+     * @return  The query specified by the identifier.
+     */
+    protected final <S extends Object> TypedQuery<S> createQuery(
+            Class<S> resultType,
+            String queryString, 
+            Object... parameters) {
+        TypedQuery<S> typedQuery = 
+                this.entityManager.createQuery(queryString, resultType);
         
         if(parameters != null && parameters.length > 0)
             this.setQueryParameters(typedQuery, parameters);

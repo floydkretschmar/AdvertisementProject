@@ -28,11 +28,6 @@ import lombok.Getter;
 public enum TargetPurposeOfUse implements IFlagField {
     
     /**
-     * Indicates no specific gender group should be targeted.
-     */
-    IRRELEVANT(1<<0),
-    
-    /**
      * Indicates that the target is operating in a business environment.
      */
     BUSINESS(1<<1),

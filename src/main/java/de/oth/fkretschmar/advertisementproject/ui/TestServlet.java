@@ -17,6 +17,7 @@
 package de.oth.fkretschmar.advertisementproject.ui;
 
 import de.oth.fkretschmar.advertisementproject.business.SerializableRenderedImage;
+import de.oth.fkretschmar.advertisementproject.business.repositories.ContentRepository;
 import de.oth.fkretschmar.advertisementproject.business.repositories.TargetContextRepository;
 import de.oth.fkretschmar.advertisementproject.business.services.ApplicationService;
 import de.oth.fkretschmar.advertisementproject.business.services.BillService;
@@ -80,6 +81,9 @@ public class TestServlet extends HttpServlet {
 //    private ContentService adService;
     
     @Inject
+    private ContentRepository contentRepo;
+    
+    @Inject
     private CampaignService campaignService;
     
     @Inject
@@ -134,13 +138,15 @@ public class TestServlet extends HttpServlet {
                 // Change password:
                 
                 ApplicationService.processCurrentUser(currentUser -> {
-                        try {
-                            this.userService.changePassword(
-                                    currentUser,
-                                    "Testpw5".toCharArray());
-                        }
-                        catch (PasswordException ex) {}
-                    });
+                    try {
+                        return this.userService.changePassword(
+                                currentUser,
+                                "Testpw5".toCharArray());
+                    } catch (PasswordException ex) {
+                        Logger.getLogger(TestServlet.class.getName()).log(Level.SEVERE, null, ex);
+                        return null;
+                    }
+                });
                 
                 // create and remove accounts for user:
                 
@@ -149,7 +155,7 @@ public class TestServlet extends HttpServlet {
                         .bic("GENOD43945").build();
                 
                 ApplicationService.processCurrentUser(currentUser -> {
-                    this.userService.createAccountForUser(currentUser, acc);
+                   return this.userService.createAccountForUser(currentUser, acc);
                 });
                 
                 
@@ -158,8 +164,8 @@ public class TestServlet extends HttpServlet {
                         .bic("GENOD43945").build();
 
                 ApplicationService.processCurrentUser(currentUser -> {
-                    this.userService.createAccountForUser(user, acc2);
-                    this.userService.deleteAccountFromUser(user, acc2);
+                    User tempUser = this.userService.createAccountForUser(currentUser, acc2);
+                    return this.userService.deleteAccountFromUser(tempUser, acc2);
                 });
                 
 
@@ -171,14 +177,14 @@ public class TestServlet extends HttpServlet {
                 // Create campaign:
                 
                 TargetContext context = TargetContext.createTargetContext()
-                        .targetAges(EnumSet.of(TargetAge.IRRELEVANT))
-                        .targetGenders(EnumSet.of(TargetGender.IRRELEVANT))
-                        .targetMaritalStatus(EnumSet.of(
-                                TargetMaritalStatus.IRRELEVANT))
-                        .targetPurposeOfUses(EnumSet.of(TargetPurposeOfUse.IRRELEVANT)).build();
+                        .targetAges(EnumSet.allOf(TargetAge.class))
+                        .targetGenders(EnumSet.allOf(TargetGender.class))
+                        .targetMaritalStatus(EnumSet.allOf(
+                                TargetMaritalStatus.class))
+                        .targetPurposeOfUses(EnumSet.allOf(TargetPurposeOfUse.class)).build();
 
                 // Create contents and add/delete them to/from the user:
-                File file = new File("E:\\Augen_einer_Katze.jpg");
+                File file = new File("/Users/fkre/BAUM_GUT.JPG");
 
                 SerializableRenderedImage image = new SerializableRenderedImage(ImageIO.read(file));
                 
@@ -209,24 +215,28 @@ public class TestServlet extends HttpServlet {
                                     .setCurrency("EUR")
                                     .setNumber(0.10).create()).build();
                 
-                Campaign campaign = ApplicationService.processCurrentUser(currentUser -> {
-                    try {
-                        return Campaign.createCampaign()
+//                Campaign campaign = ApplicationService.processCurrentUser(currentUser -> {
+//                    try {
+                Campaign campaign = Campaign.createCampaign()
                                 .interval(PaymentInterval.MONTHLY)
                                 .paymentAccount(acc)
                                 .build();
-                    }
-                    catch (BuilderValidationException ex) {}
-                    return null;
-                });
+//                    }
+//                    catch (BuilderValidationException ex) {}
+//                    return null;
+//                });
                 
                 if (campaign != null) {
                     campaign.addContent(ad);
                     campaign.addContent(ad2);
                     
+                    final Campaign tmpCamp = campaign;
+                    
                     ApplicationService.processCurrentUser(currentUser -> {
-                        this.campaignService.createCampaignForUser(currentUser, campaign);
+                        return this.campaignService.createCampaignForUser(currentUser, tmpCamp);
                     });
+                    
+                    campaign = tmpCamp;
                 }
                 
                 // create bill:
@@ -247,7 +257,10 @@ public class TestServlet extends HttpServlet {
                         .items(bitems)
                         .build();
                 
-                this.billService.createBillForCampaign(campaign, bill);
+                campaign = this.billService.createBillForCampaign(campaign, bill);
+                
+                
+                //this.contentRepo.findMatchingContents(context1);
             }
             catch (PasswordException ex) {}
             catch (BuilderValidationException ex) {}

@@ -23,7 +23,6 @@ import de.oth.fkretschmar.advertisementproject.entities.Account;
 import de.oth.fkretschmar.advertisementproject.entities.Address;
 import de.oth.fkretschmar.advertisementproject.entities.Campaign;
 import de.oth.fkretschmar.advertisementproject.entities.CampaignState;
-import de.oth.fkretschmar.advertisementproject.entities.Content;
 import de.oth.fkretschmar.advertisementproject.entities.Password;
 import de.oth.fkretschmar.advertisementproject.entities.User;
 import java.io.Serializable;
@@ -98,7 +97,9 @@ public class UserService implements Serializable {
         
         user = this.userRepository.merge(user);
         this.passwordService.delete(currentPassword);
-        user.setPassword(this.passwordService.create(newSafePassword));
+        
+        this.passwordService.createPassword(newSafePassword);
+        user.setPassword(newSafePassword);
         
         return user;
     }
@@ -150,7 +151,7 @@ public class UserService implements Serializable {
         this.addressRepository.persist(address);
 
         final Password password = user.getPassword();
-        this.passwordService.create(password);
+        this.passwordService.createPassword(password);
         this.userRepository.persist(user);
     }
     
@@ -206,7 +207,7 @@ public class UserService implements Serializable {
      * @param   eMailAddress    used to identify the user.
      * @return  the user with the specified e-mail address.
      */
-    public User findForEMail(String eMailAddress) {
+    public User findUserForEMail(String eMailAddress) {
         return this.userRepository.find(eMailAddress);
     }
 

@@ -54,12 +54,10 @@ public class PasswordService implements Serializable {
      * Creates the specified {@link Password}.
      * 
      * @param   password    the password that will be saved.
-     * @return              the saved password.
      */
     @Transactional
-    public Password create(Password password) {
+    public void createPassword(Password password) {
         this.passwordRepository.persist(password);
-        return password;
     }
     
     

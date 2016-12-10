@@ -29,11 +29,6 @@ public enum TargetAge implements IFlagField {
     // --------------- Enum fields ---------------
     
     /**
-     * Indicates that no specific age group should be targeted.
-     **/
-    IRRELEVANT(1<<0),
-    
-    /**
      * Indicates that the target is an adult (ages between 25-64 years old).
      */
     ADULTS(1<<1),

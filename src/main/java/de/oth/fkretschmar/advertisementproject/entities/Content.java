@@ -34,6 +34,8 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
@@ -56,6 +58,14 @@ import org.apache.commons.lang3.SerializationUtils;
 @ToString(callSuper = true)
 public class Content extends AbstractAutoGenerateKeyedEntity
         implements IDeletable<Long> {
+    
+    // --------------- Static constants ---------------
+    
+    /**
+     * Defines the name of the query to check, whether or not an email is 
+     * already in use by a different user.
+     */
+    public static final String FIND_ALL_FOR_CONTEXT = "User.findAllForContext";
     
     // --------------- Private fields ---------------
 

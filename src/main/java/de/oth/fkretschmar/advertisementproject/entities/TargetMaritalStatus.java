@@ -27,11 +27,6 @@ import lombok.Getter;
 public enum TargetMaritalStatus implements IFlagField {
     
     /**
-     * Indicates no specific gender group should be targeted.
-     */
-    IRRELEVANT(1<<0),
-    
-    /**
      * Indicates that the target is divorced.
      */
     DIVORCED(1<<1),

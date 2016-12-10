@@ -69,7 +69,7 @@ public class BillService implements Serializable {
      * @return              the changed campaign.
      */
     @Transactional
-    public Bill createBillForCampaign(Campaign campaign, Bill bill) {
+    public Campaign createBillForCampaign(Campaign campaign, Bill bill) {
         
         // 1. persist the bill items
         this.billItemRepository.persist(bill.getItems());
@@ -84,7 +84,7 @@ public class BillService implements Serializable {
         // 4. set the bill on the campaign
         campaign.addBill(bill);
         
-        return bill;
+        return campaign;
     }
     
     

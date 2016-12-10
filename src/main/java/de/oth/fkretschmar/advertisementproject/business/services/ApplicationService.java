@@ -22,7 +22,6 @@ import java.io.Serializable;
 
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.function.Consumer;
 import java.util.function.Function;
 
 import javax.enterprise.context.SessionScoped;
@@ -62,39 +61,37 @@ public class ApplicationService implements Serializable {
     // --------------- Private static getters ---------------
    
     
-    /**
-     * Provides thread safe processing of the {@link User} that is
-     * currently logged into the system.
-     * 
-     * @param   processCallback    The method used to process the current user.
-     */
-    public static void processCurrentUser(Consumer<User> processCallback) {
-        ApplicationService.lock.lock();
-
-        try {
-            processCallback.accept(ApplicationService.currentUser);
-
-        } finally {
-            ApplicationService.lock.unlock();
-        }
-    } 
+//    /**
+//     * Provides thread safe processing of the {@link User} that is
+//     * currently logged into the system.
+//     * 
+//     * @param   processCallback    The method used to process the current user.
+//     */
+//    public static void processCurrentUser(Consumer<User> processCallback) {
+//        ApplicationService.lock.lock();
+//
+//        try {
+//            processCallback.accept(ApplicationService.currentUser);
+//
+//        } finally {
+//            ApplicationService.lock.unlock();
+//        }
+//    } 
             
     
     /**
      * Provides thread safe processing of the {@link User} that is
      * currently logged into the system.
      *
-     * @param   <T>                 that defines the result type of the 
-     *                              processing function.
      * @param   processCallback     The function used to process the 
      *                              current user.
-     * @return  the process result of the function callback.
      */
-    public static <T> T processCurrentUser(Function<User, T> processCallback) {
+    public static void processCurrentUser(Function<User, User> processCallback) {
         ApplicationService.lock.lock();
 
         try {
-            return processCallback.apply(ApplicationService.currentUser);
+            ApplicationService.currentUser 
+                    = processCallback.apply(ApplicationService.currentUser);
 
         } finally {
             ApplicationService.lock.unlock();

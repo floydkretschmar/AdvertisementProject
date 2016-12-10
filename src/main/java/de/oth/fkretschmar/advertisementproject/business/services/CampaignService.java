@@ -17,15 +17,11 @@
 package de.oth.fkretschmar.advertisementproject.business.services;
 
 import de.oth.fkretschmar.advertisementproject.business.repositories.CampaignRepository;
-import de.oth.fkretschmar.advertisementproject.business.repositories.ContentRepository;
-import de.oth.fkretschmar.advertisementproject.business.repositories.TargetContextRepository;
 import de.oth.fkretschmar.advertisementproject.business.repositories.UserRepository;
 
-import de.oth.fkretschmar.advertisementproject.entities.Bill;
 import de.oth.fkretschmar.advertisementproject.entities.Campaign;
 import de.oth.fkretschmar.advertisementproject.entities.CampaignState;
 import de.oth.fkretschmar.advertisementproject.entities.Content;
-import de.oth.fkretschmar.advertisementproject.entities.TargetContext;
 import de.oth.fkretschmar.advertisementproject.entities.User;
 
 import java.io.Serializable;
@@ -44,12 +40,6 @@ import javax.transaction.Transactional;
 public class CampaignService implements Serializable {
 
     // --------------- Private fields ---------------
-
-    /**
-     * Stores the service used to manage {@link Bill} entites.
-     */
-    @Inject
-    private BillService billService;
     
     /**
      * Stores the repository used to manage {@link Campaign} entites.
@@ -58,16 +48,10 @@ public class CampaignService implements Serializable {
     private CampaignRepository campaignRepository;
 
     /**
-     * Stores the repository used to manage {@link Content} entites.
+     * Stores the service used to manage {@link Content} entites.
      */
     @Inject
-    private ContentRepository contentRepository;
-
-    /**
-     * Stores the repository used to manage {@link TargetContext} entites.
-     */
-    @Inject
-    private TargetContextRepository contextRepository;
+    private ContentService contentService;
 
     /**
      * Stores the repository used to manage {@link User} entites.
@@ -86,14 +70,14 @@ public class CampaignService implements Serializable {
      * @return              the saved campaign.
      */
     @Transactional
-    public Campaign createCampaignForUser(User user, Campaign campaign) {
+    public User createCampaignForUser(User user, Campaign campaign) {
         // the campaign is being created for a user that already has an account
         // therefore no .persist is needed for an account
         // also: bill will be added later, when the first payments for the 
         // campaign come in, so there can not be bills right now either.
         
         // 1. create the contents
-        campaign.getContents().forEach(content -> this.createContent(content));
+        campaign.getContents().forEach(content -> this.contentService.createContent(content));
         
         // 2. merge and set user on campaign
         user = this.userRepository.merge(user);
@@ -105,26 +89,7 @@ public class CampaignService implements Serializable {
         // 4. add the campaign to the user:
         user.addCampaign(campaign);
         
-        return campaign;
-    }
-    
-    
-    /**
-     * Creates a new {@link Content} and links it to the specified campaign.
-     * 
-     * @param   campaign    to which the content will be linked.
-     * @param   content     the content that will be saved.
-     * @return  the created {@link Content}.
-     */
-    @Transactional
-    public Content createContentForCampaign(
-            Campaign campaign, Content content) {
-        this.createContent(content);
-        
-        // 3. add the content to the campaign
-        campaign = this.campaignRepository.merge(campaign);
-        campaign.addContent(content);
-        return content;
+        return user;
     }
     
     /**
@@ -160,32 +125,6 @@ public class CampaignService implements Serializable {
     
     
     /**
-     * Creates a new content.
-     * 
-     * @param content the content that will be created.
-     */
-    @Transactional
-    private void createContent(Content content) {
-        // 1. Persist the context:
-        this.contextRepository.persist(content.getContext());
-        
-        // 2. Persist the content
-        this.contentRepository.persist(content);
-    }
-    
-    /**
-     * Deletes the specified {@link Content} from the database.
-     * 
-     * @param   content    that will be deleted.
-     */
-    @Transactional
-    public void deleteContent(Content content) {
-        this.contextRepository.remove(content.getContext());
-        content.setContext(null);
-        this.contentRepository.remove(content);
-    }
-    
-    /**
      * Deletes all campaign contents form the specified campaign.
      * @param campaign 
      */
@@ -197,7 +136,7 @@ public class CampaignService implements Serializable {
         for (int i = 0; i < contents.length; i++) {
             if(contents[i] instanceof Content){
                 campaign.removeContent((Content)contents[i]);
-                this.deleteContent((Content)contents[i]);
+                this.contentService.deleteContent((Content)contents[i]);
             }
         }
     }
