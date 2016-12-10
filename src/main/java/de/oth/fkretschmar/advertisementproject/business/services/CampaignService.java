@@ -34,7 +34,7 @@ import javax.transaction.Transactional;
  * The service that offers functionality relatetd to the generation and 
  * management of {@link Campaign} instances.
  *
- * @author fkre
+ * @author  fkre    Floyd Kretschmar
  */
 @RequestScoped
 public class CampaignService implements Serializable {

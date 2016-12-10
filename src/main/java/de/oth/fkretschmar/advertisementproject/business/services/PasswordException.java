@@ -17,8 +17,9 @@
 package de.oth.fkretschmar.advertisementproject.business.services;
 
 /**
- *
- * @author fkre
+ * The exception that gets thrown if a error occurres during password handling.
+ * 
+ * @author  fkre    Floyd Kretschmar
  */
 public class PasswordException extends Exception {
     

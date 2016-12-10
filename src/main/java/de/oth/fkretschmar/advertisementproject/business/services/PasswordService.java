@@ -33,7 +33,7 @@ import javax.transaction.Transactional;
  * The service that offers functionality relatetd to the generation and 
  * management of {@link Password} instances.
  *
- * @author fkre
+ * @author  fkre    Floyd Kretschmar
  */
 @RequestScoped
 public class PasswordService implements Serializable {
@@ -44,7 +44,7 @@ public class PasswordService implements Serializable {
      * Stores the repository used to manage {@link Password} entites.
      */
     @Inject
-    PasswordRepository passwordRepository;
+    private PasswordRepository passwordRepository;
     
 
     // --------------- Public methods ---------------

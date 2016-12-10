@@ -32,7 +32,7 @@ import javax.transaction.Transactional;
  * The service that offers functionality relatetd to the generation and 
  * management of {@link Bill} instances.
  *
- * @author fkre
+ * @author  fkre    Floyd Kretschmar
  */
 @RequestScoped
 public class BillService implements Serializable {
@@ -43,19 +43,19 @@ public class BillService implements Serializable {
      * Stores the repository used to manage {@link Bill} entites.
      */
     @Inject
-    BillRepository billRepository;
+    private BillRepository billRepository;
 
     /**
      * Stores the repository used to manage {@link BillItem} entites.
      */
     @Inject
-    BillItemRepository billItemRepository;
+    private BillItemRepository billItemRepository;
     
     /**
      * Stores the repository used to manage {@link Campaign} entites.
      */
     @Inject
-    CampaignRepository campaignRepository;
+    private CampaignRepository campaignRepository;
     
 
     // --------------- Public methods ---------------

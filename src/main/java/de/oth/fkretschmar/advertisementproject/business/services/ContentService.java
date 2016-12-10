@@ -44,9 +44,9 @@ import lombok.Getter;
 
 /**
  * The service that offers functionality relatetd to the generation and 
- * management of {@link Campaign} instances.
+ * management of {@link Content} instances.
  *
- * @author fkre
+ * @author  fkre    Floyd Kretschmar
  */
 @RequestScoped
 public class ContentService implements Serializable {
@@ -201,27 +201,27 @@ public class ContentService implements Serializable {
         * Stpres the id of the actual content that has been matched.
         */
        @Getter
-       private long contentId;
+       private final long contentId;
 
        /**
         * Stores the monetary amount tbe creator of the content is willing to pay
         * per request of this campaign content.
         */
        @Getter
-       private MonetaryAmount pricePerRequest;
+       private final MonetaryAmount pricePerRequest;
 
        /**
         * Stores the number of general target groups that the content has matched.
        *
         */
        @Getter
-       private int groupMatches;
+       private final int groupMatches;
 
        /**
         * Stores the total number of subsets within the broader target groups that
         * the content has matched.
         */
        @Getter
-       private int machtesInGroup;
+       private final int machtesInGroup;
    }
 }

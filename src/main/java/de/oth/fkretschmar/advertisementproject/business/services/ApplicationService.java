@@ -60,25 +60,7 @@ public class ApplicationService implements Serializable {
 
     // --------------- Private static getters ---------------
    
-    
-//    /**
-//     * Provides thread safe processing of the {@link User} that is
-//     * currently logged into the system.
-//     * 
-//     * @param   processCallback    The method used to process the current user.
-//     */
-//    public static void processCurrentUser(Consumer<User> processCallback) {
-//        ApplicationService.lock.lock();
-//
-//        try {
-//            processCallback.accept(ApplicationService.currentUser);
-//
-//        } finally {
-//            ApplicationService.lock.unlock();
-//        }
-//    } 
-            
-    
+           
     /**
      * Provides thread safe processing of the {@link User} that is
      * currently logged into the system.
@@ -99,6 +81,7 @@ public class ApplicationService implements Serializable {
     }
 
     // --------------- Public methods ---------------
+    
     
     /**
      * Authenticates an user using the specified e-mail and password.
