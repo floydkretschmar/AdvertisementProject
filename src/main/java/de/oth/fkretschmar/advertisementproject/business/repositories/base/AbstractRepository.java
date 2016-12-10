@@ -21,7 +21,9 @@ import de.oth.fkretschmar.advertisementproject.entities.base.IEntity;
 import java.io.Serializable;
 import java.util.Collection;
 import javax.enterprise.context.Dependent;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.ToString;
 
 /**
@@ -35,7 +37,7 @@ import lombok.ToString;
 @Dependent
 @ToString
 @AllArgsConstructor
-public abstract class AbstractRepository<S, T extends IEntity<S>> 
+public abstract class AbstractRepository<S, T extends Object & IEntity<S>> 
         implements Serializable {
     
     // --------------- Private fields ---------------
@@ -43,6 +45,7 @@ public abstract class AbstractRepository<S, T extends IEntity<S>>
     /**
      * Stores the class type of the entity being managed by the repository.
      */
+    @Getter(AccessLevel.PROTECTED)
     private final Class<T> classType;
     
     // --------------- Public methods ---------------
@@ -54,6 +57,14 @@ public abstract class AbstractRepository<S, T extends IEntity<S>>
      * @return  The entity with the specified id.
      */
     public abstract T find(S id);
+    
+    
+    /**
+     * Finds all of the entities of this type.
+     * 
+     * @return  the collection of entities.
+     */
+    public abstract Collection<T> findAll();
     
     
     /**

@@ -27,6 +27,10 @@ import javax.persistence.TypedQuery;
 import lombok.AccessLevel;
 import lombok.Getter;
 import de.oth.fkretschmar.advertisementproject.entities.base.IDeletable;
+import java.util.List;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 /**
  * Represents an repository that defines the default CRUD methods when using
@@ -36,7 +40,7 @@ import de.oth.fkretschmar.advertisementproject.entities.base.IDeletable;
  * @param   <T>     The type that specifies which entity is being managed by the
  *                  repository.
  */
-public abstract class AbstractJPARepository<S, T extends IEntity<S>> 
+public abstract class AbstractJPARepository<S, T extends Object & IEntity<S>> 
         extends AbstractRepository<S, T> {
     
     // --------------- Private static fields ---------------
@@ -79,6 +83,24 @@ public abstract class AbstractJPARepository<S, T extends IEntity<S>>
     @Override
     public final T find(S id) {
         return this.getEntityManager().find(this.getEntityClassType(), id);
+    }
+    
+    
+    /**
+     * Finds all of the entities of this type.
+     * 
+     * @return  the collection of entities.
+     */
+    @Override
+    public final List<T> findAll() {
+        CriteriaBuilder criteriaBuilder 
+                = this.getEntityManager().getCriteriaBuilder();
+        CriteriaQuery<T> criteriaQuery = criteriaBuilder.createQuery(this.getClassType());
+        Root<T> rootEntry = criteriaQuery.from(this.getClassType());
+        CriteriaQuery<T> all = criteriaQuery.select(rootEntry);
+        TypedQuery<T> allQuery = this.getEntityManager().createQuery(all);
+
+        return (List<T>) allQuery.getResultList();
     }
     
     

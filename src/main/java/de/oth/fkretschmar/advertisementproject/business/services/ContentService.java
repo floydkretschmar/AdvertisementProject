@@ -25,10 +25,18 @@ import de.oth.fkretschmar.advertisementproject.entities.Content;
 import de.oth.fkretschmar.advertisementproject.entities.TargetContext;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.ThreadLocalRandom;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 /**
  * The service that offers functionality relatetd to the generation and 
@@ -82,6 +90,65 @@ public class ContentService implements Serializable {
     }
     
     
+    /**
+     * Retrieves an advertisement content that best matches the provided 
+     * {@link TargetContext}. 
+     * 
+     * @param context   the context that specifies the targets for the requestet
+     *                  content.
+     * @return          the best matching content.
+     */
+    public Optional<Content> requestContent(TargetContext context) {
+        List<Object[]> results = this.contentRepository.findMatchingContents(context);
+        
+        if(results == null || results.isEmpty())
+            return null;
+        
+        List<MatchingContent> matchingContents = new ArrayList<MatchingContent>();
+        
+        results.forEach(result -> matchingContents.add(
+                    new MatchingContent(
+                            this.contentRepository.find(((BigInteger)result[0]).longValue()),
+                            ((BigInteger)result[1]).intValue(),
+                            ((BigDecimal)result[2]).intValue()
+                        )));
+        
+        // don't just deliver the best content but also take into account the 
+        // amount of money being paid per content as well as a little bit of
+        // random chance ;)
+        Optional<MatchingContent> bestContent = matchingContents.stream().sorted(
+                (content1, content2) -> 
+                    {
+                        double compareValue1 = content1.groupMatches * 
+                                        content1.machtesInGroup * 
+                                        content1.getContent()
+                                                .getPricePerRequest()
+                                                .getNumber().doubleValueExact() *
+                                        ThreadLocalRandom.current().nextInt(1, 6);
+                        double compareValue2 = (content2.groupMatches * 
+                                        content2.machtesInGroup * 
+                                        content2.getContent()
+                                                .getPricePerRequest()
+                                                .getNumber().doubleValueExact()) *
+                                        ThreadLocalRandom.current().nextInt(1, 6);
+
+                        return Double.compare(compareValue1, compareValue2);
+                    }).findFirst();
+        
+        return bestContent.isPresent() 
+                ? Optional.of(bestContent.get().getContent()) : this.requestRandomContent();
+    }
+    
+    
+    /**
+     * Retrieves a random advertisement that has not been matched with any target
+     * context.
+     * @return  the content that has been chosen randomly.
+     */
+    public Optional<Content> requestRandomContent() {
+        return this.contentRepository.findRandomContent();
+    }
+    
     // --------------- Package-Private methods ---------------
     
     
@@ -109,5 +176,36 @@ public class ContentService implements Serializable {
         this.contextRepository.remove(content.getContext());
         content.setContext(null);
         this.contentRepository.remove(content);
+    }
+    
+    
+    // --------------- Private classes ---------------
+    
+    
+    /**
+     * Represents a content that matches the provided {@link TargetContext}.
+     */
+    @AllArgsConstructor
+    private class MatchingContent {
+        
+        /**
+         * Stpres the actual content that has been matched.
+         */
+        @Getter
+        private Content content;
+        
+        /**
+         * Stores the number of general target groups that the content has 
+         * matched.
+         **/
+        @Getter
+        private int groupMatches;
+        
+        /**
+         * Stores the total number of subsets within the broader target groups
+         * that the content has matched.
+         */
+        @Getter
+        private int machtesInGroup;
     }
 }

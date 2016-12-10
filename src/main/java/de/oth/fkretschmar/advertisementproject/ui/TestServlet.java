@@ -22,6 +22,7 @@ import de.oth.fkretschmar.advertisementproject.business.repositories.TargetConte
 import de.oth.fkretschmar.advertisementproject.business.services.ApplicationService;
 import de.oth.fkretschmar.advertisementproject.business.services.BillService;
 import de.oth.fkretschmar.advertisementproject.business.services.CampaignService;
+import de.oth.fkretschmar.advertisementproject.business.services.ContentService;
 import de.oth.fkretschmar.advertisementproject.business.services.PasswordException;
 import de.oth.fkretschmar.advertisementproject.business.services.PasswordService;
 import de.oth.fkretschmar.advertisementproject.business.services.UserService;
@@ -52,6 +53,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URL;
 import java.util.EnumSet;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -77,8 +79,8 @@ public class TestServlet extends HttpServlet {
     @Inject
     private ApplicationService authService;
     
-//    @Inject
-//    private ContentService adService;
+    @Inject
+    private ContentService adService;
     
     @Inject
     private ContentRepository contentRepo;
@@ -260,7 +262,17 @@ public class TestServlet extends HttpServlet {
                 campaign = this.billService.createBillForCampaign(campaign, bill);
                 
                 
-                //this.contentRepo.findMatchingContents(context1);
+                for(int i = 0; i < 50; i++) {
+//                    Optional<Content> bestContent = this.adService.requestContent(TargetContext.createTargetContext()
+//                            .targetAges(EnumSet.of(TargetAge.CHILDREN))
+//                            .targetGenders(EnumSet.of(TargetGender.FEMALE))
+//                            .targetMaritalStatus(EnumSet.of(TargetMaritalStatus.SINGLE))
+//                            .targetPurposeOfUses(EnumSet.of(TargetPurposeOfUse.PRIVATE)).build());
+                    Optional<Content> bestContent = this.adService.requestRandomContent();
+                    out.println(bestContent.get().getId());
+                }
+                
+                
             }
             catch (PasswordException ex) {}
             catch (BuilderValidationException ex) {}

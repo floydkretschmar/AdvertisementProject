@@ -18,12 +18,17 @@ package de.oth.fkretschmar.advertisementproject.business.repositories;
 
 import de.oth.fkretschmar.advertisementproject.business.repositories.base.AbstractJPARepository;
 import de.oth.fkretschmar.advertisementproject.entities.Content;
-import de.oth.fkretschmar.advertisementproject.entities.MatchingContent;
 import de.oth.fkretschmar.advertisementproject.entities.TargetContext;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import static java.util.Collections.list;
+import java.util.EnumSet;
 import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.ThreadLocalRandom;
+import javax.persistence.ParameterMode;
+import javax.persistence.StoredProcedureQuery;
 import javax.persistence.TypedQuery;
 
 /**
@@ -32,6 +37,11 @@ import javax.persistence.TypedQuery;
  * @author  fkre    Floyd Kretschmar
  */
 public class ContentRepository extends AbstractJPARepository<Long, Content> {
+    
+    // --------------- Private static constants ---------------
+    
+    private static final String MATCHING_CONTENTS_PROCEDURE 
+            = "P_FIND_MATCHING_CONTENTS";
     
     // --------------- Public constructors ---------------
 
@@ -42,64 +52,64 @@ public class ContentRepository extends AbstractJPARepository<Long, Content> {
         super(Content.class);
     }
     
+    // --------------- Public methods ---------------
+    
     
     /**
+     * Finds a random content.
      * 
-     * @param context   the context.
+     * @return a random content.
      */
-    public void findMatchingContents(TargetContext context) {
-        String queryString = 
-            "(SELECT    content.ID as ID, " +
-            "           COUNT(INNER_TABLE.CONTEXT_SOURCE) as MATCHED_GROUPS, " +
-            "           SUM(INNER_TABLE.MATCHED_VALUES) as MATCHES_IN_GROUPS " +
-            " FROM " +
-            "         (SELECT       tc.ID as CONTEXT_ID, " +
-            "                       'T_TARGET_AGE' as CONTEXT_SOURCE, " +
-            "                       COUNT(ta.AGE) as MATCHED_VALUES " +
-            "          FROM         T_TARGET_CONTEXT tc " +
-            "          INNER JOIN   T_TARGET_AGE ta ON ta.CONTEXT_ID = tc.ID " +
-            "          WHERE        ta.AGE in (?1) " +
-            "          GROUP BY     tc.ID, 'T_TARGET_AGE' " +
-            "                UNION ALL " +
-            "          SELECT       tc.ID as CONTEXT_ID, " +
-            "                       'T_TARGET_GENDER' as CONTEXT_SOURCE, " +
-            "                       COUNT(tg.GENDER) as MATCHED_VALUES " +
-            "          FROM         T_TARGET_CONTEXT tc " +
-            "          INNER JOIN   T_TARGET_GENDER tg ON tg.CONTEXT_ID = tc.ID " +
-            "          WHERE        tg.GENDER in (?2) " +
-            "          GROUP BY     tc.ID, 'T_TARGET_GENDER' " +
-            "                UNION ALL " +
-            "          SELECT       tc.ID as CONTEXT_ID, " +
-            "                       'T_TARGET_MARITAL_STATUS' as CONTEXT_SOURCE, " +
-            "                       COUNT(tm.MARITAL_STATUS) as MATCHED_VALUES " +
-            "          FROM         T_TARGET_CONTEXT tc " +
-            "          INNER JOIN   T_TARGET_MARITAL_STATUS tm ON tm.CONTEXT_ID = tc.ID " +
-            "          WHERE        tm.MARITAL_STATUS in (?3) " +
-            "          GROUP BY     tc.ID, 'T_TARGET_MARITAL_STATUS' " +
-            "                UNION ALL " +
-            "          SELECT       tc.ID as CONTEXT_ID, " +
-            "                       'T_TARGET_PURPOSE_OF_USE' as CONTEXT_SOURCE, " +
-            "                       COUNT(tp.PURPOSE_OF_USE) as MATCHED_VALUES " +
-            "          FROM         T_TARGET_CONTEXT tc " +
-            "          INNER JOIN   T_TARGET_PURPOSE_OF_USE tp ON tp.CONTEXT_ID = tc.ID " +
-            "          WHERE        tp.PURPOSE_OF_USE in (?4) " +
-            "          GROUP BY     tc.ID, 'T_TARGET_PURPOSE_OF_USE') AS INNER_TABLE " +
-            "INNER JOIN     T_CONTENT content ON content.CONTEXT_ID = INNER_TABLE.CONTEXT_ID " +
-            "GROUP BY       content.ID) AS MATCHING_CONTENTS " +
-            "ORDER BY       MATCHING_CONTENTS.MATCHED_GROUPS DESC, MATCHING_CONTENTS.MATCHES_IN_GROUPS DESC";
+    public Optional<Content> findRandomContent() {
+        List<Content> results = this.findAll();
+        int randomPos = ThreadLocalRandom.current().nextInt(results.size());
+        return results.isEmpty() ? Optional.empty() : Optional.of(results.get(randomPos));
+    }
+    
+    /**
+     * Retrieves all contents that best match the provided 
+     * {@link TargetContext}. 
+     * 
+     * @param context   the context that specifies the targets for the requestet
+     *                  content.
+     * @return          the matching contents.
+     */
+    public List<Object[]> findMatchingContents(TargetContext context) {
+        StoredProcedureQuery query 
+                = this.getEntityManager().createStoredProcedureQuery(
+                        ContentRepository.MATCHING_CONTENTS_PROCEDURE);
         
-        List<Object> parameters = new ArrayList<Object>();
-        parameters.addAll(context.getAge());
-        parameters.addAll(context.getGender());
-        parameters.addAll(context.getMaritalStatus());
-        parameters.addAll(context.getPurposeOfUse());
+        query.registerStoredProcedureParameter(
+                "TARGET_AGE", 
+                String.class, 
+                ParameterMode.IN);
+        query.registerStoredProcedureParameter(
+                "TARGET_GENDER", 
+                String.class, 
+                ParameterMode.IN);
+        query.registerStoredProcedureParameter(
+                "TARGET_MARITAL_STATUS", 
+                String.class, 
+                ParameterMode.IN);
+        query.registerStoredProcedureParameter(
+                "TARGET_PURPOSE_OF_USE", 
+                String.class, 
+                ParameterMode.IN);
         
-        TypedQuery<Object[]> query = this.createQuery(Object[].class, queryString, parameters.toArray());
+        query.setParameter(
+                "TARGET_AGE", 
+                this.buildParameterString(context.getAge()));
+        query.setParameter(
+                "TARGET_GENDER", 
+                this.buildParameterString(context.getGender()));
+        query.setParameter(
+                "TARGET_MARITAL_STATUS", 
+                this.buildParameterString(context.getMaritalStatus()));
+        query.setParameter(
+                "TARGET_PURPOSE_OF_USE", 
+                this.buildParameterString(context.getPurposeOfUse()));
         
-        List<Object[]> ergebnis = query.getResultList();
-        for(Object[] s : ergebnis){
-           System.out.println(s[0].toString() + s[1].toString());
-        }
+        return query.getResultList();
     }
     
     // --------------- Protected methods ---------------
@@ -114,4 +124,25 @@ public class ContentRepository extends AbstractJPARepository<Long, Content> {
         return new ArrayList<Content>();
     }
     
+    
+    // --------------- Private methods ---------------
+    
+    
+    /**
+     * Converts an enum set into a string to be used by the procedure for finding
+     * matching contents.
+     * 
+     * @param <T>   the type of the enum that is being managed by the enum set.
+     * @param enumValues    the actual enum set containing the values.
+     * @return  the parameter string.
+     */
+    private <T extends Enum<T>> String buildParameterString(EnumSet<T> enumValues) {
+        String parameterString = "";
+        
+        for (Enum<T> enumValue : enumValues) {
+            parameterString += String.format("%s;", enumValue.name());
+        }
+        
+        return parameterString;
+    }
 }

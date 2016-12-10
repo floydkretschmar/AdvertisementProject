@@ -114,7 +114,7 @@ public class TargetContext extends AbstractAutoGenerateKeyedEntity
      * @return the {@link EnumSet} of target ages.
      */
     public EnumSet<TargetAge> getAge() {
-        return (EnumSet<TargetAge>)this.age;
+        return EnumSet.copyOf(this.age);
     }
 
     
@@ -124,7 +124,7 @@ public class TargetContext extends AbstractAutoGenerateKeyedEntity
      * @return the {@link EnumSet} of target genders.
      */
     public EnumSet<TargetGender> getGender() {
-        return (EnumSet<TargetGender>)this.gender;
+        return EnumSet.copyOf(this.gender);
     }
 
     
@@ -134,7 +134,7 @@ public class TargetContext extends AbstractAutoGenerateKeyedEntity
      * @return the {@link EnumSet} of target marital status.
      */
     public EnumSet<TargetMaritalStatus> getMaritalStatus() {
-        return (EnumSet<TargetMaritalStatus>)this.maritalStatus;
+        return EnumSet.copyOf(this.maritalStatus);
     }
 
     
@@ -144,22 +144,9 @@ public class TargetContext extends AbstractAutoGenerateKeyedEntity
      * @return the {@link EnumSet} of target purposes of use.
      */
     public EnumSet<TargetPurposeOfUse> getPurposeOfUse() {
-        return (EnumSet<TargetPurposeOfUse>)this.purposeOfUse;
+        return EnumSet.copyOf(this.purposeOfUse);
     }
     
-    
-    // --------------- Protected methods ---------------
-
-    /**
-     * Converts the loaded sets from the database into enum sets.
-     */
-    @Override
-    protected void postLoad() {
-        this.age = EnumSet.copyOf(this.age);
-        this.gender = EnumSet.copyOf(this.gender);
-        this.maritalStatus = EnumSet.copyOf(this.maritalStatus);
-        this.purposeOfUse = EnumSet.copyOf(this.purposeOfUse);
-    }
     
     // --------------- Public static methods ---------------
 

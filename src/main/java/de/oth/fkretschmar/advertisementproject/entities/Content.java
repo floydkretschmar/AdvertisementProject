@@ -59,14 +59,6 @@ import org.apache.commons.lang3.SerializationUtils;
 public class Content extends AbstractAutoGenerateKeyedEntity
         implements IDeletable<Long> {
     
-    // --------------- Static constants ---------------
-    
-    /**
-     * Defines the name of the query to check, whether or not an email is 
-     * already in use by a different user.
-     */
-    public static final String FIND_ALL_FOR_CONTEXT = "User.findAllForContext";
-    
     // --------------- Private fields ---------------
 
     
