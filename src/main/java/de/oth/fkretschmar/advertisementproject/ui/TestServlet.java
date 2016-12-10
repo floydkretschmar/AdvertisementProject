@@ -171,10 +171,6 @@ public class TestServlet extends HttpServlet {
                 });
                 
 
-//                Content ad3 = Content.createContent()
-//                            .value("Das ist mein Werbetext")
-//                            .contentType(ContentType.TEXT)
-//                            .targetUrl(new URL("https://www.google.de")).build();
                 
                 // Create campaign:
                 
@@ -186,7 +182,7 @@ public class TestServlet extends HttpServlet {
                         .targetPurposeOfUses(EnumSet.allOf(TargetPurposeOfUse.class)).build();
 
                 // Create contents and add/delete them to/from the user:
-                File file = new File("/Users/fkre/BAUM_GUT.JPG");
+                File file = new File("E:\\Augen_einer_Katze.jpg");
 
                 SerializableRenderedImage image = new SerializableRenderedImage(ImageIO.read(file));
                 
@@ -237,8 +233,28 @@ public class TestServlet extends HttpServlet {
                     ApplicationService.processCurrentUser(currentUser -> {
                         return this.campaignService.createCampaignForUser(currentUser, tmpCamp);
                     });
-                    
+                                        
                     campaign = tmpCamp;
+                    
+                    TargetContext context3 = TargetContext.createTargetContext()
+                        .targetAges(EnumSet.of(TargetAge.SENIORS))
+                        .targetGenders(EnumSet.of(TargetGender.MALE, TargetGender.OTHER))
+                        .targetMaritalStatus(EnumSet.of(
+                                TargetMaritalStatus.MARRIED,
+                                TargetMaritalStatus.WIDOWED))
+                        .targetPurposeOfUses(EnumSet.of(TargetPurposeOfUse.PRIVATE)).build();
+                    
+                    Content ad3 = Content.createContent()
+                                .value("Das ist mein Werbetext")
+                                .contentType(ContentType.TEXT)
+                                .targetUrl(new URL("https://www.google.de"))
+                                .context(context3)
+                                .numberOfRequests(200000)
+                                .pricePerRequest(Monetary.getDefaultAmountFactory()
+                                        .setCurrency("EUR")
+                                        .setNumber(0.20).create()).build();
+                    
+                    campaign = this.adService.createContentForCampaign(campaign, ad3);
                 }
                 
                 // create bill:
@@ -263,15 +279,18 @@ public class TestServlet extends HttpServlet {
                 
                 
                 for(int i = 0; i < 50; i++) {
-//                    Optional<Content> bestContent = this.adService.requestContent(TargetContext.createTargetContext()
-//                            .targetAges(EnumSet.of(TargetAge.CHILDREN))
-//                            .targetGenders(EnumSet.of(TargetGender.FEMALE))
-//                            .targetMaritalStatus(EnumSet.of(TargetMaritalStatus.SINGLE))
-//                            .targetPurposeOfUses(EnumSet.of(TargetPurposeOfUse.PRIVATE)).build());
+                    Optional<Content> bestContent = this.adService.requestContent(TargetContext.createTargetContext()
+                            .targetAges(EnumSet.of(TargetAge.CHILDREN))
+                            .targetGenders(EnumSet.of(TargetGender.FEMALE))
+                            .targetMaritalStatus(EnumSet.of(TargetMaritalStatus.SINGLE))
+                            .targetPurposeOfUses(EnumSet.of(TargetPurposeOfUse.PRIVATE)).build());
+                    out.println(bestContent.get().getId());
+                }
+                out.println("<br>");
+                for(int i = 0; i < 50; i++) {
                     Optional<Content> bestContent = this.adService.requestRandomContent();
                     out.println(bestContent.get().getId());
                 }
-                
                 
             }
             catch (PasswordException ex) {}

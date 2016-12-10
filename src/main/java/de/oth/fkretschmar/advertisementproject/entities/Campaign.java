@@ -69,8 +69,8 @@ public class Campaign extends AbstractAutoGenerateKeyedEntity {
      * Stores the contents that make up the campaign.
      */
     @NotNull
-    @OneToMany
-    @JoinColumn(name = "CAMPAIGN_ID", referencedColumnName = "ID")
+    @OneToMany(mappedBy = "campaign")
+    //@JoinColumn(name = "CAMPAIGN_ID", referencedColumnName = "ID")
     private final Collection<Content> contents
             = new ArrayList<Content>();
     

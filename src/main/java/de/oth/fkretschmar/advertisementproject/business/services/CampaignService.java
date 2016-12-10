@@ -76,16 +76,20 @@ public class CampaignService implements Serializable {
         // also: bill will be added later, when the first payments for the 
         // campaign come in, so there can not be bills right now either.
         
-        // 1. create the contents
-        campaign.getContents().forEach(content -> this.contentService.createContent(content));
-        
-        // 2. merge and set user on campaign
+        // 1. merge and set user on campaign
         user = this.userRepository.merge(user);
         campaign.setComissioner(user);
         
-        // 3. save the campaign
+        // 2. Campaign is being owned so save the campaign first:
         this.campaignRepository.persist(campaign);
         
+        // 3. create the contents of the campaign and set the campaign
+        campaign.getContents().forEach(content -> 
+                {
+                    content.setCampaign(campaign);
+                    this.contentService.createContent(content);
+                });
+                
         // 4. add the campaign to the user:
         user.addCampaign(campaign);
         

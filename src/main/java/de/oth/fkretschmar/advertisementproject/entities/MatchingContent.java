@@ -16,26 +16,46 @@
  */
 package de.oth.fkretschmar.advertisementproject.entities;
 
+import de.oth.fkretschmar.advertisementproject.entities.base.MonetaryAmountAttributeConverter;
+import javax.money.MonetaryAmount;
+import javax.persistence.Column;
+import javax.persistence.Convert;
+import javax.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- *
- * @author fkre
+ * Represents a content that matches the provided {@link TargetContext}.
  */
-@NoArgsConstructor
+@AllArgsConstructor
 public class MatchingContent {
-    
+
+    /**
+     * Stpres the id of the actual content that has been matched.
+     */
     @Getter
-    @Setter
-    private Content content;
-    
+    private long contentId;
+
+    /**
+     * Stores the monetary amount tbe creator of the content is willing to pay
+     * per request of this campaign content.
+     */
     @Getter
-    @Setter
-    private int matchedGroups;
-    
+    private MonetaryAmount pricePerRequest;
+
+    /**
+     * Stores the number of general target groups that the content has matched.
+    *
+     */
     @Getter
-    @Setter
-    private int matchesInGroups;
+    private int groupMatches;
+
+    /**
+     * Stores the total number of subsets within the broader target groups that
+     * the content has matched.
+     */
+    @Getter
+    private int machtesInGroup;
 }

@@ -22,14 +22,12 @@ import de.oth.fkretschmar.advertisementproject.entities.TargetContext;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import static java.util.Collections.list;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
 import javax.persistence.ParameterMode;
 import javax.persistence.StoredProcedureQuery;
-import javax.persistence.TypedQuery;
 
 /**
  * Repository that defines the default CRUD methods for an {@link Content}.

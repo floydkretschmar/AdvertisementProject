@@ -29,11 +29,15 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
+import javax.money.MonetaryAmount;
+import javax.money.format.MonetaryAmountFormat;
+import javax.money.format.MonetaryFormats;
 import javax.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -81,11 +85,14 @@ public class ContentService implements Serializable {
     @Transactional
     public Campaign createContentForCampaign(
             Campaign campaign, Content content) {
-        this.createContent(content);
-        
-        // 3. add the content to the campaign
+        // campaign = not owner -> set content first on campaign
         campaign = this.campaignRepository.merge(campaign);
         campaign.addContent(content);
+                
+        // then set campaign and create content
+        content.setCampaign(campaign);
+        this.createContent(content);
+        
         return campaign;
     }
     
@@ -106,37 +113,40 @@ public class ContentService implements Serializable {
         
         List<MatchingContent> matchingContents = new ArrayList<MatchingContent>();
         
+        MonetaryAmountFormat germanFormat 
+                = MonetaryFormats.getAmountFormat(Locale.GERMANY);        
         results.forEach(result -> matchingContents.add(
                     new MatchingContent(
-                            this.contentRepository.find(((BigInteger)result[0]).longValue()),
-                            ((BigInteger)result[1]).intValue(),
-                            ((BigDecimal)result[2]).intValue()
+                            ((BigInteger)result[0]).longValue(),
+                            germanFormat.parse((String)result[1]),
+                            ((BigInteger)result[2]).intValue(),
+                            ((BigDecimal)result[3]).intValue()
                         )));
         
-        // don't just deliver the best content but also take into account the 
-        // amount of money being paid per content as well as a little bit of
-        // random chance ;)
+        // don't just deliver the best matching content but also take into 
+        // account the amount of money being paid per content as well as a 
+        // little bit of random chance ;)
         Optional<MatchingContent> bestContent = matchingContents.stream().sorted(
                 (content1, content2) -> 
                     {
-                        double compareValue1 = content1.groupMatches * 
+                        double compareValue1 = (10 * content1.groupMatches * 
                                         content1.machtesInGroup * 
-                                        content1.getContent()
-                                                .getPricePerRequest()
-                                                .getNumber().doubleValueExact() *
-                                        ThreadLocalRandom.current().nextInt(1, 6);
-                        double compareValue2 = (content2.groupMatches * 
+                                        content1.getPricePerRequest()
+                                                .getNumber().doubleValueExact()) +
+                                        ThreadLocalRandom.current().nextInt(5, 10);
+                        double compareValue2 = (10 * content2.groupMatches * 
                                         content2.machtesInGroup * 
-                                        content2.getContent()
-                                                .getPricePerRequest()
-                                                .getNumber().doubleValueExact()) *
-                                        ThreadLocalRandom.current().nextInt(1, 6);
+                                        content2.getPricePerRequest()
+                                                .getNumber().doubleValueExact()) +
+                                        ThreadLocalRandom.current().nextInt(5, 10);
 
                         return Double.compare(compareValue1, compareValue2);
                     }).findFirst();
         
         return bestContent.isPresent() 
-                ? Optional.of(bestContent.get().getContent()) : this.requestRandomContent();
+                ? Optional.of(this.contentRepository.find(
+                        bestContent.get().getContentId())) 
+                : this.requestRandomContent();
     }
     
     
@@ -181,31 +191,37 @@ public class ContentService implements Serializable {
     
     // --------------- Private classes ---------------
     
-    
     /**
-     * Represents a content that matches the provided {@link TargetContext}.
-     */
-    @AllArgsConstructor
-    private class MatchingContent {
-        
-        /**
-         * Stpres the actual content that has been matched.
-         */
-        @Getter
-        private Content content;
-        
-        /**
-         * Stores the number of general target groups that the content has 
-         * matched.
-         **/
-        @Getter
-        private int groupMatches;
-        
-        /**
-         * Stores the total number of subsets within the broader target groups
-         * that the content has matched.
-         */
-        @Getter
-        private int machtesInGroup;
-    }
+    * Represents a content that matches the provided {@link TargetContext}.
+    */
+   @AllArgsConstructor
+   private class MatchingContent {
+
+       /**
+        * Stpres the id of the actual content that has been matched.
+        */
+       @Getter
+       private long contentId;
+
+       /**
+        * Stores the monetary amount tbe creator of the content is willing to pay
+        * per request of this campaign content.
+        */
+       @Getter
+       private MonetaryAmount pricePerRequest;
+
+       /**
+        * Stores the number of general target groups that the content has matched.
+       *
+        */
+       @Getter
+       private int groupMatches;
+
+       /**
+        * Stores the total number of subsets within the broader target groups that
+        * the content has matched.
+        */
+       @Getter
+       private int machtesInGroup;
+   }
 }

@@ -30,12 +30,9 @@ import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
@@ -61,6 +58,14 @@ public class Content extends AbstractAutoGenerateKeyedEntity
     
     // --------------- Private fields ---------------
 
+    /**
+     * Stores the campaign for which the content was ordered.
+     */
+    @NotNull
+    @ManyToOne
+    @Getter
+    @Setter
+    private Campaign campaign;
     
     /**
      * Stores the enum that indicates the actual type of the object.
