@@ -19,10 +19,10 @@ package de.oth.fkretschmar.advertisementproject.business.services;
 import de.oth.fkretschmar.advertisementproject.business.repositories.CampaignRepository;
 import de.oth.fkretschmar.advertisementproject.business.repositories.UserRepository;
 
-import de.oth.fkretschmar.advertisementproject.entities.Campaign;
-import de.oth.fkretschmar.advertisementproject.entities.CampaignState;
-import de.oth.fkretschmar.advertisementproject.entities.Content;
-import de.oth.fkretschmar.advertisementproject.entities.User;
+import de.oth.fkretschmar.advertisementproject.entities.campaign.Campaign;
+import de.oth.fkretschmar.advertisementproject.entities.campaign.CampaignState;
+import de.oth.fkretschmar.advertisementproject.entities.campaign.Content;
+import de.oth.fkretschmar.advertisementproject.entities.user.User;
 
 import java.io.Serializable;
 

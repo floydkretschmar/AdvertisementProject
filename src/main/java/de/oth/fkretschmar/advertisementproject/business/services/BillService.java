@@ -19,9 +19,9 @@ package de.oth.fkretschmar.advertisementproject.business.services;
 import de.oth.fkretschmar.advertisementproject.business.repositories.BillItemRepository;
 import de.oth.fkretschmar.advertisementproject.business.repositories.BillRepository;
 import de.oth.fkretschmar.advertisementproject.business.repositories.CampaignRepository;
-import de.oth.fkretschmar.advertisementproject.entities.Bill;
-import de.oth.fkretschmar.advertisementproject.entities.BillItem;
-import de.oth.fkretschmar.advertisementproject.entities.Campaign;
+import de.oth.fkretschmar.advertisementproject.entities.billing.Bill;
+import de.oth.fkretschmar.advertisementproject.entities.billing.BillItem;
+import de.oth.fkretschmar.advertisementproject.entities.campaign.Campaign;
 import java.io.Serializable;
 
 import javax.enterprise.context.RequestScoped;

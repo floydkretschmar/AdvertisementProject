@@ -14,8 +14,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.oth.fkretschmar.advertisementproject.entities;
+package de.oth.fkretschmar.advertisementproject.entities.user;
 
+import de.oth.fkretschmar.advertisementproject.entities.exceptions.BuilderValidationException;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;

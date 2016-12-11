@@ -19,8 +19,8 @@ package de.oth.fkretschmar.advertisementproject.business.services;
 import de.oth.fkretschmar.advertisementproject.business.HashHelper;
 import de.oth.fkretschmar.advertisementproject.business.HashingException;
 import de.oth.fkretschmar.advertisementproject.business.repositories.PasswordRepository;
-import de.oth.fkretschmar.advertisementproject.entities.BuilderValidationException;
-import de.oth.fkretschmar.advertisementproject.entities.Password;
+import de.oth.fkretschmar.advertisementproject.entities.exceptions.BuilderValidationException;
+import de.oth.fkretschmar.advertisementproject.entities.user.Password;
 import java.io.Serializable;
 
 import java.math.BigInteger;

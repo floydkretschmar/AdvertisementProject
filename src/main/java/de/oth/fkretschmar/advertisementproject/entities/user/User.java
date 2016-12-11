@@ -14,8 +14,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.oth.fkretschmar.advertisementproject.entities;
+package de.oth.fkretschmar.advertisementproject.entities.user;
 
+import de.oth.fkretschmar.advertisementproject.entities.exceptions.BuilderValidationException;
+import de.oth.fkretschmar.advertisementproject.entities.campaign.Campaign;
 import de.oth.fkretschmar.advertisementproject.entities.base.AbstractStringKeyedEntity;
 import java.util.ArrayList;
 import java.util.Collection;

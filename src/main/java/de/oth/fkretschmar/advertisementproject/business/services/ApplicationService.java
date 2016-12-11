@@ -17,7 +17,7 @@
 package de.oth.fkretschmar.advertisementproject.business.services;
 
 import de.oth.fkretschmar.advertisementproject.business.repositories.UserRepository;
-import de.oth.fkretschmar.advertisementproject.entities.User;
+import de.oth.fkretschmar.advertisementproject.entities.user.User;
 import java.io.Serializable;
 
 import java.util.concurrent.locks.Lock;

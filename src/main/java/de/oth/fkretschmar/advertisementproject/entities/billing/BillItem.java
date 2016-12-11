@@ -14,10 +14,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.oth.fkretschmar.advertisementproject.entities;
+package de.oth.fkretschmar.advertisementproject.entities.billing;
 
+import de.oth.fkretschmar.advertisementproject.entities.exceptions.BuilderValidationException;
+import de.oth.fkretschmar.advertisementproject.entities.campaign.Content;
 import de.oth.fkretschmar.advertisementproject.entities.base.AbstractAutoGenerateKeyedEntity;
-import de.oth.fkretschmar.advertisementproject.entities.base.MonetaryAmountAttributeConverter;
+import de.oth.fkretschmar.advertisementproject.entities.base.converter.MonetaryAmountAttributeConverter;
 import javax.money.MonetaryAmount;
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;

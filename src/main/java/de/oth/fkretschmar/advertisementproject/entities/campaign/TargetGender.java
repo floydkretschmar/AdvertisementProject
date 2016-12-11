@@ -14,28 +14,33 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.oth.fkretschmar.advertisementproject.entities;
+package de.oth.fkretschmar.advertisementproject.entities.campaign;
 
-import de.oth.fkretschmar.advertisementproject.entities.base.IFlagField;
 import lombok.Getter;
 
 /**
- * Defines the different purposes of use that can be targeted with an 
- * advertisement.
+ * Defines the different genders that can be targeted with an advertisement.
  * 
  * @author fkre
  */
-public enum TargetPurposeOfUse implements IFlagField {
+public enum TargetGender {
+    
+    // --------------- Enum fields ---------------
     
     /**
-     * Indicates that the target is operating in a business environment.
+     * Indicates that the target identifies as a female.
      */
-    BUSINESS(1<<1),
+    FEMALE(1<<1),
     
     /**
-     * Indicates that the target is operating in a private environment.
+     * Indicates that the target identifies as a male.
      */
-    PRIVATE(1<<2);
+    MALE(1<<2),
+    
+    /**
+     * Indicates that the target neither identifies as male or female.
+     */
+    OTHER(1<<3);
     
     // --------------- Private fields ---------------
     
@@ -48,12 +53,11 @@ public enum TargetPurposeOfUse implements IFlagField {
     // --------------- Private constructors ---------------
     
     /**
-     * Creates a new instance of {@link TargetPurposeOfUse} using the specified 
-     * value.
+     * Creates a new instance of {@link TargetGender} using the specified value.
      * 
      * @param flagValue the flagValue indicating the bit position of the flag.
      */
-    private TargetPurposeOfUse(int flagValue){
+    private TargetGender(int flagValue){
         this.flagValue = flagValue;
     }
 }

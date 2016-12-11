@@ -14,21 +14,27 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.oth.fkretschmar.advertisementproject.entities;
+package de.oth.fkretschmar.advertisementproject.entities.campaign;
 
 /**
  *
  * @author Floyd
  */
-public class ContentDataCorruptedException extends RuntimeException {
-
+public enum CampaignState {
+    
     /**
-     * Constructs an instance of <code>AdvertisementDataCorrupted</code> using
-     * the specified detail message.
-     *
-     * @param msg the detail message.
+     * Indicates that the campaign was cancelled.
      */
-    public ContentDataCorruptedException(String msg) {
-        super(msg);
-    }
+    CANCELLED,
+    
+    /**
+     * Indicates that the campaign has ended because all contents have been
+     * delivered.
+     */
+    ENDED,    
+    
+    /**
+     * Indicates that the campaign is currently running.
+     */
+    RUNNING;
 }

@@ -20,12 +20,12 @@ import de.oth.fkretschmar.advertisementproject.business.repositories.CampaignRep
 import de.oth.fkretschmar.advertisementproject.business.repositories.ContentRepository;
 import de.oth.fkretschmar.advertisementproject.business.repositories.ContentRequestRepository;
 import de.oth.fkretschmar.advertisementproject.business.repositories.TargetContextRepository;
-import de.oth.fkretschmar.advertisementproject.entities.BuilderValidationException;
+import de.oth.fkretschmar.advertisementproject.entities.exceptions.BuilderValidationException;
 
-import de.oth.fkretschmar.advertisementproject.entities.Campaign;
-import de.oth.fkretschmar.advertisementproject.entities.Content;
-import de.oth.fkretschmar.advertisementproject.entities.ContentRequest;
-import de.oth.fkretschmar.advertisementproject.entities.TargetContext;
+import de.oth.fkretschmar.advertisementproject.entities.campaign.Campaign;
+import de.oth.fkretschmar.advertisementproject.entities.campaign.Content;
+import de.oth.fkretschmar.advertisementproject.entities.billing.ContentRequest;
+import de.oth.fkretschmar.advertisementproject.entities.campaign.TargetContext;
 
 import java.io.Serializable;
 import java.math.BigDecimal;

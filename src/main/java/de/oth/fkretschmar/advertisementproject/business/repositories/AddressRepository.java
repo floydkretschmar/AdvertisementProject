@@ -17,7 +17,7 @@
 package de.oth.fkretschmar.advertisementproject.business.repositories;
 
 import de.oth.fkretschmar.advertisementproject.business.repositories.base.AbstractJPARepository;
-import de.oth.fkretschmar.advertisementproject.entities.Address;
+import de.oth.fkretschmar.advertisementproject.entities.user.Address;
 
 import java.util.ArrayList;
 import java.util.Collection;

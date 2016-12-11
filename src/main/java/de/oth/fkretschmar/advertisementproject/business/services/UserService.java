@@ -19,12 +19,12 @@ package de.oth.fkretschmar.advertisementproject.business.services;
 import de.oth.fkretschmar.advertisementproject.business.repositories.AddressRepository;
 import de.oth.fkretschmar.advertisementproject.business.repositories.AccountRepository;
 import de.oth.fkretschmar.advertisementproject.business.repositories.UserRepository;
-import de.oth.fkretschmar.advertisementproject.entities.Account;
-import de.oth.fkretschmar.advertisementproject.entities.Address;
-import de.oth.fkretschmar.advertisementproject.entities.Campaign;
-import de.oth.fkretschmar.advertisementproject.entities.CampaignState;
-import de.oth.fkretschmar.advertisementproject.entities.Password;
-import de.oth.fkretschmar.advertisementproject.entities.User;
+import de.oth.fkretschmar.advertisementproject.entities.user.Account;
+import de.oth.fkretschmar.advertisementproject.entities.user.Address;
+import de.oth.fkretschmar.advertisementproject.entities.campaign.Campaign;
+import de.oth.fkretschmar.advertisementproject.entities.campaign.CampaignState;
+import de.oth.fkretschmar.advertisementproject.entities.user.Password;
+import de.oth.fkretschmar.advertisementproject.entities.user.User;
 import java.io.Serializable;
 
 import javax.enterprise.context.RequestScoped;

@@ -14,42 +14,38 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.oth.fkretschmar.advertisementproject.entities;
+package de.oth.fkretschmar.advertisementproject.entities.campaign;
 
-import de.oth.fkretschmar.advertisementproject.entities.base.IFlagField;
 import lombok.Getter;
 
 /**
- * Defines the marital status that can be targeted with an advertisement.
+ * Defines the different age groups that can be targeted with an advertisement.
  * 
  * @author fkre
  */
-public enum TargetMaritalStatus implements IFlagField {
+public enum TargetAge {
+    
+    // --------------- Enum fields ---------------
     
     /**
-     * Indicates that the target is divorced.
+     * Indicates that the target is an adult (ages between 25-64 years old).
      */
-    DIVORCED(1<<1),
+    ADULTS(1<<1),
     
     /**
-     * Indicates that the target is in a relationship.
+     * Indicates that the target is a child (ages between 0-14 years old).
      */
-    IN_RELATIONSHIP(1<<2),
+    CHILDREN(1<<2),
     
     /**
-     * Indicates that the target is married.
+     * Indicates that the target is a youth (ages between 65 years and older).
      */
-    MARRIED(1<<3),
+    SENIORS(1<<3),
     
     /**
-     * Indicates that the target is single.
+     * Indicates that the target is a youth (ages between 15-24 years old).
      */
-    SINGLE(1<<4),
-    
-    /**
-     * Indicates that the target is widowed.
-     */
-    WIDOWED(1<<5);
+    YOUTH(1<<4);
     
     // --------------- Private fields ---------------
     
@@ -62,12 +58,11 @@ public enum TargetMaritalStatus implements IFlagField {
     // --------------- Private constructors ---------------
     
     /**
-     * Creates a new instance of {@link TargetMaritalStatus} using the specified 
-     * value.
+     * Creates a new instance of {@link TargetAge} using the specified value.
      * 
-     * @param flagValue the flagValue indicating the bit position of the flag.
+     * @param flagValue the value indicating the bit position of the flag.
      */
-    private TargetMaritalStatus(int flagValue){
+    private TargetAge(int flagValue){
         this.flagValue = flagValue;
     }
 }

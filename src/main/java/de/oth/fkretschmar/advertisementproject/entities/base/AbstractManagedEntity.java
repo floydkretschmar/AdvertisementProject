@@ -17,6 +17,7 @@
 package de.oth.fkretschmar.advertisementproject.entities.base;
 
 
+import de.oth.fkretschmar.advertisementproject.entities.base.converter.LocalDateTimeAttributeConverter;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Convert;
