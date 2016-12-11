@@ -293,7 +293,7 @@ public class TestServlet extends HttpServlet {
                     out.println(bestContent.get().getId());
                 }
                 
-                this.billService.billContentRequests(PaymentInterval.MONTHLY);
+                //this.billService.billContentRequests(PaymentInterval.MONTHLY);
                 
             }
             catch (PasswordException ex) {}

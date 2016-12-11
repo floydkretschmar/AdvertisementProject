@@ -19,7 +19,6 @@ package de.oth.fkretschmar.advertisementproject.business.services;
 import de.oth.fkretschmar.advertisementproject.business.repositories.BillItemRepository;
 import de.oth.fkretschmar.advertisementproject.business.repositories.BillRepository;
 import de.oth.fkretschmar.advertisementproject.business.repositories.CampaignRepository;
-import de.oth.fkretschmar.advertisementproject.business.repositories.ContentRepository;
 import de.oth.fkretschmar.advertisementproject.business.repositories.ContentRequestRepository;
 import de.oth.fkretschmar.advertisementproject.entities.billing.Bill;
 import de.oth.fkretschmar.advertisementproject.entities.billing.BillItem;
@@ -28,16 +27,13 @@ import de.oth.fkretschmar.advertisementproject.entities.campaign.Campaign;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.Content;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.PaymentInterval;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import javax.ejb.Schedule;
+import javax.enterprise.context.ApplicationScoped;
 
-import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
-import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 
 /**
@@ -46,7 +42,7 @@ import javax.transaction.Transactional;
  *
  * @author  fkre    Floyd Kretschmar
  */
-@RequestScoped
+@ApplicationScoped
 public class BillService implements Serializable {
 
     // --------------- Private fields ---------------
@@ -91,7 +87,7 @@ public class BillService implements Serializable {
     @Schedule(minute = "*/1")
     @Transactional
     public void billMonthlyContentRequests() {
-        
+        this.billContentRequests(PaymentInterval.MONTHLY);
     }
     
     
@@ -102,7 +98,7 @@ public class BillService implements Serializable {
     @Schedule(minute = "*/2")
     @Transactional
     public void billQuaterlyContentRequests() {
-        
+        this.billContentRequests(PaymentInterval.QUATERLY);
     }
     
     
@@ -113,7 +109,7 @@ public class BillService implements Serializable {
     @Schedule(minute = "*/4")
     @Transactional
     public void billYearlyContentRequests() {
-        
+        this.billContentRequests(PaymentInterval.YEARLY);
     }
     
     /**
@@ -173,7 +169,7 @@ public class BillService implements Serializable {
      * @param interval  the interval.
      */
     @Transactional
-    public void billContentRequests(PaymentInterval interval) {
+    private void billContentRequests(PaymentInterval interval) {
         // finds all requests that have been made since the last interval and 
         // that have the specified pazment interval
         Collection<ContentRequest> requests 
