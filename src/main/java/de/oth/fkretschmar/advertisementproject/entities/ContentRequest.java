@@ -29,7 +29,7 @@ import lombok.Setter;
  * @author Floyd
  */
 @Entity(name = "T_CONTENT_REQUEST_LOG")
-public class ContentRequestLog extends AbstractAutoGenerateKeyedEntity {
+public class ContentRequest extends AbstractAutoGenerateKeyedEntity {
     
     // --------------- Private fields ---------------
     
@@ -68,7 +68,7 @@ public class ContentRequestLog extends AbstractAutoGenerateKeyedEntity {
      * @param content           the content that was requested.
      * @param requestSource     the source responsible for the request.
      */
-    private ContentRequestLog(Content content, String requestSource) {
+    private ContentRequest(Content content, String requestSource) {
         this.content = content;
         this.requestSource = requestSource;
     }
@@ -80,11 +80,11 @@ public class ContentRequestLog extends AbstractAutoGenerateKeyedEntity {
     
     /**
      * The method that builds the basis of the auto generated builder:
-     * Validates the input and creates the corresponding {@link ContentRequestLog}.
+     * Validates the input and creates the corresponding {@link ContentRequest}.
      * 
      * @param content           the content that was requested.
      * @param requestSource     the source responsible for the request.
-     * @return  the built {@link ContentRequestLog}.
+     * @return  the built {@link ContentRequest}.
      * @throws  BuilderValidationException  that indicates that one or more of 
      *                                      of the given creation parameters are
      *                                      invalid.
@@ -93,23 +93,23 @@ public class ContentRequestLog extends AbstractAutoGenerateKeyedEntity {
             builderMethodName = "createContentRequestLog", 
             builderClassName = "ContentRequestLogBuilder",
             buildMethodName = "build")
-    private static ContentRequestLog validateAndCreateContentRequestLog(
+    private static ContentRequest validateAndCreateContentRequestLog(
             Content content, 
             String requestSource) throws BuilderValidationException {
         
         if (content == null) {
             throw new BuilderValidationException(
-                    ContentRequestLog.class,
+                    ContentRequest.class,
                     "The content can not be null.");
         }
         
         if (requestSource == null || requestSource.isEmpty()) {
             throw new BuilderValidationException(
-                    ContentRequestLog.class,
+                    ContentRequest.class,
                     "The request source can not be null or empty.");
         }
         
-        return new ContentRequestLog(content, requestSource);
+        return new ContentRequest(content, requestSource);
     }
     
 }

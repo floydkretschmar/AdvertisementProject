@@ -18,10 +18,13 @@ package de.oth.fkretschmar.advertisementproject.business.services;
 
 import de.oth.fkretschmar.advertisementproject.business.repositories.CampaignRepository;
 import de.oth.fkretschmar.advertisementproject.business.repositories.ContentRepository;
+import de.oth.fkretschmar.advertisementproject.business.repositories.ContentRequestRepository;
 import de.oth.fkretschmar.advertisementproject.business.repositories.TargetContextRepository;
+import de.oth.fkretschmar.advertisementproject.entities.BuilderValidationException;
 
 import de.oth.fkretschmar.advertisementproject.entities.Campaign;
 import de.oth.fkretschmar.advertisementproject.entities.Content;
+import de.oth.fkretschmar.advertisementproject.entities.ContentRequest;
 import de.oth.fkretschmar.advertisementproject.entities.TargetContext;
 
 import java.io.Serializable;
@@ -32,6 +35,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -65,6 +70,12 @@ public class ContentService implements Serializable {
     @Inject
     private ContentRepository contentRepository;
 
+    /**
+     * Stores the repositorz used to manage {@link ContentRequest} entities.
+     */
+    @Inject
+    private ContentRequestRepository contentRequestRepository;
+    
     /**
      * Stores the repository used to manage {@link TargetContext} entites.
      */
@@ -101,11 +112,13 @@ public class ContentService implements Serializable {
      * Retrieves an advertisement content that best matches the provided 
      * {@link TargetContext}. 
      * 
+     * @param source    the text that identifies the source of the request.
      * @param context   the context that specifies the targets for the requestet
      *                  content.
      * @return          the best matching content.
      */
-    public Optional<Content> requestContent(TargetContext context) {
+    @Transactional
+    public Optional<Content> requestContent(String source, TargetContext context) {
         List<Object[]> results = this.contentRepository.findMatchingContents(context);
         
         if(results == null || results.isEmpty())
@@ -143,20 +156,33 @@ public class ContentService implements Serializable {
                         return Double.compare(compareValue1, compareValue2);
                     }).findFirst();
         
-        return bestContent.isPresent() 
-                ? Optional.of(this.contentRepository.find(
-                        bestContent.get().getContentId())) 
-                : this.requestRandomContent();
+        if(bestContent.isPresent()) {
+            Content content = this.contentRepository.find(
+                    bestContent.get().getContentId());
+            this.createContentRequest(source, content);
+            return Optional.of(content);
+        }
+        
+        return this.requestRandomContent(source);
     }
     
     
     /**
      * Retrieves a random advertisement that has not been matched with any target
      * context.
+     * 
+     * @param   source  the text that identifies the source of the request.
      * @return  the content that has been chosen randomly.
      */
-    public Optional<Content> requestRandomContent() {
-        return this.contentRepository.findRandomContent();
+    @Transactional
+    public Optional<Content> requestRandomContent(String source) {
+        Optional<Content> randomContent = this.contentRepository.findRandomContent();
+        
+        if(randomContent.isPresent()) {
+            this.createContentRequest(source, randomContent.get());
+        }
+            
+        return randomContent;
     }
     
     // --------------- Package-Private methods ---------------
@@ -188,6 +214,34 @@ public class ContentService implements Serializable {
         this.contentRepository.remove(content);
     }
     
+    
+    // --------------- Private methods ---------------
+    
+    
+    /**
+     * Creates a content request for the specified content and source.
+     * 
+     * @param   source  the text that identifies the source of the request.
+     * @param   content the content that was requested.
+     */
+    @Transactional
+    private void createContentRequest(String source, Content content) {
+        this.contextRepository.merge(content.getContext());
+        this.contentRepository.merge(content);
+
+        try {
+            ContentRequest request = ContentRequest.createContentRequestLog()
+                    .content(content)
+                    .requestSource(source).build();
+            this.contentRequestRepository.persist(request);
+        } catch (BuilderValidationException ex) {
+            Logger.getLogger(ContentService.class.getName()).log(
+                    Level.SEVERE, 
+                    "The content request creation failed which should never"
+                            + "occur.", 
+                    ex);
+        }
+    }
     
     // --------------- Private classes ---------------
     

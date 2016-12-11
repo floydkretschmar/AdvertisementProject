@@ -279,16 +279,18 @@ public class TestServlet extends HttpServlet {
                 
                 
                 for(int i = 0; i < 50; i++) {
-                    Optional<Content> bestContent = this.adService.requestContent(TargetContext.createTargetContext()
-                            .targetAges(EnumSet.of(TargetAge.CHILDREN))
-                            .targetGenders(EnumSet.of(TargetGender.FEMALE))
-                            .targetMaritalStatus(EnumSet.of(TargetMaritalStatus.SINGLE))
-                            .targetPurposeOfUses(EnumSet.of(TargetPurposeOfUse.PRIVATE)).build());
+                    Optional<Content> bestContent = this.adService.requestContent(
+                            "myself",
+                            TargetContext.createTargetContext()
+                                .targetAges(EnumSet.of(TargetAge.CHILDREN))
+                                .targetGenders(EnumSet.of(TargetGender.FEMALE))
+                                .targetMaritalStatus(EnumSet.of(TargetMaritalStatus.SINGLE))
+                                .targetPurposeOfUses(EnumSet.of(TargetPurposeOfUse.PRIVATE)).build());
                     out.println(bestContent.get().getId());
                 }
                 out.println("<br>");
                 for(int i = 0; i < 50; i++) {
-                    Optional<Content> bestContent = this.adService.requestRandomContent();
+                    Optional<Content> bestContent = this.adService.requestRandomContent("myself");
                     out.println(bestContent.get().getId());
                 }
                 
