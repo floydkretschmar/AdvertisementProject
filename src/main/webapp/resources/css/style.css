@@ -1,0 +1,71 @@
+/*
+Copyright (C) 2016 Floyd
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+/* 
+    Created on : 11.12.2016, 17:59:57
+    Author     : Floyd
+*/
+
+.webvert {
+    width: 100%;
+    background: #FFF;
+}
+
+.webvert_main_backcolor {
+    /*background: #eff2f5;*/
+    background: #dfe4ec;
+}
+
+.container.webvert_header {
+    width: 100%;
+    height: 130px;
+    border-bottom: 1px solid #aaa;
+}
+
+.form-signin-heading.webvert_h_color {
+    color: #8093b3;
+}
+
+.webvert_logo {
+    height: 100%;
+    margin: auto;
+    display: block;
+    padding: 1.8em 0;
+}
+
+.container.webvert_login_main {
+    width: 350px; 
+    padding-top: 50px;
+}
+
+.container.webvert_register_main {
+    width: 450px; 
+    padding-top: 50px;
+}
+
+.btn-primary.webvert_main_button_backcolor {
+    color: #FFFFFF;
+    background-color: #afbccf;
+}
+
+.btn-primary.webvert_button_bordercolor {
+    border-color: #aaa;
+}
+
+.form-control.webvert_invalid_input {
+    border-color: #ff9999;
+    background-color: #ffe6e6;
+}

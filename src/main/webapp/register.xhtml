@@ -1,0 +1,134 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:b="http://bootsfaces.net/ui">
+    <h:head>
+        <title>Register with Webverb</title>
+        <h:outputStylesheet library="css" name="style.css"  />
+    </h:head>
+    <h:body class="webvert">
+        <b:container class="webvert_header webvert_main_backcolor">
+            <h:graphicImage library="img" name="logo.png" class="webvert_logo"/>
+        </b:container>
+        
+        <b:container class="webvert_register_main">
+            <h:form styleClass="form-signin" prependId="false">
+                <b:row>
+                    <b:column medium-screen="12">
+                        <h2 class="form-signin-heading webvert_h_color"
+                            style="margin-bottom: 20px">Register</h2>
+                        </b:column>
+                </b:row>
+                <b:row>
+                    <b:column medium-screen="12">
+                        <b:inputText id="email" 
+                                     placeholder="Email address*" 
+                                     styleClass="#{component.valid? '' : 'webvert_invalid_input' }"
+                                     required="true"/>
+                    </b:column>
+                </b:row>
+                <b:row>
+                    <b:column medium-screen="12">
+                        <b:inputText id="password" 
+                                     placeholder="Password*" 
+                                     type="password"
+                                     styleClass="#{component.valid? '' : 'webvert_invalid_input' }"
+                                     required="true"/>
+                    </b:column>
+                </b:row>
+                <b:row>
+                    <b:column medium-screen="12">
+                        <b:inputText id="cofirmPassword" 
+                                     placeholder="Confirm password*" 
+                                     type="password"
+                                     styleClass="#{component.valid? '' : 'webvert_invalid_input' }"
+                                     required="true"/>
+                    </b:column>
+                </b:row>
+                <b:row>
+                    <b:column medium-screen="12">
+                        <h4 id="personalInfo" class="form-signin-heading webvert_h_color">
+                            Personal Information
+                        </h4>
+                    </b:column>
+                </b:row>
+                <b:row>
+                    <b:column medium-screen="6">
+                        <b:inputText id="firstName" 
+                                     placeholder="First name*" 
+                                     requiredMessage="Please enter your first name."
+                                     styleClass="#{component.valid? '' : 'webvert_invalid_input' }"
+                                     required="true">
+                        </b:inputText>
+                    </b:column>
+                    <b:column medium-screen="6">
+                        <b:inputText id="lastName" 
+                                     placeholder="Last name*" 
+                                     required="true"
+                                     styleClass="#{component.valid? '' : 'webvert_invalid_input' }">
+                        </b:inputText>
+                    </b:column>
+                </b:row>
+                <b:row>
+                    <b:column medium-screen="12">
+                        <b:inputText id="company" 
+                                     placeholder="Company" />
+                    </b:column>
+                </b:row>
+                <b:row>
+                    <b:column medium-screen="12">
+                        <h4 id="personalInfo" class="form-signin-heading webvert_h_color">
+                            Address
+                        </h4>
+                    </b:column>
+                </b:row>
+                <b:row>
+                    <b:column medium-screen="10">
+                        <b:inputText id="street" 
+                                     placeholder="Street*"
+                                     styleClass="#{component.valid? '' : 'webvert_invalid_input' }"
+                                     required="true">
+                        </b:inputText>
+                    </b:column>
+                    <b:column medium-screen="2">
+                        <b:inputText id="number" 
+                                     placeholder="Nr.*" 
+                                     styleClass="#{component.valid? '' : 'webvert_invalid_input' }"
+                                     required="true">
+                        </b:inputText>
+                    </b:column>
+                </b:row>
+                <b:row>
+                    <b:column medium-screen="4">
+                        <b:inputText id="areaCode" 
+                                     placeholder="Area code*"
+                                     styleClass="#{component.valid? '' : 'webvert_invalid_input' }"
+                                     required="true">
+                        </b:inputText>
+                    </b:column>
+                    <b:column medium-screen="8">
+                        <b:inputText id="city" 
+                                     placeholder="City*" 
+                                     styleClass="#{component.valid? '' : 'webvert_invalid_input' }"
+                                     required="true">
+                        </b:inputText>
+                    </b:column>
+                </b:row>
+                <b:row>
+                    <b:column medium-screen="12">
+                        <b:inputText id="country" 
+                                     placeholder="Country" />
+                    </b:column>
+                </b:row>
+                <b:commandButton look="primary btn-block" 
+                                 value="Register" 
+                                 icon="log-in" 
+                                 class="webvert_main_button_backcolor webvert_button_bordercolor"
+                                 update="@form"
+                                 size="lg"/>
+            </h:form>
+        </b:container>
+    </h:body>
+</html>
+

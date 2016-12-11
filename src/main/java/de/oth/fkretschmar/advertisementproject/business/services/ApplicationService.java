@@ -97,6 +97,7 @@ public class ApplicationService implements Serializable {
             String eMail, char[] password) throws PasswordException {
         try {
             User user = this.userRepository.find(eMail);
+            ApplicationService.lock.lock();
 
             if (user == null || !PasswordService.equals(user.getPassword(), password)) {
                 return false;

@@ -2,30 +2,78 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:b="http://bootsfaces.net/ui">
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
     <h:head>
-        <title>Floyds tolle Werberargentur</title>
+        <title>Webvert</title>
+        <h:outputStylesheet library="css" name="style.css"  />
     </h:head>
-    <h:body>
-        <b:container style="width: 350px; padding-top: 100px;">
-            <h:form styleClass="form-signin" prependId="false">
-                <h2 class="form-signin-heading">Please sign in</h2>
-                <b:inputText id="email" 
-                             placeholder="Email address" />
-                <b:inputText id="password" 
-                             placeholder="Password" 
-                             type="password"/>
-                <b:commandButton look="primary btn-block" 
-                                 value="Sign In" icon="log-in" 
-                                 size="lg"/>
-            </h:form>
+    <h:body class="webvert">
+        <b:container class="webvert_header webvert_main_backcolor">
+            <h:graphicImage library="img" name="logo.png" class="webvert_logo"/>
         </b:container>
         
-        <b:container style="width: 350px; padding-top: 50px;">
+        <b:container styleClass="webvert_login_main">
             <h:form styleClass="form-signin" prependId="false">
-                <b:commandButton look="default btn-block" 
-                                 value="Testaccount" 
-                                 icon="log-in" size="lg"/>
+                <b:row>
+                    <b:column medium-screen="15">
+                        <h2 class="form-signin-heading webvert_h_color"
+                            style="margin-bottom: 20px">Sign in</h2>
+                    </b:column>
+                </b:row>
+                <b:row>
+                    <b:column medium-screen="15">
+                        <b:inputText id="email" 
+                                     placeholder="Email address" 
+                                     value="#{authenticationModel.EMailAddress}">
+                            <f:facet name="prepend">
+                                <b:icon name="user" />
+                            </f:facet>
+                        </b:inputText>
+                    </b:column>
+                </b:row>
+                <b:row>
+                    <b:column medium-screen="15">
+                        <b:inputText id="password" 
+                                     placeholder="Password" 
+                                     type="password"
+                                     value="#{authenticationModel.password}">
+                            <f:facet name="prepend">
+                                <b:iconAwesome name="key" />
+                            </f:facet>
+                        </b:inputText>
+                    </b:column>
+                </b:row>
+                <b:row>
+                    <b:column medium-screen="15">
+                        <b:alert severity="danger"
+                                 rendered="#{authenticationModel.error}">
+                            #{authenticationModel.errorMessage}
+                        </b:alert>
+                    </b:column>
+                </b:row>
+                <b:row>
+                    <b:column medium-screen="15">
+                        <b:commandButton look="primary btn-block" 
+                                         value="Sign In" 
+                                         icon="log-in" 
+                                         size="lg"
+                                         style="width: 60%; margin: auto; margin-bottom: 10px;"
+                                         class="webvert_main_button_backcolor webvert_button_bordercolor"
+                                         action="#{authenticationModel.authenticate()}"/>
+                    </b:column>
+                </b:row>
+                <b:row>
+                    <b:column medium-screen="15">
+                        <b:commandButton look="default btn-block" 
+                                         value="Register" 
+                                         icon="log-in" 
+                                         style="width: 60%; margin: auto;"
+                                         class="webvert_button_bordercolor"
+                                         action="register.xhtml"
+                                         size="lg"/>
+                    </b:column>
+                </b:row>
             </h:form>
         </b:container>
     </h:body>
