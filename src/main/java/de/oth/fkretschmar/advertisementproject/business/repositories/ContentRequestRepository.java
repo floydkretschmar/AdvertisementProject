@@ -18,9 +18,11 @@ package de.oth.fkretschmar.advertisementproject.business.repositories;
 
 import de.oth.fkretschmar.advertisementproject.business.repositories.base.AbstractJPARepository;
 import de.oth.fkretschmar.advertisementproject.entities.billing.ContentRequest;
+import de.oth.fkretschmar.advertisementproject.entities.campaign.PaymentInterval;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import javax.persistence.TypedQuery;
 
 /**
  * Repository that defines the default CRUD methods for an {@link ContentRequest}.
@@ -28,7 +30,7 @@ import java.util.Collection;
  * @author fkre
  */
 public class ContentRequestRepository extends AbstractJPARepository<Long, ContentRequest> {
-    
+        
     // --------------- Public constructors ---------------
 
     /**
@@ -36,6 +38,25 @@ public class ContentRequestRepository extends AbstractJPARepository<Long, Conten
      */
     public ContentRequestRepository() {
         super(ContentRequest.class);
+    }
+    
+    // --------------- Public methods ---------------
+    
+    
+    /**
+     * Finds all pending content requests for the specified payment interval.
+     * 
+     * @param   interval  the interval.
+     * @return  the collection of pending requests.
+     */
+    public Collection<ContentRequest> findForPaymentInterval(
+            PaymentInterval interval) {
+        TypedQuery<ContentRequest> query = this.accessQuery(
+                ContentRequest.class, 
+                ContentRequest.FIND_FOR_PAYMENT_INTERVAL,
+                interval);
+        
+        return query.getResultList();
     }
     
     // --------------- Protected methods ---------------

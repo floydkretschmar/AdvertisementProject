@@ -21,17 +21,41 @@ import de.oth.fkretschmar.advertisementproject.entities.campaign.Content;
 import de.oth.fkretschmar.advertisementproject.entities.base.AbstractAutoGenerateKeyedEntity;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.validation.constraints.NotNull;
+
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
  *
  * @author Floyd
  */
-@Entity(name = "T_CONTENT_REQUEST_LOG")
+@Entity(name = "T_CONTENT_REQUEST")
+@NamedQueries({
+    @NamedQuery(
+            name = ContentRequest.FIND_FOR_PAYMENT_INTERVAL, 
+            query = " SELECT    contentRequest "
+                    + " FROM    T_CONTENT_REQUEST contentRequest "
+                    + " WHERE   contentRequest.content.campaign.interval = ?1 "
+                    + " AND     contentRequest.bill IS NULL"
+                    + " AND     contentRequest.generationDate > current_date()")
+})
+@NoArgsConstructor(access = AccessLevel.PACKAGE)
 public class ContentRequest extends AbstractAutoGenerateKeyedEntity {
+    
+    // --------------- Static constants ---------------
+    
+    /**
+     * Defines the name of the query to check, whether or not an email is 
+     * already in use by a different user.
+     */
+    public static final String FIND_FOR_PAYMENT_INTERVAL 
+            = "ContentRequest.findForPaymentInterval";
     
     // --------------- Private fields ---------------
     

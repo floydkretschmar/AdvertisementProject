@@ -26,12 +26,14 @@ import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
 import javax.money.MonetaryAmount;
+import javax.persistence.Basic;
 
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
@@ -84,7 +86,7 @@ public class Content extends AbstractAutoGenerateKeyedEntity
      * price.
      */
     @NotNull
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @Getter
     @Setter
     @JoinColumn(name = "CONTEXT_ID")
@@ -124,6 +126,7 @@ public class Content extends AbstractAutoGenerateKeyedEntity
     @NotNull
     @Column(name = "VALUE", nullable = false)
     @Lob
+    @Basic(fetch = FetchType.LAZY)
     private byte[] serializedValue;
     
     /**

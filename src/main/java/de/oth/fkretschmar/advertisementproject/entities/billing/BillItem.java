@@ -21,13 +21,12 @@ import de.oth.fkretschmar.advertisementproject.entities.campaign.Content;
 import de.oth.fkretschmar.advertisementproject.entities.base.AbstractAutoGenerateKeyedEntity;
 import de.oth.fkretschmar.advertisementproject.entities.base.converter.MonetaryAmountAttributeConverter;
 import javax.money.MonetaryAmount;
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
 
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
-import javax.persistence.OneToOne;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -51,7 +50,7 @@ public class BillItem extends AbstractAutoGenerateKeyedEntity {
     /**
      * Stores the content that is being billed with this item.
      */
-    @OneToOne(optional = false)
+    @ManyToOne(fetch = FetchType.LAZY)
     @NotNull
     @Getter
     private Content content;

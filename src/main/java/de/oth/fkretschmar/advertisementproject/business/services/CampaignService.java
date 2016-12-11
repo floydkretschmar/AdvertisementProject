@@ -96,6 +96,33 @@ public class CampaignService implements Serializable {
         return user;
     }
     
+    
+    /**
+     * Replaces the old version of the specified campaign on the user.
+     * 
+     * @param   user        the user that will be updated.
+     * @param   campaign    the updated campaign.
+     * @return  the changed user.
+     */
+    public User changeCampaignForUser(User user, Campaign campaign) {
+        user = this.userRepository.merge(user);
+        campaign = this.campaignRepository.merge(campaign);
+        
+        // entities are equal if their ids are equal; since the IDs havent 
+        // changed this trickery works
+        for(Campaign oldCampaign : user.getCampaigns()) {
+            if(oldCampaign.equals(campaign)) {
+                this.campaignRepository.remove(oldCampaign);
+                user.removeCampaign(oldCampaign);
+                break;
+            }
+        }
+        
+        user.addCampaign(campaign);
+        
+        return user;
+    }
+    
     /**
      * Cancels the specified {@link Campaign}.
      * 

@@ -22,9 +22,13 @@ import de.oth.fkretschmar.advertisementproject.entities.base.AbstractAutoGenerat
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Map;
+import java.util.TreeMap;
 import javax.money.Monetary;
 import javax.money.MonetaryAmount;
+import javax.persistence.Basic;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -55,6 +59,7 @@ public class Bill extends AbstractAutoGenerateKeyedEntity {
     @JoinColumn(name = "CAMPAIGN_ID")
     @Getter
     @Setter
+    @Basic(fetch = FetchType.LAZY)
     private Campaign campaign;
     
     
@@ -65,6 +70,13 @@ public class Bill extends AbstractAutoGenerateKeyedEntity {
     @OneToMany
     @JoinColumn(name="BILL_ID", referencedColumnName="ID")
     private final Collection<BillItem> items = new ArrayList<BillItem>();
+    
+    
+    /**
+     * Stores the items that make up the bill.
+     */
+    @Transient
+    private final Map<Long, BillItem> itemMap = new TreeMap<Long, BillItem>();
     
     /**
      * Stores the total price of the bill.
@@ -91,9 +103,18 @@ public class Bill extends AbstractAutoGenerateKeyedEntity {
  
     
     /**
+     * Gets the map between an item and the corresponding content.
+     * 
+     * @return  the bank items of the bill as an unmodifiable map.
+     */
+    public Map<Long, BillItem> getItemMap() {
+        return Collections.unmodifiableMap(this.itemMap);
+    }
+    
+    /**
      * Gets the items that make up the bill.
      * 
-     * @return  the bank items of the bill as an unmodifiable colleciton.
+     * @return  the bank items of the bill as an unmodifiable collection.
      */
     public Collection<BillItem> getItems() {
         return Collections.unmodifiableCollection(this.items);
@@ -111,10 +132,31 @@ public class Bill extends AbstractAutoGenerateKeyedEntity {
     public boolean addItem(BillItem item) {
         if(this.items.add(item)) {
             this.addToTotalPrice(item);
-            return true;
+            this.itemMap.put(item.getContent().getId(), item);
+            
+            return false;
         }
         
         return false;
+    }
+    
+    
+    /**
+     * Replace an existing item with a updated version.
+     * @param item  that will be replaced.
+     */
+    public void replaceItem(BillItem item) {
+        if(this.itemMap.containsKey(item.getContent().getId())) {
+            this.items.removeIf(storedItem -> storedItem.getContent().equals(item.getContent()));
+            this.items.add(item);
+
+            BillItem oldItem = this.itemMap.get(item.getContent().getId());
+            this.totalPrice.subtract(oldItem.getItemPrice());
+            this.addToTotalPrice(item);
+
+            this.itemMap.remove(item.getContent().getId());
+            this.itemMap.put(item.getContent().getId(), item);
+        }
     }
     
     // --------------- Protected methods ---------------
@@ -127,6 +169,7 @@ public class Bill extends AbstractAutoGenerateKeyedEntity {
     protected void postLoad() {
         for (BillItem item : this.items) {
             this.addToTotalPrice(item);
+            this.itemMap.put(item.getContent().getId(), item);
         }
     }
     

@@ -24,10 +24,12 @@ import de.oth.fkretschmar.advertisementproject.entities.base.AbstractAutoGenerat
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -55,7 +57,7 @@ public class Campaign extends AbstractAutoGenerateKeyedEntity {
      * Stores all the bills that have been payed so far during the campaign.
      */
     @NotNull
-    @OneToMany(mappedBy = "campaign")
+    @OneToMany(mappedBy = "campaign", fetch = FetchType.LAZY)
     private final Collection<Bill> bills
             = new ArrayList<Bill>();
     
@@ -100,7 +102,7 @@ public class Campaign extends AbstractAutoGenerateKeyedEntity {
      * Stores the account used to make the payments for this campaign.
      */
     @NotNull
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PAYMENT_ACCOUNT_ID")
     @Getter
     @Setter

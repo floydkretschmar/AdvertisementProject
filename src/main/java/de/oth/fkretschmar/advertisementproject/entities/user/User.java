@@ -25,8 +25,7 @@ import java.util.Collections;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -55,7 +54,6 @@ import lombok.ToString;
                     + " from T_USER USR "
                     + "where USR.id = ?1")
 })
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 @ToString(callSuper = true)
 public class User extends AbstractStringKeyedEntity {
@@ -73,7 +71,7 @@ public class User extends AbstractStringKeyedEntity {
     /**
      * Stores the accounts an user has specified.
      */
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_ID", referencedColumnName = "ID")
     private final Collection<Account> accounts = new ArrayList<Account>();
     
@@ -91,7 +89,7 @@ public class User extends AbstractStringKeyedEntity {
      * Stores the campaigns comissioned by the user.
      */
     @NotNull
-    @OneToMany(mappedBy = "comissioner")
+    @OneToMany(mappedBy = "comissioner", fetch = FetchType.LAZY)
     private final Collection<Campaign> campaigns = new ArrayList<Campaign>();
     
     /**

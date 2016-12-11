@@ -20,8 +20,6 @@ import de.oth.fkretschmar.advertisementproject.business.repositories.CampaignRep
 import de.oth.fkretschmar.advertisementproject.business.repositories.ContentRepository;
 import de.oth.fkretschmar.advertisementproject.business.repositories.ContentRequestRepository;
 import de.oth.fkretschmar.advertisementproject.business.repositories.TargetContextRepository;
-import de.oth.fkretschmar.advertisementproject.entities.exceptions.BuilderValidationException;
-
 import de.oth.fkretschmar.advertisementproject.entities.campaign.Campaign;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.Content;
 import de.oth.fkretschmar.advertisementproject.entities.billing.ContentRequest;
@@ -35,8 +33,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -229,18 +225,10 @@ public class ContentService implements Serializable {
         this.contextRepository.merge(content.getContext());
         this.contentRepository.merge(content);
 
-        try {
-            ContentRequest request = ContentRequest.createContentRequestLog()
-                    .content(content)
-                    .requestSource(source).build();
-            this.contentRequestRepository.persist(request);
-        } catch (BuilderValidationException ex) {
-            Logger.getLogger(ContentService.class.getName()).log(
-                    Level.SEVERE, 
-                    "The content request creation failed which should never"
-                            + "occur.", 
-                    ex);
-        }
+        ContentRequest request = ContentRequest.createContentRequestLog()
+                .content(content)
+                .requestSource(source).build();
+        this.contentRequestRepository.persist(request);
     }
     
     // --------------- Private classes ---------------

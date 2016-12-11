@@ -19,13 +19,25 @@ package de.oth.fkretschmar.advertisementproject.business.services;
 import de.oth.fkretschmar.advertisementproject.business.repositories.BillItemRepository;
 import de.oth.fkretschmar.advertisementproject.business.repositories.BillRepository;
 import de.oth.fkretschmar.advertisementproject.business.repositories.CampaignRepository;
+import de.oth.fkretschmar.advertisementproject.business.repositories.ContentRepository;
+import de.oth.fkretschmar.advertisementproject.business.repositories.ContentRequestRepository;
 import de.oth.fkretschmar.advertisementproject.entities.billing.Bill;
 import de.oth.fkretschmar.advertisementproject.entities.billing.BillItem;
+import de.oth.fkretschmar.advertisementproject.entities.billing.ContentRequest;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.Campaign;
+import de.oth.fkretschmar.advertisementproject.entities.campaign.Content;
+import de.oth.fkretschmar.advertisementproject.entities.campaign.PaymentInterval;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+import javax.ejb.Schedule;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
+import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 
 /**
@@ -57,8 +69,52 @@ public class BillService implements Serializable {
     @Inject
     private CampaignRepository campaignRepository;
     
+    /**
+     * Stores the service used to manage {@link Campaign} entites.
+     */
+    @Inject
+    private CampaignService campaignService;
+
+    /**
+     * Stores the repositorz used to manage {@link ContentRequest} entities.
+     */
+    @Inject
+    private ContentRequestRepository contentRequestRepository;
 
     // --------------- Public methods ---------------
+    
+    
+    /**
+     * Performs the work of billing the latest set of content requests and 
+     * setting up the payment job for campaigns that are payed monthly.
+     */
+    @Schedule(minute = "*/1")
+    @Transactional
+    public void billMonthlyContentRequests() {
+        
+    }
+    
+    
+    /**
+     * Performs the work of billing the latest set of content requests and 
+     * setting up the payment job for campaigns that are payed quaterly.
+     */
+    @Schedule(minute = "*/2")
+    @Transactional
+    public void billQuaterlyContentRequests() {
+        
+    }
+    
+    
+    /**
+     * Performs the work of billing the latest set of content requests and 
+     * setting up the payment job for campaigns that are payed yearly.
+     */
+    @Schedule(minute = "*/4")
+    @Transactional
+    public void billYearlyContentRequests() {
+        
+    }
     
     /**
      * Creates a new {@link Bill} and links it to the already existing 
@@ -106,5 +162,104 @@ public class BillService implements Serializable {
         }
         
         this.billRepository.remove(bill);
+    }
+    
+    // --------------- Private methods ---------------
+    
+    
+    /**
+     * Performs the work of billing the latest set of content requests and 
+     * setting up the payment job for the specified payment interval.
+     * @param interval  the interval.
+     */
+    @Transactional
+    public void billContentRequests(PaymentInterval interval) {
+        // finds all requests that have been made since the last interval and 
+        // that have the specified pazment interval
+        Collection<ContentRequest> requests 
+                = this.contentRequestRepository.findForPaymentInterval(interval);
+        
+        Map<Long, Bill> bills = new TreeMap<Long, Bill>();
+        Map<Long, Campaign> campaigns = new TreeMap<Long, Campaign>();
+                
+        
+        requests.forEach(request -> 
+        {
+            Content content = request.getContent();
+            Campaign campaign = content.getCampaign();
+
+            // 1.   find out whether or not a bill has already been created for 
+            //      the campaign that this request is bound to
+            Bill bill = null;
+            if(bills.containsKey(campaign.getId())) {
+                bill = bills.get(campaign.getId());
+
+                // 2.   if a bill already exists, find out whether or not there
+                //      is already a corresponding bill item to the content of
+                //      this request
+                BillItem billItem = null;
+                if (bill.getItemMap().containsKey(content.getId())) {
+                    // A corresponding bill item already exists so get it...
+                    billItem = bill.getItemMap().get(
+                                            content.getId());
+
+                    // ... add the additional request ...
+                    billItem = BillItem.createBillItem()
+                            .content(content)
+                            .contentRequests(billItem.getContentRequests() + 1)
+                            .build();
+                    
+                    // ... and replace the old item.
+                    bill.replaceItem(billItem);
+                }
+                else {
+                    // No corresponding bill item exists so just create a new
+                    // one and add it to the bill.
+                    billItem = BillItem.createBillItem()
+                            .content(content)
+                            .contentRequests(1)
+                            .build();
+                    bill.addItem(billItem);
+                }
+                
+                // replace the found bill with the changed bill
+                bills.replace(campaign.getId(), bill);
+            }
+            else {
+                // 3.   If a bill does not exist already, just create a new one,
+                //      add a bill item for this change request and store it.
+                BillItem billItem = BillItem.createBillItem()
+                            .content(content)
+                            .contentRequests(1)
+                            .build();
+                BillItem[] items = {billItem};
+                bill = Bill.createBill().items(items).build();
+                bills.put(campaign.getId(), bill);
+                campaigns.put(campaign.getId(), campaign);
+            }
+        });
+        
+        bills.forEach((campaignId, bill) -> 
+        {
+            // Create each bill for its existing campaign...
+            Campaign campaign = this.createBillForCampaign(
+                    campaigns.get(campaignId), bill);
+            // ... and inform the current user, that the campaign has changed.
+            ApplicationService.processCurrentUser(
+                    user -> this.campaignService.changeCampaignForUser(
+                            user, 
+                            campaign));
+        });
+        
+        // Set the corresponding bill on the requests so next time around the
+        // paid requests are not loaded.
+        requests.forEach(request -> 
+        {
+            ContentRequest mergedRequest 
+                    = this.contentRequestRepository.merge(request);
+            
+            long campaignId = mergedRequest.getContent().getCampaign().getId();
+            mergedRequest.setBill(bills.get(campaignId));
+        });
     }
 }

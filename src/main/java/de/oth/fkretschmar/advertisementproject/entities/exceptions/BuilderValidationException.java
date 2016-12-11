@@ -21,7 +21,7 @@ package de.oth.fkretschmar.advertisementproject.entities.exceptions;
  * 
  * @author fkre
  */
-public class BuilderValidationException extends Exception {
+public class BuilderValidationException extends RuntimeException {
 
     /**
      * Creates an instance of {@link BuilderValidationException} using the 
