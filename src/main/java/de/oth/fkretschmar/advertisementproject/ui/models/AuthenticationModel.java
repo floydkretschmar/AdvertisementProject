@@ -24,9 +24,10 @@ import de.oth.fkretschmar.advertisementproject.entities.user.Address;
 import de.oth.fkretschmar.advertisementproject.entities.user.Password;
 import de.oth.fkretschmar.advertisementproject.entities.user.User;
 import de.oth.fkretschmar.advertisementproject.ui.models.base.AbstractModel;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.enterprise.context.RequestScoped;
+import de.oth.fkretschmar.advertisementproject.ui.models.base.NavigationPoint;
+import javax.enterprise.context.ConversationScoped;
+import javax.faces.bean.ManagedBean;
+import javax.faces.event.ActionEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
 import lombok.Getter;
@@ -37,7 +38,8 @@ import lombok.Setter;
  * @author Floyd
  */
 @Named
-@RequestScoped
+@ManagedBean
+@ConversationScoped
 public class AuthenticationModel extends AbstractModel {
 
     // --------------- Private static fields ---------------
@@ -156,38 +158,58 @@ public class AuthenticationModel extends AbstractModel {
     /**
      * Performs the login for the specified e-mail address and password.
      * 
-     * @return the target page to navigate to after authentication.
+     * @param   e   the action event.
      */
-    public String authenticate() {
+    public void onLoginPageLogin(ActionEvent e) {
         try {
             boolean authenticated = this.applicationService.authenticateUser(
                     this.eMailAddress, this.password.toCharArray());
             
             if (authenticated) {
                 this.error = false;
-                return "overview.xhtml";
+                this.setNextNavigationPoint(NavigationPoint.OVERVIEW);
             }
             else {
                 this.errorMessage = AuthenticationModel.AUTHENTICATION_FAILED;
                 this.error = true;
-            this.password = null;
-                return "login.xhtml";
+                this.password = null;
+                this.setNextNavigationPoint(NavigationPoint.LOGIN);
             }   
         } catch (PasswordException ex) {
             this.errorMessage = AuthenticationModel.UNEXPECTED_ERROR;
             this.password = null;
             this.error = true;
-            return "login.xhtml";
+            this.setNextNavigationPoint(NavigationPoint.LOGIN);
         }
+    }
+    
+    
+    /**
+     * Gets called when the registration button on the login page was selected.
+     * 
+     * @param   e   the action event.
+     */
+    public void onLoginPageRegister(ActionEvent e) {
+        this.setNextNavigationPoint(NavigationPoint.REGISTER);
+    }
+    
+    
+    /**
+     * Gets called when the cancel button on the registration page was selected.
+     * 
+     * @param   e   the action event.
+     */
+    public void onRegisterPageCancel(ActionEvent e) {
+        this.setNextNavigationPoint(NavigationPoint.LOGIN);
     }
     
     
     /**
      * Registers a new user.
      * 
-     * @return the target page to navigate to after registration.
+     * @param   e   the action event.
      */
-    public String register() {
+    public void onRegisterPageRegister(ActionEvent e) {
         Address address = Address.createAddress()
                 .areaCode(this.areaCode.trim())
                 .city(this.city.trim())
@@ -195,7 +217,7 @@ public class AuthenticationModel extends AbstractModel {
                 .street(String.format("%s %s", this.street.trim(), this.houseNumber.trim()))
                 .build();
         
-        Password password = PasswordService.generate(this.password.toCharArray());
+        final Password password = PasswordService.generate(this.password.toCharArray());
         
         User user = User.createUser()
                 .address(address)
@@ -217,7 +239,17 @@ public class AuthenticationModel extends AbstractModel {
         this.lastName = "";
         this.password = "";
         this.street = "";
-        
-        return "login.xhtml";
+            
+        this.setNextNavigationPoint(NavigationPoint.LOGIN);
+    }
+    
+    // --------------- Protected methods ---------------
+
+    /**
+     * Initializes the {@link AuthenticationModel}.
+     */
+    @Override
+    protected void initializeCore() {
+        this.setNextNavigationPoint(NavigationPoint.LOGIN);
     }
 }

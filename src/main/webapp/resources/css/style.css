@@ -29,17 +29,29 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     background: #dfe4ec;
 }
 
-.container.webvert_header_layout {
+.container.webvert_login_register_header_layout {
     width: 100%;
     height: 130px;
     border-bottom: 1px solid #aaa;
 }
 
-.webvert_header_logo {
+.container.webvert_header_layout {
+    width: 100%;
+    height: 70px;
+    border-bottom: 1px solid #aaa;
+}
+
+.webvert_login_register_header_logo {
     height: 100%;
     margin: auto;
     display: block;
     padding: 1.8em 0;
+}
+
+.webvert_header_logo {
+    height: 100%;
+    display: block;
+    padding: 1.0em 0;
 }
 
 /* ------------ FORM ------------*/

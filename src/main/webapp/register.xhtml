@@ -9,8 +9,8 @@
         <h:outputStylesheet library="css" name="style.css"  />
     </h:head>
     <h:body class="webvert">
-        <b:container class="webvert_header_layout webvert_header_color">
-            <h:graphicImage library="img" name="logo.png" class="webvert_header_logo"/>
+        <b:container class="webvert_login_register_header_layout webvert_header_color">
+            <h:graphicImage library="img" name="logo.png" class="webvert_login_register_header_logo"/>
         </b:container>
         
         <b:container class="webvert_register">
@@ -160,7 +160,8 @@
                                          class="webvert_primary_button_color 
                                                 webvert_button_bordercolor
                                                 webvert_register_button_layout"
-                                         action="login.xhtml"/>
+                                         actionListener="#{authenticationModel.onRegisterPageCancel}"
+                                         action="#{authenticationModel.navigate()}"/>
                     </b:column>
                     <b:column medium-screen="6">
                         <b:commandButton look="primary btn-block" 
@@ -170,7 +171,8 @@
                                                 webvert_button_bordercolor
                                                 webvert_register_button_layout"
                                          update="@form"
-                                         action="#{authenticationModel.register()}"/>
+                                         actionListener="#{authenticationModel.onRegisterPageRegister}"
+                                         action="#{authenticationModel.navigate()}"/>
                     </b:column>
                 </b:row>
             </h:form>

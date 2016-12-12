@@ -1,12 +1,19 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
     <h:head>
-        <title>Facelet Title</title>
+        <title>Webvert</title>
+        <h:outputStylesheet library="css" name="style.css"  />
     </h:head>
-    <h:body>
-        Hello from Facelets
+    <h:body class="webvert">
+        <b:container class="webvert_header_layout webvert_header_color">
+            <h:graphicImage library="img" name="logo.png" class="webvert_header_logo"/>
+        </b:container>
+        
+        
     </h:body>
 </html>
 
