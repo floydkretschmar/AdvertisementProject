@@ -21,7 +21,7 @@ package de.oth.fkretschmar.advertisementproject.business.services;
  * 
  * @author  fkre    Floyd Kretschmar
  */
-public class PasswordException extends Exception {
+public class PasswordException extends RuntimeException {
     
     /**
      * Constructs an instance of <code>PasswordServiceException</code> with the
