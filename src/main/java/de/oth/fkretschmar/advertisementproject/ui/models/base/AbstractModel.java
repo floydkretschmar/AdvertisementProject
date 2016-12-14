@@ -26,47 +26,12 @@ import lombok.Setter;
  * @author Floyd
  */
 public abstract class AbstractModel implements Serializable {
-    
-    // --------------- Private fields ---------------
-    
-    /**
-     * Stores the stage of the page flow the application is currently in.
-     */
-    @Getter
-    @Setter
-    private NavigationPoint nextNavigationPoint;
 
     // --------------- Public methods ---------------
     
     /**
      * Initializes the model data for display operations.
      */
-    public final void initialize() {
-        this.nextNavigationPoint = NavigationPoint.UNDEFINED;
-        this.initializeCore();
+    public void initialize() {
     }
-    
-    
-    /**
-     * Performs the work of selecting the next navigation point in the page 
-     * flow.
-     * 
-     * @return  the text that represents the name of the next navigation point.
-     */
-    public final String navigate() {
-        if (this.nextNavigationPoint == NavigationPoint.UNDEFINED) {
-            throw new NavigationException("The next navigation point of the model"
-                    + " can not be null after initialization of the model. "
-                    + " Please set a valid stage.");
-        }
-        
-        return this.nextNavigationPoint.getValue();
-    }
-
-    // --------------- Protected methods ---------------
-    
-    /**
-     * Initializes the model data for display operations.
-     */
-    protected abstract void initializeCore();
 }

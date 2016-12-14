@@ -28,17 +28,15 @@ import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 
 /**
- * The service that offers functionality relatetd to the state of the 
+ * The service that offers functionality relatetd to the state of the
  * application.
- * 
- * @author  fkre    Floyd Kretschmar
+ *
+ * @author fkre Floyd Kretschmar
  */
 @SessionScoped
 public class ApplicationService implements Serializable {
 
     // --------------- Private static fields ---------------
-    
-    
     /**
      * Stores the {@link User} that is currently logged into the system.
      */
@@ -50,8 +48,6 @@ public class ApplicationService implements Serializable {
     private static final Lock lock = new ReentrantLock();
 
     // --------------- Private fields ---------------
-    
-    
     /**
      * Stores the repository used to manage {@link User} entites.
      */
@@ -59,20 +55,17 @@ public class ApplicationService implements Serializable {
     UserRepository userRepository;
 
     // --------------- Private static getters ---------------
-   
-           
     /**
-     * Provides thread safe processing of the {@link User} that is
-     * currently logged into the system.
+     * Provides thread safe processing of the {@link User} that is currently
+     * logged into the system.
      *
-     * @param   processCallback     The function used to process the 
-     *                              current user.
+     * @param processCallback The function used to process the current user.
      */
     public static void processCurrentUser(Function<User, User> processCallback) {
         ApplicationService.lock.lock();
 
         try {
-            ApplicationService.currentUser 
+            ApplicationService.currentUser
                     = processCallback.apply(ApplicationService.currentUser);
 
         } finally {
@@ -81,28 +74,25 @@ public class ApplicationService implements Serializable {
     }
 
     // --------------- Public methods ---------------
-    
-    
     /**
      * Authenticates an user using the specified e-mail and password.
      *
-     * @param   eMail       that identifies the user.
-     * @param   password    that is used to authenticate the user.
-     * @return  {@code true} if the authentication was a success, otherwise
-     *          {@code false}.
-     * @throws  PasswordException       that indicates an error during the 
-     *                                  processing of passwords.
+     * @param eMail that identifies the user.
+     * @param password that is used to authenticate the user.
+     * @return {@code true} if the authentication was a success, otherwise
+     * {@code false}.
+     * @throws PasswordException that indicates an error during the processing
+     * of passwords.
      */
     public boolean authenticateUser(
             String eMail, char[] password) throws PasswordException {
-        try {
-            User user = this.userRepository.find(eMail);
-            ApplicationService.lock.lock();
+        User user = this.userRepository.find(eMail);
 
+        try {
+            ApplicationService.lock.lock();
             if (user == null || !PasswordService.equals(user.getPassword(), password)) {
                 return false;
             } else {
-                ApplicationService.lock.lock();
                 ApplicationService.currentUser = user;
                 return true;
             }

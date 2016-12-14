@@ -29,23 +29,37 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     background: #dfe4ec;
 }
 
-.container.webvert_login_register_header_layout {
+.container.webvert_header_layout_large {
     width: 100%;
-    height: 130px;
+    height: 120px;
     border-bottom: 1px solid #aaa;
 }
 
-.container.webvert_header_layout {
-    width: 100%;
-    height: 70px;
-    border-bottom: 1px solid #aaa;
-}
-
-.webvert_login_register_header_logo {
+.webvert_header_logo_large {
     height: 100%;
     margin: auto;
     display: block;
     padding: 1.8em 0;
+}
+
+.container.webvert_header_layout_small {
+    width: 100%;
+    height: 80px;
+    border-bottom: 1px solid #aaa;
+}
+
+.webvert_header_logo_small {
+    height: 100%;
+    margin: 0;
+    padding: 1.3em 0;
+}
+
+.container.webvert_footer_layout {
+    width: 100%;
+    height: 50px;
+    border-top: 1px solid #aaa;
+    position: absolute;
+    bottom: 0;
 }
 
 .webvert_header_logo {
@@ -92,12 +106,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     border-color: #aaa;
 }
 
-
 /* ------------ LOGIN MAIN ------------*/
 
 .container.webvert_login {
     width: 450px; 
-    padding-top: 70px;
+    padding-top: 50px;
 }
 
 /* ------------ LOGIN BUTTON ------------*/
@@ -111,7 +124,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 .container.webvert_register {
     width: 450px; 
-    padding-top: 70px;
+    padding-top: 50px;
 }
 
 /* ------------ LOGIN BUTTON ------------*/

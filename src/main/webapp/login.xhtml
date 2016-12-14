@@ -3,79 +3,79 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:b="http://bootsfaces.net/ui"
-      xmlns:f="http://java.sun.com/jsf/core">
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
         <title>Webvert</title>
-        <h:outputStylesheet library="css" name="style.css"  />
+        <h:outputStylesheet library="css" name="style.css"/>
     </h:head>
     <h:body class="webvert">
-        <b:container class="webvert_login_register_header_layout webvert_header_color">
-            <h:graphicImage library="img" name="logo.png" class="webvert_login_register_header_logo"/>
-        </b:container>
-        
-        <b:container class="webvert_login">
-            <h:form styleClass="form-signin" prependId="false">
-                <b:row>
-                    <b:column medium-screen="12">
-                        <h2 class="form-signin-heading 
-                                   webvert_form_heading_color
-                                   webvert_form_heading_layout"
-                            style="margin-bottom: 20px">Sign in</h2>
-                    </b:column>
-                </b:row>
-                <b:row>
-                    <b:column medium-screen="12">
-                        <b:inputText id="email" 
-                                     placeholder="Email address" 
-                                     value="#{authenticationModel.EMailAddress}">
-                            <f:facet name="prepend">
-                                <b:icon name="envelope" />
-                            </f:facet>
-                        </b:inputText>
-                    </b:column>
-                </b:row>
-                <b:row>
-                    <b:column medium-screen="12">
-                        <b:inputSecret id="password" 
-                                     placeholder="Password" 
-                                     value="#{authenticationModel.password}">
-                            <f:facet name="prepend">
-                                <b:iconAwesome name="key" />
-                            </f:facet>
-                        </b:inputSecret>
-                    </b:column>
-                </b:row>
-                <b:row>
-                    <b:column medium-screen="12">
-                        <b:alert severity="danger"
-                                 rendered="#{authenticationModel.error}">
-                            #{authenticationModel.errorMessage}
-                        </b:alert>
-                    </b:column>
-                </b:row>
-                <b:row>
-                    <b:column medium-screen="6">
-                        <b:commandButton look="default btn-block" 
-                                         value="Register" 
-                                         icon="pencil"
-                                         class="webvert_button_bordercolor
-                                                webvert_login_button_layout"
-                                                actionListener="#{authenticationModel.onLoginPageRegister}"
-                                                action="#{authenticationModel.navigate()}"/>
-                    </b:column>
-                    <b:column medium-screen="6">
-                        <b:commandButton look="primary btn-block" 
-                                         value="Sign In" 
-                                         icon="log-in" 
-                                         class="webvert_primary_button_color 
-                                                webvert_button_bordercolor
-                                                webvert_login_button_layout"
-                                         actionListener="#{authenticationModel.onLoginPageLogin}"
-                                         action="#{authenticationModel.navigate()}"/>
-                    </b:column>
-                </b:row>
-            </h:form>
-        </b:container>
+        <ui:composition template="./resources/templates/LayoutTemplate.xhtml">
+            <ui:define name="content">
+                <b:container class="webvert_login">
+                    <h:form styleClass="form-signin" 
+                            prependId="false">
+                        <b:row>
+                            <b:column medium-screen="12">
+                                <h2 class="form-signin-heading 
+                                           webvert_form_heading_color
+                                           webvert_form_heading_layout"
+                                    style="margin-bottom: 20px">Sign in</h2>
+                            </b:column>
+                        </b:row>
+                        <b:row>
+                            <b:column medium-screen="12">
+                                <b:inputText id="email" 
+                                             placeholder="Email address" 
+                                             value="#{authenticationModel.EMailAddress}">
+                                    <f:facet name="prepend">
+                                        <b:icon name="envelope" />
+                                    </f:facet>
+                                </b:inputText>
+                            </b:column>
+                        </b:row>
+                        <b:row>
+                            <b:column medium-screen="12">
+                                <b:inputSecret id="password" 
+                                             placeholder="Password" 
+                                             value="#{authenticationModel.password}">
+                                    <f:facet name="prepend">
+                                        <b:iconAwesome name="key" />
+                                    </f:facet>
+                                </b:inputSecret>
+                            </b:column>
+                        </b:row>
+                        <b:row>
+                            <b:column medium-screen="12">
+                                <b:alert severity="danger"
+                                         rendered="#{authenticationModel.error}">
+                                    #{authenticationModel.errorMessage}
+                                </b:alert>
+                            </b:column>
+                        </b:row>
+                        <b:row>
+                            <b:column medium-screen="6">
+                                <b:commandButton look="default btn-block" 
+                                                 value="Register" 
+                                                 icon="pencil"
+                                                 class="webvert_button_bordercolor
+                                                        webvert_login_button_layout"
+                                                 action="register"/>
+                            </b:column>
+                            <b:column medium-screen="6">
+                                <b:commandButton look="primary btn-block" 
+                                                 value="Sign In" 
+                                                 icon="log-in" 
+                                                 class="webvert_primary_button_color 
+                                                        webvert_button_bordercolor
+                                                        webvert_login_button_layout"
+                                                 action="#{authenticationModel.authenticate()}"/>
+                            </b:column>
+                        </b:row>
+                    </h:form>
+                </b:container>
+            </ui:define>
+        </ui:composition>
     </h:body>
 </html>
 
