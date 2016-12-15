@@ -21,7 +21,7 @@ package de.oth.fkretschmar.advertisementproject.business.services;
  * 
  * @author  fkre    Floyd Kretschmar
  */
-public class UserServiceException extends RuntimeException {
+public class UserServiceException extends Exception {
 
     /**
      * Creates a new instance of {@link UserServiceException} using

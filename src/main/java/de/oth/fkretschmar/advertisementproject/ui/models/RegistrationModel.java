@@ -18,12 +18,12 @@ package de.oth.fkretschmar.advertisementproject.ui.models;
 
 import de.oth.fkretschmar.advertisementproject.business.services.PasswordService;
 import de.oth.fkretschmar.advertisementproject.business.services.UserService;
+import de.oth.fkretschmar.advertisementproject.business.services.UserServiceException;
 import de.oth.fkretschmar.advertisementproject.entities.user.Address;
 import de.oth.fkretschmar.advertisementproject.entities.user.Password;
 import de.oth.fkretschmar.advertisementproject.entities.user.User;
 import de.oth.fkretschmar.advertisementproject.ui.models.base.AbstractModel;
 import javax.enterprise.context.RequestScoped;
-import javax.faces.bean.ManagedBean;
 import javax.inject.Inject;
 import javax.inject.Named;
 import lombok.Getter;
@@ -34,7 +34,6 @@ import lombok.Setter;
  * @author fkre
  */
 @Named
-@ManagedBean
 @RequestScoped
 public class RegistrationModel extends AbstractModel {
     
@@ -145,8 +144,12 @@ public class RegistrationModel extends AbstractModel {
                 .firstName(this.firstName.trim())
                 .lastName(this.lastName.trim())
                 .password(generatedPassword).build();
-        
-        this.userService.createUser(user);
+
+        try {
+            this.userService.createUser(user);
+        } catch (UserServiceException ex) {
+            // TODO: show error in the UI if the registration fails.
+        }
         
         this.areaCode = "";
         this.city = "";
@@ -158,6 +161,6 @@ public class RegistrationModel extends AbstractModel {
         this.password = "";
         this.street = "";
         
-        return "login";
+        return "index";
     }
 }

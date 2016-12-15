@@ -6,8 +6,10 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
-        <title>Webvert</title>
         <h:outputStylesheet library="css" name="style.css"/>
+        <f:metadata>
+            <f:viewAction action="#{applicationModel.redirectFirstPage()}"/>
+        </f:metadata>
     </h:head>
     <h:body class="webvert">
         <ui:composition template="./resources/templates/LayoutTemplate.xhtml">
@@ -27,7 +29,7 @@
                             <b:column medium-screen="12">
                                 <b:inputText id="email" 
                                              placeholder="Email address" 
-                                             value="#{authenticationModel.EMailAddress}">
+                                             value="#{loginModel.EMailAddress}">
                                     <f:facet name="prepend">
                                         <b:icon name="envelope" />
                                     </f:facet>
@@ -38,7 +40,7 @@
                             <b:column medium-screen="12">
                                 <b:inputSecret id="password" 
                                              placeholder="Password" 
-                                             value="#{authenticationModel.password}">
+                                             value="#{loginModel.password}">
                                     <f:facet name="prepend">
                                         <b:iconAwesome name="key" />
                                     </f:facet>
@@ -48,8 +50,8 @@
                         <b:row>
                             <b:column medium-screen="12">
                                 <b:alert severity="danger"
-                                         rendered="#{authenticationModel.error}">
-                                    #{authenticationModel.errorMessage}
+                                         rendered="#{loginModel.error}">
+                                    #{loginModel.errorMessage}
                                 </b:alert>
                             </b:column>
                         </b:row>
@@ -69,7 +71,7 @@
                                                  class="webvert_primary_button_color 
                                                         webvert_button_bordercolor
                                                         webvert_login_button_layout"
-                                                 action="#{authenticationModel.authenticate()}"/>
+                                                 action="#{loginModel.login()}"/>
                             </b:column>
                         </b:row>
                     </h:form>

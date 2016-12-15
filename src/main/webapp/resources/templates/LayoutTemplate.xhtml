@@ -6,6 +6,7 @@
       xmlns:b="http://bootsfaces.net/ui">
 
     <h:head>
+        <title>Webvert</title>
         <h:outputStylesheet library="css" name="style.css"/>
     </h:head>
 
@@ -24,8 +25,7 @@
 
         <div id="footer">
             <ui:insert name="footer">
-                <b:container class="webvert_footer_layout webvert_header_color">
-                </b:container>
+                <ui:include src="Footer.xhtml"/>
             </ui:insert>
         </div>
 

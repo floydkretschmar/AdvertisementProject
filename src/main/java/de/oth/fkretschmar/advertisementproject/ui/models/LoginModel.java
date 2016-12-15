@@ -16,28 +16,30 @@
  */
 package de.oth.fkretschmar.advertisementproject.ui.models;
 
-import de.oth.fkretschmar.advertisementproject.business.services.ApplicationService;
 import de.oth.fkretschmar.advertisementproject.business.services.PasswordException;
 import de.oth.fkretschmar.advertisementproject.ui.models.base.AbstractModel;
-import javax.enterprise.context.RequestScoped;
-import de.oth.fkretschmar.advertisementproject.ui.models.base.NavigationPoint;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
-import javax.inject.Named;
 import lombok.Getter;
 import lombok.Setter;
 
 /**
+ * 
  *
- * @author Floyd
+ * NOTE: Is ViewScoped so I can easily display the error during login.
+ * 
+ * @author Floyd Kretschmar
  */
-@Named
 @ManagedBean
-@RequestScoped
-public class AuthenticationModel extends AbstractModel {
+@ViewScoped
+public class LoginModel extends AbstractModel {
 
     // --------------- Private static fields ---------------
     
+    /**
+     * Stores the error message for a failed authentication during login.
+     */
     private static final String AUTHENTICATION_FAILED
             = "The given e-mail address and/or password are incorrect.";
     
@@ -53,11 +55,10 @@ public class AuthenticationModel extends AbstractModel {
      * Stores the service used to manage the entire application.
      */
     @Inject
-    private ApplicationService applicationService;
+    private ApplicationModel applicationModel;
     
     /**
-     * Stores the e-mail address of the user, used to authenticate with the 
-     * system.
+     * Stores the e-mail address of the user, used to login with the system.
      */
     @Getter
     @Setter
@@ -84,6 +85,19 @@ public class AuthenticationModel extends AbstractModel {
     @Setter
     private String password;
     
+    
+    
+    
+    // --------------- Public constructors ---------------
+
+    /**
+     * Creates a new instance of {@link LoginModel}.
+     */
+    public LoginModel() {
+        this.password = "";
+        this.eMailAddress = "";
+    }
+    
     // --------------- Public methods ---------------
     
     
@@ -91,26 +105,26 @@ public class AuthenticationModel extends AbstractModel {
      * Performs the login for the specified e-mail address and password.
      * @return  the next navigation point.
      */
-    public String authenticate() {
+    public String login() {
         try {
-            boolean authenticated = this.applicationService.authenticateUser(
-                    this.eMailAddress, this.password.toCharArray());
+            boolean authenticated = this.applicationModel.authenticateUser(
+                    this.eMailAddress, this.password);
             
             if (authenticated) {
                 this.error = false;
                 return "overview";
             }
             else {
-                this.errorMessage = AuthenticationModel.AUTHENTICATION_FAILED;
+                this.errorMessage = LoginModel.AUTHENTICATION_FAILED;
                 this.error = true;
                 this.password = null;
-                return "login";
+                return null;
             }   
         } catch (PasswordException ex) {
-            this.errorMessage = AuthenticationModel.UNEXPECTED_ERROR;
+            this.errorMessage = LoginModel.UNEXPECTED_ERROR;
             this.password = null;
             this.error = true;
-            return "login";
+            return null;
         }
     }
 }

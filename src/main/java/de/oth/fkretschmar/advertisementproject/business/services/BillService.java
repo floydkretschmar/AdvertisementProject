@@ -241,10 +241,9 @@ public class BillService implements Serializable {
             Campaign campaign = this.createBillForCampaign(
                     campaigns.get(campaignId), bill);
             // ... and inform the current user, that the campaign has changed.
-            ApplicationService.processCurrentUser(
-                    user -> this.campaignService.changeCampaignForUser(
-                            user, 
-                            campaign));
+            this.campaignService.changeCampaignForUser(
+                            campaign.getComissioner(), 
+                            campaign);
         });
         
         // Set the corresponding bill on the requests so next time around the

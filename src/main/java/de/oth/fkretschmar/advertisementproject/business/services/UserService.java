@@ -75,6 +75,29 @@ public class UserService implements Serializable {
     
     
     /**
+     * Authenticates an user using the specified e-mail and password.
+     *
+     * @param eMail that identifies the user.
+     * @param password that is used to authenticate the user.
+     * @return {@code true} if the authentication was a success, otherwise
+     * {@code false}.
+     * @throws UserServiceException that indicates that the login failed.
+     * @throws PasswordException that indicates an error during the processing
+     * of passwords.
+     */
+    public User authenticateUser(
+            String eMail, char[] password) throws UserServiceException {
+        User user = this.userRepository.find(eMail);
+            
+        if (user == null || !PasswordService.equals(user.getPassword(), password)) {
+            throw new UserServiceException("The user was not found.");
+        }
+        
+        return user;
+    }
+    
+    
+    /**
      * Changes the {@link Password} of the specified {@link User}.
      * 
      * @param   user                    whose password will be changed.
@@ -131,18 +154,15 @@ public class UserService implements Serializable {
      * 
      * @param   user    that contains the data for the new user that will be 
      *                  created.§
+     * @throws  UserServiceException
      */
     @Transactional
-    public void createUser(User user) {
+    public void createUser(User user) throws UserServiceException {
         // the creation of accounts, campaigns and contents need a logged in 
         // user -> therefore: the user cannot have accounts, campaigns or 
         // contents during creation.
         
-        if (user == null) {
-            throw new IllegalArgumentException("The password change failed: "
-                    + "the user was not set.");
-        }
-        else if (this.userRepository.find(user.geteMailAddress()) != null) {
+        if (this.userRepository.find(user.geteMailAddress()) != null) {
             throw new UserServiceException("An user already exists for the"
                     + " specified e-mail address.");
         }

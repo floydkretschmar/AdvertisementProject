@@ -8,6 +8,11 @@
         <from-view-id>*</from-view-id>
             <navigation-case>
                 <redirect>true</redirect>
+                <from-outcome>index</from-outcome>
+                <to-view-id>/index.xhtml</to-view-id>
+            </navigation-case>
+            <navigation-case>
+                <redirect>false</redirect>
                 <from-outcome>login</from-outcome>
                 <to-view-id>/login.xhtml</to-view-id>
             </navigation-case>
@@ -17,7 +22,7 @@
                 <to-view-id>/register.xhtml</to-view-id>
             </navigation-case>
             <navigation-case>
-                <redirect>true</redirect>
+                <redirect>false</redirect>
                 <from-outcome>overview</from-outcome>
                 <to-view-id>/overview.xhtml</to-view-id>
             </navigation-case>
