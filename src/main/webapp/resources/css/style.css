@@ -33,12 +33,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 /* ------------ HEADER ------------*/
 
-.webvert_header_color {
-    /*background: #dfe4ec;*/
-    opacity: 0.5;
-    background: #DDD;
-}
-
 .container.webvert_header_layout {
     border-bottom: 1px solid #aaa;
     height:80px;
@@ -152,4 +146,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 .btn.webvert_prelogin_button_layout {
     margin-top: 20px;
+}
+
+.webvert_prelogin_headerfooter_color {
+    /*background: #dfe4ec;*/
+    opacity: 0.5;
+    background: #DDD;
+}
+
+/* ------------ POST-LOGIN ------------*/
+
+.webvert_postlogin_headerfooter_color {
+    /*background: #dfe4ec;*/
+    background: #DDD;
 }
