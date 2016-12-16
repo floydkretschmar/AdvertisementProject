@@ -19,63 +19,95 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     Author     : Floyd
 */
 
-.webvert {
-    background: #FFF;
+.webvert_body {
+    position: relative;
+    min-height: 100%; /* to fill screen 100% even with less content */
+    height: 100%; /* to allocate only 100% height */
+    background-image: url("#{resource['img/background.jpg']}");
+    background-size: 100%;
+}
+
+.webvert_html { 
+    height: 100%; 
 }
 
 /* ------------ HEADER ------------*/
 
-.container.webvert_header_color {
-    background: #dfe4ec;
+.webvert_header_color {
+    /*background: #dfe4ec;*/
+    opacity: 0.5;
+    background: #DDD;
 }
 
-.container.webvert_header_layout_large {
-    width: 100%;
-    height: 120px;
+.container.webvert_header_layout {
     border-bottom: 1px solid #aaa;
-}
-
-.webvert_header_logo_large {
-    height: 100%;
-    margin: auto;
-    display: block;
-    padding: 1.8em 0;
-}
-
-.container.webvert_header_layout_small {
-    width: 100%;
-    height: 80px;
-    border-bottom: 1px solid #aaa;
-}
-
-.webvert_header_logo_small {
-    height: 100%;
-    margin: 0;
-    padding: 1.3em 0;
-}
-
-.container.webvert_footer_layout {
-    width: 100%;
-    height: 50px;
-    border-top: 1px solid #aaa;
-    position: absolute;
-    bottom: 0;
+    height:80px;
+    width:100%;
+    top: 0;
 }
 
 .webvert_header_logo {
     height: 100%;
+    margin: 0;
     display: block;
-    padding: 1.0em 0;
+    padding: 1.1em 0;
+}
+
+/* ------------ CONTENT ------------*/
+
+.webvert_content {
+    min-height: calc(100% - 115px); /* allocate the remaining width except the header + footer + borders */
+    height: auto;
+/*    width: 50%;
+    min-width: 40%;*/
+    width: 100%;
+    background-color: transparent;
+    margin: 0 auto;
+    border-left: 1px solid #aaa;
+    border-right: 1px solid #aaa;
+    display: table;
+}
+
+/* ------------ FOOTER ------------*/
+
+.container.webvert_footer_layout {
+    height:35px;
+    width:100%;
+    border-top: 1px solid #aaa;
+    display: table;
+}
+
+.row.webvert_footer_row_layout {
+    display: table-cell;
+    vertical-align: middle;
+    height: 100%;
+}
+
+.webvert_footer_column_layout {
+    text-align: center;
+}
+
+.webvert_footer_text_color {
+    color: #333;
+}
+
+.webvert_footer_link_color {
+    color: #333;
+}
+
+.webvert_footer_link_color:hover, .webvert_footer_link_color:visited{
+    color: #111;
 }
 
 /* ------------ FORM ------------*/
 
 .form-signin-heading.webvert_form_heading_color {
-    color: #8093b3;
+    color: #EEE;
+    /*text-shadow: -1px 0 #FFF, 0 1px #FFF, 1px 0 #FFF, 0 -1px #FFF;*/
 }
 
 .form-signin-heading.webvert_form_heading_layout {
-    padding-bottom: 10px;
+    padding-bottom: 20px;
 }
 
 .form-control.webvert_form_control_invalid {
@@ -92,13 +124,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 /* ------------ BUTTON ------------*/
 
 .btn-primary.webvert_primary_button_color {
-    color: #FFFFFF;
-    background-color: #afbccf;
+    color: #111;
+    background-color: #CDCDCD;
 }
 
 .btn-primary.webvert_primary_button_color:hover, .btn-primary.webvert_primary_button_color:focus {
-    color: #FFFFFF;
-    background-color: #8094b3;
+    color: #111;
+    background-color: #BBB;
     border-color: #aaa;
 }
 
@@ -106,29 +138,18 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     border-color: #aaa;
 }
 
-/* ------------ LOGIN MAIN ------------*/
+/* ------------ PRE-LOGIN ------------*/
 
-.container.webvert_login {
-    width: 450px; 
-    padding-top: 50px;
+.container.webvert_prelogin_container {
+    display: table-cell;
+    vertical-align: middle;
 }
 
-/* ------------ LOGIN BUTTON ------------*/
-
-
-.btn.webvert_login_button_layout {
-    margin-top: 40px;
+.webvert_prelogin_form {
+    margin: 0 auto;
+    max-width: 450px;
 }
 
-/* ------------ REGISTER MAIN ------------*/
-
-.container.webvert_register {
-    width: 450px; 
-    padding-top: 50px;
-}
-
-/* ------------ LOGIN BUTTON ------------*/
-
-.btn.webvert_register_button_layout {
+.btn.webvert_prelogin_button_layout {
     margin-top: 20px;
 }

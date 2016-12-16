@@ -12,16 +12,17 @@
         </f:metadata>
     </h:head>
     <h:body class="webvert">
-        <ui:composition template="./resources/templates/LayoutTemplate.xhtml">
+        <ui:composition template="./resources/templates/PreLoginTemplate.xhtml">
             <ui:define name="content">
-                <b:container class="webvert_register">
-                    <h:form class="form-signin" prependId="false">
+                <b:container class="webvert_prelogin_container">
+                    <h:form class="form-signin
+                                   webvert_prelogin_form" 
+                            prependId="false">
                         <b:row>
                             <b:column medium-screen="12">
                                 <h2 class="form-signin-heading 
                                            webvert_form_heading_color
-                                           webvert_form_heading_layout"
-                                    style="margin-bottom: 20px">Register</h2>
+                                           webvert_form_heading_layout">Register</h2>
                                 </b:column>
                         </b:row>
                         <b:row>
@@ -154,7 +155,7 @@
                                                  immediate="true"
                                                  class="webvert_primary_button_color 
                                                         webvert_button_bordercolor
-                                                        webvert_register_button_layout"
+                                                        webvert_prelogin_button_layout"
                                                  action="login"/>
                             </b:column>
                             <b:column medium-screen="6">
@@ -163,7 +164,7 @@
                                                  icon="log-in" 
                                                  class="webvert_primary_button_color 
                                                         webvert_button_bordercolor
-                                                        webvert_register_button_layout"
+                                                        webvert_prelogin_button_layout"
                                                  update="@form"
                                                  action="#{registrationModel.register()}"/>
                             </b:column>

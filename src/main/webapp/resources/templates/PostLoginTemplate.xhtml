@@ -10,16 +10,16 @@
         <h:outputStylesheet library="css" name="style.css"/>
     </h:head>
 
-    <h:body>
+    <h:body  class="webvert_body">
         <div id="header">
             <ui:insert name="header">
-                <b:container class="webvert_header_layout_large webvert_header_color">
-                    <h:graphicImage library="img" name="logo.png" class="webvert_header_logo_large"/>
+                <b:container class="webvert_header_layout webvert_header_color">
+                    <h:graphicImage library="img" name="logo.png" class="webvert_header_logo"/>
                 </b:container>
             </ui:insert>
         </div>
 
-        <div id="content">
+        <div id="content" class="webvert_content">
             <ui:insert name="content">Content</ui:insert>
         </div>
 

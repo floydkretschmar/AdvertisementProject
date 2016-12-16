@@ -84,6 +84,16 @@ public class ApplicationModel extends AbstractModel {
     
     
     /**
+     * Gets the value indicating whether or not a user is logged into the 
+     * application.
+     * 
+     * @return  {@code true} if a user is logged in, otherwise {@code false}
+     */
+    public boolean isUserAuthenticated() {
+        return this.currentUser != null;
+    }
+    
+    /**
      * Provides thread safe processing of the {@link User} that is currently
      * logged into the system.
      *

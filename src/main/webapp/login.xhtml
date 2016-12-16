@@ -11,18 +11,17 @@
             <f:viewAction action="#{applicationModel.redirectFirstPage()}"/>
         </f:metadata>
     </h:head>
-    <h:body class="webvert">
-        <ui:composition template="./resources/templates/LayoutTemplate.xhtml">
+    <h:body>
+        <ui:composition template="./resources/templates/PreLoginTemplate.xhtml">
             <ui:define name="content">
-                <b:container class="webvert_login">
-                    <h:form styleClass="form-signin" 
+                <b:container class="webvert_prelogin_container">
+                    <h:form styleClass="form-signin webvert_prelogin_form" 
                             prependId="false">
                         <b:row>
                             <b:column medium-screen="12">
-                                <h2 class="form-signin-heading 
+                                <h1 class="form-signin-heading 
                                            webvert_form_heading_color
-                                           webvert_form_heading_layout"
-                                    style="margin-bottom: 20px">Sign in</h2>
+                                           webvert_form_heading_layout">Sign in</h1>
                             </b:column>
                         </b:row>
                         <b:row>
