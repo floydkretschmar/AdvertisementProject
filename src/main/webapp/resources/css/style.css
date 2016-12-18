@@ -23,8 +23,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     position: relative;
     min-height: 100%; /* to fill screen 100% even with less content */
     height: 100%; /* to allocate only 100% height */
-    background-image: url("#{resource['img/background.jpg']}");
-    background-size: 100%;
+    background: url("#{resource['img/background.jpg']}") no-repeat center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
 }
 
 .webvert_html { 
@@ -55,10 +58,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 /*    width: 50%;
     min-width: 40%;*/
     width: 100%;
-    background-color: transparent;
     margin: 0 auto;
-    border-left: 1px solid #aaa;
-    border-right: 1px solid #aaa;
+/*    border-left: 1px solid #aaa;
+    border-right: 1px solid #aaa;*/
     display: table;
 }
 
@@ -82,15 +84,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 }
 
 .webvert_footer_text_color {
-    color: #333;
+    color: #000;
 }
 
 .webvert_footer_link_color {
-    color: #333;
+    color: #000;
 }
 
 .webvert_footer_link_color:hover, .webvert_footer_link_color:visited{
-    color: #111;
+    color: #000;
 }
 
 /* ------------ FORM ------------*/
@@ -154,9 +156,34 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     background: #DDD;
 }
 
+.webvert_prelogin_content_color {
+    background-color: transparent;
+}
+
 /* ------------ POST-LOGIN ------------*/
 
-.webvert_postlogin_headerfooter_color {
+.webvert_main_headerfooter_color {
     /*background: #dfe4ec;*/
     background: #DDD;
+}
+
+.webvert_main_content_color {
+    background-color: #FFF;
+    opacity: 0.8;
+}
+
+.webvert_main_menu_layout {
+    margin-left: 3em;
+    margin-right: 3em;
+}
+
+.webvert_main_content_layout {
+    margin-left: 3em;
+    margin-right: 3em;
+/*    display: table-cell;
+    vertical-align: top;*/
+}
+
+.webvert_main_content_form {
+    padding-top: 3em;
 }

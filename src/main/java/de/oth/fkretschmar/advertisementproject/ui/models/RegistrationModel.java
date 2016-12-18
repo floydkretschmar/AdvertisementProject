@@ -161,6 +161,6 @@ public class RegistrationModel extends AbstractModel {
         this.password = "";
         this.street = "";
         
-        return "index";
+        return "login";
     }
 }
