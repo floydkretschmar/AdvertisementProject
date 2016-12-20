@@ -19,6 +19,7 @@ package de.oth.fkretschmar.advertisementproject.business.services;
 import de.oth.fkretschmar.advertisementproject.business.HashHelper;
 import de.oth.fkretschmar.advertisementproject.business.HashingException;
 import de.oth.fkretschmar.advertisementproject.business.repositories.PasswordRepository;
+import de.oth.fkretschmar.advertisementproject.business.services.base.IPasswordService;
 import de.oth.fkretschmar.advertisementproject.entities.exceptions.BuilderValidationException;
 import de.oth.fkretschmar.advertisementproject.entities.user.Password;
 import java.io.Serializable;
@@ -36,7 +37,7 @@ import javax.transaction.Transactional;
  * @author  fkre    Floyd Kretschmar
  */
 @RequestScoped
-public class PasswordService implements Serializable {
+public class PasswordService implements Serializable, IPasswordService {
 
     // --------------- Private fields ---------------
 
@@ -56,6 +57,7 @@ public class PasswordService implements Serializable {
      * @param   password    the password that will be saved.
      */
     @Transactional
+    @Override
     public void createPassword(Password password) {
         this.passwordRepository.persist(password);
     }
@@ -67,6 +69,7 @@ public class PasswordService implements Serializable {
      * @param   password    that will be deleted.
      */
     @Transactional
+    @Override
     public void delete(Password password) {
         this.passwordRepository.remove(password);
     }

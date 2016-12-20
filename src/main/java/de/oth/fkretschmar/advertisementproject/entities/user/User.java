@@ -16,6 +16,7 @@
  */
 package de.oth.fkretschmar.advertisementproject.entities.user;
 
+import de.oth.fkretschmar.advertisementproject.entities.billing.Account;
 import de.oth.fkretschmar.advertisementproject.entities.exceptions.BuilderValidationException;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.Campaign;
 import de.oth.fkretschmar.advertisementproject.entities.base.AbstractStringKeyedEntity;

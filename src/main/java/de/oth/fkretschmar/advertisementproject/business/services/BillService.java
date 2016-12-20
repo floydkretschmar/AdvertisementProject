@@ -16,23 +16,28 @@
  */
 package de.oth.fkretschmar.advertisementproject.business.services;
 
+import de.oth.fkretschmar.advertisementproject.business.services.base.ITransactionService;
 import de.oth.fkretschmar.advertisementproject.business.repositories.BillItemRepository;
 import de.oth.fkretschmar.advertisementproject.business.repositories.BillRepository;
 import de.oth.fkretschmar.advertisementproject.business.repositories.CampaignRepository;
 import de.oth.fkretschmar.advertisementproject.business.repositories.ContentRequestRepository;
+import de.oth.fkretschmar.advertisementproject.business.services.base.IBillService;
+import de.oth.fkretschmar.advertisementproject.business.services.base.ICampaignService;
+import de.oth.fkretschmar.advertisementproject.entities.billing.BankAccount;
 import de.oth.fkretschmar.advertisementproject.entities.billing.Bill;
 import de.oth.fkretschmar.advertisementproject.entities.billing.BillItem;
 import de.oth.fkretschmar.advertisementproject.entities.billing.ContentRequest;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.Campaign;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.Content;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.PaymentInterval;
+import de.oth.fkretschmar.advertisementproject.entities.billing.PayPalAccount;
+
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Map;
 import java.util.TreeMap;
 import javax.ejb.Schedule;
-import javax.enterprise.context.ApplicationScoped;
-
+import javax.ejb.Singleton;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 
@@ -42,11 +47,18 @@ import javax.transaction.Transactional;
  *
  * @author  fkre    Floyd Kretschmar
  */
-@ApplicationScoped
-public class BillService implements Serializable {
+@Singleton
+public class BillService implements Serializable, IBillService {
 
     // --------------- Private fields ---------------
 
+    /**
+     * Stores the service used to manage {@link BankAccount} entities.
+     */
+    @Inject
+    @Bank
+    private ITransactionService bankTransactionService;
+    
     /**
      * Stores the repository used to manage {@link Bill} entites.
      */
@@ -69,13 +81,20 @@ public class BillService implements Serializable {
      * Stores the service used to manage {@link Campaign} entites.
      */
     @Inject
-    private CampaignService campaignService;
+    private ICampaignService campaignService;
 
     /**
      * Stores the repositorz used to manage {@link ContentRequest} entities.
      */
     @Inject
     private ContentRequestRepository contentRequestRepository;
+    
+    /**
+     * Stores the service used to manage {@link PayPalAccount} entities.
+     */
+    @Inject
+    @PayPal
+    private ITransactionService payPalTransactionService;
 
     // --------------- Public methods ---------------
     
@@ -84,7 +103,7 @@ public class BillService implements Serializable {
      * Performs the work of billing the latest set of content requests and 
      * setting up the payment job for campaigns that are payed monthly.
      */
-    @Schedule(minute = "*/1")
+    @Schedule(minute = "*/3")
     @Transactional
     public void billMonthlyContentRequests() {
         this.billContentRequests(PaymentInterval.MONTHLY);
@@ -95,7 +114,7 @@ public class BillService implements Serializable {
      * Performs the work of billing the latest set of content requests and 
      * setting up the payment job for campaigns that are payed quaterly.
      */
-    @Schedule(minute = "*/2")
+    @Schedule(minute = "*/9")
     @Transactional
     public void billQuaterlyContentRequests() {
         this.billContentRequests(PaymentInterval.QUATERLY);
@@ -106,7 +125,7 @@ public class BillService implements Serializable {
      * Performs the work of billing the latest set of content requests and 
      * setting up the payment job for campaigns that are payed yearly.
      */
-    @Schedule(minute = "*/4")
+    @Schedule(minute = "*/36")
     @Transactional
     public void billYearlyContentRequests() {
         this.billContentRequests(PaymentInterval.YEARLY);
@@ -121,6 +140,7 @@ public class BillService implements Serializable {
      * @return              the changed campaign.
      */
     @Transactional
+    @Override
     public Campaign createBillForCampaign(Campaign campaign, Bill bill) {
         
         // 1. persist the bill items
@@ -146,6 +166,7 @@ public class BillService implements Serializable {
      * @param   bill    that will be deleted.
      */
     @Transactional
+    @Override
     public void delete(Bill bill) {
         Object[] items = bill.getItems().toArray();
         
@@ -240,10 +261,29 @@ public class BillService implements Serializable {
             // Create each bill for its existing campaign...
             Campaign campaign = this.createBillForCampaign(
                     campaigns.get(campaignId), bill);
-            // ... and inform the current user, that the campaign has changed.
+            // ... inform the current user, that the campaign has changed...
             this.campaignService.changeCampaignForUser(
                             campaign.getComissioner(), 
                             campaign);
+            // ... and actually pay for the bill.
+            if (campaign.getPaymentAccount() instanceof PayPalAccount)
+                this.payPalTransactionService.transfer(
+                        bill.getTotalPrice(), 
+                        campaign.getPaymentAccount(), 
+                        PayPalAccount.OWN_ACCOUNT, 
+                        String.format(
+                                "Payment for bill %s of campaign %s", 
+                                bill.getId(),
+                                campaign.getId()));
+            else if (campaign.getPaymentAccount() instanceof BankAccount)
+                this.bankTransactionService.transfer(
+                        bill.getTotalPrice(), 
+                        campaign.getPaymentAccount(), 
+                        BankAccount.OWN_ACCOUNT, 
+                        String.format(
+                                "Payment for bill %s of campaign %s", 
+                                bill.getId(),
+                                campaign.getId()));
         });
         
         // Set the corresponding bill on the requests so next time around the

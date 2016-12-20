@@ -19,6 +19,7 @@ package de.oth.fkretschmar.advertisementproject.ui.models;
 import de.oth.fkretschmar.advertisementproject.business.services.PasswordService;
 import de.oth.fkretschmar.advertisementproject.business.services.UserService;
 import de.oth.fkretschmar.advertisementproject.business.services.UserServiceException;
+import de.oth.fkretschmar.advertisementproject.business.services.base.IUserService;
 import de.oth.fkretschmar.advertisementproject.entities.user.Address;
 import de.oth.fkretschmar.advertisementproject.entities.user.Password;
 import de.oth.fkretschmar.advertisementproject.entities.user.User;
@@ -114,7 +115,7 @@ public class RegistrationModel extends AbstractModel {
      * Stores the service used to manage the entire application.
      */
     @Inject
-    private UserService userService;
+    private IUserService userService;
     
     // --------------- Public methods ---------------
     

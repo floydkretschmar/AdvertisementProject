@@ -19,6 +19,7 @@ package de.oth.fkretschmar.advertisementproject.ui.models;
 import de.oth.fkretschmar.advertisementproject.business.services.PasswordException;
 import de.oth.fkretschmar.advertisementproject.business.services.UserService;
 import de.oth.fkretschmar.advertisementproject.business.services.UserServiceException;
+import de.oth.fkretschmar.advertisementproject.business.services.base.IUserService;
 import de.oth.fkretschmar.advertisementproject.entities.user.User;
 import de.oth.fkretschmar.advertisementproject.ui.models.base.AbstractModel;
 import java.util.concurrent.locks.Lock;
@@ -54,7 +55,7 @@ public class ApplicationModel extends AbstractModel {
      * 
      */
     @Inject
-    private UserService userService;
+    private IUserService userService;
     
     // --------------- Public methods ---------------
     

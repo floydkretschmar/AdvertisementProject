@@ -19,7 +19,10 @@ package de.oth.fkretschmar.advertisementproject.business.services;
 import de.oth.fkretschmar.advertisementproject.business.repositories.AddressRepository;
 import de.oth.fkretschmar.advertisementproject.business.repositories.AccountRepository;
 import de.oth.fkretschmar.advertisementproject.business.repositories.UserRepository;
-import de.oth.fkretschmar.advertisementproject.entities.user.Account;
+import de.oth.fkretschmar.advertisementproject.business.services.base.ICampaignService;
+import de.oth.fkretschmar.advertisementproject.business.services.base.IPasswordService;
+import de.oth.fkretschmar.advertisementproject.business.services.base.IUserService;
+import de.oth.fkretschmar.advertisementproject.entities.billing.Account;
 import de.oth.fkretschmar.advertisementproject.entities.user.Address;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.Campaign;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.CampaignState;
@@ -38,7 +41,7 @@ import javax.transaction.Transactional;
  * @author  fkre    Floyd Kretschmar
  */
 @RequestScoped
-public class UserService implements Serializable {
+public class UserService implements Serializable, IUserService {
 
     // --------------- Private fields ---------------
     /**
@@ -57,13 +60,13 @@ public class UserService implements Serializable {
      * Stores the repository used to manage {@link Campaign} entities.
      */
     @Inject
-    private CampaignService campaignService;
+    private ICampaignService campaignService;
     
     /**
      * Stores the service that manages {@link Password} entities.
      */
     @Inject
-    private PasswordService passwordService;
+    private IPasswordService passwordService;
 
     /**
      * Stores the repository used to manage {@link User} entites.
@@ -85,6 +88,7 @@ public class UserService implements Serializable {
      * @throws PasswordException that indicates an error during the processing
      * of passwords.
      */
+    @Override
     public User authenticateUser(
             String eMail, char[] password) throws UserServiceException {
         User user = this.userRepository.find(eMail);
@@ -108,8 +112,9 @@ public class UserService implements Serializable {
      *                                  processing of passwords.
      */
     @Transactional(Transactional.TxType.REQUIRED)
+    @Override
     public User changePassword(
-            User user, char[] newPassword) throws PasswordException {
+            User user, char[] newPassword) {
         if (user == null) {
             throw new IllegalArgumentException("The password change failed: "
                     + "the user was not set.");
@@ -137,6 +142,7 @@ public class UserService implements Serializable {
      * @return              the changed user.
      */
     @Transactional
+    @Override
     public User createAccountForUser(User user, Account account) {
         if (user == null) {
             throw new IllegalArgumentException("The user was not set.");
@@ -157,6 +163,7 @@ public class UserService implements Serializable {
      * @throws  UserServiceException
      */
     @Transactional
+    @Override
     public void createUser(User user) throws UserServiceException {
         // the creation of accounts, campaigns and contents need a logged in 
         // user -> therefore: the user cannot have accounts, campaigns or 
@@ -182,6 +189,7 @@ public class UserService implements Serializable {
      * @param   user    that will be deleted.
      */
     @Transactional
+    @Override
     public void deleteUser(User user) {
         if (user == null) {
             throw new IllegalArgumentException("The password change failed: "
@@ -227,6 +235,7 @@ public class UserService implements Serializable {
      * @param   eMailAddress    used to identify the user.
      * @return  the user with the specified e-mail address.
      */
+    @Override
     public User findUserForEMail(String eMailAddress) {
         return this.userRepository.find(eMailAddress);
     }
@@ -240,6 +249,7 @@ public class UserService implements Serializable {
      * @return          the changed user.
      */
     @Transactional
+    @Override
     public User deleteAccountFromUser(User user, Account account) {
         if (user == null) {
             throw new IllegalArgumentException("The password change failed: "
@@ -250,23 +260,5 @@ public class UserService implements Serializable {
         user.removeAccount(account);
         this.accountRepository.remove(account);
         return user;
-    }
-    
-    /**
-     * Validates that the specified password is valid for the specified 
-     * {@link User}.
-     * 
-     * @param user                  whose password will be checked against.
-     * @param validationPassword    that reprents the password that will be 
-     *                              checked against the password of the user.
-     * @return                      {@code true} if the password is valid for
-     *                              the user, otherwise {@code false}.
-     * @throws  PasswordException       that indicates an error during the 
-     *                                  processing of passwords.
-     */
-    public boolean validatePassword(
-            User user, char[] validationPassword) throws PasswordException {
-        Password currentPassword = user.getPassword();
-        return PasswordService.equals(currentPassword, validationPassword);
     }
 }

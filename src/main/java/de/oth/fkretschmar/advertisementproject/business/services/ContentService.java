@@ -20,6 +20,7 @@ import de.oth.fkretschmar.advertisementproject.business.repositories.CampaignRep
 import de.oth.fkretschmar.advertisementproject.business.repositories.ContentRepository;
 import de.oth.fkretschmar.advertisementproject.business.repositories.ContentRequestRepository;
 import de.oth.fkretschmar.advertisementproject.business.repositories.TargetContextRepository;
+import de.oth.fkretschmar.advertisementproject.business.services.base.IContentService;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.Campaign;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.Content;
 import de.oth.fkretschmar.advertisementproject.entities.billing.ContentRequest;
@@ -50,7 +51,7 @@ import lombok.Getter;
  * @author  fkre    Floyd Kretschmar
  */
 @RequestScoped
-public class ContentService implements Serializable {
+public class ContentService implements Serializable, IContentService {
 
     // --------------- Private fields ---------------
     
@@ -82,6 +83,34 @@ public class ContentService implements Serializable {
     // --------------- Public methods ---------------
     
     
+    
+    /**
+     * Creates a new content.
+     * 
+     * @param content the content that will be created.
+     */
+    @Transactional
+    public void createContent(Content content) {
+        // 1. Persist the context:
+        this.contextRepository.persist(content.getContext());
+        
+        // 2. Persist the content
+        this.contentRepository.persist(content);
+    }
+    
+    /**
+     * Deletes the specified {@link Content} from the database.
+     * 
+     * @param   content    that will be deleted.
+     */
+    @Transactional
+    public void deleteContent(Content content) {
+        this.contextRepository.remove(content.getContext());
+        content.setContext(null);
+        this.contentRepository.remove(content);
+    }
+    
+    
     /**
      * Creates a new {@link Content} and links it to the specified campaign.
      * 
@@ -90,6 +119,7 @@ public class ContentService implements Serializable {
      * @return  the created {@link Content}.
      */
     @Transactional
+    @Override
     public Campaign createContentForCampaign(
             Campaign campaign, Content content) {
         // campaign = not owner -> set content first on campaign
@@ -114,6 +144,7 @@ public class ContentService implements Serializable {
      * @return          the best matching content.
      */
     @Transactional
+    @Override
     public Optional<Content> requestContent(String source, TargetContext context) {
         List<Object[]> results = this.contentRepository.findMatchingContents(context);
         
@@ -171,6 +202,7 @@ public class ContentService implements Serializable {
      * @return  the content that has been chosen randomly.
      */
     @Transactional
+    @Override
     public Optional<Content> requestRandomContent(String source) {
         Optional<Content> randomContent = this.contentRepository.findRandomContent();
         
@@ -179,35 +211,6 @@ public class ContentService implements Serializable {
         }
             
         return randomContent;
-    }
-    
-    // --------------- Package-Private methods ---------------
-    
-    
-    /**
-     * Creates a new content.
-     * 
-     * @param content the content that will be created.
-     */
-    @Transactional
-    void createContent(Content content) {
-        // 1. Persist the context:
-        this.contextRepository.persist(content.getContext());
-        
-        // 2. Persist the content
-        this.contentRepository.persist(content);
-    }
-    
-    /**
-     * Deletes the specified {@link Content} from the database.
-     * 
-     * @param   content    that will be deleted.
-     */
-    @Transactional
-    void deleteContent(Content content) {
-        this.contextRepository.remove(content.getContext());
-        content.setContext(null);
-        this.contentRepository.remove(content);
     }
     
     

@@ -18,6 +18,8 @@ package de.oth.fkretschmar.advertisementproject.business.services;
 
 import de.oth.fkretschmar.advertisementproject.business.repositories.CampaignRepository;
 import de.oth.fkretschmar.advertisementproject.business.repositories.UserRepository;
+import de.oth.fkretschmar.advertisementproject.business.services.base.ICampaignService;
+import de.oth.fkretschmar.advertisementproject.business.services.base.IContentService;
 
 import de.oth.fkretschmar.advertisementproject.entities.campaign.Campaign;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.CampaignState;
@@ -37,7 +39,7 @@ import javax.transaction.Transactional;
  * @author  fkre    Floyd Kretschmar
  */
 @RequestScoped
-public class CampaignService implements Serializable {
+public class CampaignService implements Serializable, ICampaignService {
 
     // --------------- Private fields ---------------
     
@@ -51,7 +53,7 @@ public class CampaignService implements Serializable {
      * Stores the service used to manage {@link Content} entites.
      */
     @Inject
-    private ContentService contentService;
+    private IContentService contentService;
 
     /**
      * Stores the repository used to manage {@link User} entites.
@@ -70,6 +72,7 @@ public class CampaignService implements Serializable {
      * @return              the saved campaign.
      */
     @Transactional
+    @Override
     public User createCampaignForUser(User user, Campaign campaign) {
         // the campaign is being created for a user that already has an account
         // therefore no .persist is needed for an account
@@ -104,6 +107,8 @@ public class CampaignService implements Serializable {
      * @param   campaign    the updated campaign.
      * @return  the changed user.
      */
+    @Transactional
+    @Override
     public User changeCampaignForUser(User user, Campaign campaign) {
         user = this.userRepository.merge(user);
         campaign = this.campaignRepository.merge(campaign);
@@ -130,6 +135,7 @@ public class CampaignService implements Serializable {
      * @return              the cancelled campaign.
      */
     @Transactional
+    @Override
     public Campaign cancelCampaign(Campaign campaign) {        
         campaign = this.campaignRepository.merge(campaign);
         campaign.setCampaignState(CampaignState.CANCELLED);
@@ -145,6 +151,7 @@ public class CampaignService implements Serializable {
      * @return          the ended campaign.
      */
     @Transactional
+    @Override
     public Campaign endCampaign(Campaign campaign) {
         campaign = this.campaignRepository.merge(campaign);
         campaign.setCampaignState(CampaignState.ENDED);

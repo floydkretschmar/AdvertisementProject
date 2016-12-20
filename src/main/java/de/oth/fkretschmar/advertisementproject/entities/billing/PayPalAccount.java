@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.oth.fkretschmar.advertisementproject.entities.user;
+package de.oth.fkretschmar.advertisementproject.entities.billing;
 
 import de.oth.fkretschmar.advertisementproject.entities.exceptions.BuilderValidationException;
 import javax.persistence.Entity;
@@ -32,6 +32,19 @@ import lombok.ToString;
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 @ToString(callSuper = true)
 public class PayPalAccount extends Account {
+    
+    // --------------- Public static fields ---------------
+    
+    /**
+     * Stores the own account that is the target for transactions.
+     * 
+     * NOTE: Should not be hard coded ofcourse but I am spending way to much 
+     * time on irrelevant shit already.
+     */
+    public static final PayPalAccount OWN_ACCOUNT 
+            = PayPalAccount.createPayPalAccount()
+                    .eMailAddress("testuser@gmail.com")
+                    .build();
     
     // --------------- Private constructors ---------------
 
