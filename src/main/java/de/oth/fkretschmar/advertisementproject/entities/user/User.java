@@ -90,7 +90,7 @@ public class User extends AbstractStringKeyedEntity {
      * Stores the campaigns comissioned by the user.
      */
     @NotNull
-    @OneToMany(mappedBy = "comissioner", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "comissioner", fetch = FetchType.EAGER)
     private final Collection<Campaign> campaigns = new ArrayList<Campaign>();
     
     /**

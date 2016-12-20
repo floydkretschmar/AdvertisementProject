@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <title>Webvert</title>
+        <h:outputStylesheet library="css" name="style.css"  />
+    </h:head>
+    <h:body>
+        <ui:composition template="./resources/templates/OverviewContentTemplate.xhtml">
+            <ui:define name="main_content">
+                <!--<h2 class="webvert_form_heading_color_dark">Campaigns</h2>-->
+                <b:tabLinks style="margin-bottom: 16px;">
+                    <b:navCommandLink value="Currently Running Campaigns" 
+                                      icon="tag" 
+                                      iconAlign="right" 
+                                      update="@form"/>
+                    <b:navCommandLink value="Ended Campaigns" 
+                                      icon="tag" 
+                                      iconAlign="right" 
+                                      update="@form"/>
+                    <b:navCommandLink value="Cancelled Campaigns" 
+                                      icon="tag" 
+                                      iconAlign="right" 
+                                      update="@form"/>
+                    <b:messages />
+                </b:tabLinks>
+                
+                <!--<b:accordion expandedPanels="runningCampaigns">-->
+                    <c:forEach items="#{campaignModel.currentUserCampaigns}" var="campaign">
+                        <b:panel title="Test">#{campaign}</b:panel>
+                    </c:forEach>
+                <!--</b:accordion>-->
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

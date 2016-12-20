@@ -12,7 +12,49 @@
     <h:body>
         <ui:composition template="LayoutTemplate.xhtml">
             <ui:define name="content">
-                
+                <h:form prependId="false" 
+                        class="webvert_main_content_form">
+                    <b:row style="margin: 0; height: 100%">
+                        <b:column span="2">
+                            <ui:insert name="menu">
+                                <b:panel title="Menu"
+                                         class="webvert_main_menu_layout">
+                                    <b:listLinks>
+                                        <b:navLink header="Campaigns"/>
+                                        <b:navCommandLink 
+                                                   value="Overview" 
+                                                   icon="globe" 
+                                                   iconAlign="left" 
+                                                   update="@form"/>
+                                        <b:navCommandLink 
+                                                   value="New Campaign" 
+                                                   icon="pencil" 
+                                                   iconAlign="left" 
+                                                   update="@form"/>
+                                        <b:navCommandLink 
+                                                   value="Bills" 
+                                                   icon="euro" 
+                                                   iconAlign="left" 
+                                                   update="@form"/>
+                                        <b:navLink header="User"/>
+                                        <b:navCommandLink 
+                                                   value="Profile" 
+                                                   icon="user" 
+                                                   iconAlign="left" 
+                                                   update="@form"/>
+                                    </b:listLinks>
+                                </b:panel>
+                            </ui:insert>
+                        </b:column>
+                        <b:column span="10" style="height: 100%">
+                            <b:panel class="webvert_main_content_layout">
+                                <ui:insert name="main_content">
+                                    Main Content
+                                </ui:insert>
+                            </b:panel>
+                        </b:column>
+                    </b:row>
+                </h:form>
             </ui:define>
         </ui:composition>
 

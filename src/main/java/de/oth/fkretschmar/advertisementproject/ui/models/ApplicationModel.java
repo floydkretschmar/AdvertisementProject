@@ -100,12 +100,11 @@ public class ApplicationModel extends AbstractModel {
      *
      * @param processCallback The function used to process the current user.
      */
-    public void processCurrentUser(Function<User, User> processCallback) {
+    public <T> T processCurrentUser(Function<User, T> processCallback) {
         ApplicationModel.LOCK.lock();
 
         try {
-            this.currentUser
-                    = processCallback.apply(this.currentUser);
+            return processCallback.apply(this.currentUser);
 
         } finally {
             ApplicationModel.LOCK.unlock();

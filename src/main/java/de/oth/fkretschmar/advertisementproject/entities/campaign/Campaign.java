@@ -92,11 +92,21 @@ public class Campaign extends AbstractAutoGenerateKeyedEntity {
      * Stores the interval in which the order is being paid for.
      */
     @NotNull
-    @Column(name = "PAYMENT_INTERVAL", updatable = false)
+    @Column(name = "PAYMENT_INTERVAL")
     @Enumerated(EnumType.STRING)
     @Getter
     @Setter
     private PaymentInterval interval;
+    
+    
+    /**
+     * Stores the name used to describe the campaign.
+     */
+    @NotNull
+    @Column(name = "NAME", updatable = false)
+    @Getter
+    @Setter
+    private String name;
     
     /**
      * Stores the account used to make the payments for this campaign.
@@ -118,9 +128,12 @@ public class Campaign extends AbstractAutoGenerateKeyedEntity {
      * @param acount        the account used to make the payments for this 
      *                      campaign.
      * @param interval      the interval in which the order is being paid for.
+     * @param name          the name of the campaign.
      */
-    private Campaign(Account paymentAccount, PaymentInterval interval) {
+    private Campaign(
+            Account paymentAccount, PaymentInterval interval, String name) {
         super();
+        this.name = name;
         this.paymentAccount = paymentAccount;
         this.interval = interval;
     }
@@ -189,7 +202,10 @@ public class Campaign extends AbstractAutoGenerateKeyedEntity {
      * The method that builds the basis of the auto generated builder:
      * Validates the input and creates the corresponding {@link Campaign}.
      * 
-     * @param   campaign 
+     * @param acount        the account used to make the payments for this 
+     *                      campaign.
+     * @param interval      the interval in which the order is being paid for.
+     * @param name          the name of the campaign.
      * @return  the built {@link Campaign}.
      * @throws  BuilderValidationException  that indicates that one or more of 
      *                                      of the given creation parameters are
@@ -201,7 +217,8 @@ public class Campaign extends AbstractAutoGenerateKeyedEntity {
             buildMethodName = "build")
     private static Campaign validateAndCreateCampaign(
             Account paymentAccount, 
-            PaymentInterval interval) throws BuilderValidationException {
+            PaymentInterval interval,
+            String name) throws BuilderValidationException {
         
         if (paymentAccount == null) {
             throw new BuilderValidationException(
@@ -215,6 +232,6 @@ public class Campaign extends AbstractAutoGenerateKeyedEntity {
                     "The payment interval has to be defined.");
         }
         
-        return new Campaign(paymentAccount, interval);
+        return new Campaign(paymentAccount, interval, name);
     }
 }
