@@ -142,6 +142,8 @@ public class TestServlet extends HttpServlet {
 
                 // Authenticate User:
                 
+//                User user = this.userService.findUserForEMail("fkretschmar@googlemail.com");
+                
 //                this.authService.authenticateUser(user.geteMailAddress(), "Testpw".toCharArray());
 
                 // Change password:
@@ -188,13 +190,13 @@ public class TestServlet extends HttpServlet {
                         .targetPurposeOfUses(EnumSet.allOf(TargetPurposeOfUse.class)).build();
 
                 // Create contents and add/delete them to/from the user:
-                File file = new File("E:\\Augen_einer_Katze.jpg");
-
-                SerializableRenderedImage image = new SerializableRenderedImage(ImageIO.read(file));
+//                File file = new File("E:\\Augen_einer_Katze.jpg");
+//
+//                SerializableRenderedImage image = new SerializableRenderedImage(ImageIO.read(file));
                 
                 Content ad = Content.createContent()
-                            .value(image)
-                            .contentType(ContentType.IMAGE)
+                            .value("Das ist mein Werbetext")
+                            .contentType(ContentType.TEXT)
                             .targetUrl(new URL("https://www.google.de"))
                             .context(context)
                             .numberOfRequests(100000)

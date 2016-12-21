@@ -43,7 +43,7 @@ import lombok.Setter;
                     + " FROM    T_CONTENT_REQUEST contentRequest "
                     + " WHERE   contentRequest.content.campaign.interval = ?1 "
                     + " AND     contentRequest.bill IS NULL"
-                    + " AND     contentRequest.generationDate > current_date()")
+                    + " AND     contentRequest.generationDate > current_date")
 })
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 public class ContentRequest extends AbstractAutoGenerateKeyedEntity {

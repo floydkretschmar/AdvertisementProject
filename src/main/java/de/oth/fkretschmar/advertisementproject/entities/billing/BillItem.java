@@ -50,7 +50,7 @@ public class BillItem extends AbstractAutoGenerateKeyedEntity {
     /**
      * Stores the content that is being billed with this item.
      */
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @NotNull
     @Getter
     private Content content;

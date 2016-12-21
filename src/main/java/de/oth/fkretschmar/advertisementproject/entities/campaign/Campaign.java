@@ -48,7 +48,7 @@ import lombok.ToString;
 @Entity(name = "T_CAMPAIGN")
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 //@AllArgsConstructor(access = AccessLevel.PRIVATE)
-@ToString(callSuper = true)
+@ToString(callSuper = true, exclude = "bills")
 public class Campaign extends AbstractAutoGenerateKeyedEntity {
     
     // --------------- Private fields ---------------
@@ -57,7 +57,7 @@ public class Campaign extends AbstractAutoGenerateKeyedEntity {
      * Stores all the bills that have been payed so far during the campaign.
      */
     @NotNull
-    @OneToMany(mappedBy = "campaign", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "campaign")
     private final Collection<Bill> bills
             = new ArrayList<Bill>();
     
@@ -112,7 +112,7 @@ public class Campaign extends AbstractAutoGenerateKeyedEntity {
      * Stores the account used to make the payments for this campaign.
      */
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "PAYMENT_ACCOUNT_ID")
     @Getter
     @Setter

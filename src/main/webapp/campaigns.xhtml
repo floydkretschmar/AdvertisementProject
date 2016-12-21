@@ -16,6 +16,7 @@
                 <!--<h2 class="webvert_form_heading_color_dark">Campaigns</h2>-->
                 <b:tabLinks style="margin-bottom: 16px;">
                     <b:navCommandLink value="Currently Running Campaigns" 
+                                      active="true"
                                       icon="tag" 
                                       iconAlign="right" 
                                       update="@form"/>
@@ -32,7 +33,7 @@
                 
                 <!--<b:accordion expandedPanels="runningCampaigns">-->
                     <c:forEach items="#{campaignModel.currentUserCampaigns}" var="campaign">
-                        <b:panel title="Test">#{campaign}</b:panel>
+                        <b:panel title="#{campaign.name}" collapsed="true">#{campaign}</b:panel>
                     </c:forEach>
                 <!--</b:accordion>-->
             </ui:define>

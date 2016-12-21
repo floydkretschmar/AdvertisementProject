@@ -19,6 +19,7 @@ package de.oth.fkretschmar.advertisementproject.ui.models;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.Campaign;
 import de.oth.fkretschmar.advertisementproject.ui.models.base.AbstractModel;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -48,8 +49,10 @@ public class CampaignModel extends AbstractModel {
      * @return 
      */
     public List<Campaign> getCurrentUserCampaigns() {
-        return new ArrayList<Campaign>(
-                this.applicationModel.processCurrentUser(
-                        user -> user.getCampaigns()));
+        Collection<Campaign> campaigns = this.applicationModel.processCurrentUser(
+                        user -> user.getCampaigns());
+        
+        
+        return new ArrayList<Campaign>(campaigns);
     }
 }

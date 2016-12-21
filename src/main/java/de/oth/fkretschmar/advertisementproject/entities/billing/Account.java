@@ -18,19 +18,14 @@ package de.oth.fkretschmar.advertisementproject.entities.billing;
 
 
 import de.oth.fkretschmar.advertisementproject.entities.base.AbstractStringKeyedEntity;
-import de.oth.fkretschmar.advertisementproject.entities.base.EntityState;
-import javax.persistence.Column;
 
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import de.oth.fkretschmar.advertisementproject.entities.base.IDeletable;
 
 /**
  * Represents an paypal account used to pay for orders.

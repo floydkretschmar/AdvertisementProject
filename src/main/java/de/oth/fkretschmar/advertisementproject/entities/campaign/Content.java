@@ -126,7 +126,6 @@ public class Content extends AbstractAutoGenerateKeyedEntity
     @NotNull
     @Column(name = "VALUE", nullable = false)
     @Lob
-    @Basic(fetch = FetchType.LAZY)
     private byte[] serializedValue;
     
     /**

@@ -59,7 +59,6 @@ public class Bill extends AbstractAutoGenerateKeyedEntity {
     @JoinColumn(name = "CAMPAIGN_ID")
     @Getter
     @Setter
-    @Basic(fetch = FetchType.LAZY)
     private Campaign campaign;
     
     
