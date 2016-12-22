@@ -54,6 +54,28 @@ public enum ContentType {
      */
     UNDEFINED(Object.class);
     
+    // --------------- Public static constants ---------------
+    
+    /**
+     * Defines the formatted name of the IMAGE state of the enum.
+     */
+    public static final String IMAGE_FORMATTED_NAME = "Image";
+    
+    /**
+     * Defines the formatted name of the IMAGE_URL state of the enum.
+     */
+    public static final String IMAGE_URL_FORMATTED_NAME = "Image URL";
+    
+    /**
+     * Defines the formatted name of the TEXT state of the enum.
+     */
+    public static final String TEXT_FORMATTED_NAME = "Text";
+    
+    /**
+     * Defines the formatted name of the UNDEFINED state of the enum.
+     */
+    public static final String UNDEFINED_FORMATTED_NAME = "Undefined";
+    
     // --------------- Private fields ---------------
     
     /**
@@ -73,11 +95,11 @@ public enum ContentType {
      * @return  the content type.
      */
     public static ContentType getContentType(String formattedName) {
-        if (formattedName.equals("Image"))
+        if (formattedName.equals(ContentType.IMAGE_FORMATTED_NAME))
             return ContentType.IMAGE;
-        else if (formattedName.equals("Image URL"))
+        else if (formattedName.equals(ContentType.IMAGE_URL_FORMATTED_NAME))
             return ContentType.IMAGE_URL;
-        else if (formattedName.equals("Text"))
+        else if (formattedName.equals(ContentType.TEXT_FORMATTED_NAME))
             return ContentType.TEXT;
         else
             return ContentType.UNDEFINED;
@@ -94,13 +116,13 @@ public enum ContentType {
     public static String getFormattedName(ContentType type) {
         switch(type) {
             case IMAGE:
-                return "Image";
+                return ContentType.IMAGE_FORMATTED_NAME;
             case IMAGE_URL:
-                return "Image URL";
+                return ContentType.IMAGE_URL_FORMATTED_NAME;
             case TEXT:
-                return "Text";
+                return ContentType.TEXT_FORMATTED_NAME;
             default:
-                return "Undefined";
+                return ContentType.UNDEFINED_FORMATTED_NAME;
         }
     }
 }

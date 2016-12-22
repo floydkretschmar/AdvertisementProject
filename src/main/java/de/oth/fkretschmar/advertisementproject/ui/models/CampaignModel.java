@@ -49,11 +49,10 @@ public class CampaignModel extends AbstractModel {
      * Stores the campaigns that are currently being displayed in the campaign
      * overview.
      */
-    @Inject
     private List<Campaign> campaigns;
     
 
-    // --------------- Public getter and setter ---------------
+    // --------------- Public methods ---------------
     
     /**
      * Gets the contents for the specified campaign id.
@@ -64,20 +63,27 @@ public class CampaignModel extends AbstractModel {
      * @return 
      */
     public List<Content> getContentForCampaignId(String id, String contentTypeName) {
-        Optional<Campaign> selectedCampaign = this.applicationModel.processCurrentUser(
+        Optional<Campaign> selectedCampaign = 
+                this.applicationModel.processCurrentUser(
                         user -> user.getCampaigns()
                                 .stream()
                                 .filter(campaign -> campaign.getId() == Long.parseLong(id))
                                 .findFirst());
         
         if (!selectedCampaign.isPresent())
-            throw new IllegalArgumentException("The id does not belong to a valid campaign");
+            throw new IllegalArgumentException("The id does not belong to a "
+                    + "valid campaign");
         
         ContentType contentType = ContentType.getContentType(contentTypeName);
         
+        // combined IMAGE and IMAGE_URL into one group for the sake of more 
+        // intuitive display in the JSF -> take that into account when filtering
+        // contents        
         return selectedCampaign.get().getContents()
                 .stream()
-                .filter(content -> content.getContentType() == contentType)
+                .filter(content -> content.getContentType() == contentType ||
+                                (contentType == ContentType.IMAGE 
+                                    && content.getContentType() == ContentType.IMAGE_URL))
                 .sorted((content1, content2) -> 
                         content1.getContentType().name().compareTo(content2.getContentType().name()))
                 .collect(Collectors.toList());
@@ -105,7 +111,13 @@ public class CampaignModel extends AbstractModel {
                 .stream()
                 .sorted((content1, content2) -> 
                         content1.getContentType().name().compareTo(content2.getContentType().name()))
-                .map(content -> ContentType.getFormattedName(content.getContentType()))
+                .map(content -> 
+                {
+                        String formattedName = ContentType.getFormattedName(content.getContentType());
+                        if(formattedName.equals(ContentType.IMAGE_URL_FORMATTED_NAME))
+                            return ContentType.IMAGE_FORMATTED_NAME;
+                        return formattedName;
+                })
                 .distinct()
                 .collect(Collectors.toList());
         
@@ -123,4 +135,9 @@ public class CampaignModel extends AbstractModel {
         
         return new ArrayList<Campaign>(campaigns);
     }
+    
+
+    // --------------- Private classes ---------------
+    
+    
 }

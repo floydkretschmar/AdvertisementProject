@@ -35,32 +35,51 @@
                 <c:forEach items="#{campaignModel.currentUserCampaigns}" var="campaign">
                     <b:panel title="#{campaign.name}" 
                              collapsed="true">
-                        <h3 class="webvert_form_heading_color_dark">Contents</h3>                        
-                        <b:accordion style="margin: 20px">
+                        <b:row style="margin-left: 32px; margin-right: 32px; margin-top: 32px;">
+                            <h3 class="webvert_form_heading_color_dark">Contents</h3>       
+                        </b:row>    
+                        <b:accordion  style="margin-left: 32px; margin-right: 32px; margin-bottom: 32px; margin-top: 16px">
                             <c:forEach items="#{campaignModel.getContentTypesForCampaign(campaign.id)}" 
                                        var="contentType"
                                        id="forEachCampaign">
                                 <b:panel title="#{contentType}">
                                     <b:dataTable value="#{campaignModel.getContentForCampaignId(campaign.id, contentType)}" 
                                                  var="content" 
-                                                 customOptions="false"
-                                                 style="margin: 0px; width: 100%">
-                                        <h:column>
-                                            <f:facet name="header"> Value </f:facet>
-                                            <h:outputText value="#{content.value}"/>
-                                        </h:column>
-                                        <h:column>
-                                            <f:facet name="header"> Description </f:facet>
+                                                 custom-options="info: false"
+                                                 paginated="false"
+                                                 searching="false"
+                                                 style="margin: 0px !important; width: 100%; border: 0px">
+                                        <b:dataTableColumn label="#{contentType eq 'Image' ? 'Image' : 'Text'}"
+                                                           orderable="#{contentType eq 'Image' ? 'false' : 'true'}"
+                                                           style="width: 25%">
+                                            <c:choose>
+                                                <c:when test="#{contentType eq 'Image'}">
+                                                    <img src="#{content.value}" style="max-width:100px;max-height:100px;"/>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <h:outputText value="#{content.value}"/>
+                                                </c:otherwise>
+                                            </c:choose>                                            
+                                        </b:dataTableColumn>
+                                        <b:dataTableColumn orderable="true" 
+                                                           label="Description"
+                                                           style="width: 25%">
                                             <h:outputText value="#{content.description}"/>
-                                        </h:column>
-                                        <h:column>
-                                            <f:facet name="header"> Price per request </f:facet>
+                                        </b:dataTableColumn>
+                                        <b:dataTableColumn orderable="true" 
+                                                           label="Price per request"
+                                                           style="width: 25%">
                                             <h:outputText value="#{content.pricePerRequest}"/>
-                                        </h:column>
+                                        </b:dataTableColumn>
+                                        <b:dataTableColumn orderable="true" 
+                                                           label="Number of requests ordered"
+                                                           style="width: 25%">
+                                            <h:outputText value="#{content.numberOfRequests}"/>
+                                        </b:dataTableColumn>
                                     </b:dataTable>
                                 </b:panel>
                             </c:forEach>
-                        </b:accordion>
+                        </b:accordion>    
                     </b:panel>
                 </c:forEach>
                 <!--</b:accordion>-->

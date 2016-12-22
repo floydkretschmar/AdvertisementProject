@@ -14,22 +14,20 @@
     <h:body class="webvert_body">
         <div id="header" >
             <ui:insert name="header">
-                <b:container class="#{applicationModel.userAuthenticated ? 'webvert_header_layout webvert_main_headerfooter_color' 
-                    : 'webvert_header_layout webvert_prelogin_headerfooter_color'}">
+                <b:container class="webvert_header_layout webvert_prelogin_headerfooter_color">
                     <h:graphicImage library="img" name="logo.png" class="webvert_header_logo"/>
                 </b:container>
             </ui:insert>
         </div>
         
-        <div id="content" class="webvert_content webvert_prelogin_content_color">
+        <div id="content" class="webvert_content webvert_content_color">
             <ui:insert name="content">Content</ui:insert>
         </div>
         
         
         <div id="footer" >
             <ui:insert name="footer">
-                <b:container class="#{applicationModel.userAuthenticated ? 'webvert_footer_layout webvert_main_headerfooter_color' 
-                    : 'webvert_footer_layout webvert_prelogin_headerfooter_color'}">
+                <b:container class="webvert_footer_layout webvert_prelogin_headerfooter_color">
                     <b:row class="webvert_footer_row_layout">
                         <b:column medium-screen="4"
                                   class="webvert_footer_column_layout webvert_footer_text_color">
