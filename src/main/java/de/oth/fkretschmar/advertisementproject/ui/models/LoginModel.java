@@ -18,20 +18,22 @@ package de.oth.fkretschmar.advertisementproject.ui.models;
 
 import de.oth.fkretschmar.advertisementproject.business.services.PasswordException;
 import de.oth.fkretschmar.advertisementproject.ui.models.base.AbstractModel;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
+import javax.inject.Named;
 import lombok.Getter;
 import lombok.Setter;
 
 /**
  * 
  *
- * NOTE: Is ViewScoped so I can easily display the error during login.
+ * NOTE: I am not using ViewScoped and ManagedBean because it is old technology.
+ *       Instead I am using CDI beans with named and the JSF 2.2 ViewScoped 
+ *       annotation.
  * 
  * @author Floyd Kretschmar
  */
-@ManagedBean
+@Named
 @ViewScoped
 public class LoginModel extends AbstractModel {
 

@@ -25,7 +25,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import javax.enterprise.context.RequestScoped;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -34,7 +34,7 @@ import javax.inject.Named;
  * @author Admin
  */
 @Named
-@RequestScoped
+@ViewScoped
 public class CampaignModel extends AbstractModel {
 
     // --------------- Private fields ---------------
@@ -44,6 +44,13 @@ public class CampaignModel extends AbstractModel {
      */
     @Inject
     private ApplicationModel applicationModel;
+    
+    /**
+     * Stores the campaigns that are currently being displayed in the campaign
+     * overview.
+     */
+    @Inject
+    private List<Campaign> campaigns;
     
 
     // --------------- Public getter and setter ---------------
