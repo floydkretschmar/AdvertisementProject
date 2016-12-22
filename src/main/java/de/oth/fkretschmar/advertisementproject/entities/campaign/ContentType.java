@@ -61,4 +61,46 @@ public enum ContentType {
      */
     @Getter(AccessLevel.PUBLIC)
     private final Class contentType;
+    
+    // --------------- Public static methods ---------------
+    
+    
+    /**
+     * Returns the content type that corresponds with the well formatted name.
+     * 
+     * @param   formattedName   the well formatted name that represents the 
+     *                          content type.
+     * @return  the content type.
+     */
+    public static ContentType getContentType(String formattedName) {
+        if (formattedName.equals("Image"))
+            return ContentType.IMAGE;
+        else if (formattedName.equals("Image URL"))
+            return ContentType.IMAGE_URL;
+        else if (formattedName.equals("Text"))
+            return ContentType.TEXT;
+        else
+            return ContentType.UNDEFINED;
+    }
+    
+    /**
+     * Returns the well formatted name for the specified content type.
+     * 
+     * NOTE: Should actually access some sort of central translation file.
+     * 
+     * @param   type    the type for which a name will be retrieved.
+     * @return          the well formatted name for the type.
+     */
+    public static String getFormattedName(ContentType type) {
+        switch(type) {
+            case IMAGE:
+                return "Image";
+            case IMAGE_URL:
+                return "Image URL";
+            case TEXT:
+                return "Text";
+            default:
+                return "Undefined";
+        }
+    }
 }

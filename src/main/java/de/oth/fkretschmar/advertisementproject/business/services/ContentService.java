@@ -20,6 +20,7 @@ import de.oth.fkretschmar.advertisementproject.business.repositories.CampaignRep
 import de.oth.fkretschmar.advertisementproject.business.repositories.ContentRepository;
 import de.oth.fkretschmar.advertisementproject.business.repositories.ContentRequestRepository;
 import de.oth.fkretschmar.advertisementproject.business.repositories.TargetContextRepository;
+import de.oth.fkretschmar.advertisementproject.business.services.base.IContentProviderService;
 import de.oth.fkretschmar.advertisementproject.business.services.base.IContentService;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.Campaign;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.Content;
@@ -51,7 +52,7 @@ import lombok.Getter;
  * @author  fkre    Floyd Kretschmar
  */
 @RequestScoped
-public class ContentService implements Serializable, IContentService {
+public class ContentService implements Serializable, IContentService, IContentProviderService {
 
     // --------------- Private fields ---------------
     

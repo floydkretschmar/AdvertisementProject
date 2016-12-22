@@ -17,8 +17,6 @@
 package de.oth.fkretschmar.advertisementproject.ui.models.base;
 
 import java.io.Serializable;
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  * The abstract base implementation of an ui model.

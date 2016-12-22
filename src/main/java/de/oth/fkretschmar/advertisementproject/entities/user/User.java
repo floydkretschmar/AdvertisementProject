@@ -23,12 +23,9 @@ import de.oth.fkretschmar.advertisementproject.entities.base.AbstractStringKeyed
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import javax.persistence.Basic;
 
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;

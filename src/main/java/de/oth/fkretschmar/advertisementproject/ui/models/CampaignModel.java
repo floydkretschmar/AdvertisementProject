@@ -17,10 +17,14 @@
 package de.oth.fkretschmar.advertisementproject.ui.models;
 
 import de.oth.fkretschmar.advertisementproject.entities.campaign.Campaign;
+import de.oth.fkretschmar.advertisementproject.entities.campaign.Content;
+import de.oth.fkretschmar.advertisementproject.entities.campaign.ContentType;
 import de.oth.fkretschmar.advertisementproject.ui.models.base.AbstractModel;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -45,13 +49,70 @@ public class CampaignModel extends AbstractModel {
     // --------------- Public getter and setter ---------------
     
     /**
+     * Gets the contents for the specified campaign id.
+     * 
+     * @param id    the id of the campaign for which the contents
+     * @param contentTypeName   the well formatted name that represents the 
+     *                          content type.
+     * @return 
+     */
+    public List<Content> getContentForCampaignId(String id, String contentTypeName) {
+        Optional<Campaign> selectedCampaign = this.applicationModel.processCurrentUser(
+                        user -> user.getCampaigns()
+                                .stream()
+                                .filter(campaign -> campaign.getId() == Long.parseLong(id))
+                                .findFirst());
+        
+        if (!selectedCampaign.isPresent())
+            throw new IllegalArgumentException("The id does not belong to a valid campaign");
+        
+        ContentType contentType = ContentType.getContentType(contentTypeName);
+        
+        return selectedCampaign.get().getContents()
+                .stream()
+                .filter(content -> content.getContentType() == contentType)
+                .sorted((content1, content2) -> 
+                        content1.getContentType().name().compareTo(content2.getContentType().name()))
+                .collect(Collectors.toList());
+    }
+    
+    
+    /**
+     * Gets the types of contents that exist for a specified campaign.
+     * 
+     * @param   id  the id of the campaign for which the content types will be
+     *              returned.
+     * @return 
+     */
+    public List<String> getContentTypesForCampaign(String id) {
+        Optional<Campaign> selectedCampaign = this.applicationModel.processCurrentUser(
+                        user -> user.getCampaigns()
+                                .stream()
+                                .filter(campaign -> campaign.getId() == Long.parseLong(id))
+                                .findFirst());
+        
+        if (!selectedCampaign.isPresent())
+            throw new IllegalArgumentException("The id does not belong to a valid campaign");
+        
+        List<String> contentTypes = selectedCampaign.get().getContents()
+                .stream()
+                .sorted((content1, content2) -> 
+                        content1.getContentType().name().compareTo(content2.getContentType().name()))
+                .map(content -> ContentType.getFormattedName(content.getContentType()))
+                .distinct()
+                .collect(Collectors.toList());
+        
+        return contentTypes;
+    }
+    
+    /**
      * Gets all campaigns for the current user.
+     * 
      * @return 
      */
     public List<Campaign> getCurrentUserCampaigns() {
         Collection<Campaign> campaigns = this.applicationModel.processCurrentUser(
                         user -> user.getCampaigns());
-        
         
         return new ArrayList<Campaign>(campaigns);
     }

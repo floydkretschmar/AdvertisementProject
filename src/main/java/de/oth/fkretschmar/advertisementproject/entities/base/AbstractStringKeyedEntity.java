@@ -19,7 +19,6 @@ package de.oth.fkretschmar.advertisementproject.entities.base;
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
-import javax.validation.constraints.NotNull;
 
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;

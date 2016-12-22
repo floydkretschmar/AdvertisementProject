@@ -16,35 +16,33 @@
  */
 package de.oth.fkretschmar.advertisementproject.business.services.base;
 
-import de.oth.fkretschmar.advertisementproject.entities.campaign.Campaign;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.Content;
+import de.oth.fkretschmar.advertisementproject.entities.campaign.TargetContext;
+import java.util.Optional;
 /**
  *
  * @author Admin
  */
-public interface IContentService {
+public interface IContentProviderService {
     
     /**
-     * Creates a new content.
+     * Retrieves an advertisement content that best matches the provided 
+     * {@link TargetContext}. 
      * 
-     * @param content the content that will be created.
+     * @param source    the text that identifies the source of the request.
+     * @param context   the context that specifies the targets for the requestet
+     *                  content.
+     * @return          the best matching content.
      */
-    public void createContent(Content content);
+    public Optional<Content> requestContent(String source, TargetContext context);
+    
     
     /**
-     * Deletes the specified {@link Content} from the database.
+     * Retrieves a random advertisement that has not been matched with any target
+     * context.
      * 
-     * @param   content    that will be deleted.
+     * @param   source  the text that identifies the source of the request.
+     * @return  the content that has been chosen randomly.
      */
-    public void deleteContent(Content content);
-    
-    /**
-     * Creates a new {@link Content} and links it to the specified campaign.
-     * 
-     * @param   campaign    to which the content will be linked.
-     * @param   content     the content that will be saved.
-     * @return  the created {@link Content}.
-     */
-    public Campaign createContentForCampaign(
-            Campaign campaign, Content content);
+    public Optional<Content> requestRandomContent(String source);
 }

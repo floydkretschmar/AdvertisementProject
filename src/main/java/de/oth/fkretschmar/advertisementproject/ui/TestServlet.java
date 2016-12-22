@@ -16,31 +16,24 @@
  */
 package de.oth.fkretschmar.advertisementproject.ui;
 
-import de.oth.fkretschmar.advertisementproject.business.SerializableRenderedImage;
 import de.oth.fkretschmar.advertisementproject.business.repositories.ContentRepository;
-import de.oth.fkretschmar.advertisementproject.business.repositories.TargetContextRepository;
-import de.oth.fkretschmar.advertisementproject.business.services.BillService;
-import de.oth.fkretschmar.advertisementproject.business.services.CampaignService;
-import de.oth.fkretschmar.advertisementproject.business.services.ContentService;
 import de.oth.fkretschmar.advertisementproject.business.services.PasswordException;
 import de.oth.fkretschmar.advertisementproject.business.services.PasswordService;
-import de.oth.fkretschmar.advertisementproject.business.services.UserService;
 import de.oth.fkretschmar.advertisementproject.business.services.UserServiceException;
 import de.oth.fkretschmar.advertisementproject.business.services.base.IBillService;
 import de.oth.fkretschmar.advertisementproject.business.services.base.ICampaignService;
+import de.oth.fkretschmar.advertisementproject.business.services.base.IContentProviderService;
 import de.oth.fkretschmar.advertisementproject.business.services.base.IContentService;
 import de.oth.fkretschmar.advertisementproject.business.services.base.IUserService;
 import de.oth.fkretschmar.advertisementproject.entities.billing.Account;
 import de.oth.fkretschmar.advertisementproject.entities.billing.BankAccount;
 import de.oth.fkretschmar.advertisementproject.entities.user.Address;
-import de.oth.fkretschmar.advertisementproject.entities.campaign.Content;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.ContentType;
 import de.oth.fkretschmar.advertisementproject.entities.billing.Bill;
 import de.oth.fkretschmar.advertisementproject.entities.billing.BillItem;
 import de.oth.fkretschmar.advertisementproject.entities.exceptions.BuilderValidationException;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.Campaign;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.Content;
-import de.oth.fkretschmar.advertisementproject.entities.user.Password;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.PaymentInterval;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.TargetAge;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.TargetContext;
@@ -48,9 +41,6 @@ import de.oth.fkretschmar.advertisementproject.entities.campaign.TargetGender;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.TargetMaritalStatus;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.TargetPurposeOfUse;
 import de.oth.fkretschmar.advertisementproject.entities.user.User;
-import java.awt.Image;
-import java.awt.image.BufferedImage;
-import java.io.File;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -59,7 +49,6 @@ import java.util.EnumSet;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.money.Monetary;
 import javax.servlet.ServletException;
@@ -84,6 +73,9 @@ public class TestServlet extends HttpServlet {
     
     @Inject
     private IContentService adService;
+    
+    @Inject
+    private IContentProviderService adProvider;
     
     @Inject
     private ContentRepository contentRepo;
@@ -299,7 +291,7 @@ public class TestServlet extends HttpServlet {
 //                }
 //                out.println("<br>");
                 for(int i = 0; i < 10; i++) {
-                    Optional<Content> bestContent = this.adService.requestRandomContent("myself");
+                    Optional<Content> bestContent = this.adProvider.requestRandomContent("myself");
                     out.println(bestContent.get().getId());
                 }
                 

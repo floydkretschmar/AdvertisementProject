@@ -104,8 +104,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 .webvert_form_heading_color_dark {
     color: #888;
-    margin-left: 0px;
-    margin-top: 0px;
+    padding-left: 20px;
     /*text-shadow: -1px 0 #FFF, 0 1px #FFF, 1px 0 #FFF, 0 -1px #FFF;*/
 }
 
@@ -182,15 +181,22 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 .webvert_main_menu_layout {
     margin-left: 3em;
-    margin-right: 3em;
+    /*margin-right: 3em;*/
+    min-width: 150px;
+}
+
+.webvert_main_menu_item_layout {
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 .panel.webvert_main_content_layout {
     /*margin-left: 3em;*/
     height: 100%;
     margin-right: 3em;
-    min-height: 800px;
-    padding: 16px;
+    padding: 3em;
 /*    display: table-cell;
     vertical-align: top;*/
 }
@@ -198,4 +204,30 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 .webvert_main_content_form {
     padding-top: 3em;
     height: 100%;
+    opacity: 0.9;
+}
+
+
+
+/* ------------ OVERRIDE EXISTING ------------*/
+
+.panel-group {
+    height: 100%;
+}
+
+.panel-body {
+    padding: 0px !important;
+    border: 0px !important;
+}
+
+td
+{
+    white-space: -moz-pre-wrap !important;  /* Mozilla, since 1999 */
+    white-space: -webkit-pre-wrap !important; /*Chrome & Safari */ 
+    white-space: pre-wrap !important;      /* Opera 4-6 */
+    white-space: -o-pre-wrap !important;    /* Opera 7 */
+    white-space: pre-wrap !important;       /* css-3 */
+    word-wrap: break-word !important;       /* Internet Explorer 5.5+ */
+    word-break: break-all !important;
+    white-space: normal !important;
 }

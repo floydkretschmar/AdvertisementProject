@@ -26,7 +26,6 @@ import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
 import javax.money.MonetaryAmount;
-import javax.persistence.Basic;
 
 import javax.persistence.Column;
 import javax.persistence.Convert;
@@ -56,7 +55,7 @@ import org.apache.commons.lang3.SerializationUtils;
  */
 @Entity(name = "T_CONTENT")
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
-@ToString(callSuper = true)
+@ToString(callSuper = true, exclude = "campaign")
 public class Content extends AbstractAutoGenerateKeyedEntity
         implements IDeletable<Long> {
     
