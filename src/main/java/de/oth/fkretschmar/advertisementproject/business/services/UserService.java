@@ -160,7 +160,8 @@ public class UserService implements Serializable, IUserService {
      * 
      * @param   user    that contains the data for the new user that will be 
      *                  created.§
-     * @throws  UserServiceException
+     * @throws  UserServiceException    that indicates that the email address 
+     *                                  has already been picked.
      */
     @Transactional
     @Override

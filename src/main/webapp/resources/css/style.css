@@ -104,8 +104,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 .webvert_form_heading_color_dark {
     color: #888;
-    margin-bottom: 0px;
-    margin-top: 0px;
     /*text-shadow: -1px 0 #FFF, 0 1px #FFF, 1px 0 #FFF, 0 -1px #FFF;*/
 }
 
@@ -186,7 +184,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     /*margin-left: 3em;*/
     height: 100%;
     margin-right: 3em;
-    padding: 3em;
+    padding: 4em;
 /*    display: table-cell;
     vertical-align: top;*/
 }
@@ -209,6 +207,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 .panel-body {
     padding: 0px !important;
     height: 100%;
+    /*display: table;*/
 }
 
 td

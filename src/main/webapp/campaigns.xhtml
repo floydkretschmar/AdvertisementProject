@@ -13,135 +13,151 @@
     <h:body>
         <ui:composition template="./resources/templates/OverviewContentTemplate.xhtml">
             <ui:define name="main_content">
-                <!--<h2 class="webvert_form_heading_color_dark">Campaigns</h2>-->
-                <b:tabLinks style="margin-bottom: 16px;">
-                    <b:navCommandLink value="Currently Running Campaigns" 
-                                      active="true"
-                                      icon="tag" 
-                                      iconAlign="right" 
-                                      update="@form"/>
-                    <b:navCommandLink value="Ended Campaigns" 
-                                      icon="tag" 
-                                      iconAlign="right" 
-                                      update="@form"/>
-                    <b:navCommandLink value="Cancelled Campaigns" 
-                                      icon="tag" 
-                                      iconAlign="right" 
-                                      update="@form"/>
-                    <b:messages />
-                </b:tabLinks>
-
-                <!--<b:accordion expandedPanels="runningCampaigns">-->
-                <c:forEach items="#{campaignModel.currentUserCampaigns}" var="campaign">
-                    <b:panel title="#{campaign.name}" 
-                             collapsed="true">
-                        <b:row style="margin-left: 32px; margin-right: 32px; margin-top: 32px;"> 
-                            <h3 class="webvert_form_heading_color_dark">#{campaign.name}</h3>   
-                        </b:row>  
-                        <b:row style=" margin-right: 32px; margin-top: 16px;margin-left: 32px;"> 
-                                <h:outputText value="Started: " style="font-weight: bold"/>
-                                <h:outputText value="#{campaign.generationDate}">
-                                </h:outputText>
-                        </b:row>  
-                        <b:row style=" margin-right: 32px; margin-top: 16px;margin-left: 32px;"> 
-                                <h:outputText value="Payment Account: " style="font-weight: bold"/>
-                                <h:outputText value="#{campaign.paymentAccount}">
-                                </h:outputText>
-                        </b:row>  
-                        <b:row style="margin-left: 32px; margin-right: 32px; margin-top: 32px;"> 
-                            <h4 class="webvert_form_heading_color_dark">Contents</h4>      
-                        </b:row>    
-                        <b:accordion  style="margin-left: 32px; margin-right: 32px; margin-bottom: 32px !important; margin-top: 16px">
-                            <c:forEach items="#{campaignModel.getContentTypesForCampaign(campaign.id)}" 
-                                       var="contentType"
-                                       id="forEachCampaign">
-                                <b:panel title="#{contentType}" style="height: 100%"> 
-                                    <c:forEach items="#{campaignModel.getContentForCampaignId(campaign.id, contentType)}" 
-                                               var="content"
-                                               id="forEachCampaign">
-                                        <b:panel style="margin: 16px; padding-bottom: 0px; height: 120px; position: relative"> 
-                                            <b:column span="3" style="#{contentType eq 'Image' ? 'padding-top: 0px' : 'padding-top: 16px'}">
-                                                <c:choose>
-                                                    <c:when test="#{contentType eq 'Image'}">
-                                                        <img src="#{content.value}" style="height:120px; padding: 16px"/>
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        <h:outputText value="#{content.value}" style="padding-top: 16px"/>
-                                                    </c:otherwise>
-                                                </c:choose>
-                                            </b:column>
-                                            <b:column span="8">
-                                                <b:row style="padding-top: 16px">
-                                                    <b:column span="6">
-                                                        <h:outputText value="Description:" style="font-weight: bold"/>
-                                                    </b:column>
-                                                    <b:column span="6">
+                    <h2 class="webvert_form_heading_color_dark"
+                        style="margin-top: 10px; margin-bottom: 20px">Campaigns</h2>
+                    <!--<h2 class="webvert_form_heading_color_dark">Campaigns</h2>-->
+                    <b:tabLinks style="margin-bottom: 16px;">
+                        <b:navCommandLink value="Currently Running Campaigns"
+                                          icon="tag"
+                                          iconAlign="right"
+                                          update="@form"
+                                          active="#{campaignModel.campaignState eq 'RUNNING'}"
+                                          action="#{campaignModel.setCampaignState('RUNNING')}"/>
+                        <b:navCommandLink value="Ended Campaigns"
+                                          icon="tag"
+                                          iconAlign="right"
+                                          update="@form"
+                                          active="#{campaignModel.campaignState eq 'ENDED'}"
+                                          action="#{campaignModel.setCampaignState('ENDED')}"/>
+                        <b:navCommandLink value="Cancelled Campaigns"
+                                          icon="tag"
+                                          iconAlign="right"
+                                          update="@form"
+                                          active="#{campaignModel.campaignState eq 'CANCELLED'}"
+                                          action="#{campaignModel.setCampaignState('CANCELLED')}"/>
+                        <b:messages />
+                    </b:tabLinks>
+                    <c:choose>
+                        <c:when test="#{not empty campaignModel.campaigns}">
+                            <!--<b:accordion expandedPanels="runningCampaigns">-->
+                            <c:forEach items="#{campaignModel.campaigns}" var="campaign">
+                                <b:panel title="#{campaign.name}"
+                                         collapsed="true">
+                                    <b:row style="margin-left: 32px; margin-right: 32px; margin-top: 32px;">
+                                        <h3 class="webvert_form_heading_color_dark"
+                                            style="margin-top: 10px; margin-bottom: 20px">#{campaign.name}</h3>
+                                    </b:row>
+                                    <b:row style=" margin-right: 32px; margin-top: 16px;margin-left: 32px;">
+                                        <h:outputText value="Started: " style="font-weight: bold"/>
+                                        <h:outputText value="#{campaign.generationDate}">
+                                        </h:outputText>
+                                    </b:row>
+                                    <b:row style=" margin-right: 32px; margin-top: 16px;margin-left: 32px;">
+                                        <h:outputText value="Payment Account: " style="font-weight: bold"/>
+                                        <h:outputText value="#{campaign.paymentAccount}">
+                                        </h:outputText>
+                                    </b:row>
+                                    <b:row style="margin-left: 32px; margin-right: 32px; margin-top: 32px;">
+                                        <h4 class="webvert_form_heading_color_dark"
+                                            style="margin-top: 10px; margin-bottom: 20px">Contents</h4>
+                                    </b:row>
+                                    <b:accordion  style="margin-left: 32px; margin-right: 32px; margin-bottom: 32px !important; margin-top: 16px">
+                                        <c:forEach items="#{campaignModel.getContentTypesForCampaign(campaign.id)}"
+                                                   var="contentType"
+                                                   id="forEachCampaign">
+                                            <b:panel title="#{contentType}" style="height: 100%; margin-bottom: 3em">
+                                                <c:forEach items="#{campaignModel.getContentForCampaignId(campaign.id, contentType)}"
+                                                           var="content"
+                                                           id="forEachCampaign">
+                                                    <b:panel style="margin: 16px; padding-bottom: 0px; height: 120px; position: relative">
+                                                        <b:column span="3" style="#{contentType eq 'Image' ? 'padding-top: 0px' : 'padding-top: 16px'}">
+                                                            <c:choose>
+                                                                <c:when test="#{contentType eq 'Image'}">
+                                                                    <img src="#{content.value}" style="height:120px; padding: 16px"/>
+                                                                </c:when>
+                                                                <c:otherwise>
+                                                                    <h:outputText value="#{content.value}" style="padding-top: 16px"/>
+                                                                </c:otherwise>
+                                                            </c:choose>
+                                                        </b:column>
+                                                        <b:column span="8">
+                                                            <b:row style="padding-top: 16px">
+                                                                <b:column span="6">
+                                                                    <h:outputText value="Description:" style="font-weight: bold"/>
+                                                                </b:column>
+                                                                <b:column span="6">
+                                                                    <h:outputText value="#{content.description}"/>
+                                                                </b:column>
+                                                            </b:row>
+                                                            <b:row style="padding-top: 8px; padding-bottom: 8px">
+                                                                <b:column span="6">
+                                                                    <h:outputText value="Price per request:" style="font-weight: bold"/>
+                                                                </b:column>
+                                                                <b:column span="6">
+                                                                    <h:outputText value="#{content.pricePerRequest}"/>
+                                                                </b:column>
+                                                            </b:row>
+                                                            <b:row style="padding-bottom: 16px">
+                                                                <b:column span="6">
+                                                                    <h:outputText value="Number of requests ordered:" style="font-weight: bold"/>
+                                                                </b:column>
+                                                                <b:column span="6">
+                                                                    <h:outputText value="#{content.numberOfRequests}"/>
+                                                                </b:column>
+                                                            </b:row>
+                                                        </b:column>
+                                                        <b:column span="1" style="height: 100%">
+                                                            <b:commandButton icon="pencil"
+                                                                             value=""
+                                                                             style="bottom: 0; right: 0; position: absolute; margin: 16px;"></b:commandButton>
+                                                        </b:column>
+                                                    </b:panel>
+            <!--                                    <b:dataTable value="#{campaignModel.getContentForCampaignId(campaign.id, contentType)}"
+                                                             var="content"
+                                                             custom-options="info: false"
+                                                             paginated="false"
+                                                             searching="false"
+                                                             style="margin: 0px !important; width: 100%; border: 0px">
+                                                    <b:dataTableColumn label="#{contentType eq 'Image' ? 'Image' : 'Text'}"
+                                                                       orderable="#{contentType eq 'Image' ? 'false' : 'true'}">
+                                                        <c:choose>
+                                                            <c:when test="#{contentType eq 'Image'}">
+                                                                <img src="#{content.value}" style="max-width:100px;max-height:100px;"/>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <h:outputText value="#{content.value}"/>
+                                                            </c:otherwise>
+                                                        </c:choose>
+                                                    </b:dataTableColumn>
+                                                    <b:dataTableColumn orderable="true"
+                                                                       label="Description">
                                                         <h:outputText value="#{content.description}"/>
-                                                    </b:column>
-                                                </b:row>
-                                                <b:row style="padding-top: 8px; padding-bottom: 8px">
-                                                    <b:column span="6">
-                                                        <h:outputText value="Price per request:" style="font-weight: bold"/>
-                                                    </b:column>
-                                                    <b:column span="6">
+                                                    </b:dataTableColumn>
+                                                    <b:dataTableColumn orderable="true"
+                                                                       label="Price per request">
                                                         <h:outputText value="#{content.pricePerRequest}"/>
-                                                    </b:column>
-                                                </b:row>
-                                                <b:row style="padding-bottom: 16px">
-                                                    <b:column span="6">
-                                                        <h:outputText value="Number of requests ordered:" style="font-weight: bold"/>
-                                                    </b:column>
-                                                    <b:column span="6">
+                                                    </b:dataTableColumn>
+                                                    <b:dataTableColumn orderable="true"
+                                                                       label="Number of requests ordered">
                                                         <h:outputText value="#{content.numberOfRequests}"/>
-                                                    </b:column>
-                                                </b:row>
-                                            </b:column>
-                                            <b:column span="1" style="height: 100%">
-                                                <b:commandButton icon="pencil"
-                                                                 value=""
-                                                                 style="bottom: 0; right: 0; position: absolute; margin: 16px;"></b:commandButton>
-                                            </b:column>
-                                        </b:panel>
-<!--                                    <b:dataTable value="#{campaignModel.getContentForCampaignId(campaign.id, contentType)}" 
-                                                 var="content" 
-                                                 custom-options="info: false"
-                                                 paginated="false"
-                                                 searching="false"
-                                                 style="margin: 0px !important; width: 100%; border: 0px">
-                                        <b:dataTableColumn label="#{contentType eq 'Image' ? 'Image' : 'Text'}"
-                                                           orderable="#{contentType eq 'Image' ? 'false' : 'true'}">
-                                            <c:choose>
-                                                <c:when test="#{contentType eq 'Image'}">
-                                                    <img src="#{content.value}" style="max-width:100px;max-height:100px;"/>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <h:outputText value="#{content.value}"/>
-                                                </c:otherwise>
-                                            </c:choose>                                            
-                                        </b:dataTableColumn>
-                                        <b:dataTableColumn orderable="true" 
-                                                           label="Description">
-                                            <h:outputText value="#{content.description}"/>
-                                        </b:dataTableColumn>
-                                        <b:dataTableColumn orderable="true" 
-                                                           label="Price per request">
-                                            <h:outputText value="#{content.pricePerRequest}"/>
-                                        </b:dataTableColumn>
-                                        <b:dataTableColumn orderable="true" 
-                                                           label="Number of requests ordered">
-                                            <h:outputText value="#{content.numberOfRequests}"/>
-                                        </b:dataTableColumn>
-                                        <b:dataTableColumn header-style-class="hidden">
-                                            <b:commandButton icon="pencil"
-                                                             value=""></b:commandButton>
-                                        </b:dataTableColumn>
-                                    </b:dataTable>-->
-                                    </c:forEach>
+                                                    </b:dataTableColumn>
+                                                    <b:dataTableColumn header-style-class="hidden">
+                                                        <b:commandButton icon="pencil"
+                                                                         value=""></b:commandButton>
+                                                    </b:dataTableColumn>
+                                                </b:dataTable>-->
+                                                </c:forEach>
+                                            </b:panel>
+                                        </c:forEach>
+                                    </b:accordion>
                                 </b:panel>
                             </c:forEach>
-                        </b:accordion>    
-                    </b:panel>
-                </c:forEach>
+                        </c:when>
+                        <c:otherwise>
+                                <h2 class="webvert_form_heading_color_dark"
+                                    style="text-align: center">No campaigns available.</h2>
+                        </c:otherwise>
+                    </c:choose>
                 <!--</b:accordion>-->
             </ui:define>
         </ui:composition>

@@ -17,17 +17,18 @@
 package de.oth.fkretschmar.advertisementproject.ui.models;
 
 import de.oth.fkretschmar.advertisementproject.entities.campaign.Campaign;
+import de.oth.fkretschmar.advertisementproject.entities.campaign.CampaignState;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.Content;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.ContentType;
 import de.oth.fkretschmar.advertisementproject.ui.models.base.AbstractModel;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import lombok.Getter;
+import org.omnifaces.cdi.ViewScoped;
 
 /**
  *
@@ -46,10 +47,49 @@ public class CampaignModel extends AbstractModel {
     private ApplicationModel applicationModel;
     
     /**
-     * Stores the campaigns that are currently being displayed in the campaign
-     * overview.
+     * Stores the state for which campaigns are being displayed by this model.
      */
-    private List<Campaign> campaigns;
+    @Getter
+    private CampaignState campaignState;
+    
+
+    // --------------- Public getter und setter ---------------
+    
+    
+    /**
+     * Gets all campaigns for the current user.
+     * 
+     * @return 
+     */
+    public Collection<Campaign> getCampaigns() {
+        Collection<Campaign> campaigns = this.applicationModel.processCurrentUser(
+                        user -> user.getCampaigns());
+        
+        if (this.campaignState == null)
+            this.campaignState = CampaignState.RUNNING;
+        
+        return campaigns.stream()
+                .filter(campaign -> campaign.getCampaignState() == this.campaignState)
+                .collect(Collectors.toList());
+    }
+    
+    
+    /**
+     * Sets the campaign state of the campaigns that will be displayed.
+     * 
+     * @param campaignStateName the name of the campaign state.
+     */
+    public void setCampaignState(String campaignStateName) {
+        if(campaignStateName.equalsIgnoreCase(CampaignState.RUNNING.name())) {
+            this.campaignState = CampaignState.RUNNING;
+        }
+        else if (campaignStateName.equalsIgnoreCase(CampaignState.CANCELLED.name())) {
+            this.campaignState = CampaignState.CANCELLED;
+        }
+        else if (campaignStateName.equalsIgnoreCase(CampaignState.ENDED.name())) {
+            this.campaignState = CampaignState.ENDED;
+        }
+    }
     
 
     // --------------- Public methods ---------------
@@ -62,7 +102,7 @@ public class CampaignModel extends AbstractModel {
      *                          content type.
      * @return 
      */
-    public List<Content> getContentForCampaignId(String id, String contentTypeName) {
+    public Collection<Content> getContentForCampaignId(String id, String contentTypeName) {
         Optional<Campaign> selectedCampaign = 
                 this.applicationModel.processCurrentUser(
                         user -> user.getCampaigns()
@@ -97,7 +137,7 @@ public class CampaignModel extends AbstractModel {
      *              returned.
      * @return 
      */
-    public List<String> getContentTypesForCampaign(String id) {
+    public Collection<String> getContentTypesForCampaign(String id) {
         Optional<Campaign> selectedCampaign = this.applicationModel.processCurrentUser(
                         user -> user.getCampaigns()
                                 .stream()
@@ -122,18 +162,6 @@ public class CampaignModel extends AbstractModel {
                 .collect(Collectors.toList());
         
         return contentTypes;
-    }
-    
-    /**
-     * Gets all campaigns for the current user.
-     * 
-     * @return 
-     */
-    public List<Campaign> getCurrentUserCampaigns() {
-        Collection<Campaign> campaigns = this.applicationModel.processCurrentUser(
-                        user -> user.getCampaigns());
-        
-        return new ArrayList<Campaign>(campaigns);
     }
     
 

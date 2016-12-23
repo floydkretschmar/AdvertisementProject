@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:b="http://bootsfaces.net/ui">
+    <h:head>
+        <h:outputStylesheet library="css" name="style.css"/>
+    </h:head>
+    <h:body>
+        <ui:composition template="./resources/templates/OverviewContentTemplate.xhtml">
+            <ui:define name="main_content">
+                <b:container style="width: 60%; height: 100%; padding: 0px; margin: 0px">
+                    <h2 class="webvert_form_heading_color_dark"
+                        style="margin-top: 10px; margin-bottom: 20px">Create a new campaign</h2>
+                    <b:row style="padding-top: 16px">
+                        <b:column span="4">
+                            <h:outputText value="Name:" style="font-weight: bold"/>
+                        </b:column>
+                        <b:column span="8">
+                            <b:inputText></b:inputText>
+                        </b:column>
+                    </b:row>
+                </b:container>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+
