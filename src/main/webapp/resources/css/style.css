@@ -203,11 +203,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 .panel-group {
     height: 100%;
+    margin-bottom: 0px !important;
 }
 
 .panel-body {
     padding: 0px !important;
-    border: 0px !important;
+    height: 100%;
 }
 
 td
@@ -220,4 +221,8 @@ td
     word-wrap: break-word !important;       /* Internet Explorer 5.5+ */
     word-break: break-all !important;
     white-space: normal !important;
+}
+
+.panel-collapse.collapse.in {
+    height: 100%;
 }
