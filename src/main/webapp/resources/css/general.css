@@ -1,0 +1,90 @@
+/*
+Copyright (C) 2016 Floyd
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+/* 
+    Created on : 11.12.2016, 17:59:57
+    Author     : Floyd
+*/
+
+/* ------------ HEADINGS ------------*/
+
+.webvert_heading_color {
+    color: #EEE;
+}
+
+.webvert_heading_color_dark {
+    color: #888;
+}
+
+.webvert_heading_layout {
+    margin-bottom: 20px;
+    margin-top: 10px;
+}
+
+/* ------------ INPUT FIELDS ------------*/
+
+.form-control.webvert_input_control_invalid {
+    border-color: #ff9999;
+    background-color: #ffe6e6;
+}
+
+
+/* ------------ BUTTONS ------------*/
+
+
+.btn-primary.webvert_primary_button_color {
+    color: #111;
+    background-color: #CDCDCD;
+}
+
+.btn-primary.webvert_primary_button_color:hover, .btn-primary.webvert_primary_button_color:focus {
+    color: #111;
+    background-color: #BBB;
+    border-color: #aaa;
+}
+
+.btn.webvert_button_bordercolor {
+    border-color: #aaa;
+}
+
+/* ------------ OVERRIDE EXISTING ------------*/
+
+.panel-group {
+    height: 100%;
+    margin-bottom: 0px !important;
+}
+
+.panel-body {
+    padding: 0px !important;
+    height: 100%;
+    /*display: table;*/
+}
+
+td
+{
+    white-space: -moz-pre-wrap !important;  /* Mozilla, since 1999 */
+    white-space: -webkit-pre-wrap !important; /*Chrome & Safari */ 
+    white-space: pre-wrap !important;      /* Opera 4-6 */
+    white-space: -o-pre-wrap !important;    /* Opera 7 */
+    white-space: pre-wrap !important;       /* css-3 */
+    word-wrap: break-word !important;       /* Internet Explorer 5.5+ */
+    word-break: break-all !important;
+    white-space: normal !important;
+}
+
+.panel-collapse.collapse.in {
+    height: 100%;
+}

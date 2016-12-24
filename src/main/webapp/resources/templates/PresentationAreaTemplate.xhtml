@@ -10,52 +10,52 @@
     </h:head>
 
     <h:body>
-        <ui:composition template="LayoutTemplate.xhtml">
+        <ui:composition template="BaseLayoutTemplate.xhtml">
             <ui:define name="content">
                 <h:form prependId="false" 
-                        class="webvert_main_content_form">
-                    <b:row style="margin: 0; height: 100%">
-                        <b:column span="2">
+                        class="webvert_pa_form_layout">
+                    <b:row class="webvert_pa_row_layout">
+                        <b:column span="2" class="webvert_pa_column_layout">
                             <ui:insert name="menu">
                                 <b:panel title="Menu"
-                                         class="webvert_main_menu_layout">
+                                         class="webvert_pa_menu_layout">
                                     <b:listLinks>
                                         <b:navLink header="Campaigns"
-                                                   class="webvert_main_menu_item_layout"
+                                                   class="webvert_pa_menu_item_layout"
                                                    style="margin-top: 20px;"/>
                                         <b:navCommandLink 
                                                    value="Overview" 
                                                    icon="globe" 
                                                    iconAlign="left" 
                                                    action="overview"
-                                                   class="webvert_main_menu_item_layout"/>
+                                                   class="webvert_pa_menu_item_layout"/>
                                         <b:navCommandLink 
                                                    value="New Campaign" 
                                                    icon="pencil" 
                                                    iconAlign="left" 
                                                    update="@form"
                                                    action="newCampaign"
-                                                   class="webvert_main_menu_item_layout"/>
+                                                   class="webvert_pa_menu_item_layout"/>
                                         <b:navCommandLink 
                                                    value="Bills" 
                                                    icon="euro" 
                                                    iconAlign="left" 
                                                    update="@form"
-                                                   class="webvert_main_menu_item_layout"/>
+                                                   class="webvert_pa_menu_item_layout"/>
                                         <b:navLink header="User"
-                                                   class="webvert_main_menu_item_layout"/>
+                                                   class="webvert_pa_menu_item_layout"/>
                                         <b:navCommandLink 
                                                    value="Profile" 
                                                    icon="user" 
                                                    iconAlign="left" 
                                                    update="@form"
-                                                   class="webvert_main_menu_item_layout"/>
+                                                   class="webvert_pa_menu_item_layout"/>
                                     </b:listLinks>
                                 </b:panel>
                             </ui:insert>
                         </b:column>
-                        <b:column span="10" style="height: 100%">
-                            <b:panel class="webvert_main_content_layout">
+                        <b:column span="10" class="webvert_pa_column_layout">
+                            <b:panel class="webvert_pa_content_layout">
                                 <ui:insert name="main_content">
                                     Main Content
                                 </ui:insert>

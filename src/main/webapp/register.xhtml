@@ -6,13 +6,13 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
-        <h:outputStylesheet library="css" name="style.css"  />
+        <h:outputStylesheet library="css" name="prelogin.css"/>
         <f:metadata>
             <f:viewAction action="#{applicationModel.redirectFirstPage()}"/>
         </f:metadata>
     </h:head>
     <h:body class="webvert">
-        <ui:composition template="./resources/templates/LayoutTemplate.xhtml">
+        <ui:composition template="./resources/templates/BaseLayoutTemplate.xhtml">
             <ui:define name="content">
                 <b:container class="webvert_prelogin_container">
                     <h:form class="form-signin
@@ -21,8 +21,8 @@
                         <b:row>
                             <b:column medium-screen="12">
                                 <h2 class="form-signin-heading 
-                                           webvert_form_heading_color
-                                           webvert_form_heading_layout">Register</h2>
+                                           webvert_heading_color
+                                           webvert_heading_layout">Register</h2>
                                 </b:column>
                         </b:row>
                         <b:row>
@@ -63,7 +63,7 @@
                         </b:row>
                         <b:row>
                             <b:column medium-screen="12">
-                                <h4 id="personalInfo" class="form-signin-heading webvert_form_heading_color">
+                                <h4 id="personalInfo" class="form-signin-heading webvert_heading_color">
                                     Personal Information
                                 </h4>
                             </b:column>
@@ -96,7 +96,7 @@
                         </b:row>
                         <b:row>
                             <b:column medium-screen="12">
-                                <h4 id="personalInfo" class="form-signin-heading webvert_form_heading_color">
+                                <h4 id="personalInfo" class="form-signin-heading webvert_heading_color">
                                     Address
                                 </h4>
                             </b:column>

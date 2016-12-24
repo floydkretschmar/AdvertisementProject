@@ -11,9 +11,9 @@
         <h:outputStylesheet library="css" name="style.css"  />
     </h:head>
     <h:body>
-        <ui:composition template="./resources/templates/OverviewContentTemplate.xhtml">
+        <ui:composition template="./resources/templates/PresentationAreaTemplate.xhtml">
             <ui:define name="main_content">
-                    <h2 class="webvert_form_heading_color_dark"
+                    <h2 class="webvert_heading_color_dark"
                         style="margin-top: 10px; margin-bottom: 20px">Campaigns</h2>
                     <!--<h2 class="webvert_form_heading_color_dark">Campaigns</h2>-->
                     <b:tabLinks style="margin-bottom: 16px;">
@@ -44,7 +44,7 @@
                                 <b:panel title="#{campaign.name}"
                                          collapsed="true">
                                     <b:row style="margin-left: 32px; margin-right: 32px; margin-top: 32px;">
-                                        <h3 class="webvert_form_heading_color_dark"
+                                        <h3 class="webvert_heading_color_dark"
                                             style="margin-top: 10px; margin-bottom: 20px">#{campaign.name}</h3>
                                     </b:row>
                                     <b:row style=" margin-right: 32px; margin-top: 16px;margin-left: 32px;">
@@ -58,14 +58,14 @@
                                         </h:outputText>
                                     </b:row>
                                     <b:row style="margin-left: 32px; margin-right: 32px; margin-top: 32px;">
-                                        <h4 class="webvert_form_heading_color_dark"
+                                        <h4 class="webvert_heading_color_dark"
                                             style="margin-top: 10px; margin-bottom: 20px">Contents</h4>
                                     </b:row>
                                     <b:accordion  style="margin-left: 32px; margin-right: 32px; margin-bottom: 32px !important; margin-top: 16px">
                                         <c:forEach items="#{campaignModel.getContentTypesForCampaign(campaign.id)}"
                                                    var="contentType"
                                                    id="forEachCampaign">
-                                            <b:panel title="#{contentType}" style="height: 100%; margin-bottom: 3em">
+                                            <b:panel title="#{contentType}" style="height: 100%">
                                                 <c:forEach items="#{campaignModel.getContentForCampaignId(campaign.id, contentType)}"
                                                            var="content"
                                                            id="forEachCampaign">
@@ -154,7 +154,7 @@
                             </c:forEach>
                         </c:when>
                         <c:otherwise>
-                                <h2 class="webvert_form_heading_color_dark"
+                                <h2 class="webvert_heading_color_dark"
                                     style="text-align: center">No campaigns available.</h2>
                         </c:otherwise>
                     </c:choose>

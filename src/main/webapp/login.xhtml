@@ -6,13 +6,13 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
-        <h:outputStylesheet library="css" name="style.css"/>
+        <h:outputStylesheet library="css" name="prelogin.css"/>
         <f:metadata>
             <f:viewAction action="#{applicationModel.redirectFirstPage()}"/>
         </f:metadata>
     </h:head>
     <h:body>
-        <ui:composition template="./resources/templates/LayoutTemplate.xhtml">
+        <ui:composition template="./resources/templates/BaseLayoutTemplate.xhtml">
             <ui:define name="content">
                 <b:container class="webvert_prelogin_container">
                     <h:form styleClass="form-signin webvert_prelogin_form" 
@@ -20,8 +20,8 @@
                         <b:row>
                             <b:column medium-screen="12">
                                 <h1 class="form-signin-heading 
-                                           webvert_form_heading_color
-                                           webvert_form_heading_layout">Sign in</h1>
+                                           webvert_heading_color
+                                           webvert_heading_layout">Sign in</h1>
                             </b:column>
                         </b:row>
                         <b:row>
