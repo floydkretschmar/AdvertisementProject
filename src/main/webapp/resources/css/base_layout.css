@@ -19,7 +19,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     Author     : fkre
 */
 
-.webvert_body {
+.webvert_bl_body {
     position: relative;
     min-height: 100%; /* to fill screen 100% even with less content */
     height: 100%; /* to allocate only 100% height */
@@ -30,20 +30,20 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     background-size: cover;
 }
 
-.webvert_html { 
+.webvert_bl_html { 
     height: 100%; 
 }
 
 /* ------------ HEADER ------------*/
 
-.container.webvert_header_layout {
+.container.webvert_bl_header_layout {
     border-bottom: 1px solid #aaa;
     height:80px;
     width:100%;
     top: 0;
 }
 
-.webvert_header_logo {
+.webvert_bl_header_logo {
     height: 100%;
     margin: 0;
     display: block;
@@ -52,7 +52,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 /* ------------ CONTENT ------------*/
 
-.webvert_content {
+.webvert_bl_content {
     height: calc(100% - 115px); /* allocate the remaining width except the header + footer + borders */
     width: 100%;
     margin: 0 auto;
@@ -60,43 +60,43 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 }
 
 
-.webvert_content_color {
+.webvert_bl_content_color {
     background-color: transparent;
 }
 
 /* ------------ FOOTER ------------*/
 
 
-.webvert_headerfooter_color {
+.webvert_bl_header_footer_color {
     opacity: 0.7;
     background: #FFF;
 }
 
-.container.webvert_footer_layout {
+.container.webvert_bl_footer_layout {
     height:35px;
     width:100%;
     border-top: 1px solid #aaa;
     display: table;
 }
 
-.row.webvert_footer_row_layout {
+.row.webvert_bl_footer_row_layout {
     display: table-cell;
     vertical-align: middle;
     height: 100%;
 }
 
-.webvert_footer_column_layout {
+.webvert_bl_footer_column_layout {
     text-align: center;
 }
 
-.webvert_footer_text_color {
+.webvert_bl_footer_text_color {
     color: #000;
 }
 
-.webvert_footer_link_color {
+.webvert_bl_footer_link_color {
     color: #000;
 }
 
-.webvert_footer_link_color:hover, .webvert_footer_link_color:visited{
+.webvert_bl_footer_link_color:hover, .webvert_bl_footer_link_color:visited{
     color: #000;
 }

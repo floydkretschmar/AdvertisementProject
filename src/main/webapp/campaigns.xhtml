@@ -3,7 +3,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:b="http://bootsfaces.net/ui"
-      xmlns:f="http://java.sun.com/jsf/core"
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
@@ -13,10 +12,12 @@
     <h:body>
         <ui:composition template="./resources/templates/PresentationAreaTemplate.xhtml">
             <ui:define name="main_content">
-                    <h2 class="webvert_heading_color_dark"
-                        style="margin-top: 10px; margin-bottom: 20px">Campaigns</h2>
+                    <h2 class="webvert_heading_color_dark 
+                               webvert_c_heading_layout">
+                        Campaigns
+                    </h2>
                     <!--<h2 class="webvert_form_heading_color_dark">Campaigns</h2>-->
-                    <b:tabLinks style="margin-bottom: 16px;">
+                    <b:tabLinks class="webvert_c_tab_layout">
                         <b:navCommandLink value="Currently Running Campaigns"
                                           icon="tag"
                                           iconAlign="right"
@@ -43,25 +44,30 @@
                             <c:forEach items="#{campaignModel.campaigns}" var="campaign">
                                 <b:panel title="#{campaign.name}"
                                          collapsed="true">
-                                    <b:row style="margin-left: 32px; margin-right: 32px; margin-top: 32px;">
-                                        <h3 class="webvert_heading_color_dark"
-                                            style="margin-top: 10px; margin-bottom: 20px">#{campaign.name}</h3>
+                                    <b:row class="webvert_c_row_layout webvert_c_first_row_layout">
+                                        <h3 class="webvert_heading_color_dark
+                                                   webvert_c_inner_heading_layout">
+                                            #{campaign.name}
+                                        </h3>
                                     </b:row>
-                                    <b:row style=" margin-right: 32px; margin-top: 16px;margin-left: 32px;">
-                                        <h:outputText value="Started: " style="font-weight: bold"/>
-                                        <h:outputText value="#{campaign.generationDate}">
-                                        </h:outputText>
+                                    <b:row class="webvert_c_row_layout webvert_c_other_row_layout">
+                                        <h:outputText value="Started: "
+                                                      class="webvert_c_content_lable_layout"/>
+                                        <h:outputText value="#{campaign.generationDate}"/>
                                     </b:row>
-                                    <b:row style=" margin-right: 32px; margin-top: 16px;margin-left: 32px;">
-                                        <h:outputText value="Payment Account: " style="font-weight: bold"/>
-                                        <h:outputText value="#{campaign.paymentAccount}">
-                                        </h:outputText>
+                                    <b:row class="webvert_c_row_layout webvert_c_other_row_layout">
+                                        <h:outputText value="Payment Account: "
+                                                      class="webvert_c_content_lable_layout"/>
+                                        <h:outputText value="#{campaign.paymentAccount}"/>
                                     </b:row>
-                                    <b:row style="margin-left: 32px; margin-right: 32px; margin-top: 32px;">
-                                        <h4 class="webvert_heading_color_dark"
-                                            style="margin-top: 10px; margin-bottom: 20px">Contents</h4>
+                                    <b:row class="webvert_c_row_layout webvert_c_other_row_layout">
+                                        <h4 class="webvert_heading_color_dark 
+                                                   webvert_c_inner_heading_layout">
+                                            Contents
+                                        </h4>
                                     </b:row>
-                                    <b:accordion  style="margin-left: 32px; margin-right: 32px; margin-bottom: 32px !important; margin-top: 16px">
+                                    <b:accordion class="webvert_c_row_layout 
+                                                        webvert_c_content_accordion_layout">
                                         <c:forEach items="#{campaignModel.getContentTypesForCampaign(campaign.id)}"
                                                    var="contentType"
                                                    id="forEachCampaign">
@@ -69,37 +75,43 @@
                                                 <c:forEach items="#{campaignModel.getContentForCampaignId(campaign.id, contentType)}"
                                                            var="content"
                                                            id="forEachCampaign">
-                                                    <b:panel style="margin: 16px; padding-bottom: 0px; height: 120px; position: relative">
-                                                        <b:column span="3" style="#{contentType eq 'Image' ? 'padding-top: 0px' : 'padding-top: 16px'}">
+                                                    <b:panel class="webvert_c_content_accordion_panel_layout">
+                                                        <b:column span="3" 
+                                                                  style="#{contentType eq 'Image' ? 'padding-top: 0px' : 'padding-top: 16px'}">
                                                             <c:choose>
                                                                 <c:when test="#{contentType eq 'Image'}">
-                                                                    <img src="#{content.value}" style="height:120px; padding: 16px"/>
+                                                                    <img src="#{content.value}" 
+                                                                         class="webvert_c_content_image_layout"/>
                                                                 </c:when>
                                                                 <c:otherwise>
-                                                                    <h:outputText value="#{content.value}" style="padding-top: 16px"/>
+                                                                    <h:outputText value="#{content.value}" 
+                                                                                  style="padding-top: 16px"/>
                                                                 </c:otherwise>
                                                             </c:choose>
                                                         </b:column>
                                                         <b:column span="8">
-                                                            <b:row style="padding-top: 16px">
+                                                            <b:row class="webvert_c_content_lable_row_layout">
                                                                 <b:column span="6">
-                                                                    <h:outputText value="Description:" style="font-weight: bold"/>
+                                                                    <h:outputText value="Description:" 
+                                                                                  class="webvert_c_content_lable_layout"/>
                                                                 </b:column>
                                                                 <b:column span="6">
                                                                     <h:outputText value="#{content.description}"/>
                                                                 </b:column>
                                                             </b:row>
-                                                            <b:row style="padding-top: 8px; padding-bottom: 8px">
+                                                            <b:row class="webvert_c_content_lable_row_layout">
                                                                 <b:column span="6">
-                                                                    <h:outputText value="Price per request:" style="font-weight: bold"/>
+                                                                    <h:outputText value="Price per request:"
+                                                                                  class="webvert_c_content_lable_layout"/>
                                                                 </b:column>
                                                                 <b:column span="6">
                                                                     <h:outputText value="#{content.pricePerRequest}"/>
                                                                 </b:column>
                                                             </b:row>
-                                                            <b:row style="padding-bottom: 16px">
+                                                            <b:row class="webvert_c_content_lable_row_layout">
                                                                 <b:column span="6">
-                                                                    <h:outputText value="Number of requests ordered:" style="font-weight: bold"/>
+                                                                    <h:outputText value="Number of requests ordered:"
+                                                                                  class="webvert_c_content_lable_layout"/>
                                                                 </b:column>
                                                                 <b:column span="6">
                                                                     <h:outputText value="#{content.numberOfRequests}"/>
@@ -109,43 +121,9 @@
                                                         <b:column span="1" style="height: 100%">
                                                             <b:commandButton icon="pencil"
                                                                              value=""
-                                                                             style="bottom: 0; right: 0; position: absolute; margin: 16px;"></b:commandButton>
+                                                                             class="webvert_c_content_edit_button_layout"/>
                                                         </b:column>
                                                     </b:panel>
-            <!--                                    <b:dataTable value="#{campaignModel.getContentForCampaignId(campaign.id, contentType)}"
-                                                             var="content"
-                                                             custom-options="info: false"
-                                                             paginated="false"
-                                                             searching="false"
-                                                             style="margin: 0px !important; width: 100%; border: 0px">
-                                                    <b:dataTableColumn label="#{contentType eq 'Image' ? 'Image' : 'Text'}"
-                                                                       orderable="#{contentType eq 'Image' ? 'false' : 'true'}">
-                                                        <c:choose>
-                                                            <c:when test="#{contentType eq 'Image'}">
-                                                                <img src="#{content.value}" style="max-width:100px;max-height:100px;"/>
-                                                            </c:when>
-                                                            <c:otherwise>
-                                                                <h:outputText value="#{content.value}"/>
-                                                            </c:otherwise>
-                                                        </c:choose>
-                                                    </b:dataTableColumn>
-                                                    <b:dataTableColumn orderable="true"
-                                                                       label="Description">
-                                                        <h:outputText value="#{content.description}"/>
-                                                    </b:dataTableColumn>
-                                                    <b:dataTableColumn orderable="true"
-                                                                       label="Price per request">
-                                                        <h:outputText value="#{content.pricePerRequest}"/>
-                                                    </b:dataTableColumn>
-                                                    <b:dataTableColumn orderable="true"
-                                                                       label="Number of requests ordered">
-                                                        <h:outputText value="#{content.numberOfRequests}"/>
-                                                    </b:dataTableColumn>
-                                                    <b:dataTableColumn header-style-class="hidden">
-                                                        <b:commandButton icon="pencil"
-                                                                         value=""></b:commandButton>
-                                                    </b:dataTableColumn>
-                                                </b:dataTable>-->
                                                 </c:forEach>
                                             </b:panel>
                                         </c:forEach>
