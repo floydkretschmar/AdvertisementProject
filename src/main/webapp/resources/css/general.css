@@ -41,6 +41,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     background-color: #ffe6e6;
 }
 
+.webvert_bold_lable_layout {
+    font-weight: bold;
+}
+
 
 /* ------------ BUTTONS ------------*/
 

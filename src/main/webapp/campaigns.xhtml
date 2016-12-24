@@ -13,7 +13,7 @@
         <ui:composition template="./resources/templates/PresentationAreaTemplate.xhtml">
             <ui:define name="main_content">
                     <h2 class="webvert_heading_color_dark 
-                               webvert_c_heading_layout">
+                               webvert_heading_layout">
                         Campaigns
                     </h2>
                     <!--<h2 class="webvert_form_heading_color_dark">Campaigns</h2>-->
@@ -52,12 +52,12 @@
                                     </b:row>
                                     <b:row class="webvert_c_row_layout webvert_c_other_row_layout">
                                         <h:outputText value="Started: "
-                                                      class="webvert_c_content_lable_layout"/>
+                                                      class="webvert_bold_lable_layout"/>
                                         <h:outputText value="#{campaign.generationDate}"/>
                                     </b:row>
                                     <b:row class="webvert_c_row_layout webvert_c_other_row_layout">
                                         <h:outputText value="Payment Account: "
-                                                      class="webvert_c_content_lable_layout"/>
+                                                      class="webvert_bold_lable_layout"/>
                                         <h:outputText value="#{campaign.paymentAccount}"/>
                                     </b:row>
                                     <b:row class="webvert_c_row_layout webvert_c_other_row_layout">
@@ -93,7 +93,7 @@
                                                             <b:row class="webvert_c_content_lable_row_layout">
                                                                 <b:column span="6">
                                                                     <h:outputText value="Description:" 
-                                                                                  class="webvert_c_content_lable_layout"/>
+                                                                                  class="webvert_bold_lable_layout"/>
                                                                 </b:column>
                                                                 <b:column span="6">
                                                                     <h:outputText value="#{content.description}"/>
@@ -102,7 +102,7 @@
                                                             <b:row class="webvert_c_content_lable_row_layout">
                                                                 <b:column span="6">
                                                                     <h:outputText value="Price per request:"
-                                                                                  class="webvert_c_content_lable_layout"/>
+                                                                                  class="webvert_bold_lable_layout"/>
                                                                 </b:column>
                                                                 <b:column span="6">
                                                                     <h:outputText value="#{content.pricePerRequest}"/>
@@ -111,7 +111,7 @@
                                                             <b:row class="webvert_c_content_lable_row_layout">
                                                                 <b:column span="6">
                                                                     <h:outputText value="Number of requests ordered:"
-                                                                                  class="webvert_c_content_lable_layout"/>
+                                                                                  class="webvert_bold_lable_layout"/>
                                                                 </b:column>
                                                                 <b:column span="6">
                                                                     <h:outputText value="#{content.numberOfRequests}"/>
