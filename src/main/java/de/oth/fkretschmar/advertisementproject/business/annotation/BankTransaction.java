@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.oth.fkretschmar.advertisementproject.business.services;
+package de.oth.fkretschmar.advertisementproject.business.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -30,6 +30,6 @@ import javax.inject.Qualifier;
 @Retention(RetentionPolicy.RUNTIME)	
 @Target({ElementType.METHOD, ElementType.FIELD, 
         ElementType.PARAMETER, ElementType.TYPE})	
-public @interface PayPal {
+public @interface BankTransaction {
     
 }

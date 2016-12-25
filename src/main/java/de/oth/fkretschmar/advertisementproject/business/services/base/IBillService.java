@@ -41,5 +41,5 @@ public interface IBillService {
      * 
      * @param   bill    that will be deleted.
      */
-    public void delete(Bill bill);
+    public void deleteBill(Bill bill);
 }

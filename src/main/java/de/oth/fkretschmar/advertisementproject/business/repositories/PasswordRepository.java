@@ -21,12 +21,14 @@ import de.oth.fkretschmar.advertisementproject.entities.user.Password;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import javax.enterprise.context.Dependent;
 
 /**
  * Repository that defines the default CRUD methods for an {@link Password}
  * 
  * @author  fkre    Floyd Kretschmar
  */
+@Dependent
 public class PasswordRepository extends AbstractJPARepository<Long, Password> {
     
     // --------------- Public constructors ---------------

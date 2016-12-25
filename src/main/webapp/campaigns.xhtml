@@ -4,7 +4,8 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:b="http://bootsfaces.net/ui"
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <title>Webvert</title>
         <h:outputStylesheet library="css" name="style.css"  />
@@ -58,7 +59,9 @@
                                     <b:row class="webvert_c_row_layout webvert_c_other_row_layout">
                                         <h:outputText value="Payment Account: "
                                                       class="webvert_bold_lable_layout"/>
-                                        <h:outputText value="#{campaign.paymentAccount}"/>
+                                        <h:outputText value="#{campaign.paymentAccount}">
+                                            <f:converter binding="#{campaignModel.accountConverter}"/>	
+                                        </h:outputText>
                                     </b:row>
                                     <b:row class="webvert_c_row_layout webvert_c_other_row_layout">
                                         <h4 class="webvert_heading_color_dark 

@@ -21,12 +21,14 @@ import de.oth.fkretschmar.advertisementproject.entities.campaign.TargetContext;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import javax.enterprise.context.Dependent;
 
 /**
  * Repository that defines the default CRUD methods for an {@link TargetContext}.
  *
  * @author fkre
  */
+@Dependent
 public class TargetContextRepository extends AbstractJPARepository<Long, TargetContext> {
     
     // --------------- Public constructors ---------------

@@ -19,6 +19,7 @@ package de.oth.fkretschmar.advertisementproject.business.services;
 import de.oth.fkretschmar.advertisementproject.business.repositories.AddressRepository;
 import de.oth.fkretschmar.advertisementproject.business.repositories.AccountRepository;
 import de.oth.fkretschmar.advertisementproject.business.repositories.UserRepository;
+import de.oth.fkretschmar.advertisementproject.business.services.base.IAccountService;
 import de.oth.fkretschmar.advertisementproject.business.services.base.ICampaignService;
 import de.oth.fkretschmar.advertisementproject.business.services.base.IPasswordService;
 import de.oth.fkretschmar.advertisementproject.business.services.base.IUserService;
@@ -54,7 +55,7 @@ public class UserService implements Serializable, IUserService {
      * Stores the repository used to manage {@link Account} entities.
      */
     @Inject
-    private AccountRepository accountRepository;
+    private IAccountService accountService;
     
     /**
      * Stores the repository used to manage {@link Campaign} entities.
@@ -124,7 +125,7 @@ public class UserService implements Serializable, IUserService {
         Password currentPassword = user.getPassword();
         
         user = this.userRepository.merge(user);
-        this.passwordService.delete(currentPassword);
+        this.passwordService.deletePassword(currentPassword);
         
         this.passwordService.createPassword(newSafePassword);
         user.setPassword(newSafePassword);
@@ -148,7 +149,7 @@ public class UserService implements Serializable, IUserService {
             throw new IllegalArgumentException("The user was not set.");
         }
         
-        this.accountRepository.persist(account);
+        this.accountService.createAccount(account);
         user = this.userRepository.merge(user);
         user.addAccount(account);
         return user;
@@ -202,7 +203,7 @@ public class UserService implements Serializable, IUserService {
         user.setAddress(null);
         
         // remove password
-        this.passwordService.delete(user.getPassword());
+        this.passwordService.deletePassword(user.getPassword());
         user.setPassword(null);
         
         // remove all contents
@@ -211,7 +212,7 @@ public class UserService implements Serializable, IUserService {
         for (int i = 0; i < accounts.length; i++) {
             if(accounts[i] instanceof Account){
                 user.removeAccount((Account)accounts[i]);
-                this.accountRepository.remove((Account)accounts[i]);
+                this.accountService.deleteAccount((Account)accounts[i]);
             }
         }
         
@@ -259,7 +260,7 @@ public class UserService implements Serializable, IUserService {
         
         user = this.userRepository.merge(user);
         user.removeAccount(account);
-        this.accountRepository.remove(account);
+        this.accountService.deleteAccount(account);
         return user;
     }
 }

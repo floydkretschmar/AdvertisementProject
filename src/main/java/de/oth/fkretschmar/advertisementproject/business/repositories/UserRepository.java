@@ -21,6 +21,7 @@ import de.oth.fkretschmar.advertisementproject.entities.user.User;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import javax.enterprise.context.Dependent;
 import javax.persistence.TypedQuery;
 
 /**
@@ -28,6 +29,7 @@ import javax.persistence.TypedQuery;
  * 
  * @author  fkre    Floyd Kretschmar
  */
+@Dependent
 public class UserRepository extends AbstractJPARepository<String, User> {
     
     // --------------- Public constructors ---------------

@@ -70,7 +70,7 @@ public class PasswordService implements Serializable, IPasswordService {
      */
     @Transactional
     @Override
-    public void delete(Password password) {
+    public void deletePassword(Password password) {
         this.passwordRepository.remove(password);
     }
     

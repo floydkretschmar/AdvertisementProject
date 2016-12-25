@@ -16,6 +16,7 @@
  */
 package de.oth.fkretschmar.advertisementproject.business.services;
 
+import de.oth.fkretschmar.advertisementproject.business.annotation.PayPalTransaction;
 import de.oth.fkretschmar.advertisementproject.business.services.base.ITransactionService;
 import de.oth.fkretschmar.advertisementproject.entities.billing.Account;
 import javax.enterprise.context.RequestScoped;
@@ -25,7 +26,7 @@ import javax.money.MonetaryAmount;
  *
  * @author Admin
  */
-@PayPal
+@PayPalTransaction
 @RequestScoped
 public class PayPalTransactionService implements ITransactionService {
     

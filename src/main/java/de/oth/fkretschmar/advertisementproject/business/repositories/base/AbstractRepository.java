@@ -34,7 +34,6 @@ import lombok.ToString;
  * @param   <T>     The type that specifies which entity is being managed by the
  *                  repository.
  */
-@Dependent
 @ToString
 @AllArgsConstructor
 public abstract class AbstractRepository<S, T extends Object & IEntity<S>> 

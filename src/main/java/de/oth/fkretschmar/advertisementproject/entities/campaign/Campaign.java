@@ -224,12 +224,6 @@ public class Campaign extends AbstractAutoGenerateKeyedEntity {
                     "The payment account can not be null.");
         }
         
-        if (interval == PaymentInterval.UNDEFINED) {
-            throw new BuilderValidationException(
-                    Campaign.class,
-                    "The payment interval has to be defined.");
-        }
-        
         return new Campaign(paymentAccount, interval, name);
     }
 }

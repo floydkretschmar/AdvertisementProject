@@ -16,6 +16,8 @@
  */
 package de.oth.fkretschmar.advertisementproject.business.services;
 
+import de.oth.fkretschmar.advertisementproject.business.annotation.PayPalTransaction;
+import de.oth.fkretschmar.advertisementproject.business.annotation.BankTransaction;
 import de.oth.fkretschmar.advertisementproject.business.services.base.ITransactionService;
 import de.oth.fkretschmar.advertisementproject.business.repositories.BillItemRepository;
 import de.oth.fkretschmar.advertisementproject.business.repositories.BillRepository;
@@ -56,7 +58,7 @@ public class BillService implements Serializable, IBillService {
      * Stores the service used to manage {@link BankAccount} entities.
      */
     @Inject
-    @Bank
+    @BankTransaction
     private ITransactionService bankTransactionService;
     
     /**
@@ -93,7 +95,7 @@ public class BillService implements Serializable, IBillService {
      * Stores the service used to manage {@link PayPalAccount} entities.
      */
     @Inject
-    @PayPal
+    @PayPalTransaction
     private ITransactionService payPalTransactionService;
 
     // --------------- Public methods ---------------
@@ -167,7 +169,7 @@ public class BillService implements Serializable, IBillService {
      */
     @Transactional
     @Override
-    public void delete(Bill bill) {
+    public void deleteBill(Bill bill) {
         Object[] items = bill.getItems().toArray();
         
         for (int i = 0; i < items.length; i++) {

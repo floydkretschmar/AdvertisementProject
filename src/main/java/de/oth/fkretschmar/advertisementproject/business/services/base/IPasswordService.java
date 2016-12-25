@@ -36,5 +36,5 @@ public interface IPasswordService {
      * 
      * @param   password    that will be deleted.
      */
-    public void delete(Password password);
+    public void deletePassword(Password password);
 }

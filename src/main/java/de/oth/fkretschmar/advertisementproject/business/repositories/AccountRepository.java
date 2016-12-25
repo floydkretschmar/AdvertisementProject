@@ -21,12 +21,14 @@ import de.oth.fkretschmar.advertisementproject.entities.billing.Account;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import javax.enterprise.context.Dependent;
 
 /**
  * Repository that defines the default CRUD methods for an {@link Account}.
  * 
  * @author  fkre    Floyd Kretschmar
  */
+@Dependent
 public class AccountRepository extends AbstractJPARepository<String, Account> {
     
     // --------------- Public constructors ---------------

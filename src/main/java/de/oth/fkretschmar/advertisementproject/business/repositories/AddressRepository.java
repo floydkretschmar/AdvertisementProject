@@ -21,12 +21,14 @@ import de.oth.fkretschmar.advertisementproject.entities.user.Address;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import javax.enterprise.context.Dependent;
 
 /**
  * Repository that defines the default CRUD methods for an {@link Address}.
  * 
  * @author  fkre    Floyd Kretschmar
  */
+@Dependent
 public class AddressRepository extends AbstractJPARepository<Long, Address> {
     
     // --------------- Public constructors ---------------

@@ -3,6 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
       xmlns:b="http://bootsfaces.net/ui">
     <h:head>
         <h:outputStylesheet library="css" name="style.css"/>
@@ -21,6 +22,32 @@
                         </b:column>
                         <b:column span="8">
                             <b:inputText></b:inputText>
+                        </b:column>
+                    </b:row>
+                    <b:row style="padding-top: 16px">
+                        <b:column span="4">
+                            <h:outputText value="Payment interval:" 
+                                          class="webvert_bold_lable_layout"/>
+                        </b:column>
+                        <b:column span="8">
+                            <b:selectOneMenu value="#{newCampaignModel.selectedInterval}">
+                                <f:selectItems value="#{newCampaignModel.paymentIntervals}"
+                                               var="interval"
+                                               itemValue="#{interval}"
+                                               itemLabel="#{interval.label}"/>
+                            </b:selectOneMenu>
+                        </b:column>
+                    </b:row>
+                    <b:row style="padding-top: 16px">
+                        <b:column span="4">
+                            <h:outputText value="Account:" 
+                                          class="webvert_bold_lable_layout"/>
+                        </b:column>
+                        <b:column span="8">
+                            <b:selectOneMenu value="#{newCampaignModel.selectedAccount}">
+                                <f:converter binding="#{newCampaignModel.accountConverter}"/>	
+                                <f:selectItems value="#{newCampaignModel.accounts}"/>	
+                            </b:selectOneMenu>
                         </b:column>
                     </b:row>
                 </b:container>

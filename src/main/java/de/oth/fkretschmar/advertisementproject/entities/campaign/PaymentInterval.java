@@ -16,11 +16,15 @@
  */
 package de.oth.fkretschmar.advertisementproject.entities.campaign;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
 /**
  * Defines the interval of a regular payment.
  * 
  * @author fkre
  */
+@AllArgsConstructor
 public enum PaymentInterval {
     
     // --------------- Enum fields ---------------
@@ -28,21 +32,25 @@ public enum PaymentInterval {
     /**
      * Indicates that the payment will be executed every month.
      */
-    MONTHLY,
+    MONTHLY("Monthly"),
     
     /**
      * Indicates that the payment will be executed every three months.
      */
-    QUATERLY,
-    
-    /**
-     * Indicates that the payment interval of the regular payment has not yet
-     * been defined.
-     */
-    UNDEFINED,
+    QUATERLY("Quaterly"),
     
     /** 
      * Indicates that the payment will be executed every year.
      */
-    YEARLY;
+    YEARLY("Yearly");
+    
+    
+    // --------------- Private fields ---------------
+    
+    
+    /**
+     * Stores the label that describes the payment interval.
+     */
+    @Getter
+    private final String label;
 }

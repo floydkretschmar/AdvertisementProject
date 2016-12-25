@@ -26,6 +26,7 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
+import javax.enterprise.context.Dependent;
 import javax.persistence.ParameterMode;
 import javax.persistence.StoredProcedureQuery;
 
@@ -34,6 +35,7 @@ import javax.persistence.StoredProcedureQuery;
  * 
  * @author  fkre    Floyd Kretschmar
  */
+@Dependent
 public class ContentRepository extends AbstractJPARepository<Long, Content> {
     
     // --------------- Private static constants ---------------

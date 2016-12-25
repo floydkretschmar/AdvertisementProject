@@ -21,12 +21,14 @@ import de.oth.fkretschmar.advertisementproject.entities.billing.BillItem;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import javax.enterprise.context.Dependent;
 
 /**
  * Repository that defines the default CRUD methods for an {@link BillItem}.
  *
  * @author fkre
  */
+@Dependent
 public class BillItemRepository extends AbstractJPARepository<Long, BillItem> {
     
     // --------------- Public constructors ---------------

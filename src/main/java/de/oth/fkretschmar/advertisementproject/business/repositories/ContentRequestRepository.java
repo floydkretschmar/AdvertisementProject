@@ -22,6 +22,7 @@ import de.oth.fkretschmar.advertisementproject.entities.campaign.PaymentInterval
 
 import java.util.ArrayList;
 import java.util.Collection;
+import javax.enterprise.context.Dependent;
 import javax.persistence.TypedQuery;
 
 /**
@@ -29,6 +30,7 @@ import javax.persistence.TypedQuery;
  *
  * @author fkre
  */
+@Dependent
 public class ContentRequestRepository extends AbstractJPARepository<Long, ContentRequest> {
         
     // --------------- Public constructors ---------------
