@@ -19,6 +19,7 @@ package de.oth.fkretschmar.advertisementproject.business.services.base;
 import de.oth.fkretschmar.advertisementproject.business.services.AccountService;
 import de.oth.fkretschmar.advertisementproject.entities.billing.Account;
 import java.lang.reflect.ParameterizedType;
+import javax.enterprise.context.Dependent;
 import javax.enterprise.inject.New;
 import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.InjectionPoint;
@@ -27,6 +28,7 @@ import javax.enterprise.inject.spi.InjectionPoint;
  *
  * @author fkre
  */
+@Dependent
 public class EntityServiceFactory {
     
     /**

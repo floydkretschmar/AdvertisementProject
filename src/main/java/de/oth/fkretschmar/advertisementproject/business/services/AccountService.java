@@ -18,6 +18,7 @@ package de.oth.fkretschmar.advertisementproject.business.services;
 
 import de.oth.fkretschmar.advertisementproject.business.repositories.AccountRepository;
 import de.oth.fkretschmar.advertisementproject.business.services.base.IAccountService;
+import de.oth.fkretschmar.advertisementproject.business.services.base.IEntityService;
 import de.oth.fkretschmar.advertisementproject.entities.billing.Account;
 import java.io.Serializable;
 import javax.enterprise.context.RequestScoped;
@@ -30,7 +31,7 @@ import javax.transaction.Transactional;
  */
 @RequestScoped
 public class AccountService 
-        implements Serializable, IAccountService {
+        implements Serializable, IAccountService, IEntityService<String, Account> {
 
     // --------------- Private fields ---------------
     
@@ -77,4 +78,5 @@ public class AccountService
     public Account find(String id) {
         return this.accountRepository.find(id);
     }
+
 }

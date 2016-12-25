@@ -16,12 +16,11 @@
  */
 package de.oth.fkretschmar.advertisementproject.ui.converters;
 
+import de.oth.fkretschmar.advertisementproject.entities.billing.Account;
 import java.lang.reflect.ParameterizedType;
-import javax.enterprise.context.RequestScoped;
 import javax.enterprise.inject.New;
 import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.InjectionPoint;
-import javax.faces.convert.Converter;
 
 /**
  *
@@ -33,20 +32,23 @@ public class ConverterFactory {
      * Creates a new entity converter via injection through the CDI manager.
      * 
      * @param   injectionPoint    the point of the injection.
-     * @param   converter         the injected converter.
+     * @param   accountConverter   the injected converter for accounts.
      * @return  the fitting entity converter for the specified entity.
      */
     @Produces
-    public Converter createEntityConverter(
+    public IEntityConverter createEntityConverter(
             InjectionPoint injectionPoint,
-            @New EntityConverter converter) {
+            @New EntityConverter<String, Account> accountConverter) {
         // see documentation in EntityServiceFactory
-        
         ParameterizedType type = (ParameterizedType)injectionPoint.getType();
         Class entityIdType = (Class)type.getActualTypeArguments()[0];
+        Class entityType = (Class)type.getActualTypeArguments()[1];
         
-        converter.setEntityIdType(entityIdType);
+        if (entityType.isInstance(Account.class)) {
+            accountConverter.setEntityIdType(entityIdType);
+            return accountConverter;
+        }
         
-        return converter;
+        return null;
     }
 }

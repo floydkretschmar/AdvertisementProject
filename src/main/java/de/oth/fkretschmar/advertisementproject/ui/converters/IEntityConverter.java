@@ -14,31 +14,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.oth.fkretschmar.advertisementproject.business.services.base;
+package de.oth.fkretschmar.advertisementproject.ui.converters;
 
-import de.oth.fkretschmar.advertisementproject.entities.billing.Account;
+import de.oth.fkretschmar.advertisementproject.entities.base.IEntity;
 
 /**
  *
  * @author fkre
+ * @param   <T>     the entity type.
  */
-public interface IAccountService {
-
-    // --------------- Public methods ---------------
+public interface IEntityConverter<S, T extends IEntity<S>> {
     
-    
-    /**
-     * Creates the specified {@link Account}.
-     * 
-     * @param   account    that will be saved.
-     */
-    public void createAccount(Account account);
-    
-    
-    /**
-     * Deletes the specified {@link Account} from the database.
-     * 
-     * @param   account    that will be deleted.
-     */
-    public void deleteAccount(Account account);
 }

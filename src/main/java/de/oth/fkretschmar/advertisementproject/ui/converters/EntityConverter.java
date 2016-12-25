@@ -19,9 +19,9 @@ package de.oth.fkretschmar.advertisementproject.ui.converters;
 import de.oth.fkretschmar.advertisementproject.business.services.base.IEntityService;
 import de.oth.fkretschmar.advertisementproject.entities.base.IEntity;
 import de.oth.fkretschmar.advertisementproject.entities.billing.Account;
-
 import java.io.Serializable;
 import javax.enterprise.context.Dependent;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
@@ -36,7 +36,7 @@ import lombok.Setter;
  */
 @Dependent
 public class EntityConverter<S, T extends IEntity<S>> 
-            implements Converter, Serializable {
+            implements Converter, Serializable, IEntityConverter<S, T> {
 
     // --------------- Private fields ---------------
     
@@ -104,15 +104,4 @@ public class EntityConverter<S, T extends IEntity<S>>
 
         return ((Account)value).getId();
     }
-
-//    // --------------- Protected methods ---------------
-//    
-//    
-//    /**
-//     * Finds the entity defined by the specified id.
-//     * 
-//     * @param   id  the id that defines the entity.
-//     * @return  the entity.
-//     */
-//    protected abstract T find(String id);
 }
