@@ -16,21 +16,42 @@
  */
 package de.oth.fkretschmar.advertisementproject.ui.converters;
 
+import de.oth.fkretschmar.advertisementproject.business.services.base.IEntityService;
 import de.oth.fkretschmar.advertisementproject.entities.base.IEntity;
 import de.oth.fkretschmar.advertisementproject.entities.billing.Account;
 
 import java.io.Serializable;
+import javax.enterprise.context.Dependent;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
+import javax.inject.Inject;
+import lombok.AccessLevel;
+import lombok.Setter;
 
 /**
  *
  * @author fkre
  * @param   <T>     the entity type.
  */
-public abstract class AbstractEntityConverter<T extends IEntity<?>> 
+@Dependent
+public class EntityConverter<S, T extends IEntity<S>> 
             implements Converter, Serializable {
+
+    // --------------- Private fields ---------------
+    
+    /**
+     * Stores the repository used to manage {@link Account} entities.
+     */
+    @Inject
+    private IEntityService<S, T> entityService;
+    
+    
+    /**
+     * Stores the id type of the entity managed by the entity service.
+     */
+    @Setter(AccessLevel.PACKAGE)
+    private Class<S> entityIdType;
 
     // --------------- Public methods ---------------
     
@@ -52,7 +73,7 @@ public abstract class AbstractEntityConverter<T extends IEntity<?>>
             return "";
         }
 
-        T entity = this.find(value);
+        T entity = this.entityService.find(this.entityIdType.cast(value));
         
         if (entity == null) {
             return "";
@@ -84,14 +105,14 @@ public abstract class AbstractEntityConverter<T extends IEntity<?>>
         return ((Account)value).getId();
     }
 
-    // --------------- Protected methods ---------------
-    
-    
-    /**
-     * Finds the entity defined by the specified id.
-     * 
-     * @param   id  the id that defines the entity.
-     * @return  the entity.
-     */
-    protected abstract T find(String id);
+//    // --------------- Protected methods ---------------
+//    
+//    
+//    /**
+//     * Finds the entity defined by the specified id.
+//     * 
+//     * @param   id  the id that defines the entity.
+//     * @return  the entity.
+//     */
+//    protected abstract T find(String id);
 }
