@@ -16,14 +16,11 @@
  */
 package de.oth.fkretschmar.advertisementproject.ui.models.base;
 
-import de.oth.fkretschmar.advertisementproject.business.services.base.IEntityService;
 import de.oth.fkretschmar.advertisementproject.entities.billing.Account;
-import de.oth.fkretschmar.advertisementproject.ui.annotations.EntityConverterInjection;
-import de.oth.fkretschmar.advertisementproject.ui.converters.EntityConverter;
 import de.oth.fkretschmar.advertisementproject.ui.converters.IConverter;
 import java.io.Serializable;
-import javax.faces.convert.Converter;
 import javax.inject.Inject;
+import de.oth.fkretschmar.advertisementproject.ui.annotations.ConverterInjection;
 
 /**
  * The abstract base implementation of an ui model.
@@ -36,7 +33,7 @@ public abstract class AbstractModel implements Serializable {
      * Stores the accountConverter used to convert accounts for visualization.
      */
     @Inject
-    @EntityConverterInjection
+    @ConverterInjection
     private IConverter<Account> accountConverter;
     
     // --------------- Public getters and setters ---------------

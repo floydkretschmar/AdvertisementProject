@@ -5,7 +5,8 @@
       xmlns:b="http://bootsfaces.net/ui"
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ldc="http://webvert.com/LocalDateConverter">
     <h:head>
         <title>Webvert</title>
         <h:outputStylesheet library="css" name="style.css"  />
@@ -54,7 +55,10 @@
                                     <b:row class="webvert_c_row_layout webvert_c_other_row_layout">
                                         <h:outputText value="Started: "
                                                       class="webvert_bold_lable_layout"/>
-                                        <h:outputText value="#{campaign.generationDate}"/>
+                                        <h:outputText value="#{campaign.generationDate}">\
+                                            <ldc:convertLocalDate type="both" 
+                                                                  pattern="dd.MM.yyyy"/>
+                                        </h:outputText>
                                     </b:row>
                                     <b:row class="webvert_c_row_layout webvert_c_other_row_layout">
                                         <h:outputText value="Payment Account: "

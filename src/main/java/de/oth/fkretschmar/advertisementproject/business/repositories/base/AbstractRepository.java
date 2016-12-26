@@ -20,7 +20,6 @@ import de.oth.fkretschmar.advertisementproject.entities.base.IEntity;
 
 import java.io.Serializable;
 import java.util.Collection;
-import javax.enterprise.context.Dependent;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

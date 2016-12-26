@@ -17,22 +17,21 @@
 package de.oth.fkretschmar.advertisementproject.ui.converters;
 
 import de.oth.fkretschmar.advertisementproject.business.services.base.IAccountService;
-import de.oth.fkretschmar.advertisementproject.entities.base.IEntity;
 import de.oth.fkretschmar.advertisementproject.entities.billing.Account;
-import de.oth.fkretschmar.advertisementproject.ui.annotations.EntityConverterInjection;
 import java.lang.reflect.ParameterizedType;
 import javax.enterprise.context.Dependent;
 import javax.enterprise.inject.New;
 import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.InjectionPoint;
 import javax.inject.Inject;
+import de.oth.fkretschmar.advertisementproject.ui.annotations.ConverterInjection;
 
 /**
  *
  * @author fkre
  */
 @Dependent
-public class EntityConverterFactory {
+public class ConverterFactory {
     
     // --------------- Private fields ---------------
     
@@ -50,19 +49,22 @@ public class EntityConverterFactory {
      * @param   <T>                 the entity type.
      * @param   injectionPoint      the point of the injection.
      * @param   accountConverter    the injected converter for accounts.
+     * @param   dateConverter       the injected converter for local dates.
      * @return  the fitting entity  converter for the specified entity.
      */
     @Produces
-    @EntityConverterInjection
+    @ConverterInjection
     public <T> IConverter<T> createEntityConverter(
             InjectionPoint injectionPoint,
-            @New EntityConverter<Account> accountConverter) {
+            @New EntityConverter<Account> accountConverter,
+            @New LocalDateConverter dateConverter) {
         // see documentation in EntityServiceFactory
         ParameterizedType type = (ParameterizedType)injectionPoint.getType();
         Class entityType = (Class)type.getActualTypeArguments()[0];
         
         if (entityType.equals(Account.class)) {
             accountConverter.setEntityService(this.accountService);
+            accountConverter.setEntityType(entityType);
             return (IConverter<T>)accountConverter;
         }
         

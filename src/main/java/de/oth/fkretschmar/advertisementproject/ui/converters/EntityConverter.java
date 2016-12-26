@@ -20,6 +20,11 @@ import de.oth.fkretschmar.advertisementproject.business.services.base.IEntitySer
 import de.oth.fkretschmar.advertisementproject.entities.base.IEntity;
 import de.oth.fkretschmar.advertisementproject.entities.billing.Account;
 import java.io.Serializable;
+import java.lang.reflect.AnnotatedType;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 import javax.enterprise.context.Dependent;
 
 import javax.faces.component.UIComponent;
@@ -31,30 +36,33 @@ import lombok.Setter;
 /**
  *
  * @author fkre
- * @param   <T>     the entity type.
+ * @param <T> the entity type.
  */
 @Dependent
-public class EntityConverter<T extends IEntity<?>> 
+public class EntityConverter<T extends IEntity<?>>
         implements Converter, Serializable, IConverter<T> {
 
     // --------------- Private fields ---------------
-    
     /**
      * Stores the repository used to manage {@link Account} entities.
      */
     @Setter(AccessLevel.PACKAGE)
     private IEntityService<T> entityService;
 
+    /**
+     * Stores the class type of the entity.
+     */
+    @Setter(AccessLevel.PACKAGE)
+    private Class<T> entityType;
+
     // --------------- Public methods ---------------
-    
-    
     /**
      * Converts the string value to the corresponding entity.
-     * 
-     * @param context       the context of the conversion.
-     * @param component     the component of the value to be converted.
-     * @param value         the value that will be converted.
-     * @return  the converted object.
+     *
+     * @param context the context of the conversion.
+     * @param component the component of the value to be converted.
+     * @param value the value that will be converted.
+     * @return the converted object.
      */
     @Override
     public Object getAsObject(
@@ -66,21 +74,20 @@ public class EntityConverter<T extends IEntity<?>>
         }
 
         T entity = this.entityService.find(value);
-        
+
         if (entity == null) {
             return "";
         }
         return entity;
     }
 
-    
     /**
      * Converts the given object into an identifying string value.
-     * 
-     * @param context       the context of the conversion.
-     * @param component     the component of the value to be converted.
-     * @param value         the value that will be converted.
-     * @return  the converted string.
+     *
+     * @param context the context of the conversion.
+     * @param component the component of the value to be converted.
+     * @param value the value that will be converted.
+     * @return the converted string.
      */
     @Override
     public String getAsString(
@@ -90,10 +97,24 @@ public class EntityConverter<T extends IEntity<?>>
         if (value == null) {
             return null;
         }
-        if (!(value instanceof Account)) {
+
+        Class<?> nextClass = value.getClass();
+        boolean hasFoundBaseEntity = false;
+
+        // the entity converter could be converting base classes like for example
+        // Account -> also lookup superclasses recursively if the value class is
+        // no match.
+        while (nextClass != null && !hasFoundBaseEntity) {
+            if (nextClass.equals(this.entityType)) {
+                hasFoundBaseEntity = true;
+            }
+            nextClass = nextClass.getSuperclass();
+        }
+
+        if (!hasFoundBaseEntity) {
             return null;
         }
 
-        return ((Account)value).getId();
+        return entityType.cast(value).getId().toString();
     }
 }
