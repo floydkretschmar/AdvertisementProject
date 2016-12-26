@@ -35,7 +35,7 @@ import lombok.Setter;
  */
 @Dependent
 public class EntityConverter<T extends IEntity<?>> 
-            implements Converter, Serializable {
+        implements Converter, Serializable, IConverter<T> {
 
     // --------------- Private fields ---------------
     

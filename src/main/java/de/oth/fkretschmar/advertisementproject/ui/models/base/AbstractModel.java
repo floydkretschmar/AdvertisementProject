@@ -20,6 +20,7 @@ import de.oth.fkretschmar.advertisementproject.business.services.base.IEntitySer
 import de.oth.fkretschmar.advertisementproject.entities.billing.Account;
 import de.oth.fkretschmar.advertisementproject.ui.annotations.EntityConverterInjection;
 import de.oth.fkretschmar.advertisementproject.ui.converters.EntityConverter;
+import de.oth.fkretschmar.advertisementproject.ui.converters.IConverter;
 import java.io.Serializable;
 import javax.faces.convert.Converter;
 import javax.inject.Inject;
@@ -36,7 +37,7 @@ public abstract class AbstractModel implements Serializable {
      */
     @Inject
     @EntityConverterInjection
-    private EntityConverter<Account> accountConverter;
+    private IConverter<Account> accountConverter;
     
     // --------------- Public getters and setters ---------------
     
@@ -46,7 +47,7 @@ public abstract class AbstractModel implements Serializable {
      * 
      * @return the accountConverter.
      */
-    public Converter getAccountConverter() {
+    public IConverter getAccountConverter() {
         return this.accountConverter;
     }
     

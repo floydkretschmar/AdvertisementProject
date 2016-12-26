@@ -32,7 +32,7 @@ import javax.inject.Inject;
  * @author fkre
  */
 @Dependent
-public class ConverterFactory {
+public class EntityConverterFactory {
     
     // --------------- Private fields ---------------
     
@@ -54,7 +54,7 @@ public class ConverterFactory {
      */
     @Produces
     @EntityConverterInjection
-    public <T extends IEntity<?>> EntityConverter<T> createEntityConverter(
+    public <T> IConverter<T> createEntityConverter(
             InjectionPoint injectionPoint,
             @New EntityConverter<Account> accountConverter) {
         // see documentation in EntityServiceFactory
@@ -63,7 +63,7 @@ public class ConverterFactory {
         
         if (entityType.equals(Account.class)) {
             accountConverter.setEntityService(this.accountService);
-            return (EntityConverter<T>)accountConverter;
+            return (IConverter<T>)accountConverter;
         }
         
         return null;
