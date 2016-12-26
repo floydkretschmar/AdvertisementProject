@@ -16,9 +16,12 @@
  */
 package de.oth.fkretschmar.advertisementproject.ui.models.base;
 
+import de.oth.fkretschmar.advertisementproject.business.services.base.IEntityService;
 import de.oth.fkretschmar.advertisementproject.entities.billing.Account;
-import de.oth.fkretschmar.advertisementproject.ui.converters.IEntityConverter;
+import de.oth.fkretschmar.advertisementproject.ui.annotations.EntityConverterInjection;
+import de.oth.fkretschmar.advertisementproject.ui.converters.EntityConverter;
 import java.io.Serializable;
+import javax.faces.convert.Converter;
 import javax.inject.Inject;
 
 /**
@@ -32,7 +35,8 @@ public abstract class AbstractModel implements Serializable {
      * Stores the accountConverter used to convert accounts for visualization.
      */
     @Inject
-    private IEntityConverter<String, Account> accountConverter;
+    @EntityConverterInjection
+    private EntityConverter<Account> accountConverter;
     
     // --------------- Public getters and setters ---------------
     
@@ -42,7 +46,7 @@ public abstract class AbstractModel implements Serializable {
      * 
      * @return the accountConverter.
      */
-    public IEntityConverter<String, Account> getAccountConverter() {
+    public Converter getAccountConverter() {
         return this.accountConverter;
     }
     

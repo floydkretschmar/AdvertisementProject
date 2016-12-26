@@ -22,18 +22,17 @@ import de.oth.fkretschmar.advertisementproject.entities.base.IEntity;
  * Defines public methods for services that allow to manage single entities.
  *
  * @author  fkre 
- * @param   <S> the id type of the managed entity.
- * @param   <T> the type of the entity being managed by the service.
+ * @param <T> 
  */
-public interface IEntityService<S, T extends IEntity<S>> {
+public interface IEntityService<T extends IEntity<?>> {
 
     // --------------- Methods ---------------
     
     /**
      * Finds the entity defined by the specified id.
      * 
-     * @param   id  the id that defines the entity.
+     * @param   idAsString  the id that defines the entity in text form.
      * @return  the entity.
      */
-    public T find(S id);
+    public T find(String idAsString);
 }

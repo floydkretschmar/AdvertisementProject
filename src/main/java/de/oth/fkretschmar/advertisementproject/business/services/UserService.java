@@ -21,6 +21,7 @@ import de.oth.fkretschmar.advertisementproject.business.repositories.AccountRepo
 import de.oth.fkretschmar.advertisementproject.business.repositories.UserRepository;
 import de.oth.fkretschmar.advertisementproject.business.services.base.IAccountService;
 import de.oth.fkretschmar.advertisementproject.business.services.base.ICampaignService;
+import de.oth.fkretschmar.advertisementproject.business.services.base.IEntityService;
 import de.oth.fkretschmar.advertisementproject.business.services.base.IPasswordService;
 import de.oth.fkretschmar.advertisementproject.business.services.base.IUserService;
 import de.oth.fkretschmar.advertisementproject.entities.billing.Account;
@@ -234,12 +235,12 @@ public class UserService implements Serializable, IUserService {
     /**
      * Finds an {@link User} using the unique e-mail address.
      * 
-     * @param   eMailAddress    used to identify the user.
+     * @param   idAsString  the id that defines the entity in text form.
      * @return  the user with the specified e-mail address.
      */
     @Override
-    public User findUserForEMail(String eMailAddress) {
-        return this.userRepository.find(eMailAddress);
+    public User find(String idAsString) {
+        return this.userRepository.find(idAsString);
     }
 
     

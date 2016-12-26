@@ -25,7 +25,6 @@ import javax.enterprise.context.Dependent;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
-import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Setter;
 
@@ -35,23 +34,16 @@ import lombok.Setter;
  * @param   <T>     the entity type.
  */
 @Dependent
-public class EntityConverter<S, T extends IEntity<S>> 
-            implements Converter, Serializable, IEntityConverter<S, T> {
+public class EntityConverter<T extends IEntity<?>> 
+            implements Converter, Serializable {
 
     // --------------- Private fields ---------------
     
     /**
      * Stores the repository used to manage {@link Account} entities.
      */
-    @Inject
-    private IEntityService<S, T> entityService;
-    
-    
-    /**
-     * Stores the id type of the entity managed by the entity service.
-     */
     @Setter(AccessLevel.PACKAGE)
-    private Class<S> entityIdType;
+    private IEntityService<T> entityService;
 
     // --------------- Public methods ---------------
     
@@ -73,7 +65,7 @@ public class EntityConverter<S, T extends IEntity<S>>
             return "";
         }
 
-        T entity = this.entityService.find(this.entityIdType.cast(value));
+        T entity = this.entityService.find(value);
         
         if (entity == null) {
             return "";

@@ -22,7 +22,7 @@ import de.oth.fkretschmar.advertisementproject.entities.billing.Account;
  *
  * @author fkre
  */
-public interface IAccountService {
+public interface IAccountService extends IEntityService<Account> {
 
     // --------------- Public methods ---------------
     

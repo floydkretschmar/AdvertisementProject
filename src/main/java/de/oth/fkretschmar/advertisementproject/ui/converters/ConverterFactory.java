@@ -16,37 +16,54 @@
  */
 package de.oth.fkretschmar.advertisementproject.ui.converters;
 
+import de.oth.fkretschmar.advertisementproject.business.services.base.IAccountService;
+import de.oth.fkretschmar.advertisementproject.entities.base.IEntity;
 import de.oth.fkretschmar.advertisementproject.entities.billing.Account;
+import de.oth.fkretschmar.advertisementproject.ui.annotations.EntityConverterInjection;
 import java.lang.reflect.ParameterizedType;
+import javax.enterprise.context.Dependent;
 import javax.enterprise.inject.New;
 import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.InjectionPoint;
+import javax.inject.Inject;
 
 /**
  *
  * @author fkre
  */
+@Dependent
 public class ConverterFactory {
+    
+    // --------------- Private fields ---------------
+    
+    /**
+     * Stores the service used to convert accounts.
+     */
+    @Inject
+    private IAccountService accountService;
+    
+    // --------------- Public methods ---------------
     
     /**
      * Creates a new entity converter via injection through the CDI manager.
      * 
-     * @param   injectionPoint    the point of the injection.
-     * @param   accountConverter   the injected converter for accounts.
-     * @return  the fitting entity converter for the specified entity.
+     * @param   <T>                 the entity type.
+     * @param   injectionPoint      the point of the injection.
+     * @param   accountConverter    the injected converter for accounts.
+     * @return  the fitting entity  converter for the specified entity.
      */
     @Produces
-    public IEntityConverter createEntityConverter(
+    @EntityConverterInjection
+    public <T extends IEntity<?>> EntityConverter<T> createEntityConverter(
             InjectionPoint injectionPoint,
-            @New EntityConverter<String, Account> accountConverter) {
+            @New EntityConverter<Account> accountConverter) {
         // see documentation in EntityServiceFactory
         ParameterizedType type = (ParameterizedType)injectionPoint.getType();
-        Class entityIdType = (Class)type.getActualTypeArguments()[0];
-        Class entityType = (Class)type.getActualTypeArguments()[1];
+        Class entityType = (Class)type.getActualTypeArguments()[0];
         
-        if (entityType.isInstance(Account.class)) {
-            accountConverter.setEntityIdType(entityIdType);
-            return accountConverter;
+        if (entityType.equals(Account.class)) {
+            accountConverter.setEntityService(this.accountService);
+            return (EntityConverter<T>)accountConverter;
         }
         
         return null;

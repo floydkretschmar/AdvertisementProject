@@ -18,10 +18,10 @@ package de.oth.fkretschmar.advertisementproject.business.services;
 
 import de.oth.fkretschmar.advertisementproject.business.repositories.AccountRepository;
 import de.oth.fkretschmar.advertisementproject.business.services.base.IAccountService;
-import de.oth.fkretschmar.advertisementproject.business.services.base.IEntityService;
 import de.oth.fkretschmar.advertisementproject.entities.billing.Account;
 import java.io.Serializable;
 import javax.enterprise.context.RequestScoped;
+import javax.enterprise.inject.Default;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 
@@ -30,8 +30,8 @@ import javax.transaction.Transactional;
  * @author fkre
  */
 @RequestScoped
-public class AccountService 
-        implements Serializable, IAccountService, IEntityService<String, Account> {
+@Default
+public class AccountService implements Serializable, IAccountService {
 
     // --------------- Private fields ---------------
     
@@ -71,12 +71,13 @@ public class AccountService
     
     /**
      * Finds the account that is being identified by the id.
-     * @param   id  that identifies the account.
+     * 
+     * @param       idAsString  the id that defines the entity in text form.
      * @return      the account.
      */
     @Override
-    public Account find(String id) {
-        return this.accountRepository.find(id);
+    public Account find(String idAsString) {
+        return this.accountRepository.find(idAsString);
     }
 
 }

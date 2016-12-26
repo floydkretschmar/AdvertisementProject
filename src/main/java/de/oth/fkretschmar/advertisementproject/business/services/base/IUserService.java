@@ -26,7 +26,7 @@ import de.oth.fkretschmar.advertisementproject.entities.user.User;
  *
  * @author Admin
  */
-public interface IUserService {
+public interface IUserService extends IEntityService<User> {
     /**
      * Authenticates an user using the specified e-mail and password.
      *
@@ -85,13 +85,13 @@ public interface IUserService {
     public void deleteUser(User user);
     
     
-    /**
-     * Finds an {@link User} using the unique e-mail address.
-     * 
-     * @param   eMailAddress    used to identify the user.
-     * @return  the user with the specified e-mail address.
-     */
-    public User findUserForEMail(String eMailAddress);
+//    /**
+//     * Finds an {@link User} using the unique e-mail address.
+//     * 
+//     * @param   eMailAddress    used to identify the user.
+//     * @return  the user with the specified e-mail address.
+//     */
+//    public User findUserForEMail(String eMailAddress);
 
     
     /**
