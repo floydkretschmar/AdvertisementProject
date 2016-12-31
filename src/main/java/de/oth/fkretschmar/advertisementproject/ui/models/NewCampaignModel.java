@@ -17,6 +17,7 @@
 package de.oth.fkretschmar.advertisementproject.ui.models;
 
 import de.oth.fkretschmar.advertisementproject.entities.billing.Account;
+import de.oth.fkretschmar.advertisementproject.entities.campaign.Content;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.PaymentInterval;
 import de.oth.fkretschmar.advertisementproject.ui.models.base.AbstractModel;
 import java.util.Collection;
@@ -41,6 +42,13 @@ public class NewCampaignModel extends AbstractModel {
      */
     @Inject
     private ApplicationModel applicationModel;
+    
+    /**
+     * Stores the new contents that are connected to the campaign created on the
+     * page.
+     */
+    @Getter
+    private Collection<Content> newContents;
     
     /**
      * Stores the account selected for the new campaign.

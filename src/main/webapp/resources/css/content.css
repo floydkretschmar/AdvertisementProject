@@ -19,26 +19,42 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     Author     : fkre
 */
 
-.webvert_ca_inner_heading_layout {
-    margin-top: 10px; 
-    margin-bottom: 10px;
+.webvert_co_accordion_layout {
+    margin-bottom: 32px !important; 
+    margin-top: 16px !important; 
 }
 
-.webvert_ca_tab_layout {
-    margin-bottom: 16px !important;
+.webvert_co_accordion_panel_layout {
+    margin: 16px !important; 
+    padding-bottom: 0px; 
+    height: 120px; 
+    position: relative;
 }
 
-.webvert_ca_row_layout {
-    margin-left: 32px !important; 
-    margin-right: 32px !important;
+.webvert_co_image_layout {
+    height: 120px; 
+    padding: 16px;
 }
 
-.webvert_ca_first_row_layout {
-    margin-top: 32px !important;
+.webvert_co_lable_row_layout {
+    padding-top: 16px;
 }
 
-.webvert_ca_other_row_layout {
-    margin-top: 16px !important;
+.webvert_co_edit_button_layout {
+    bottom: 0; 
+    right: 0; 
+    position: absolute; 
+    margin: 16px !important;
 }
 
+.col-md-11.webvert_co_new_button_column_layout {
+    margin-top: 6px;
+    float: right;
+    width: inherit;
+    padding-right: 0px;
+}
+
+.col-md-1.webvert_co_header_column_layout {
+    padding-left: 0px;
+}
 

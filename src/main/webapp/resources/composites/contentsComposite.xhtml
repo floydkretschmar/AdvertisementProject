@@ -7,32 +7,43 @@
       xmlns:b="http://bootsfaces.net/ui">
     <composite:interface>
         <composite:attribute name="contentTypes" />
-        <composite:attribute name="allContents" />
+        <composite:attribute name="contents" />
+        <composite:attribute name="enableEdit" />
+        <composite:attribute name="enableNew" />
     </composite:interface>
 
     <composite:implementation>
-        <b:row class="webvert_c_row_layout webvert_c_other_row_layout">
-            <h4 class="webvert_heading_color_dark 
-                webvert_c_inner_heading_layout">
-                Contents
-            </h4>
+        <b:row class="webvert_ca_row_layout webvert_ca_other_row_layout">
+            <b:column span="1"
+                      class="webvert_co_header_column_layout">
+                <h3 class="webvert_heading_color_dark 
+                    webvert_ca_inner_heading_layout">
+                    Contents
+                </h3>
+            </b:column>
+            <b:column span="11"
+                      class="webvert_co_new_button_column_layout">
+                <b:commandButton icon="plus"
+                                 value=""
+                                 rendered="#{cc.attrs.enableNew eq 'true'}"/>
+            </b:column>
         </b:row>
-        <b:accordion class="webvert_c_row_layout 
-                     webvert_c_content_accordion_layout">
+        <b:accordion class="webvert_ca_row_layout 
+                     webvert_co_accordion_layout">
             <c:forEach items="#{cc.attrs.contentTypes}"
                        var="contentType"
                        id="forEachCampaign">
                 <b:panel title="#{contentType}" style="height: 100%">
-                    <c:forEach items="#{contentModel.getContentWithType(cc.attrs.allContents, contentType)}"
+                    <c:forEach items="#{contentModel.getContentWithType(cc.attrs.contents, contentType)}"
                                var="content"
                                id="forEachCampaign">
-                        <b:panel class="webvert_c_content_accordion_panel_layout">
+                        <b:panel class="webvert_co_accordion_panel_layout">
                             <b:column span="3" 
                                       style="#{contentType eq 'Image' ? 'padding-top: 0px' : 'padding-top: 16px'}">
                                 <c:choose>
                                     <c:when test="#{contentType eq 'Image'}">
                                         <img src="#{content.value}" 
-                                             class="webvert_c_content_image_layout"/>
+                                             class="webvert_co_image_layout"/>
                                     </c:when>
                                     <c:otherwise>
                                         <h:outputText value="#{content.value}" 
@@ -41,7 +52,7 @@
                                 </c:choose>
                             </b:column>
                             <b:column span="8">
-                                <b:row class="webvert_c_content_lable_row_layout">
+                                <b:row class="webvert_co_lable_row_layout">
                                     <b:column span="6">
                                         <h:outputText value="Description:" 
                                                       class="webvert_bold_lable_layout"/>
@@ -50,7 +61,7 @@
                                         <h:outputText value="#{content.description}"/>
                                     </b:column>
                                 </b:row>
-                                <b:row class="webvert_c_content_lable_row_layout">
+                                <b:row class="webvert_co_lable_row_layout">
                                     <b:column span="6">
                                         <h:outputText value="Price per request:"
                                                       class="webvert_bold_lable_layout"/>
@@ -59,7 +70,7 @@
                                         <h:outputText value="#{content.pricePerRequest}"/>
                                     </b:column>
                                 </b:row>
-                                <b:row class="webvert_c_content_lable_row_layout">
+                                <b:row class="webvert_co_lable_row_layout">
                                     <b:column span="6">
                                         <h:outputText value="Number of requests ordered:"
                                                       class="webvert_bold_lable_layout"/>
@@ -72,7 +83,8 @@
                             <b:column span="1" style="height: 100%">
                                 <b:commandButton icon="pencil"
                                                  value=""
-                                                 class="webvert_c_content_edit_button_layout"/>
+                                                 class="webvert_co_edit_button_layout"
+                                                 rendered="#{cc.attrs.enableEdit eq 'true'}"/>
                             </b:column>
                         </b:panel>
                     </c:forEach>
