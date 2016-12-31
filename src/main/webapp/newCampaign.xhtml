@@ -5,7 +5,8 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:b="http://bootsfaces.net/ui"
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:composites="http://xmlns.jcp.org/jsf/composite/composites">
     <h:head>
         <h:outputStylesheet library="css" name="style.css"/>
     </h:head>
@@ -39,7 +40,7 @@
                             </b:selectOneMenu>
                         </b:column>
                     </b:row>
-                    
+
                     <b:row style="padding-top: 16px">
                         <b:column span="4">
                             <h:outputText value="Account:" 
@@ -55,6 +56,8 @@
                         </b:column>
                     </b:row>
                 </b:container>
+                <composites:contentsComposite enableEdit="false"
+                                              enableNew="true"/>
             </ui:define>
         </ui:composition>
     </h:body>

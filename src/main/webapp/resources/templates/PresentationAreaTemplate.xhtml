@@ -18,7 +18,8 @@
                         <b:column span="2" class="webvert_pa_column_layout">
                             <ui:insert name="menu">
                                 <b:panel title="Menu"
-                                         class="webvert_pa_menu_layout">
+                                         class="webvert_pa_menu_layout"
+                                         collapsible="false">
                                     <b:listLinks>
                                         <b:navLink header="Campaigns"
                                                    class="webvert_pa_menu_item_layout"
@@ -49,6 +50,12 @@
                                                    icon="user" 
                                                    iconAlign="left" 
                                                    update="@form"
+                                                   class="webvert_pa_menu_item_layout"/>
+                                        <b:navCommandLink 
+                                                   value="Log out" 
+                                                   icon="log-out" 
+                                                   iconAlign="left" 
+                                                   action="#{applicationModel.logOut()}"
                                                    class="webvert_pa_menu_item_layout"/>
                                     </b:listLinks>
                                 </b:panel>

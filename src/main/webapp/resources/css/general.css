@@ -49,12 +49,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 /* ------------ BUTTONS ------------*/
 
 
-.btn-primary.webvert_primary_button_color {
+.btn-default.webvert_primary_button_color {
     color: #111;
     background-color: #CDCDCD;
 }
 
-.btn-primary.webvert_primary_button_color:hover, .btn-primary.webvert_primary_button_color:focus {
+.btn-default.webvert_primary_button_color:hover, .btn-default.webvert_primary_button_color:focus, .btn-default.webvert_primary_button_color:after {
     color: #111;
     background-color: #BBB;
     border-color: #aaa;
@@ -66,14 +66,20 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 /* ------------ OVERRIDE EXISTING ------------*/
 
-#j_idt28 {
+#j_idt29.panel-group {
     height: 100%;
     margin-bottom: 3em;
 }
 
 .panel-body {
     padding: 0px !important;
-    height: 100%;
+    /*height: 100%;*/
+}
+
+.dropdown-header {
+    padding: inherit !important;
+    font-size: inherit !important;
+    color: #666 !important;
 }
 
 td

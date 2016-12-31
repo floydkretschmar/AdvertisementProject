@@ -62,8 +62,10 @@ public class ApplicationModel extends AbstractModel {
     /**
      * Authenticates an user using the specified e-mail and password.
      *
-     * @param eMail that identifies the user.
-     * @param password that is used to authenticate the user.
+     * @param   eMail       that identifies the user.
+     * @param   password    that is used to authenticate the user.
+     * @return  {@code true} if the authentification was successfull, otherwise
+     *          {@code false}.
      * @throws PasswordException that indicates an error during the processing
      * of passwords.
      */
@@ -91,6 +93,23 @@ public class ApplicationModel extends AbstractModel {
      */
     public boolean isUserAuthenticated() {
         return this.currentUser != null;
+    }
+    
+    
+    /**
+     * Logs out the user from the application and redirects to the login page.
+     * 
+     * @return  the navigation point for the login page.
+     */
+    public String logOut() {
+        ApplicationModel.LOCK.lock();
+        
+        try {
+            this.currentUser = null;
+            return "login";
+        } finally {
+            ApplicationModel.LOCK.unlock();
+        }
     }
     
     /**
