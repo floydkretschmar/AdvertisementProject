@@ -98,11 +98,9 @@ public class CampaignModel extends AbstractModel {
      * Gets the contents for the specified campaign id.
      * 
      * @param id    the id of the campaign for which the contents
-     * @param contentTypeName   the well formatted name that represents the 
-     *                          content type.
      * @return 
      */
-    public Collection<Content> getContentForCampaignId(String id, String contentTypeName) {
+    public Collection<Content> getContentForCampaignId(String id) {
         Optional<Campaign> selectedCampaign = 
                 this.applicationModel.processCurrentUser(
                         user -> user.getCampaigns()
@@ -114,19 +112,7 @@ public class CampaignModel extends AbstractModel {
             throw new IllegalArgumentException("The id does not belong to a "
                     + "valid campaign");
         
-        ContentType contentType = ContentType.getContentType(contentTypeName);
-        
-        // combined IMAGE and IMAGE_URL into one group for the sake of more 
-        // intuitive display in the JSF -> take that into account when filtering
-        // contents        
-        return selectedCampaign.get().getContents()
-                .stream()
-                .filter(content -> content.getContentType() == contentType ||
-                                (contentType == ContentType.IMAGE 
-                                    && content.getContentType() == ContentType.IMAGE_URL))
-                .sorted((content1, content2) -> 
-                        content1.getContentType().name().compareTo(content2.getContentType().name()))
-                .collect(Collectors.toList());
+        return selectedCampaign.get().getContents();
     }
     
     
@@ -163,9 +149,4 @@ public class CampaignModel extends AbstractModel {
         
         return contentTypes;
     }
-    
-
-    // --------------- Private classes ---------------
-    
-    
 }

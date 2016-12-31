@@ -66,15 +66,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 /* ------------ OVERRIDE EXISTING ------------*/
 
-.panel-group {
+#j_idt27 {
     height: 100%;
-    margin-bottom: 0px !important;
+    margin-bottom: 3em;
 }
 
 .panel-body {
     padding: 0px !important;
     height: 100%;
-    /*display: table;*/
 }
 
 td

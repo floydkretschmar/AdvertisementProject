@@ -6,7 +6,8 @@
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:ldc="http://webvert.com/LocalDateConverter">
+      xmlns:ldc="http://webvert.com/LocalDateConverter"
+      xmlns:composites="http://java.sun.com/jsf/composite/composites">
     <h:head>
         <title>Webvert</title>
         <h:outputStylesheet library="css" name="style.css"  />
@@ -67,74 +68,8 @@
                                             <f:converter binding="#{campaignModel.accountConverter}"/>	
                                         </h:outputText>
                                     </b:row>
-                                    <b:row class="webvert_c_row_layout webvert_c_other_row_layout">
-                                        <h4 class="webvert_heading_color_dark 
-                                                   webvert_c_inner_heading_layout">
-                                            Contents
-                                        </h4>
-                                    </b:row>
-                                    <b:accordion class="webvert_c_row_layout 
-                                                        webvert_c_content_accordion_layout">
-                                        <c:forEach items="#{campaignModel.getContentTypesForCampaign(campaign.id)}"
-                                                   var="contentType"
-                                                   id="forEachCampaign">
-                                            <b:panel title="#{contentType}" style="height: 100%">
-                                                <c:forEach items="#{campaignModel.getContentForCampaignId(campaign.id, contentType)}"
-                                                           var="content"
-                                                           id="forEachCampaign">
-                                                    <b:panel class="webvert_c_content_accordion_panel_layout">
-                                                        <b:column span="3" 
-                                                                  style="#{contentType eq 'Image' ? 'padding-top: 0px' : 'padding-top: 16px'}">
-                                                            <c:choose>
-                                                                <c:when test="#{contentType eq 'Image'}">
-                                                                    <img src="#{content.value}" 
-                                                                         class="webvert_c_content_image_layout"/>
-                                                                </c:when>
-                                                                <c:otherwise>
-                                                                    <h:outputText value="#{content.value}" 
-                                                                                  style="padding-top: 16px"/>
-                                                                </c:otherwise>
-                                                            </c:choose>
-                                                        </b:column>
-                                                        <b:column span="8">
-                                                            <b:row class="webvert_c_content_lable_row_layout">
-                                                                <b:column span="6">
-                                                                    <h:outputText value="Description:" 
-                                                                                  class="webvert_bold_lable_layout"/>
-                                                                </b:column>
-                                                                <b:column span="6">
-                                                                    <h:outputText value="#{content.description}"/>
-                                                                </b:column>
-                                                            </b:row>
-                                                            <b:row class="webvert_c_content_lable_row_layout">
-                                                                <b:column span="6">
-                                                                    <h:outputText value="Price per request:"
-                                                                                  class="webvert_bold_lable_layout"/>
-                                                                </b:column>
-                                                                <b:column span="6">
-                                                                    <h:outputText value="#{content.pricePerRequest}"/>
-                                                                </b:column>
-                                                            </b:row>
-                                                            <b:row class="webvert_c_content_lable_row_layout">
-                                                                <b:column span="6">
-                                                                    <h:outputText value="Number of requests ordered:"
-                                                                                  class="webvert_bold_lable_layout"/>
-                                                                </b:column>
-                                                                <b:column span="6">
-                                                                    <h:outputText value="#{content.numberOfRequests}"/>
-                                                                </b:column>
-                                                            </b:row>
-                                                        </b:column>
-                                                        <b:column span="1" style="height: 100%">
-                                                            <b:commandButton icon="pencil"
-                                                                             value=""
-                                                                             class="webvert_c_content_edit_button_layout"/>
-                                                        </b:column>
-                                                    </b:panel>
-                                                </c:forEach>
-                                            </b:panel>
-                                        </c:forEach>
-                                    </b:accordion>
+                                    <composites:contentsComposite contentTypes="#{campaignModel.getContentTypesForCampaign(campaign.id)}"
+                                                                  allContents="#{campaignModel.getContentForCampaignId(campaign.id)}"/>
                                 </b:panel>
                             </c:forEach>
                         </c:when>
