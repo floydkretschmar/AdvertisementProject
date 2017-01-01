@@ -21,17 +21,18 @@ import de.oth.fkretschmar.advertisementproject.entities.campaign.ContentType;
 import de.oth.fkretschmar.advertisementproject.ui.models.base.AbstractModel;
 import java.util.Collection;
 import java.util.stream.Collectors;
+import javax.enterprise.context.ConversationScoped;
 import javax.inject.Named;
-import org.omnifaces.cdi.ViewScoped;
 
 /**
  *
  * @author Admin
  */
 @Named
-@ViewScoped
+@ConversationScoped
 public class ContentModel extends AbstractModel {
 
+    
     // --------------- Public methods ---------------
     
     /**

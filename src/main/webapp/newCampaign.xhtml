@@ -13,51 +13,57 @@
     <h:body>
         <ui:composition template="./resources/templates/PresentationAreaTemplate.xhtml">
             <ui:define name="main_content">
-                <b:container class="webvert_nc_container_layout">
-                    <h2 class="webvert_heading_color_dark webvert_heading_layout">
-                        Create a new campaign
-                    </h2>
-                    <b:row style="padding-top: 16px">
-                        <b:column span="4">
-                            <h:outputText value="Name:" 
-                                          class="webvert_bold_lable_layout"/>
-                        </b:column>
-                        <b:column span="8">
-                            <b:inputText></b:inputText>
-                        </b:column>
-                    </b:row>
-                    <b:row style="padding-top: 16px">
-                        <b:column span="4">
-                            <h:outputText value="Payment interval:" 
-                                          class="webvert_bold_lable_layout"/>
-                        </b:column>
-                        <b:column span="8">
-                            <b:selectOneMenu value="#{newCampaignModel.selectedInterval}">
-                                <f:selectItems value="#{newCampaignModel.paymentIntervals}"
-                                               var="interval"
-                                               itemValue="#{interval}"
-                                               itemLabel="#{interval.label}"/>
-                            </b:selectOneMenu>
-                        </b:column>
-                    </b:row>
 
-                    <b:row style="padding-top: 16px">
-                        <b:column span="4">
-                            <h:outputText value="Account:" 
-                                          class="webvert_bold_lable_layout"/>
-                        </b:column>
-                        <b:column span="8">
-                            <b:selectOneMenu value="#{newCampaignModel.selectedAccount}">
-                                <f:converter binding="#{newCampaignModel.accountConverter}"/>	                    
-                                <f:selectItems value="#{newCampaignModel.accounts}" 
-                                               var="account" 
-                                               itemLabel="#{account.id}"/>
-                            </b:selectOneMenu>
-                        </b:column>
-                    </b:row>
-                </b:container>
-                <composites:contentsComposite enableEdit="false"
-                                              enableNew="true"/>
+                <b:panel class="webvert_pa_content_layout">
+                    <h:form id="new_campaign_form"
+                            prependId="false" >
+                        <b:container class="webvert_nc_container_layout">
+                            <h2 class="webvert_heading_color_dark webvert_heading_layout">
+                                Create a new campaign
+                            </h2>
+                            <b:row style="padding-top: 16px">
+                                <b:column span="4">
+                                    <h:outputText value="Name:" 
+                                                  class="webvert_bold_lable_layout"/>
+                                </b:column>
+                                <b:column span="8">
+                                    <b:inputText></b:inputText>
+                                </b:column>
+                            </b:row>
+                            <b:row style="padding-top: 16px">
+                                <b:column span="4">
+                                    <h:outputText value="Payment interval:" 
+                                                  class="webvert_bold_lable_layout"/>
+                                </b:column>
+                                <b:column span="8">
+                                    <b:selectOneMenu value="#{newCampaignModel.selectedInterval}">
+                                        <f:selectItems value="#{newCampaignModel.paymentIntervals}"
+                                                       var="interval"
+                                                       itemValue="#{interval}"
+                                                       itemLabel="#{interval.label}"/>
+                                    </b:selectOneMenu>
+                                </b:column>
+                            </b:row>
+
+                            <b:row style="padding-top: 16px">
+                                <b:column span="4">
+                                    <h:outputText value="Account:" 
+                                                  class="webvert_bold_lable_layout"/>
+                                </b:column>
+                                <b:column span="8">
+                                    <b:selectOneMenu value="#{newCampaignModel.selectedAccount}">
+                                        <f:converter binding="#{newCampaignModel.accountConverter}"/>	                    
+                                        <f:selectItems value="#{newCampaignModel.accounts}" 
+                                                       var="account" 
+                                                       itemLabel="#{account.id}"/>
+                                    </b:selectOneMenu>
+                                </b:column>
+                            </b:row>
+                        </b:container>
+                        <composites:contentsComposite enableEdit="false"
+                                                      enableNew="true"/>
+                    </h:form>
+                </b:panel>
             </ui:define>
         </ui:composition>
     </h:body>

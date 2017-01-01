@@ -15,65 +15,90 @@
     <h:body>
         <ui:composition template="./resources/templates/PresentationAreaTemplate.xhtml">
             <ui:define name="main_content">
-                    <h2 class="webvert_heading_color_dark 
-                               webvert_heading_layout">
-                        Campaigns
-                    </h2>
-                    <!--<h2 class="webvert_form_heading_color_dark">Campaigns</h2>-->
-                    <b:tabLinks class="webvert_ca_tab_layout">
-                        <b:navCommandLink value="Currently Running Campaigns"
-                                          update="@form"
-                                          active="#{campaignModel.campaignState eq 'RUNNING'}"
-                                          action="#{campaignModel.setCampaignState('RUNNING')}"/>
-                        <b:navCommandLink value="Ended Campaigns"
-                                          update="@form"
-                                          active="#{campaignModel.campaignState eq 'ENDED'}"
-                                          action="#{campaignModel.setCampaignState('ENDED')}"/>
-                        <b:navCommandLink value="Cancelled Campaigns"
-                                          update="@form"
-                                          active="#{campaignModel.campaignState eq 'CANCELLED'}"
-                                          action="#{campaignModel.setCampaignState('CANCELLED')}"/>
-                        <b:messages />
-                    </b:tabLinks>
-                    <c:choose>
-                        <c:when test="#{not empty campaignModel.campaigns}">
-                            <!--<b:accordion expandedPanels="runningCampaigns">-->
-                            <c:forEach items="#{campaignModel.campaigns}" var="campaign">
-                                <b:panel title="#{campaign.name}"
-                                         collapsed="true">
-                                    <b:row class="webvert_ca_row_layout webvert_ca_first_row_layout">
-                                        <h3 class="webvert_heading_color_dark
-                                                   webvert_ca_inner_heading_layout">
-                                            #{campaign.name}
-                                        </h3>
-                                    </b:row>
-                                    <b:row class="webvert_ca_row_layout webvert_ca_other_row_layout">
-                                        <h:outputText value="Started: "
-                                                      class="webvert_bold_lable_layout"/>
-                                        <h:outputText value="#{campaign.generationDate}">\
-                                            <ldc:convertLocalDate type="both" 
-                                                                  pattern="dd.MM.yyyy"/>
-                                        </h:outputText>
-                                    </b:row>
-                                    <b:row class="webvert_ca_row_layout webvert_ca_other_row_layout">
-                                        <h:outputText value="Payment Account: "
-                                                      class="webvert_bold_lable_layout"/>
-                                        <h:outputText value="#{campaign.paymentAccount}">
-                                            <f:converter binding="#{campaignModel.accountConverter}"/>	
-                                        </h:outputText>
-                                    </b:row>
-                                    <composites:contentsComposite contentTypes="#{campaignModel.getContentTypesForCampaign(campaign.id)}"
-                                                                  contents="#{campaignModel.getContentForCampaignId(campaign.id)}"
-                                                                  enableEdit="true"
-                                                                  enableNew="false"/>
-                                </b:panel>
-                            </c:forEach>
-                        </c:when>
-                        <c:otherwise>
+                <b:modal id="amodal" 
+                         title="Warning!" 
+                         styleClass="modalPseudoClass">
+                    <p id="amodal1body">Are you sure?</p>
+                    <f:facet name="footer">
+                        <b:button value="Close" 
+                                  dismiss="modal" 
+                                  onclick="return false;"/>
+                        <b:button value="Ok" 
+                                  dismiss="modal" 
+                                  onclick="return false;"/>
+                    </f:facet>
+                </b:modal>
+
+                <b:panel class="webvert_pa_content_layout">
+                    <h:form prependId="false" >
+                        <h2 class="webvert_heading_color_dark 
+                            webvert_heading_layout">
+                            Campaigns
+                        </h2>
+
+                        <b:buttonGroup>
+                            <a id="atrigger1" 
+                               class="btn btn-primary" 
+                               href="#amodal" data-toggle="modal">Bid!</a>
+                        </b:buttonGroup>
+
+                        <!--<h2 class="webvert_form_heading_color_dark">Campaigns</h2>-->
+                        <b:tabLinks class="webvert_ca_tab_layout">
+                            <b:navCommandLink value="Currently Running Campaigns"
+                                              update="@form"
+                                              active="#{campaignModel.campaignState eq 'RUNNING'}"
+                                              action="#{campaignModel.setCampaignState('RUNNING')}"/>
+                            <b:navCommandLink value="Ended Campaigns"
+                                              update="@form"
+                                              active="#{campaignModel.campaignState eq 'ENDED'}"
+                                              action="#{campaignModel.setCampaignState('ENDED')}"/>
+                            <b:navCommandLink value="Cancelled Campaigns"
+                                              update="@form"
+                                              active="#{campaignModel.campaignState eq 'CANCELLED'}"
+                                              action="#{campaignModel.setCampaignState('CANCELLED')}"/>
+                            <b:messages />
+                        </b:tabLinks>
+                        <c:choose>
+                            <c:when test="#{not empty campaignModel.campaigns}">
+                                <!--<b:accordion expandedPanels="runningCampaigns">-->
+                                <c:forEach items="#{campaignModel.campaigns}" var="campaign">
+                                    <b:panel title="#{campaign.name}"
+                                             collapsed="true">
+                                        <b:row class="webvert_ca_row_layout webvert_ca_first_row_layout">
+                                            <h3 class="webvert_heading_color_dark
+                                                webvert_ca_inner_heading_layout">
+                                                #{campaign.name}
+                                            </h3>
+                                        </b:row>
+                                        <b:row class="webvert_ca_row_layout webvert_ca_other_row_layout">
+                                            <h:outputText value="Started: "
+                                                          class="webvert_bold_lable_layout"/>
+                                            <h:outputText value="#{campaign.generationDate}">\
+                                                <ldc:convertLocalDate type="both" 
+                                                                      pattern="dd.MM.yyyy"/>
+                                            </h:outputText>
+                                        </b:row>
+                                        <b:row class="webvert_ca_row_layout webvert_ca_other_row_layout">
+                                            <h:outputText value="Payment Account: "
+                                                          class="webvert_bold_lable_layout"/>
+                                            <h:outputText value="#{campaign.paymentAccount}">
+                                                <f:converter binding="#{campaignModel.accountConverter}"/>	
+                                            </h:outputText>
+                                        </b:row>
+                                        <composites:contentsComposite contentTypes="#{campaignModel.getContentTypesForCampaign(campaign.id)}"
+                                                                      contents="#{campaignModel.getContentForCampaignId(campaign.id)}"
+                                                                      enableEdit="true"
+                                                                      enableNew="false"/>
+                                    </b:panel>
+                                </c:forEach>
+                            </c:when>
+                            <c:otherwise>
                                 <h2 class="webvert_heading_color_dark"
                                     style="text-align: center">No campaigns available.</h2>
-                        </c:otherwise>
-                    </c:choose>
+                            </c:otherwise>
+                        </c:choose>
+                    </h:form>
+                </b:panel>
                 <!--</b:accordion>-->
             </ui:define>
         </ui:composition>

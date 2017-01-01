@@ -66,14 +66,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 /* ------------ OVERRIDE EXISTING ------------*/
 
-#j_idt29.panel-group {
-    height: 100%;
+/* Targets the panel on which the content of the general campaign page and the page to create new campaigns are displayed*/
+#j_idt32.panel-group, #j_idt29.panel-group {
+    height: calc(100% - 35px - 3em);
+    opacity: 0.83;
     margin-bottom: 3em;
 }
 
 .panel-body {
     padding: 0px !important;
-    /*height: 100%;*/
+    height: 100%;
 }
 
 .dropdown-header {
