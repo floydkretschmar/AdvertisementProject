@@ -19,8 +19,7 @@ package de.oth.fkretschmar.advertisementproject.entities.billing;
 import de.oth.fkretschmar.advertisementproject.entities.exceptions.BuilderValidationException;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.Content;
 import de.oth.fkretschmar.advertisementproject.entities.base.AbstractAutoGenerateKeyedEntity;
-import de.oth.fkretschmar.advertisementproject.entities.base.converter.MonetaryAmountAttributeConverter;
-import javax.money.MonetaryAmount;
+import de.oth.fkretschmar.advertisementproject.entities.base.converter.MoneyAttributeConverter;
 
 import javax.persistence.Column;
 import javax.persistence.Convert;
@@ -33,6 +32,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.joda.money.Money;
 
 /**
  *
@@ -68,8 +68,8 @@ public class BillItem extends AbstractAutoGenerateKeyedEntity {
     @NotNull
     @Column(name = "ITEM_PRICE", nullable = false)
     @Getter
-    @Convert(converter = MonetaryAmountAttributeConverter.class)
-    private MonetaryAmount itemPrice;
+    @Convert(converter = MoneyAttributeConverter.class)
+    private Money itemPrice;
     
     
     // --------------- Private static methods ---------------
@@ -106,8 +106,8 @@ public class BillItem extends AbstractAutoGenerateKeyedEntity {
                     "The amount can not be smaller than 0.");
         }
         
-        MonetaryAmount itemPrice 
-                = content.getPricePerRequest().multiply(contentRequests);
+        Money itemPrice 
+                = content.getPricePerRequest().multipliedBy(contentRequests);
         
         return new BillItem(content, contentRequests, itemPrice);
     }

@@ -20,12 +20,11 @@ import de.oth.fkretschmar.advertisementproject.entities.exceptions.ContentDataCo
 import de.oth.fkretschmar.advertisementproject.entities.exceptions.BuilderValidationException;
 import de.oth.fkretschmar.advertisementproject.entities.base.AbstractAutoGenerateKeyedEntity;
 import de.oth.fkretschmar.advertisementproject.entities.base.IDeletable;
-import de.oth.fkretschmar.advertisementproject.entities.base.converter.MonetaryAmountAttributeConverter;
+import de.oth.fkretschmar.advertisementproject.entities.base.converter.MoneyAttributeConverter;
 
 import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
-import javax.money.MonetaryAmount;
 
 import javax.persistence.Column;
 import javax.persistence.Convert;
@@ -48,6 +47,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import org.apache.commons.lang3.SerializationUtils;
+import org.joda.money.Money;
 
 /**
  *
@@ -116,8 +116,8 @@ public class Content extends AbstractAutoGenerateKeyedEntity
     @Column(name = "ITEM_PRICE", nullable = false)
     @Getter
     @Setter
-    @Convert(converter = MonetaryAmountAttributeConverter.class)
-    private MonetaryAmount pricePerRequest;
+    @Convert(converter = MoneyAttributeConverter.class)
+    private Money pricePerRequest;
     
     /**
      * Stores the serialized value.
@@ -169,7 +169,7 @@ public class Content extends AbstractAutoGenerateKeyedEntity
             TargetContext context, 
             String description, 
             long numberOfRequests,
-            MonetaryAmount pricePerRequest,
+            Money pricePerRequest,
             URL targetUrl,
             Serializable value) {
         this.setValue(value, contentType);
@@ -273,7 +273,7 @@ public class Content extends AbstractAutoGenerateKeyedEntity
             TargetContext context, 
             String description, 
             long numberOfRequests,
-            MonetaryAmount pricePerRequest,
+            Money pricePerRequest,
             URL targetUrl,
             Serializable value) throws BuilderValidationException {
         if (value == null) {

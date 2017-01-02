@@ -17,11 +17,11 @@
 package de.oth.fkretschmar.advertisementproject.entities.base.converter;
 
 import java.util.Locale;
-import javax.money.MonetaryAmount;
-import javax.money.format.MonetaryAmountFormat;
-import javax.money.format.MonetaryFormats;
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
+import org.joda.money.Money;
+import org.joda.money.format.MoneyFormatter;
+import org.joda.money.format.MoneyFormatterBuilder;
 
 /**
  * Converts a provided local date to the corresponding date when 
@@ -33,37 +33,36 @@ import javax.persistence.Converter;
  * @author fkre
  */
 @Converter
-public class MonetaryAmountAttributeConverter 
-        implements AttributeConverter<MonetaryAmount, String> {
+public class MoneyAttributeConverter 
+        implements AttributeConverter<Money, String> {
 
     /**
-     * Converts a provided {@link MonetaryAmount} to a {@link String} that will 
+     * Converts a provided {@link Money} to a {@link String} that will 
      * be used within for storage within the database.
      * 
-     * @param   monetaryAmount      the {@link MonetaryAmount} that will be 
+     * @param   monetaryAmount      the {@link Money} that will be 
      *                              converted.
      * @return                      the converted {@link String}.
      */
     @Override
-    public String convertToDatabaseColumn(MonetaryAmount monetaryAmount) {
-        MonetaryAmountFormat germanFormat 
-                = MonetaryFormats.getAmountFormat(Locale.GERMANY);
-        return germanFormat.format(monetaryAmount);
+    public String convertToDatabaseColumn(Money monetaryAmount) {
+        MoneyFormatterBuilder formaterBuilder = new MoneyFormatterBuilder().appendAmount().appendCurrencyCode();
+        MoneyFormatter formater = formaterBuilder.toFormatter(Locale.GERMANY);
+        return formater.print(monetaryAmount);
     }
 
     /**
-     * Converts a provided {@link String} to a {@link MonetaryAmount} that will 
+     * Converts a provided {@link String} to a {@link Money} that will 
      * be used within the java program.
      * 
      * @param   moneyString the {@link String} that will be converted.
-     * @return  the converted {@link MonetaryAmount}
+     * @return  the converted {@link Money}
      */
     @Override
-    public MonetaryAmount convertToEntityAttribute(String moneyString) {
-         MonetaryAmountFormat germanFormat 
-                = MonetaryFormats.getAmountFormat(Locale.GERMANY);
-        
-        return germanFormat.parse(moneyString);
+    public Money convertToEntityAttribute(String moneyString) {
+        MoneyFormatterBuilder formaterBuilder = new MoneyFormatterBuilder().appendAmount().appendCurrencyCode();
+        MoneyFormatter formater = formaterBuilder.toFormatter(Locale.GERMANY);
+        return formater.parseMoney(moneyString);
     }
     
 }

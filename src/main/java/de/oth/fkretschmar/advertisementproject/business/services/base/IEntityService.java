@@ -22,7 +22,7 @@ import de.oth.fkretschmar.advertisementproject.entities.base.IEntity;
  * Defines public methods for services that allow to manage single entities.
  *
  * @author  fkre 
- * @param <T> 
+ * @param   <T>     the type of the entity that is being managed.
  */
 public interface IEntityService<T extends IEntity<?>> {
 

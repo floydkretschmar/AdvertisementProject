@@ -17,7 +17,7 @@
 package de.oth.fkretschmar.advertisementproject.business.services.base;
 
 import de.oth.fkretschmar.advertisementproject.entities.billing.Account;
-import javax.money.MonetaryAmount;
+import org.joda.money.Money;
 
 /**
  *
@@ -36,7 +36,7 @@ public interface ITransactionService {
      *                      transaction.
      */
     public void transfer(
-            MonetaryAmount amount,
+            Money amount,
             Account sender, 
             Account recipient,
             String description);

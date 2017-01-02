@@ -35,9 +35,10 @@ import java.util.logging.Logger;
 import javax.enterprise.context.ConversationScoped;
 import javax.faces.event.ActionEvent;
 import javax.inject.Named;
-import javax.money.Monetary;
 import lombok.Getter;
 import lombok.Setter;
+import org.joda.money.CurrencyUnit;
+import org.joda.money.Money;
 
 /**
  *
@@ -226,10 +227,9 @@ public class NewEditContentModel extends AbstractModel {
                     .description(this.description)
                     .numberOfRequests(this.numberOfRequests)
                     .targetUrl(new URL(this.targetPage))
-                    .pricePerRequest(Monetary.getDefaultAmountFactory()
-                            .setNumber(this.preDecimalPointAmount * 100 + this.postDecimalPointAmount)
-                            .setCurrency("EUR")
-                            .create())
+                    .pricePerRequest(Money.ofMinor(
+                            CurrencyUnit.EUR, 
+                            this.preDecimalPointAmount * 100 + this.postDecimalPointAmount))
                     .value(this.selectedContentType == ContentType.IMAGE_URL ? new URL(this.contentValue) : this.contentValue)
                     .build();
         } catch (MalformedURLException ex) {

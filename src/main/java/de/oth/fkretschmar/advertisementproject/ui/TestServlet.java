@@ -50,13 +50,14 @@ import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.inject.Inject;
-import javax.money.Monetary;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
+import org.joda.money.CurrencyUnit;
+import org.joda.money.Money;
 
 /**
  *
@@ -192,9 +193,9 @@ public class TestServlet extends HttpServlet {
                             .targetUrl(new URL("https://www.google.de"))
                             .context(context)
                             .numberOfRequests(100000)
-                            .pricePerRequest(Monetary.getDefaultAmountFactory()
-                                    .setCurrency("EUR")
-                                    .setNumber(0.04).create()).build();
+                            .pricePerRequest(Money.ofMinor(
+                                    CurrencyUnit.EUR, 
+                                    4)).build();
 
                 TargetContext context1 = TargetContext.createTargetContext()
                         .targetAges(EnumSet.of(TargetAge.CHILDREN, TargetAge.YOUTH, TargetAge.ADULTS))
@@ -209,9 +210,9 @@ public class TestServlet extends HttpServlet {
                             .targetUrl(new URL("https://www.google.de"))
                             .context(context1)
                             .numberOfRequests(500000)
-                            .pricePerRequest(Monetary.getDefaultAmountFactory()
-                                    .setCurrency("EUR")
-                                    .setNumber(0.10).create()).build();
+                            .pricePerRequest(Money.ofMinor(
+                                    CurrencyUnit.EUR, 
+                                    10)).build();
                 
 //                Campaign campaign = ApplicationService.processCurrentUser(currentUser -> {
 //                    try {
@@ -251,9 +252,9 @@ public class TestServlet extends HttpServlet {
                                 .targetUrl(new URL("https://www.google.de"))
                                 .context(context3)
                                 .numberOfRequests(200000)
-                                .pricePerRequest(Monetary.getDefaultAmountFactory()
-                                        .setCurrency("EUR")
-                                        .setNumber(0.20).create()).build();
+                                .pricePerRequest(Money.ofMinor(
+                                    CurrencyUnit.EUR, 
+                                    20)).build();
                     
                     campaign = this.adService.createContentForCampaign(campaign, ad3);
                 }

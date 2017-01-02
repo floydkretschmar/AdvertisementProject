@@ -72,7 +72,7 @@ public interface IUserService extends IEntityService<User> {
      * 
      * @param   user    that contains the data for the new user that will be 
      *                  created.§
-     * @throws  UserServiceException
+     * @throws  UserServiceException    if the creation of the user failed.
      */
     public void createUser(User user) throws UserServiceException;
     

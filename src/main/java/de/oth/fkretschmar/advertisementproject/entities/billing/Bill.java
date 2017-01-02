@@ -19,13 +19,12 @@ package de.oth.fkretschmar.advertisementproject.entities.billing;
 import de.oth.fkretschmar.advertisementproject.entities.exceptions.BuilderValidationException;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.Campaign;
 import de.oth.fkretschmar.advertisementproject.entities.base.AbstractAutoGenerateKeyedEntity;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 import java.util.TreeMap;
-import javax.money.Monetary;
-import javax.money.MonetaryAmount;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -38,6 +37,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.Getter;
 import lombok.Setter;
+import org.joda.money.Money;
 
 /**
  * Represents all billing information for one particular campaign payment.
@@ -80,7 +80,7 @@ public class Bill extends AbstractAutoGenerateKeyedEntity {
      */
     @Transient
     @Getter
-    private MonetaryAmount totalPrice;
+    private Money totalPrice;
     
     // --------------- Private constructors ---------------
     
@@ -148,7 +148,7 @@ public class Bill extends AbstractAutoGenerateKeyedEntity {
             this.items.add(item);
 
             BillItem oldItem = this.itemMap.get(item.getContent().getId());
-            this.totalPrice.subtract(oldItem.getItemPrice());
+            this.totalPrice.minus(oldItem.getItemPrice());
             this.addToTotalPrice(item);
 
             this.itemMap.remove(item.getContent().getId());
@@ -181,14 +181,13 @@ public class Bill extends AbstractAutoGenerateKeyedEntity {
      * @param item  the item whose price will be added.
      */
     private void addToTotalPrice(BillItem item) {
-        MonetaryAmount itemPrice = item.getItemPrice();
+        Money itemPrice = item.getItemPrice();
 
         if(this.totalPrice == null) {
-            this.totalPrice = Monetary.getDefaultAmountFactory()
-                        .setAmount(itemPrice).create();
+            this.totalPrice = Money.of(itemPrice);
         }
         else {
-            this.totalPrice.add(itemPrice);
+            this.totalPrice.plus(itemPrice);
         }
     }
     

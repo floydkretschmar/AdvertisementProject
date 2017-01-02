@@ -20,7 +20,7 @@ import de.oth.fkretschmar.advertisementproject.business.annotation.BankTransacti
 import de.oth.fkretschmar.advertisementproject.business.services.base.ITransactionService;
 import de.oth.fkretschmar.advertisementproject.entities.billing.Account;
 import javax.enterprise.context.RequestScoped;
-import javax.money.MonetaryAmount;
+import org.joda.money.Money;
 
 /**
  *
@@ -42,7 +42,7 @@ public class BankTransactionService implements ITransactionService {
      */
     @Override
     public void transfer(
-            MonetaryAmount amount, 
+            Money amount, 
             Account sender, 
             Account recipient, 
             String description) {

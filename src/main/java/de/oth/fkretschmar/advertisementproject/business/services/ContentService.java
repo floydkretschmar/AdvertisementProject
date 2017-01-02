@@ -38,12 +38,12 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
-import javax.money.MonetaryAmount;
-import javax.money.format.MonetaryAmountFormat;
-import javax.money.format.MonetaryFormats;
 import javax.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.joda.money.Money;
+import org.joda.money.format.MoneyFormatter;
+import org.joda.money.format.MoneyFormatterBuilder;
 
 /**
  * The service that offers functionality relatetd to the generation and 
@@ -154,12 +154,12 @@ public class ContentService implements Serializable, IContentService, IContentPr
         
         List<MatchingContent> matchingContents = new ArrayList<MatchingContent>();
         
-        MonetaryAmountFormat germanFormat 
-                = MonetaryFormats.getAmountFormat(Locale.GERMANY);        
+        MoneyFormatterBuilder formaterBuilder = new MoneyFormatterBuilder().appendAmount().appendCurrencyCode();
+        MoneyFormatter formater = formaterBuilder.toFormatter(Locale.GERMANY);  
         results.forEach(result -> matchingContents.add(
                     new MatchingContent(
                             ((BigInteger)result[0]).longValue(),
-                            germanFormat.parse((String)result[1]),
+                            formater.parseMoney((String)result[1]),
                             ((BigInteger)result[2]).intValue(),
                             ((BigDecimal)result[3]).intValue()
                         )));
@@ -172,13 +172,11 @@ public class ContentService implements Serializable, IContentService, IContentPr
                     {
                         double compareValue1 = (10 * content1.groupMatches * 
                                         content1.machtesInGroup * 
-                                        content1.getPricePerRequest()
-                                                .getNumber().doubleValueExact()) +
+                                        content1.getPricePerRequest().getAmountMinorLong()) +
                                         ThreadLocalRandom.current().nextInt(5, 10);
                         double compareValue2 = (10 * content2.groupMatches * 
                                         content2.machtesInGroup * 
-                                        content2.getPricePerRequest()
-                                                .getNumber().doubleValueExact()) +
+                                        content2.getPricePerRequest().getAmountMinorLong()) +
                                         ThreadLocalRandom.current().nextInt(5, 10);
 
                         return Double.compare(compareValue1, compareValue2);
@@ -254,7 +252,7 @@ public class ContentService implements Serializable, IContentService, IContentPr
         * per request of this campaign content.
         */
        @Getter
-       private final MonetaryAmount pricePerRequest;
+       private final Money pricePerRequest;
 
        /**
         * Stores the number of general target groups that the content has matched.
