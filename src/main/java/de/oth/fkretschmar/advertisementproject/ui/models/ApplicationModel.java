@@ -25,6 +25,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Function;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -105,6 +106,8 @@ public class ApplicationModel extends AbstractModel {
         ApplicationModel.LOCK.lock();
         
         try {
+            // cleanup: invalidate session as well as set the user to null
+            FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
             this.currentUser = null;
             return "login";
         } finally {

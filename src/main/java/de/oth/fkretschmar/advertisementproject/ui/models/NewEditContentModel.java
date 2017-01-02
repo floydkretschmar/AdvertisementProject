@@ -25,14 +25,12 @@ import de.oth.fkretschmar.advertisementproject.entities.campaign.TargetMaritalSt
 import de.oth.fkretschmar.advertisementproject.entities.campaign.TargetPurposeOfUse;
 import de.oth.fkretschmar.advertisementproject.ui.models.base.AbstractModel;
 import java.net.MalformedURLException;
-import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.enterprise.context.ConversationScoped;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.event.ActionEvent;
 import javax.inject.Named;

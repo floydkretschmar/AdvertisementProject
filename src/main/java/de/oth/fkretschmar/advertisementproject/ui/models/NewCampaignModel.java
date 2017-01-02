@@ -24,19 +24,18 @@ import java.util.ArrayList;
 import java.util.Collection;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.Conversation;
-import javax.enterprise.context.ConversationScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import lombok.Getter;
 import lombok.Setter;
-import org.omnifaces.cdi.ViewScoped;
 
 /**
  *
  * @author fkre
  */
 @Named
-@ConversationScoped
+@SessionScoped
 public class NewCampaignModel extends AbstractModel {
     
     // --------------- Private fields ---------------
@@ -46,12 +45,6 @@ public class NewCampaignModel extends AbstractModel {
      */
     @Inject
     private ApplicationModel applicationModel;
-    
-    /**
-     * The conversation of the conversation scope.
-     */
-    @Inject
-    private Conversation conversation;
     
     /**
      * Stores the new contents that are connected to the campaign created on the
@@ -119,7 +112,7 @@ public class NewCampaignModel extends AbstractModel {
      * @return  the next navigation point.
      */
     public String cancel() {
-        this.conversation.end();
+        this.reset();
         return "overview";
     } 
     
@@ -130,18 +123,19 @@ public class NewCampaignModel extends AbstractModel {
      * @return  the next navigation point.
      */
     public String save() {
-        this.conversation.end();
+        this.reset();
         return "overview";
     } 
     
+    
     // --------------- Private methods ---------------
-
     
     /**
-     * Initializes the model for creating a new campaign.
+     * Resets the new campaign model to its original state.
      */
-    @PostConstruct
-    private void initialize() {
-        this.conversation.begin();
+    private void reset() {
+        this.newContents.clear();
+        this.selectedAccount = null;
+        this.selectedInterval = null;
     }
 }
