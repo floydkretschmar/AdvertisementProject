@@ -78,7 +78,10 @@
                     </h:form>
                 </b:panel>
                 
-                <composites:modalComposite title="Create a new content"/>
+                <composites:modalComposite title="Create a new content"
+                                           bean="#{newCampaignModel}"
+                                           methodName="addNewContent"
+                                           propertyName="newContent"/>
             </ui:define>
         </ui:composition>
     </h:body>

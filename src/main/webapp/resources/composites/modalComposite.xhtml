@@ -11,6 +11,11 @@
     <!-- INTERFACE -->
     <cc:interface>
         <cc:attribute name="title" />
+        <cc:attribute name="editContent" />
+        
+        <cc:attribute name="propertyName" required="true" />
+        <cc:attribute name="methodName" required="true" />
+        <cc:attribute name="bean" required="true" />
     </cc:interface>
 
     <!-- IMPLEMENTATION -->
@@ -161,8 +166,10 @@
                                      process="@form"
                                      class="webvert_primary_button_color"
                                      actionListener="#{newEditContentModel.applyChanges}"
-                                     action="#{newCampaignModel.addNewContent(newEditContentModel.content)}"
+                                     action="#{cc.attrs.bean[cc.attrs.methodName]}"
                                      style="width: 128px; margin-left: 10px">
+                        <f:setPropertyActionListener target="#{cc.attrs.bean[cc.attrs.propertyName]}"
+                                                     value="#{newEditContentModel.content}" />
                     </b:commandButton>
                 </p>
             </h:form>
