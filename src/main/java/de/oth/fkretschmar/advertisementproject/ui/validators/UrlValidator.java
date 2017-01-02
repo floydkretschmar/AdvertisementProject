@@ -16,6 +16,9 @@
  */
 package de.oth.fkretschmar.advertisementproject.ui.validators;
 
+import java.math.BigDecimal;
+import java.net.MalformedURLException;
+import java.net.URL;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -25,35 +28,36 @@ import javax.faces.validator.ValidatorException;
 
 /**
  * Validates the specified password.
- * 
- * Implementation as seen at http://stackoverflow.com/questions/7489893/how-
- * validate-two-password-fields-by-ajax
- * 
+ *
  * @author Floyd
  */
-@FacesValidator("passwordValidator")
-public class PasswordValidator implements Validator {
-    
+@FacesValidator("urlValidator")
+public class UrlValidator implements Validator {
+
     /**
-     * Validates the two given passwords.
-     * 
-     * @param context
-     * @param component
-     * @param value
-     * @throws ValidatorException
+     * Validates the given value on whether or not it is an URL.
+     *
+     * @param context the JSF context of the validation.
+     * @param component the component of the validation.
+     * @param value the value that is being validatet.
+     * @throws ValidatorException that indicates that the validation is failed
+     * and the value is either no number or not greater zero
      */
     @Override
-    public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
-        String password = (String) value;
-        String confirm = (String) component.getAttributes().get("confirm").toString();
-
-        if (password == null || confirm == null) {
-            return; // Just ignore and let required="true" do its job.
-        }
-
-        if (!password.equals(confirm)) {
-            throw new ValidatorException(
-                    new FacesMessage("The two passwords have to be equal."));
+    public void validate(
+            FacesContext context,
+            UIComponent component,
+            Object value) throws ValidatorException {
+        if (value == null)
+            return;
+        
+        try {
+            URL url = new URL(value.toString());
+        } catch (MalformedURLException ex) {
+            FacesMessage msg = new FacesMessage(
+                    "Validation failed.", "Not an URL");
+            msg.setSeverity(FacesMessage.SEVERITY_ERROR);
+            throw new ValidatorException(msg);
         }
     }
 
