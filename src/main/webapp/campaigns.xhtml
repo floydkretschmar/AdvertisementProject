@@ -15,19 +15,6 @@
     <h:body>
         <ui:composition template="./resources/templates/PresentationAreaTemplate.xhtml">
             <ui:define name="main_content">
-                <b:modal id="amodal" 
-                         title="Warning!" 
-                         styleClass="modalPseudoClass">
-                    <p id="amodal1body">Are you sure?</p>
-                    <f:facet name="footer">
-                        <b:button value="Close" 
-                                  dismiss="modal" 
-                                  onclick="return false;"/>
-                        <b:button value="Ok" 
-                                  dismiss="modal" 
-                                  onclick="return false;"/>
-                    </f:facet>
-                </b:modal>
 
                 <b:panel class="webvert_pa_content_layout">
                     <h:form prependId="false" >
@@ -35,12 +22,6 @@
                             webvert_heading_layout">
                             Campaigns
                         </h2>
-
-                        <b:buttonGroup>
-                            <a id="atrigger1" 
-                               class="btn btn-primary" 
-                               href="#amodal" data-toggle="modal">Bid!</a>
-                        </b:buttonGroup>
 
                         <!--<h2 class="webvert_form_heading_color_dark">Campaigns</h2>-->
                         <b:tabLinks class="webvert_ca_tab_layout">

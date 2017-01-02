@@ -73,6 +73,32 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     margin-bottom: 3em;
 }
 
+.modal-dialog {
+    width: 800px !important;
+}
+
+.ui-state-error {
+    border-color: #ff9999;
+    background-color: #ffe6e6;
+    color: #666;
+}
+
+.ui-selectlistbox-list {
+    height: 70px;
+}
+
+.modal-header {
+    padding-left: 30px !important;
+    padding-right: 30px !important;
+}
+
+.modal-body {
+    padding-left: 30px !important;
+    padding-right: 30px !important;
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+}
+
 .panel-body {
     padding: 0px !important;
     height: 100%;
