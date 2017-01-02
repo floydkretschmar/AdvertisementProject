@@ -106,6 +106,7 @@ public class Content extends AbstractAutoGenerateKeyedEntity
     @NotNull
     @Column(name = "NUMER_OF_REQUESTS", nullable = false)
     @Getter
+    @Setter
     private long numberOfRequests;
     
     /**

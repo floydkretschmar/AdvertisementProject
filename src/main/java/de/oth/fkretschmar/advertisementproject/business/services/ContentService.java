@@ -227,6 +227,8 @@ public class ContentService implements Serializable, IContentService, IContentPr
         this.contextRepository.merge(content.getContext());
         this.contentRepository.merge(content);
 
+        content.setNumberOfRequests(content.getNumberOfRequests() - 1);
+        
         ContentRequest request = ContentRequest.createContentRequestLog()
                 .content(content)
                 .requestSource(source).build();

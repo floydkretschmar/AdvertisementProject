@@ -35,8 +35,13 @@ public enum ContentType {
     
     /**
      * Indicates that the content of the advertisement is an image.
+     * 
+     * NOTE: Theoretically fully implemented (please look at my beautiful 
+     *       SerializableRendererImage for reference) but sending images over
+     *       the network/storing them in the DB is not really the way to do it
+     *       so I am disableing this for now.
      */
-    IMAGE(RenderedImage.class),
+//    IMAGE(RenderedImage.class),
     
     /**
      * Indicates that the content of the advertisement is an URL linking to an
@@ -95,9 +100,9 @@ public enum ContentType {
      * @return  the content type.
      */
     public static ContentType getContentType(String formattedName) {
-        if (formattedName.equals(ContentType.IMAGE_FORMATTED_NAME))
-            return ContentType.IMAGE;
-        else if (formattedName.equals(ContentType.IMAGE_URL_FORMATTED_NAME))
+//        if (formattedName.equals(ContentType.IMAGE_FORMATTED_NAME))
+//            return ContentType.IMAGE;
+        if (formattedName.equals(ContentType.IMAGE_URL_FORMATTED_NAME))
             return ContentType.IMAGE_URL;
         else if (formattedName.equals(ContentType.TEXT_FORMATTED_NAME))
             return ContentType.TEXT;
@@ -115,8 +120,8 @@ public enum ContentType {
      */
     public static String getFormattedName(ContentType type) {
         switch(type) {
-            case IMAGE:
-                return ContentType.IMAGE_FORMATTED_NAME;
+//            case IMAGE:
+//                return ContentType.IMAGE_FORMATTED_NAME;
             case IMAGE_URL:
                 return ContentType.IMAGE_URL_FORMATTED_NAME;
             case TEXT:

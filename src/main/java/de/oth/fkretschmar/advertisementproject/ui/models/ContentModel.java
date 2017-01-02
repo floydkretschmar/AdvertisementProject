@@ -48,14 +48,9 @@ public class ContentModel extends AbstractModel {
      */
     public Collection<Content> getContentWithType(Collection<Content> contents, String contentTypeName) {
         ContentType contentType = ContentType.getContentType(contentTypeName);
-        
-        // combined IMAGE and IMAGE_URL into one group for the sake of more 
-        // intuitive display in the JSF -> take that into account when filtering
-        // contents        
+               
         return contents.stream()
-                .filter(content -> content.getContentType() == contentType ||
-                                (contentType == ContentType.IMAGE 
-                                    && content.getContentType() == ContentType.IMAGE_URL))
+                .filter(content -> content.getContentType() == contentType)
                 .sorted((content1, content2) -> 
                         content1.getContentType().name().compareTo(content2.getContentType().name()))
                 .collect(Collectors.toList());
@@ -77,8 +72,8 @@ public class ContentModel extends AbstractModel {
                 .map(content -> 
                 {
                         String formattedName = ContentType.getFormattedName(content.getContentType());
-                        if(formattedName.equals(ContentType.IMAGE_URL_FORMATTED_NAME))
-                            return ContentType.IMAGE_FORMATTED_NAME;
+//                        if(formattedName.equals(ContentType.IMAGE_URL_FORMATTED_NAME))
+//                            return ContentType.IMAGE_FORMATTED_NAME;
                         return formattedName;
                 })
                 .distinct()

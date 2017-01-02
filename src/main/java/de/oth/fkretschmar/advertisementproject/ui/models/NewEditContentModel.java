@@ -31,20 +31,20 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.enterprise.context.RequestScoped;
 import javax.faces.event.ActionEvent;
 import javax.inject.Named;
 import lombok.Getter;
 import lombok.Setter;
 import org.joda.money.CurrencyUnit;
 import org.joda.money.Money;
+import org.omnifaces.cdi.ViewScoped;
 
 /**
  *
  * @author Admin
  */
 @Named
-@RequestScoped
+@ViewScoped
 public class NewEditContentModel extends AbstractModel {
 
     // --------------- Private fields ---------------
@@ -140,7 +140,7 @@ public class NewEditContentModel extends AbstractModel {
     @Setter
     private String targetPage;
 
-    // --------------- Public getters ---------------
+    // --------------- Public getters and setters ---------------
     /**
      * Gets the list of types the content can have.
      *
@@ -151,7 +151,7 @@ public class NewEditContentModel extends AbstractModel {
         ContentType[] types = ContentType.values();
 
         for (int i = 0; i < types.length; i++) {
-            if (types[i] != ContentType.IMAGE && types[i] != ContentType.UNDEFINED) {
+            if (types[i] != ContentType.UNDEFINED) {
                 filteredTypes.add(types[i]);
             }
         }
@@ -193,6 +193,26 @@ public class NewEditContentModel extends AbstractModel {
      */
     public TargetPurposeOfUse[] getTargetPurposesOfUse() {
         return TargetPurposeOfUse.values();
+    }
+    
+    
+    /**
+     * Sets the content that is being edited.
+     * 
+     * @param content   the edit content.
+     */
+    public void setContent(Content content) {
+        if(content != null) {
+            this.selectedContentType = content.getContentType();
+            
+            if (this.selectedContentType == ContentType.IMAGE_URL)
+                this.contentValue = ((URL)content.getValue()).toExternalForm();
+            else if (this.selectedContentType == ContentType.TEXT)
+                this.contentValue = content.getValue().toString();
+            
+            this.description = content.getDescription();
+            this.numberOfRequests = content.getNumberOfRequests();
+        }
     }
 
     // --------------- Public getters ---------------

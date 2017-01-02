@@ -47,9 +47,9 @@
                                        id="forEachCampaign">
                                 <b:panel class="webvert_co_accordion_panel_layout">
                                     <b:column span="3" 
-                                              style="#{contentType eq 'Image' ? 'padding-top: 0px' : 'padding-top: 16px'}">
+                                              style="#{contentType eq 'Image URL' ? 'padding-top: 0px' : 'padding-top: 16px'}">
                                         <c:choose>
-                                            <c:when test="#{contentType eq 'Image'}">
+                                            <c:when test="#{contentType eq 'Image URL'}">
                                                 <img src="#{content.value}" 
                                                      class="webvert_co_image_layout"/>
                                             </c:when>
