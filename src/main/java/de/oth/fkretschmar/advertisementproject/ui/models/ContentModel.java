@@ -16,10 +16,13 @@
  */
 package de.oth.fkretschmar.advertisementproject.ui.models;
 
+import de.oth.fkretschmar.advertisementproject.entities.campaign.Campaign;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.Content;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.ContentType;
 import de.oth.fkretschmar.advertisementproject.ui.models.base.AbstractModel;
 import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.enterprise.context.ConversationScoped;
 import javax.inject.Named;
@@ -56,5 +59,31 @@ public class ContentModel extends AbstractModel {
                 .sorted((content1, content2) -> 
                         content1.getContentType().name().compareTo(content2.getContentType().name()))
                 .collect(Collectors.toList());
+    }
+    
+    
+    
+    /**
+     * Gets the types of contents that exist for a specified campaign.
+     * 
+     * @param   contents    the contents for which the content types will be 
+     *                      extracted.
+     * @return 
+     */
+    public Collection<String> getContentTypesForContents(Collection<Content> contents) {        
+        List<String> contentTypes = contents.stream()
+                .sorted((content1, content2) -> 
+                        content1.getContentType().name().compareTo(content2.getContentType().name()))
+                .map(content -> 
+                {
+                        String formattedName = ContentType.getFormattedName(content.getContentType());
+                        if(formattedName.equals(ContentType.IMAGE_URL_FORMATTED_NAME))
+                            return ContentType.IMAGE_FORMATTED_NAME;
+                        return formattedName;
+                })
+                .distinct()
+                .collect(Collectors.toList());
+        
+        return contentTypes;
     }
 }

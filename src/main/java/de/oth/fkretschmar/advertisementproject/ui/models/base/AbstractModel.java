@@ -47,12 +47,4 @@ public abstract class AbstractModel implements Serializable {
     public IConverter getAccountConverter() {
         return this.accountConverter;
     }
-    
-    // --------------- Public methods ---------------
-    
-    /**
-     * Initializes the model data for display operations.
-     */
-    public void initialize() {
-    }
 }

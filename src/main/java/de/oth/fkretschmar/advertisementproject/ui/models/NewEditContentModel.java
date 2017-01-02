@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.enterprise.context.ConversationScoped;
+import javax.enterprise.context.RequestScoped;
 import javax.faces.event.ActionEvent;
 import javax.inject.Named;
 import lombok.Getter;
@@ -45,7 +46,7 @@ import org.joda.money.Money;
  * @author Admin
  */
 @Named
-@ConversationScoped
+@RequestScoped
 public class NewEditContentModel extends AbstractModel {
 
     // --------------- Private fields ---------------

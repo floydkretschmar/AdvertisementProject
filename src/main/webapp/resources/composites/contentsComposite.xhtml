@@ -8,7 +8,6 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
     <composite:interface>
-        <composite:attribute name="contentTypes" />
         <composite:attribute name="contents" />
         <composite:attribute name="enableEdit" />
         <composite:attribute name="enableNew" />
@@ -39,7 +38,7 @@
             <c:when test="#{not empty cc.attrs.contents}">
                 <b:accordion class="webvert_ca_row_layout 
                              webvert_co_accordion_layout">
-                    <c:forEach items="#{cc.attrs.contentTypes}"
+                    <c:forEach items="#{contentModel.getContentTypesForContents(cc.attrs.contents)}"
                                var="contentType"
                                id="forEachCampaign">
                         <b:panel title="#{contentType}" style="height: 100%">

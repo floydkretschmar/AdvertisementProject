@@ -66,8 +66,7 @@
                                                 <f:converter binding="#{campaignModel.accountConverter}"/>	
                                             </h:outputText>
                                         </b:row>
-                                        <composites:contentsComposite contentTypes="#{campaignModel.getContentTypesForCampaign(campaign.id)}"
-                                                                      contents="#{campaignModel.getContentForCampaignId(campaign.id)}"
+                                        <composites:contentsComposite contents="#{campaignModel.getContentForCampaignId(campaign.id)}"
                                                                       enableEdit="true"
                                                                       enableNew="false"/>
                                     </b:panel>

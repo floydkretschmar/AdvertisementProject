@@ -19,10 +19,8 @@ package de.oth.fkretschmar.advertisementproject.ui.models;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.Campaign;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.CampaignState;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.Content;
-import de.oth.fkretschmar.advertisementproject.entities.campaign.ContentType;
 import de.oth.fkretschmar.advertisementproject.ui.models.base.AbstractModel;
 import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
@@ -113,40 +111,5 @@ public class CampaignModel extends AbstractModel {
                     + "valid campaign");
         
         return selectedCampaign.get().getContents();
-    }
-    
-    
-    /**
-     * Gets the types of contents that exist for a specified campaign.
-     * 
-     * @param   id  the id of the campaign for which the content types will be
-     *              returned.
-     * @return 
-     */
-    public Collection<String> getContentTypesForCampaign(String id) {
-        Optional<Campaign> selectedCampaign = this.applicationModel.processCurrentUser(
-                        user -> user.getCampaigns()
-                                .stream()
-                                .filter(campaign -> campaign.getId() == Long.parseLong(id))
-                                .findFirst());
-        
-        if (!selectedCampaign.isPresent())
-            throw new IllegalArgumentException("The id does not belong to a valid campaign");
-        
-        List<String> contentTypes = selectedCampaign.get().getContents()
-                .stream()
-                .sorted((content1, content2) -> 
-                        content1.getContentType().name().compareTo(content2.getContentType().name()))
-                .map(content -> 
-                {
-                        String formattedName = ContentType.getFormattedName(content.getContentType());
-                        if(formattedName.equals(ContentType.IMAGE_URL_FORMATTED_NAME))
-                            return ContentType.IMAGE_FORMATTED_NAME;
-                        return formattedName;
-                })
-                .distinct()
-                .collect(Collectors.toList());
-        
-        return contentTypes;
     }
 }

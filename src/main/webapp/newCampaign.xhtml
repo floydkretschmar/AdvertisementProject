@@ -14,7 +14,7 @@
     <h:body>
         <ui:composition template="./resources/templates/PresentationAreaTemplate.xhtml">
             <ui:define name="main_content">
-                
+
                 <b:modal id="modalDialogID" 
                          title="Create a new content" 
                          styleClass="modalPseudoClass">
@@ -154,6 +154,7 @@
                                              process="@form"
                                              class="webvert_primary_button_color"
                                              actionListener="#{newEditContentModel.applyChanges}"
+                                             action="#{newCampaignModel.addNewContent(newEditContentModel.content)}"
                                              style="width: 128px; margin-left: 10px">
                             </b:commandButton>
                         </p>
@@ -167,7 +168,7 @@
                             <h2 class="webvert_heading_color_dark webvert_heading_layout">
                                 Create a new campaign
                             </h2>
-                            
+
                             <b:row style="padding-top: 16px">
                                 <b:column span="4">
                                     <h:outputText value="Name:" 
@@ -209,7 +210,18 @@
                         </b:container>
                         <composites:contentsComposite enableEdit="false"
                                                       enableNew="true"
-                                                      modalId="#modalDialogID"/>
+                                                      modalId="#modalDialogID"
+                                                      contents="#{newCampaignModel.newContents}"/>
+                        <b:row style="padding-top: 32px">
+                            <b:commandButton value="Cancel" 
+                                             action="#{newCampaignModel.cancel}"
+                                             style="width: 128px; margin-left: 10px">
+                            </b:commandButton>
+                            <b:commandButton value="Ok" 
+                                             action="#{newCampaignModel.save}"
+                                             style="width: 128px; margin-left: 10px">
+                            </b:commandButton>
+                        </b:row>
                     </h:form>
                 </b:panel>
             </ui:define>

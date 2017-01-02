@@ -20,7 +20,11 @@ import de.oth.fkretschmar.advertisementproject.entities.billing.Account;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.Content;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.PaymentInterval;
 import de.oth.fkretschmar.advertisementproject.ui.models.base.AbstractModel;
+import java.util.ArrayList;
 import java.util.Collection;
+import javax.annotation.PostConstruct;
+import javax.enterprise.context.Conversation;
+import javax.enterprise.context.ConversationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import lombok.Getter;
@@ -32,7 +36,7 @@ import org.omnifaces.cdi.ViewScoped;
  * @author fkre
  */
 @Named
-@ViewScoped
+@ConversationScoped
 public class NewCampaignModel extends AbstractModel {
     
     // --------------- Private fields ---------------
@@ -44,11 +48,17 @@ public class NewCampaignModel extends AbstractModel {
     private ApplicationModel applicationModel;
     
     /**
+     * The conversation of the conversation scope.
+     */
+    @Inject
+    private Conversation conversation;
+    
+    /**
      * Stores the new contents that are connected to the campaign created on the
      * page.
      */
     @Getter
-    private Collection<Content> newContents;
+    private Collection<Content> newContents = new ArrayList<Content>();
     
     /**
      * Stores the account selected for the new campaign.
@@ -84,5 +94,54 @@ public class NewCampaignModel extends AbstractModel {
      */
     public PaymentInterval[] getPaymentIntervals() {
         return PaymentInterval.values();
+    }
+    
+    
+    // --------------- Public methods ---------------
+    
+    
+    /**
+     * Adds a newly created content to the content list of the campaign that
+     * is being created.
+     * 
+     * @param   content     the content that will be added.
+     * @return  the next navigation point.
+     */
+    public String addNewContent(Content content) {
+        this.newContents.add(content);
+        return "newCampaign";
+    } 
+    
+    
+    /**
+     * Cancels the campaign creation and redirects to the campaign overview.
+     * 
+     * @return  the next navigation point.
+     */
+    public String cancel() {
+        this.conversation.end();
+        return "overview";
+    } 
+    
+    
+    /**
+     * Saves the campaign and redirects to the campaign overview.
+     * 
+     * @return  the next navigation point.
+     */
+    public String save() {
+        this.conversation.end();
+        return "overview";
+    } 
+    
+    // --------------- Private methods ---------------
+
+    
+    /**
+     * Initializes the model for creating a new campaign.
+     */
+    @PostConstruct
+    private void initialize() {
+        this.conversation.begin();
     }
 }
