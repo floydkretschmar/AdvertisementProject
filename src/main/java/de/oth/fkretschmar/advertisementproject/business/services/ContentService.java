@@ -61,6 +61,12 @@ public class ContentService implements Serializable, IContentService, IContentPr
      */
     @Inject
     private CampaignRepository campaignRepository;
+    
+    /**
+     * Stores the service used to manage {@link Campaign} entites.
+     */
+    @Inject
+    private CampaignService campaignService;
 
     /**
      * Stores the repository used to manage {@link Content} entites.
@@ -226,8 +232,27 @@ public class ContentService implements Serializable, IContentService, IContentPr
     private void createContentRequest(String source, Content content) {
         this.contextRepository.merge(content.getContext());
         this.contentRepository.merge(content);
-
+        
+        // remove one from the number of requests of this specific content
         content.setNumberOfRequests(content.getNumberOfRequests() - 1);
+        
+        // if the number of requests on this content are depleted 
+        // -> make sure the campaign still has a non depleted content
+        // -> if not: end campaign
+        if (content.getNumberOfRequests() == 0) {
+            boolean campaignHasRunningContent = false;
+            
+            for (Content campaignContent : content.getCampaign().getContents()) {
+                if(campaignContent.getNumberOfRequests() > 0) {
+                    campaignHasRunningContent = true;
+                    break;
+                }
+            }
+            
+            if (!campaignHasRunningContent) {
+                this.campaignService.endCampaign(content.getCampaign());
+            }
+        }
         
         ContentRequest request = ContentRequest.createContentRequestLog()
                 .content(content)
