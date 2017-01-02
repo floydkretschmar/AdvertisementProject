@@ -16,7 +16,9 @@
  */
 package de.oth.fkretschmar.advertisementproject.ui.models;
 
+import de.oth.fkretschmar.advertisementproject.business.services.base.ICampaignService;
 import de.oth.fkretschmar.advertisementproject.entities.billing.Account;
+import de.oth.fkretschmar.advertisementproject.entities.campaign.Campaign;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.Content;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.PaymentInterval;
 import de.oth.fkretschmar.advertisementproject.ui.models.base.AbstractModel;
@@ -37,99 +39,116 @@ import lombok.Setter;
 @Named
 @SessionScoped
 public class NewCampaignModel extends AbstractModel {
-    
+
     // --------------- Private fields ---------------
-    
     /**
      * Stores the service used to manage the entire application.
      */
     @Inject
     private ApplicationModel applicationModel;
+
+    /**
+     * Stores the service used to manage {@link Campaign} entites.
+     */
+    @Inject
+    private ICampaignService campaignService;
     
+    /**
+     * Stores the name of the new campaign.
+     */
+    @Getter
+    @Setter
+    private String name;
+
     /**
      * Stores the new contents that are connected to the campaign created on the
      * page.
      */
     @Getter
     private Collection<Content> newContents = new ArrayList<Content>();
-    
+
     /**
      * Stores the account selected for the new campaign.
      */
     @Getter
     @Setter
     private Account selectedAccount;
-    
+
     /**
      * Stores the payment interval selected for the new campaign.
      */
     @Getter
     @Setter
     private PaymentInterval selectedInterval;
-    
-    
+
     // --------------- Public getter und setter ---------------
-    
-    
     /**
      * Gets all accounts of the user that is currently logged in.
-     * 
-     * @return  the user accounts.
+     *
+     * @return the user accounts.
      */
     public Collection<Account> getAccounts() {
         return applicationModel.processCurrentUser(user -> user.getAccounts());
     }
-    
+
     /**
      * Gets all possible payment intervals.
-     * 
-     * @return 
+     *
+     * @return
      */
     public PaymentInterval[] getPaymentIntervals() {
         return PaymentInterval.values();
     }
-    
-    
+
     // --------------- Public methods ---------------
-    
-    
     /**
-     * Adds a newly created content to the content list of the campaign that
-     * is being created.
-     * 
-     * @param   content     the content that will be added.
-     * @return  the next navigation point.
+     * Adds a newly created content to the content list of the campaign that is
+     * being created.
+     *
+     * @param content the content that will be added.
+     * @return the next navigation point.
      */
     public String addNewContent(Content content) {
         this.newContents.add(content);
         return "newCampaign";
-    } 
-    
-    
+    }
+
     /**
      * Cancels the campaign creation and redirects to the campaign overview.
-     * 
-     * @return  the next navigation point.
+     *
+     * @return the next navigation point.
      */
     public String cancel() {
         this.reset();
         return "overview";
-    } 
-    
-    
+    }
+
     /**
      * Saves the campaign and redirects to the campaign overview.
-     * 
-     * @return  the next navigation point.
+     *
+     * @return the next navigation point.
      */
     public String save() {
+        this.applicationModel.processAndChangeCurrentUser(user -> 
+        {
+            Campaign campaign = Campaign.createCampaign()
+                                .interval(this.selectedInterval)
+                                .name(this.name)
+                                .paymentAccount(this.selectedAccount)
+                                .build();
+
+            this.newContents.forEach(content -> campaign.addContent(content));
+
+            return this.campaignService.createCampaignForUser(
+                    user, 
+                    campaign);
+        });
+        
         this.reset();
         return "overview";
-    } 
-    
-    
+    }
+
     // --------------- Private methods ---------------
-    
     /**
      * Resets the new campaign model to its original state.
      */

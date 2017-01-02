@@ -121,6 +121,25 @@ public class ApplicationModel extends AbstractModel {
      *
      * @param processCallback The function used to process the current user.
      */
+    public void processAndChangeCurrentUser(Function<User, User> processCallback) {
+        ApplicationModel.LOCK.lock();
+
+        try {
+            this.currentUser = processCallback.apply(this.currentUser);
+        } finally {
+            ApplicationModel.LOCK.unlock();
+        }
+    }
+    
+    
+    /**
+     * Provides thread safe processing of the {@link User} that is currently
+     * logged into the system.
+     *
+     * @param <T>   the type of the return value.
+     * @param processCallback The function used to process the current user.
+     * @return the return value of the processing.
+     */
     public <T> T processCurrentUser(Function<User, T> processCallback) {
         ApplicationModel.LOCK.lock();
 
