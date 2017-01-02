@@ -167,13 +167,6 @@
                                 Create a new campaign
                             </h2>
                             
-                            <b:buttonGroup>
-                                <a id="atrigger1" 
-                                   class="btn btn-primary" 
-                                   href="#modalDialogID" 
-                                   data-toggle="modal">Bid!</a>
-                            </b:buttonGroup>
-                            
                             <b:row style="padding-top: 16px">
                                 <b:column span="4">
                                     <h:outputText value="Name:" 
@@ -214,7 +207,8 @@
                             </b:row>
                         </b:container>
                         <composites:contentsComposite enableEdit="false"
-                                                      enableNew="true"/>
+                                                      enableNew="true"
+                                                      modalId="#modalDialogID"/>
                     </h:form>
                 </b:panel>
             </ui:define>

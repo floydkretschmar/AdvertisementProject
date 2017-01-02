@@ -12,6 +12,7 @@
         <composite:attribute name="contents" />
         <composite:attribute name="enableEdit" />
         <composite:attribute name="enableNew" />
+        <composite:attribute name="modalId" />
     </composite:interface>
 
     <composite:implementation>
@@ -27,6 +28,9 @@
                       class="webvert_co_new_button_column_layout">
                 <b:commandButton icon="plus"
                                  value=""
+                                 p:data-target="#{cc.attrs.modalId}"
+                                 p:data-toggle="modal"
+                                 onclick="return false;"
                                  rendered="#{cc.attrs.enableNew eq 'true'}"/>
             </b:column>
         </b:row>
