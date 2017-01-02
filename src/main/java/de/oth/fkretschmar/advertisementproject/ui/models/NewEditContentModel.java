@@ -16,16 +16,26 @@
  */
 package de.oth.fkretschmar.advertisementproject.ui.models;
 
+import de.oth.fkretschmar.advertisementproject.entities.campaign.Content;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.ContentType;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.TargetAge;
+import de.oth.fkretschmar.advertisementproject.entities.campaign.TargetContext;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.TargetGender;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.TargetMaritalStatus;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.TargetPurposeOfUse;
 import de.oth.fkretschmar.advertisementproject.ui.models.base.AbstractModel;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.enterprise.context.ConversationScoped;
+import javax.faces.event.ActionEvent;
 import javax.inject.Named;
+import javax.money.Monetary;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -36,31 +46,37 @@ import lombok.Setter;
 @Named
 @ConversationScoped
 public class NewEditContentModel extends AbstractModel {
-    
+
     // --------------- Private fields ---------------
-    
+    /**
+     * Stores the content that is being build or being edited.
+     */
+    @Getter
+    @Setter
+    private Content content;
+
     /**
      * Stores the value of the content that will be created.
      */
     @Getter
     @Setter
     private String contentValue;
-    
+
     /**
      * Stores the description of the content that will be created.
      */
     @Getter
     @Setter
     private String description;
-    
+
     /**
-     * Stores the number of times the content that will be created can be 
+     * Stores the number of times the content that will be created can be
      * requested.
      */
     @Getter
     @Setter
     private long numberOfRequests;
-    
+
     /**
      * Stores the pre decimal point amount of the monetary amount that a single
      * request for the content that will be created is worth.
@@ -68,7 +84,7 @@ public class NewEditContentModel extends AbstractModel {
     @Getter
     @Setter
     private long preDecimalPointAmount;
-    
+
     /**
      * Stores the post decimal point amount of the monetary amount that a single
      * request for the content that will be created is worth.
@@ -76,112 +92,148 @@ public class NewEditContentModel extends AbstractModel {
     @Getter
     @Setter
     private long postDecimalPointAmount;
-    
+
     /**
      * Stores the type of the content that will be created.
      */
     @Getter
     @Setter
     private ContentType selectedContentType;
-    
+
     /**
-     * Stores the age groups that will be targeted by the content that will be 
+     * Stores the age groups that will be targeted by the content that will be
      * created.
      */
     @Getter
     @Setter
-    private List<TargetAge> selectedTargetAges; 
-    
+    private List<String> selectedAges;
+
     /**
-     * Stores the gender groups that will be targeted by the content that will be 
-     * created.
+     * Stores the gender groups that will be targeted by the content that will
+     * be created.
      */
     @Getter
     @Setter
-    private List<TargetGender> selectedTargetGenders;
-    
+    private List<String> selectedGenders;
+
     /**
-     * Stores the marital status groups that will be targeted by the content 
+     * Stores the marital status groups that will be targeted by the content
      * that will be created.
      */
     @Getter
     @Setter
-    private List<TargetMaritalStatus> selectedMaritalStatus;
-    
+    private List<String> selectedMaritalStatus;
+
     /**
-     * Stores the purpose of use groups that will be targeted by the content 
+     * Stores the purpose of use groups that will be targeted by the content
      * that will be created.
      */
     @Getter
     @Setter
-    private List<TargetPurposeOfUse> selectedPurposesOfUse;
-    
+    private List<String> selectedPurposesOfUse;
+
     /**
-     * Stores the webpage to which the content that will be created, will redirect
-     * when clicked.
+     * Stores the webpage to which the content that will be created, will
+     * redirect when clicked.
      */
     @Getter
     @Setter
     private String targetPage;
-    
-    
+
     // --------------- Public getters ---------------
-    
-    
     /**
      * Gets the list of types the content can have.
-     * 
+     *
      * @return the content types as a list.
      */
     public List<ContentType> getContentTypes() {
         ArrayList<ContentType> filteredTypes = new ArrayList<ContentType>();
         ContentType[] types = ContentType.values();
-        
-        for(int i = 0; i < types.length; i++) {
-            if (types[i] != ContentType.IMAGE && types[i] != ContentType.UNDEFINED)
+
+        for (int i = 0; i < types.length; i++) {
+            if (types[i] != ContentType.IMAGE && types[i] != ContentType.UNDEFINED) {
                 filteredTypes.add(types[i]);
+            }
         }
-        
+
         return filteredTypes;
     }
-    
-    
+
     /**
      * Gets the list of ages a content can target.
-     * 
+     *
      * @return the list of target ages.
      */
     public TargetAge[] getTargetAges() {
         return TargetAge.values();
     }
-    
-    
+
     /**
      * Gets the list of genders a content can target.
-     * 
+     *
      * @return the list of target genders.
      */
     public TargetGender[] getTargetGenders() {
         return TargetGender.values();
     }
-    
-    
+
     /**
      * Gets the list of maritals status a content can target.
-     * 
+     *
      * @return the list of target status.
      */
     public TargetMaritalStatus[] getTargetMaritalStatus() {
         return TargetMaritalStatus.values();
     }
-    
-    
+
     /**
      * Gets the list of purposes of use a content can target.
-     * 
+     *
      * @return the list of target purposes.
      */
     public TargetPurposeOfUse[] getTargetPurposesOfUse() {
         return TargetPurposeOfUse.values();
+    }
+
+    // --------------- Public getters ---------------
+    /**
+     * Applies all the changes defined in the content dialog and stores the
+     * created content.
+     *
+     * @param event the arguments of the event.
+     */
+    public void applyChanges(ActionEvent event) {
+        EnumSet<TargetAge> ages = EnumSet.noneOf(TargetAge.class);
+        this.selectedAges.forEach(age -> ages.add(TargetAge.of(Integer.parseInt(age))));
+
+        EnumSet<TargetGender> genders = EnumSet.noneOf(TargetGender.class);
+        this.selectedGenders.forEach(gender -> genders.add(TargetGender.of(Integer.parseInt(gender))));
+
+        EnumSet<TargetMaritalStatus> status = EnumSet.noneOf(TargetMaritalStatus.class);
+        this.selectedMaritalStatus.forEach(singleStatus -> status.add(TargetMaritalStatus.of(Integer.parseInt(singleStatus))));
+
+        EnumSet<TargetPurposeOfUse> purposes = EnumSet.noneOf(TargetPurposeOfUse.class);
+        this.selectedPurposesOfUse.forEach(purpose -> purposes.add(TargetPurposeOfUse.of(Integer.parseInt(purpose))));
+
+        try {
+            this.content = Content.createContent()
+                    .contentType(this.selectedContentType)
+                    .context(TargetContext.createTargetContext()
+                            .targetAges(ages)
+                            .targetGenders(genders)
+                            .targetMaritalStatus(status)
+                            .targetPurposeOfUses(purposes).build())
+                    .description(this.description)
+                    .numberOfRequests(this.numberOfRequests)
+                    .targetUrl(new URL(this.targetPage))
+                    .pricePerRequest(Monetary.getDefaultAmountFactory()
+                            .setNumber(this.preDecimalPointAmount * 100 + this.postDecimalPointAmount)
+                            .setCurrency("EUR")
+                            .create())
+                    .value(this.selectedContentType == ContentType.IMAGE_URL ? new URL(this.contentValue) : this.contentValue)
+                    .build();
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(NewEditContentModel.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

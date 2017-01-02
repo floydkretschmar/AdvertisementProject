@@ -60,4 +60,24 @@ public enum TargetGender {
     private TargetGender(int flagValue){
         this.flagValue = flagValue;
     }
+    
+    // --------------- Public static methods ---------------
+    
+    
+    /**
+     * Returns the age for the specified flag value.
+     * 
+     * @param flagValue that defines the target age.
+     * @return  the target age.
+     */
+    public static TargetGender of(int flagValue) {
+        switch(flagValue) {
+            case 1<<1:
+                return TargetGender.FEMALE;
+            case 1<<2:
+                return TargetGender.MALE;
+            default:
+                return TargetGender.OTHER;
+        }
+    }
 }

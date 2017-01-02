@@ -55,4 +55,22 @@ public enum TargetPurposeOfUse {
     private TargetPurposeOfUse(int flagValue){
         this.flagValue = flagValue;
     }
+    
+    // --------------- Public static methods ---------------
+    
+    
+    /**
+     * Returns the age for the specified flag value.
+     * 
+     * @param flagValue that defines the target age.
+     * @return  the target age.
+     */
+    public static TargetPurposeOfUse of(int flagValue) {
+        switch(flagValue) {
+            case 1<<1:
+                return TargetPurposeOfUse.BUSINESS;
+            default:
+                return TargetPurposeOfUse.PRIVATE;
+        }
+    }
 }

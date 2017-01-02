@@ -91,7 +91,7 @@
                                     <b:column span="3" style="padding-right: 0px">
                                         <h:outputText value="Target ages *"
                                                       class="webvert_bold_lable_layout"/>
-                                        <prim:selectManyMenu value="#{newEditContentModel.selectedTargetAges}" 
+                                        <prim:selectManyMenu value="#{newEditContentModel.selectedAges}" 
                                                              showCheckbox="true"
                                                              required="true"
                                                              label="Target ages">
@@ -104,7 +104,7 @@
                                     <b:column span="3" style="padding-right: 0px">
                                         <h:outputText value="Target genders *"
                                                       class="webvert_bold_lable_layout"/>
-                                        <prim:selectManyMenu value="#{newEditContentModel.selectedTargetGenders}"
+                                        <prim:selectManyMenu value="#{newEditContentModel.selectedGenders}"
                                                              label="Target genders"
                                                              showCheckbox="true"
                                                              required="true">
@@ -153,6 +153,7 @@
                                              p:data-toggle="modal"
                                              process="@form"
                                              class="webvert_primary_button_color"
+                                             actionListener="#{newEditContentModel.applyChanges}"
                                              style="width: 128px; margin-left: 10px">
                             </b:commandButton>
                         </p>

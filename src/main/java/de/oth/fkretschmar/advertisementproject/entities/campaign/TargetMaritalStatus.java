@@ -69,4 +69,28 @@ public enum TargetMaritalStatus {
     private TargetMaritalStatus(int flagValue){
         this.flagValue = flagValue;
     }
+    
+    // --------------- Public static methods ---------------
+    
+    
+    /**
+     * Returns the age for the specified flag value.
+     * 
+     * @param flagValue that defines the target age.
+     * @return  the target age.
+     */
+    public static TargetMaritalStatus of(int flagValue) {
+        switch(flagValue) {
+            case 1<<1:
+                return TargetMaritalStatus.DIVORCED;
+            case 1<<2:
+                return TargetMaritalStatus.IN_RELATIONSHIP;
+            case 1<<3:
+                return TargetMaritalStatus.MARRIED;
+            case 1<<4:
+                return TargetMaritalStatus.SINGLE;
+            default:
+                return TargetMaritalStatus.WIDOWED;
+        }
+    }
 }
