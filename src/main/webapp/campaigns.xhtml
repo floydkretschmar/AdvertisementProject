@@ -37,7 +37,6 @@
                                               update="@form"
                                               active="#{campaignModel.campaignState eq 'CANCELLED'}"
                                               action="#{campaignModel.setCampaignState('CANCELLED')}"/>
-                            <b:messages />
                         </b:tabLinks>
                         <c:choose>
                             <c:when test="#{not empty campaignModel.campaigns}">

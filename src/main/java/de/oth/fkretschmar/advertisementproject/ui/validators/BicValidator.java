@@ -22,40 +22,50 @@ import javax.faces.context.FacesContext;
 import javax.faces.validator.FacesValidator;
 import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
+import org.iban4j.BicFormatException;
+import org.iban4j.BicUtil;
+import org.iban4j.UnsupportedCountryException;
 
 /**
- * Validates the specified password.
- * 
- * Implementation as seen at http://stackoverflow.com/questions/7489893/how-
- * validate-two-password-fields-by-ajax
- * 
+ * Validates the specified BIC.
+ *
  * @author Floyd
  */
-@FacesValidator("passwordValidator")
-public class PasswordValidator implements Validator {
-    
+@FacesValidator("bicValidator")
+public class BicValidator implements Validator {
+
     /**
-     * Validates the given value on whether or not it is a valid password using
-     * the specified confirmation password..
+     * Validates the given value on whether or not it is a BIC.
      *
      * @param context the JSF context of the validation.
      * @param component the component of the validation.
      * @param value the value that is being validatet.
      * @throws ValidatorException that indicates that the validation is failed
-     * and the value is not a valid password.
+     * and the value is not a BIC.
      */
     @Override
-    public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
-        String password = (String) value;
-        String confirm = (String) component.getAttributes().get("confirm").toString();
-
-        if (password == null || confirm == null) {
-            return; // Just ignore and let required="true" do its job.
+    public void validate(
+            FacesContext context,
+            UIComponent component,
+            Object value) throws ValidatorException {
+        if (value == null) {
+            return;
         }
 
-        if (!password.equals(confirm)) {
-            throw new ValidatorException(
-                    new FacesMessage("The two passwords have to be equal."));
+        try {
+            BicUtil.validate(value.toString());
+        } catch (BicFormatException formatEx) {
+            FacesMessage msg = new FacesMessage(
+                    "Validation failed.", 
+                    "Not a valid BIC format");
+            msg.setSeverity(FacesMessage.SEVERITY_ERROR);
+            throw new ValidatorException(msg);
+        } catch (UnsupportedCountryException unsupportedEx) {
+            FacesMessage msg = new FacesMessage(
+                    "Validation failed.", 
+                    "The country of the BIC is unsupported");
+            msg.setSeverity(FacesMessage.SEVERITY_ERROR);
+            throw new ValidatorException(msg);
         }
     }
 

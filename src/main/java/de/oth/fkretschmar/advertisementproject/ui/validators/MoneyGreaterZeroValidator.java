@@ -24,7 +24,7 @@ import javax.faces.validator.FacesValidator;
 import javax.faces.validator.ValidatorException;
 
 /**
- * Validates the specified password.
+ * Validates the specified monetary amount.
  *
  *
  * @author Floyd
@@ -40,7 +40,7 @@ public class MoneyGreaterZeroValidator extends GreaterZeroValidator {
      * @param component the component of the validation.
      * @param value the value that is being validatet.
      * @throws ValidatorException that indicates that the validation is failed
-     * and the value is either no number or not greater zero
+     * and the value is not a valid monetary value greater than zero.
      */
     @Override
     public void validate(

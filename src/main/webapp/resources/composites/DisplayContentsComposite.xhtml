@@ -11,7 +11,6 @@
         <composite:attribute name="contents" />
         <composite:attribute name="enableDelete" />
         <composite:attribute name="enableNew" />
-        <composite:attribute name="modalId" />
 
         <composite:attribute name="deletePropertyName"/>
         <composite:attribute name="deleteMethodName"/>
@@ -31,7 +30,7 @@
                       class="webvert_co_new_button_column_layout">
                 <b:commandButton icon="plus"
                                  value=""
-                                 p:data-target=".modalPseudoClass"
+                                 p:data-target=".contentModal"
                                  p:data-toggle="modal"
                                  onclick="return false;"
                                  rendered="#{cc.attrs.enableNew eq 'true'}"/>

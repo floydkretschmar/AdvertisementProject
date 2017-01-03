@@ -16,51 +16,63 @@
  */
 package de.oth.fkretschmar.advertisementproject.ui.validators;
 
-import java.math.BigDecimal;
+import java.net.MalformedURLException;
+import java.net.URL;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.FacesValidator;
 import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
+import org.iban4j.IbanFormatException;
+import org.iban4j.IbanUtil;
+import org.iban4j.InvalidCheckDigitException;
+import org.iban4j.UnsupportedCountryException;
 
 /**
- * Validates the specified number.
- *
- * Implementation as seen at http://stackoverflow.com/questions/18071219/jsf-
- * greater-than-zero-validator
+ * Validates the specified IBAN.
  *
  * @author Floyd
  */
-@FacesValidator("greaterZeroValidator")
-public class GreaterZeroValidator implements Validator {
+@FacesValidator("ibanValidator")
+public class IbanValidator implements Validator {
 
     /**
-     * Validates the given value on whether or not it is greater than zero.
+     * Validates the given value on whether or not it is an IBAN.
      *
      * @param context the JSF context of the validation.
      * @param component the component of the validation.
      * @param value the value that is being validatet.
      * @throws ValidatorException that indicates that the validation is failed
-     * and the value is either no number or not greater zero
+     * and the value is not an IBAN.
      */
     @Override
     public void validate(
             FacesContext context,
             UIComponent component,
             Object value) throws ValidatorException {
-        if (value == null)
+        if (value == null) {
             return;
-        
+        }
+
         try {
-            if (new BigDecimal(value.toString()).signum() < 1) {
-                FacesMessage msg = new FacesMessage("Validation failed.",
-                        "Number must be strictly positive");
-                msg.setSeverity(FacesMessage.SEVERITY_ERROR);
-                throw new ValidatorException(msg);
-            }
-        } catch (NumberFormatException ex) {
-            FacesMessage msg = new FacesMessage("Validation failed.", "Not a number");
+            IbanUtil.validate(value.toString());
+        } catch (IbanFormatException formatEx) {
+            FacesMessage msg = new FacesMessage(
+                    "Validation failed.", 
+                    "Not a valid IBAN format");
+            msg.setSeverity(FacesMessage.SEVERITY_ERROR);
+            throw new ValidatorException(msg);
+        } catch (InvalidCheckDigitException checksumEx) {
+            FacesMessage msg = new FacesMessage(
+                    "Validation failed.", 
+                    "The checksum of the IBAN is invalid");
+            msg.setSeverity(FacesMessage.SEVERITY_ERROR);
+            throw new ValidatorException(msg);
+        } catch (UnsupportedCountryException unsupportedEx) {
+            FacesMessage msg = new FacesMessage(
+                    "Validation failed.", 
+                    "The country of the IBAN is unsupported");
             msg.setSeverity(FacesMessage.SEVERITY_ERROR);
             throw new ValidatorException(msg);
         }

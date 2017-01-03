@@ -15,41 +15,60 @@
     </cc:interface>
 
     <!-- IMPLEMENTATION -->
-    <cc:implementation id="modalComposite">        
-        <b:modal id="modalDialogID" 
+    <cc:implementation id="modalAccountComposite">        
+        <b:modal id="modalAccountDialogID" 
                  title="Create a new account" 
-                 styleClass="modalPseudoClass">
+                 styleClass="modalPseudoClass accountModal">
             <h:form id="modalForm"
                     prependId="false" >
                 <p>
+
+                    <b:tabLinks class="webvert_ca_tab_layout">
+                        <b:navCommandLink value="Bank account"
+                                          update="@form"
+                                          immediate="true"
+                                          ajax="true"
+                                          active="#{newAccountModel.selectedAccountType eq 'Bank account'}"
+                                          action="#{newAccountModel.setSelectedAccountType('Bank account')}"/>
+                        <b:navCommandLink value="PayPal account"
+                                          update="@form"
+                                          immediate="true"
+                                          ajax="true"
+                                          active="#{newAccountModel.selectedAccountType eq 'PayPal account'}"
+                                          action="#{newAccountModel.setSelectedAccountType('PayPal account')}"/>
+                    </b:tabLinks>
+                    
                     <b:panelGrid colSpans="12">
-                        <h:outputText value="Account type *"
-                                      class="webvert_bold_lable_layout"/>
-                        <b:selectOneMenu value="#{newAccountModel.selectedAccountType}">
-                            <f:selectItems value="#{newAccountModel.accountTypes}"/>
-                        </b:selectOneMenu>
-                        <h:outputText value="BIC *"
+                        <h:outputText id="BIClabel"
+                                      value="BIC *"
                                       class="webvert_bold_lable_layout"
                                       rendered="#{newAccountModel.bankAccount}"/>
-                        <b:inputText value="#{newAccountModel.bic}"
+                        <b:inputText id="BICinput"
+                                     value="#{newAccountModel.bic}"
                                      tooltip="#{component.valid? '' : 'The value has to be a valid BIC.' }"
                                      styleClass="#{component.valid? '' : 'webvert_input_control_invalid' }"
                                      required="true"
                                      rendered="#{newAccountModel.bankAccount}">
+                            <f:validator validatorId="bicValidator" />
                         </b:inputText>
-                        <h:outputText value="IBAN *"
+                        <h:outputText id="IBANlabel"
+                                      value="IBAN *"
                                       class="webvert_bold_lable_layout"
                                       rendered="#{newAccountModel.bankAccount}"/>
-                        <b:inputText value="#{newAccountModel.iban}"
+                        <b:inputText id="IBANinput"
+                                     value="#{newAccountModel.iban}"
                                      styleClass="#{component.valid? '' : 'webvert_input_control_invalid' }"
                                      tooltip="#{component.valid? '' : 'The value has to be a valid IBAN.' }"
                                      required="true"
                                      rendered="#{newAccountModel.bankAccount}">
+                            <f:validator validatorId="ibanValidator" />
                         </b:inputText>
-                        <h:outputText value="PayPal e-mail address *"
+                        <h:outputText id="PayPallabel"
+                                      value="PayPal e-mail address *"
                                       class="webvert_bold_lable_layout"
                                       rendered="#{newAccountModel.payPalAccount}"/>
-                        <b:inputText value="#{newAccountModel.payPalName}"
+                        <b:inputText id="PayPalinput"
+                                     value="#{newAccountModel.payPalName}"
                                      styleClass="#{component.valid? '' : 'webvert_input_control_invalid' }"
                                      tooltip="#{component.valid? '' : 'The value has to be a valid IBAN.' }"
                                      required="true"

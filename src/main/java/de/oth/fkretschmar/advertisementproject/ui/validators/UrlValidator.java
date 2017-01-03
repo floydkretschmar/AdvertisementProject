@@ -16,7 +16,6 @@
  */
 package de.oth.fkretschmar.advertisementproject.ui.validators;
 
-import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
 import javax.faces.application.FacesMessage;
@@ -27,7 +26,7 @@ import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
 
 /**
- * Validates the specified password.
+ * Validates the specified url.
  *
  * @author Floyd
  */
@@ -41,7 +40,7 @@ public class UrlValidator implements Validator {
      * @param component the component of the validation.
      * @param value the value that is being validatet.
      * @throws ValidatorException that indicates that the validation is failed
-     * and the value is either no number or not greater zero
+     * and the value is an URL.
      */
     @Override
     public void validate(

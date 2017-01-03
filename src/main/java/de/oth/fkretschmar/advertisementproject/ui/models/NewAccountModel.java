@@ -19,27 +19,11 @@ package de.oth.fkretschmar.advertisementproject.ui.models;
 import de.oth.fkretschmar.advertisementproject.entities.billing.Account;
 import de.oth.fkretschmar.advertisementproject.entities.billing.BankAccount;
 import de.oth.fkretschmar.advertisementproject.entities.billing.PayPalAccount;
-import de.oth.fkretschmar.advertisementproject.entities.campaign.Content;
-import de.oth.fkretschmar.advertisementproject.entities.campaign.ContentType;
-import de.oth.fkretschmar.advertisementproject.entities.campaign.TargetAge;
-import de.oth.fkretschmar.advertisementproject.entities.campaign.TargetContext;
-import de.oth.fkretschmar.advertisementproject.entities.campaign.TargetGender;
-import de.oth.fkretschmar.advertisementproject.entities.campaign.TargetMaritalStatus;
-import de.oth.fkretschmar.advertisementproject.entities.campaign.TargetPurposeOfUse;
 import de.oth.fkretschmar.advertisementproject.ui.models.base.AbstractModel;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.faces.event.ActionEvent;
 import javax.inject.Named;
 import lombok.Getter;
 import lombok.Setter;
-import org.joda.money.CurrencyUnit;
-import org.joda.money.Money;
 import org.omnifaces.cdi.ViewScoped;
 
 /**
@@ -50,18 +34,8 @@ import org.omnifaces.cdi.ViewScoped;
 @ViewScoped
 public class NewAccountModel extends AbstractModel {
 
-    // --------------- Private static constants ---------------
-    /**
-     * Defines the display name of the bank account type.
-     */
-    private static final String BANK_ACCOUNT = "Bank acccount";
-
-    /**
-     * Defines the display name of the paypal account type.
-     */
-    private static final String PAYPAL_ACCOUNT = "PayPal acccount";
-
     // --------------- Private fields ---------------
+    
     /**
      * Stores the account that is being build or being edited.
      */
@@ -95,22 +69,9 @@ public class NewAccountModel extends AbstractModel {
      */
     @Getter
     @Setter
-    private String selectedAccountType;
+    private String selectedAccountType = "Bank account";
 
     // --------------- Public getters and setters ---------------
-    /**
-     * Gets the list of types the account can have.
-     *
-     * @return the account types as a list of strings.
-     */
-    public List<String> getAccountTypes() {
-        ArrayList<String> types = new ArrayList<String>();
-
-        types.add(NewAccountModel.BANK_ACCOUNT);
-        types.add(NewAccountModel.PAYPAL_ACCOUNT);
-
-        return types;
-    }
 
     /**
      * Gets the value indicating if the selected account type is a bank account.
@@ -119,7 +80,7 @@ public class NewAccountModel extends AbstractModel {
      * {@code false}.
      */
     public boolean isBankAccount() {
-        return this.selectedAccountType.equals(NewAccountModel.BANK_ACCOUNT);
+        return this.selectedAccountType.equals("Bank account");
     }
 
     /**
@@ -130,7 +91,7 @@ public class NewAccountModel extends AbstractModel {
      * otherwise {@code false}.
      */
     public boolean isPayPalAccount() {
-        return this.selectedAccountType.equals(NewAccountModel.PAYPAL_ACCOUNT);
+        return this.selectedAccountType.equals("PayPal account");
     }
 
     // --------------- Public getters ---------------
