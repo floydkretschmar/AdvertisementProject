@@ -5,9 +5,7 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:b="http://bootsfaces.net/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
-      xmlns:prim="http://primefaces.org/ui"
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
 
     <!-- INTERFACE -->
     <cc:interface>
@@ -25,28 +23,37 @@
                     prependId="false" >
                 <p>
                     <b:panelGrid colSpans="12">
-                        <h:outputText value="Content type*:"
+                        <h:outputText value="Account type *"
                                       class="webvert_bold_lable_layout"/>
-                        <b:selectOneMenu value="#{newContentModel.selectedContentType}">
-                            <f:selectItems value="#{newContentModel.contentTypes}"
-                                           var="contentType"
-                                           itemValue="#{contentType}"
-                                           itemLabel="#{contentType}"/>
+                        <b:selectOneMenu value="#{newAccountModel.selectedAccountType}">
+                            <f:selectItems value="#{newAccountModel.accountTypes}"/>
                         </b:selectOneMenu>
-                        <h:outputText value="Content value*:"
-                                      class="webvert_bold_lable_layout"/>
-                        <b:inputText value="#{newContentModel.contentValue}"
-                                     tooltip="#{component.valid? '' : 'The value has to be a valid image URL or displayable Text.' }"
+                        <h:outputText value="BIC *"
+                                      class="webvert_bold_lable_layout"
+                                      rendered="#{newAccountModel.bankAccount}"/>
+                        <b:inputText value="#{newAccountModel.bic}"
+                                     tooltip="#{component.valid? '' : 'The value has to be a valid BIC.' }"
                                      styleClass="#{component.valid? '' : 'webvert_input_control_invalid' }"
-                                     required="true">
+                                     required="true"
+                                     rendered="#{newAccountModel.bankAccount}">
                         </b:inputText>
-                        <h:outputText value="Target page on click*:"
-                                      class="webvert_bold_lable_layout"/>
-                        <b:inputText value="#{newContentModel.targetPage}"
+                        <h:outputText value="IBAN *"
+                                      class="webvert_bold_lable_layout"
+                                      rendered="#{newAccountModel.bankAccount}"/>
+                        <b:inputText value="#{newAccountModel.iban}"
                                      styleClass="#{component.valid? '' : 'webvert_input_control_invalid' }"
-                                     tooltip="#{component.valid? '' : 'The value has to be a valid URL.' }"
-                                     required="true">
-                            <f:validator validatorId="urlValidator" />
+                                     tooltip="#{component.valid? '' : 'The value has to be a valid IBAN.' }"
+                                     required="true"
+                                     rendered="#{newAccountModel.bankAccount}">
+                        </b:inputText>
+                        <h:outputText value="PayPal e-mail address *"
+                                      class="webvert_bold_lable_layout"
+                                      rendered="#{newAccountModel.payPalAccount}"/>
+                        <b:inputText value="#{newAccountModel.payPalName}"
+                                     styleClass="#{component.valid? '' : 'webvert_input_control_invalid' }"
+                                     tooltip="#{component.valid? '' : 'The value has to be a valid IBAN.' }"
+                                     required="true"
+                                     rendered="#{newAccountModel.payPalAccount}">
                         </b:inputText>
                     </b:panelGrid>
                 </p>
@@ -60,11 +67,11 @@
                                      p:data-toggle="modal"
                                      process="@form"
                                      class="webvert_primary_button_color"
-                                     actionListener="#{newContentModel.applyChanges}"
+                                     actionListener="#{newAccountModel.applyChanges}"
                                      action="#{cc.attrs.bean[cc.attrs.methodName]}"
                                      style="width: 128px; margin-left: 10px">
                         <f:setPropertyActionListener target="#{cc.attrs.bean[cc.attrs.propertyName]}"
-                                                     value="#{newContentModel.content}" />
+                                                     value="#{newAccountModel.account}" />
                     </b:commandButton>
                 </p>
             </h:form>
