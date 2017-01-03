@@ -1,0 +1,103 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:prim="http://primefaces.org/ui"
+      xmlns:composites="http://xmlns.jcp.org/jsf/composite/composites">
+    <h:head>
+        <h:outputStylesheet library="css" name="style.css"/>
+    </h:head>
+    <h:body>
+        <ui:composition template="./resources/templates/PresentationAreaTemplate.xhtml">
+            <ui:define name="main_content"
+                       id="mainContentID">
+                <b:panel class="webvert_pa_content_layout">
+                    <h:form id="user_profile_form"
+                            prependId="false" 
+                            style="height: 100%; position: relative;">
+                        <b:container class="webvert_nc_container_layout">
+                            <h2 class="webvert_heading_color_dark webvert_heading_layout">
+                                User profile
+                            </h2>
+
+                            <h4 class="webvert_heading_color_dark webvert_heading_layout">
+                                Personal information
+                            </h4>
+
+                            <b:panelGrid colSpans="4, 4, 4">
+                                <h:outputText value="Name:" 
+                                              class="webvert_bold_lable_layout"/>
+                                <b:inputText value="#{userProfileModel.firstName}"
+                                             disabled="true"></b:inputText>
+                                <b:inputText value="#{userProfileModel.lastName}"
+                                             disabled="true"></b:inputText>
+                            </b:panelGrid>
+                            <b:panelGrid colSpans="4, 8">
+                                <h:outputText value="Company:" 
+                                              class="webvert_bold_lable_layout"/>
+                                <b:inputText value="#{userProfileModel.company}"
+                                             disabled="true"></b:inputText>
+                            </b:panelGrid>
+
+                            <h4 class="webvert_heading_color_dark webvert_heading_layout">
+                                Address
+                            </h4>
+
+                            <b:panelGrid colSpans="4, 8">
+                                <h:outputText value="Street:" 
+                                              class="webvert_bold_lable_layout"/>
+                                <b:inputText value="#{userProfileModel.street}"
+                                             disabled="true"></b:inputText>
+                                <h:outputText value="Area code:" 
+                                              class="webvert_bold_lable_layout"/>
+                                <b:inputText value="#{userProfileModel.areaCode}"
+                                             disabled="true"></b:inputText>
+                                <h:outputText value="City:" 
+                                              class="webvert_bold_lable_layout"/>
+                                <b:inputText value="#{userProfileModel.city}"
+                                             disabled="true"></b:inputText>
+                                <h:outputText value="County:" 
+                                              class="webvert_bold_lable_layout"/>
+                                <b:inputText value="#{userProfileModel.country}"
+                                             disabled="true"></b:inputText>
+                            </b:panelGrid>
+
+                            <b:row style="padding-top: 16px">
+                                <b:column span="4">
+                                    <h:outputText value="Account:" 
+                                                  class="webvert_bold_lable_layout"/>
+                                </b:column>
+                                <b:column span="7"
+                                          style="padding-right: 0px">
+                                    <b:selectOneMenu>
+                                        <f:converter binding="#{userProfileModel.accountConverter}"/>	                    
+                                        <f:selectItems value="#{userProfileModel.accounts}" 
+                                                       var="account" 
+                                                       itemLabel="#{account.id}"/>
+                                    </b:selectOneMenu>
+                                </b:column>
+                                <b:column span="1"
+                                          style="padding-left: 8px"
+                                          rendered="false">
+                                    <b:commandButton icon="plus"
+                                                     value=""
+                                                     p:data-target=".accountModal"
+                                                     p:data-toggle="modal"
+                                                     onclick="return false;"/>
+                                </b:column>
+                            </b:row>
+                        </b:container>
+                    </h:form>
+                </b:panel>
+                <composites:AccountModalComposite bean="#{newCampaignModel}"
+                                                  methodName="addNewAccount"
+                                                  propertyName="newAccount"/>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

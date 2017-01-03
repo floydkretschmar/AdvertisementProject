@@ -26,5 +26,10 @@
                 <from-outcome>newCampaign</from-outcome>
                 <to-view-id>/newCampaign.xhtml</to-view-id>
             </navigation-case>
+            <navigation-case>
+                <redirect>false</redirect>
+                <from-outcome>userProfile</from-outcome>
+                <to-view-id>/userProfile.xhtml</to-view-id>
+            </navigation-case>
     </navigation-rule>
 </faces-config>
