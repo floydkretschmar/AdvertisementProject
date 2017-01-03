@@ -57,7 +57,7 @@ public class CampaignModel extends AbstractModel {
     /**
      * Gets all campaigns for the current user.
      * 
-     * @return 
+     * @return  the campaigns currently available for the user.
      */
     public Collection<Campaign> getCampaigns() {
         Collection<Campaign> campaigns = this.applicationModel.processCurrentUser(
@@ -95,8 +95,8 @@ public class CampaignModel extends AbstractModel {
     /**
      * Gets the contents for the specified campaign id.
      * 
-     * @param id    the id of the campaign for which the contents
-     * @return 
+     * @param   id    the id of the campaign for which the contents
+     * @return  the collection of contents available for the specified campaign.
      */
     public Collection<Content> getContentForCampaignId(String id) {
         Optional<Campaign> selectedCampaign = 

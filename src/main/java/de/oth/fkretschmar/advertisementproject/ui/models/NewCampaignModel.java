@@ -17,15 +17,15 @@
 package de.oth.fkretschmar.advertisementproject.ui.models;
 
 import de.oth.fkretschmar.advertisementproject.business.services.base.ICampaignService;
+import de.oth.fkretschmar.advertisementproject.business.services.base.IUserService;
 import de.oth.fkretschmar.advertisementproject.entities.billing.Account;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.Campaign;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.Content;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.PaymentInterval;
+import de.oth.fkretschmar.advertisementproject.entities.user.User;
 import de.oth.fkretschmar.advertisementproject.ui.models.base.AbstractModel;
 import java.util.ArrayList;
 import java.util.Collection;
-import javax.annotation.PostConstruct;
-import javax.enterprise.context.Conversation;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -68,6 +68,13 @@ public class NewCampaignModel extends AbstractModel {
     private Content newContent;
     
     /**
+     * Stores the new account sent as an argument by the modal.
+     */
+    @Getter
+    @Setter
+    private Account newAccount;
+    
+    /**
      * Stores the name of the new campaign.
      */
     @Getter
@@ -94,6 +101,12 @@ public class NewCampaignModel extends AbstractModel {
     @Getter
     @Setter
     private PaymentInterval selectedInterval;
+    
+    /**
+     * Stores the service that manages {@link User} entities.
+     */
+    @Inject
+    private IUserService userService;
 
     // --------------- Public getter und setter ---------------
     /**
@@ -108,13 +121,15 @@ public class NewCampaignModel extends AbstractModel {
     /**
      * Gets all possible payment intervals.
      *
-     * @return
+     * @return  the array of payment intervals.
      */
     public PaymentInterval[] getPaymentIntervals() {
         return PaymentInterval.values();
     }
 
     // --------------- Public methods ---------------
+    
+    
     /**
      * Adds a newly created content to the content list of the campaign that is
      * being created.
@@ -125,6 +140,22 @@ public class NewCampaignModel extends AbstractModel {
         this.newContents.add(this.newContent);
         return "newCampaign";
     }
+    
+    
+    /**
+     * Adds a newly created account to the account list of the user.
+     *
+     * @return the next navigation point.
+     */
+    public String addNewAccount() {
+        this.applicationModel.processAndChangeCurrentUser(
+                user -> this.userService.createAccountForUser(
+                        user, 
+                        this.newAccount));
+                
+        return "newCampaign";
+    }
+    
 
     /**
      * Cancels the campaign creation and redirects to the campaign overview.

@@ -11,6 +11,8 @@
         <composite:attribute name="contents" />
         <composite:attribute name="enableDelete" />
         <composite:attribute name="enableNew" />
+        <composite:attribute name="accordionClass"/>
+        <composite:attribute name="headerClass"/>
 
         <composite:attribute name="deletePropertyName"/>
         <composite:attribute name="deleteMethodName"/>
@@ -18,7 +20,7 @@
     </composite:interface>
 
     <composite:implementation>
-        <b:row class="webvert_ca_row_layout webvert_ca_other_row_layout">
+        <b:row class="#{cc.attrs.headerClass}">
             <b:column span="1"
                       class="webvert_co_header_column_layout">
                 <h3 class="webvert_heading_color_dark 
@@ -39,8 +41,7 @@
 
         <c:choose>
             <c:when test="#{not empty cc.attrs.contents}">
-                <b:accordion class="webvert_ca_row_layout 
-                             webvert_co_accordion_layout">
+                <b:accordion class="#{cc.attrs.accordionClass}">
                     <c:forEach items="#{contentModel.getContentTypesForContents(cc.attrs.contents)}"
                                var="contentType"
                                id="forEachCampaign">

@@ -40,13 +40,7 @@ import javax.servlet.http.HttpServletResponse;
 public class NoCacheFilter implements Filter {
 
     /**
-     * Filters all pages and disables the caching.
-     * 
-     * @param   request
-     * @param   response
-     * @param   chain
-     * @throws  IOException
-     * @throws  ServletException 
+     * {@inheritDoc}
      */
     @Override
     public void doFilter(
@@ -67,13 +61,19 @@ public class NoCacheFilter implements Filter {
         chain.doFilter(request, response);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        
+        // do nothing
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void destroy() {
-        
+        // do nothing
     }
 }

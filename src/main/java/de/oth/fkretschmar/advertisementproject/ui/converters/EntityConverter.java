@@ -20,11 +20,6 @@ import de.oth.fkretschmar.advertisementproject.business.services.base.IEntitySer
 import de.oth.fkretschmar.advertisementproject.entities.base.IEntity;
 import de.oth.fkretschmar.advertisementproject.entities.billing.Account;
 import java.io.Serializable;
-import java.lang.reflect.AnnotatedType;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
 import javax.enterprise.context.Dependent;
 
 import javax.faces.component.UIComponent;

@@ -16,7 +16,6 @@
  */
 package de.oth.fkretschmar.advertisementproject.entities.campaign;
 
-import java.awt.image.RenderedImage;
 import java.net.URL;
 
 import lombok.AccessLevel;
@@ -47,24 +46,19 @@ public enum ContentType {
      * Indicates that the content of the advertisement is an URL linking to an
      * image.
      */
-    IMAGE_URL(URL.class),
+    IMAGE_URL(URL.class, ContentType.IMAGE_URL_FORMATTED_NAME),
     
     /**
      * Indicates that the content of the advertisement is a plain text.
      */
-    TEXT(String.class),
+    TEXT(String.class, ContentType.TEXT_FORMATTED_NAME),
     
     /**
      * Indicates that the content of the advertisement has not been defined.
      */
-    UNDEFINED(Object.class);
+    UNDEFINED(Object.class, ContentType.UNDEFINED_FORMATTED_NAME);
     
     // --------------- Public static constants ---------------
-    
-    /**
-     * Defines the formatted name of the IMAGE state of the enum.
-     */
-    public static final String IMAGE_FORMATTED_NAME = "Image";
     
     /**
      * Defines the formatted name of the IMAGE_URL state of the enum.
@@ -86,8 +80,15 @@ public enum ContentType {
     /**
      * Stores the actual type that is represented by the enum.
      */
-    @Getter(AccessLevel.PUBLIC)
+    @Getter
     private final Class contentType;
+    
+    
+    /**
+     * Stores the label that describes the content type.
+     */
+    @Getter
+    private final String label;
     
     // --------------- Public static methods ---------------
     
@@ -108,26 +109,5 @@ public enum ContentType {
             return ContentType.TEXT;
         else
             return ContentType.UNDEFINED;
-    }
-    
-    /**
-     * Returns the well formatted name for the specified content type.
-     * 
-     * NOTE: Should actually access some sort of central translation file.
-     * 
-     * @param   type    the type for which a name will be retrieved.
-     * @return          the well formatted name for the type.
-     */
-    public static String getFormattedName(ContentType type) {
-        switch(type) {
-//            case IMAGE:
-//                return ContentType.IMAGE_FORMATTED_NAME;
-            case IMAGE_URL:
-                return ContentType.IMAGE_URL_FORMATTED_NAME;
-            case TEXT:
-                return ContentType.TEXT_FORMATTED_NAME;
-            default:
-                return ContentType.UNDEFINED_FORMATTED_NAME;
-        }
     }
 }

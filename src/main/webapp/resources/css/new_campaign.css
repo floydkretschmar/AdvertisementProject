@@ -21,7 +21,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 .webvert_nc_container_layout {
     width: 60% !important;
-    height: 100% !important; 
+/*    height: 100% !important; */
     padding: 0px !important; 
     margin: 0px !important;
+}
+
+.webvert_nc_co_row_layout {
+    margin-left: 0px !important; 
+    margin-right: 0px !important;
+    margin-bottom: 10px !important;
+}
+
+.webvert_nc_co_accordion_layout {
+    margin-bottom: 50px !important;
 }

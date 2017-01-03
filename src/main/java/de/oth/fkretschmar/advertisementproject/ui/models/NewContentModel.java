@@ -98,7 +98,7 @@ public class NewContentModel extends AbstractModel {
      */
     @Getter
     @Setter
-    private ContentType selectedContentType;
+    private ContentType selectedContentType = ContentType.IMAGE_URL;
 
     /**
      * Stores the age groups that will be targeted by the content that will be

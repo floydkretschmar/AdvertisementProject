@@ -6,7 +6,7 @@
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:ldc="http://webvert.com/LocalDateConverter"
+      xmlns:converters="http://webvert.com/Converters"
       xmlns:composites="http://java.sun.com/jsf/composite/composites">
     <h:head>
         <title>Webvert</title>
@@ -54,8 +54,8 @@
                                             <h:outputText value="Started: "
                                                           class="webvert_bold_lable_layout"/>
                                             <h:outputText value="#{campaign.generationDate}">\
-                                                <ldc:convertLocalDate type="both" 
-                                                                      pattern="dd.MM.yyyy"/>
+                                                <converters:convertLocalDate type="both" 
+                                                                             pattern="dd.MM.yyyy"/>
                                             </h:outputText>
                                         </b:row>
                                         <b:row class="webvert_ca_row_layout webvert_ca_other_row_layout">
@@ -66,6 +66,8 @@
                                             </h:outputText>
                                         </b:row>
                                         <composites:DisplayContentsComposite contents="#{campaignModel.getContentForCampaignId(campaign.id)}"
+                                                                             headerClass="webvert_ca_row_layout webvert_ca_other_row_layout"
+                                                                             accordionClass="webvert_ca_row_layout webvert_ca_co_accordion_layout"
                                                                              enableDelete="false"
                                                                              enableNew="false"/>
                                     </b:panel>

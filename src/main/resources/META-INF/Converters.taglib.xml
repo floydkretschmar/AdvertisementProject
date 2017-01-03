@@ -21,7 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee 
                                     http://xmlns.jcp.org/xml/ns/javaee/web-facelettaglibrary_2_2.xsd">
 
-    <namespace>http://webvert.com/LocalDateConverter</namespace>
+    <namespace>http://webvert.com/Converters</namespace>
     <tag>
         <tag-name>convertLocalDate</tag-name>
         <converter>

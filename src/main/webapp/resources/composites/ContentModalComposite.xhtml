@@ -30,7 +30,9 @@
                         <b:inputTextarea value="#{newContentModel.description}"/>
                         <h:outputText value="Content type *"
                                       class="webvert_bold_lable_layout"/>
-                        <b:selectOneMenu value="#{newContentModel.selectedContentType}">
+                        <b:selectOneMenu value="#{newContentModel.selectedContentType}"
+                                         binding="#{ct}"
+                                         required="true">
                             <f:selectItems value="#{newContentModel.contentTypes}"
                                            var="contentType"
                                            itemValue="#{contentType}"
@@ -39,9 +41,10 @@
                         <h:outputText value="Content value *"
                                       class="webvert_bold_lable_layout"/>
                         <b:inputText value="#{newContentModel.contentValue}"
-                                     tooltip="#{component.valid? '' : 'The value has to be a valid image URL or displayable Text.' }"
                                      styleClass="#{component.valid? '' : 'webvert_input_control_invalid' }"
                                      required="true">
+                            <f:validator validatorId="contentValueValidator" />
+                            <f:attribute name="param" value="#{ct}" /> 
                         </b:inputText>
                         <h:outputText value="Target page on click *"
                                       class="webvert_bold_lable_layout"/>

@@ -6,7 +6,7 @@
     </context-param>
     <context-param>
         <param-name>facelets.LIBRARIES</param-name>
-        <param-value>/META-INF/LocalDateConverter.taglib.xml</param-value>
+        <param-value>/META-INF/Converters.taglib.xml</param-value>
     </context-param>
     <context-param>
 	<param-name>primefaces.THEME</param-name>

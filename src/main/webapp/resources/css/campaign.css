@@ -39,6 +39,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 .webvert_ca_other_row_layout {
     margin-top: 16px !important;
+/*    margin-left: 0px !important; 
+    margin-right: 0px !important;*/
 }
 
+.webvert_ca_co_accordion_layout {
+    margin-bottom: 32px !important; 
+    margin-top: 16px !important; 
+}
 
