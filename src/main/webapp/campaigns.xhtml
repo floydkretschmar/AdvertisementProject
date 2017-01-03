@@ -66,9 +66,9 @@
                                                 <f:converter binding="#{campaignModel.accountConverter}"/>	
                                             </h:outputText>
                                         </b:row>
-                                        <composites:contentsComposite contents="#{campaignModel.getContentForCampaignId(campaign.id)}"
-                                                                      enableEdit="true"
-                                                                      enableNew="false"/>
+                                        <composites:DisplayContentsComposite contents="#{campaignModel.getContentForCampaignId(campaign.id)}"
+                                                                             enableDelete="false"
+                                                                             enableNew="false"/>
                                     </b:panel>
                                 </c:forEach>
                             </c:when>

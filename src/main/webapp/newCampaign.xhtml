@@ -13,7 +13,8 @@
     </h:head>
     <h:body>
         <ui:composition template="./resources/templates/PresentationAreaTemplate.xhtml">
-            <ui:define name="main_content">
+            <ui:define name="main_content"
+                       id="mainContentID">
                 <b:panel class="webvert_pa_content_layout">
                     <h:form id="new_campaign_form"
                             prependId="false" >
@@ -61,10 +62,13 @@
                                 </b:column>
                             </b:row>
                         </b:container>
-                        <composites:contentsComposite enableEdit="false"
-                                                      enableNew="true"
-                                                      modalId="#modalDialogID"
-                                                      contents="#{newCampaignModel.newContents}"/>
+                        <composites:DisplayContentsComposite enableDelete="true"
+                                                             enableNew="true"
+                                                             modalId="#modalDialogID"
+                                                             bean="#{newCampaignModel}"
+                                                             deletePropertyName="deleteContent"
+                                                             deleteMethodName="removeContent"
+                                                             contents="#{newCampaignModel.newContents}"/>
                         <b:row style="padding-top: 32px">
                             <b:commandButton value="Cancel" 
                                              action="#{newCampaignModel.cancel}"
@@ -77,11 +81,10 @@
                         </b:row>
                     </h:form>
                 </b:panel>
-                
-                <composites:modalComposite title="Create a new content"
-                                           bean="#{newCampaignModel}"
-                                           methodName="addNewContent"
-                                           propertyName="newContent"/>
+
+                <composites:ContentModalComposite bean="#{newCampaignModel}"
+                                                  methodName="addNewContent"
+                                                  propertyName="newContent"/>
             </ui:define>
         </ui:composition>
     </h:body>

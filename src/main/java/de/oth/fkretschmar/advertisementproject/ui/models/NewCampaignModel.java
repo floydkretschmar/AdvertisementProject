@@ -54,6 +54,13 @@ public class NewCampaignModel extends AbstractModel {
     private ICampaignService campaignService;
     
     /**
+     * Stores the content that should be removed sent as an argument by the modal.
+     */
+    @Getter
+    @Setter
+    private Content deleteContent;
+    
+    /**
      * Stores the new content sent as an argument by the modal.
      */
     @Getter
@@ -127,6 +134,18 @@ public class NewCampaignModel extends AbstractModel {
     public String cancel() {
         this.reset();
         return "overview";
+    }
+    
+    
+    /**
+     * Removes one of the newly created contents from the content list of the 
+     * campaing that is being created.
+     * 
+     * @return the next navigation point.
+     */
+    public String removeContent() {
+        this.newContents.remove(this.deleteContent);
+        return "newCampaign";
     }
 
     /**

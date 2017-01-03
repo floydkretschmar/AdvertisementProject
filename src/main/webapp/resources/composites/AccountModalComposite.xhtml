@@ -1,0 +1,73 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:prim="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <!-- INTERFACE -->
+    <cc:interface>
+        <cc:attribute name="propertyName" required="true" />
+        <cc:attribute name="methodName" required="true" />
+        <cc:attribute name="bean" required="true" />
+    </cc:interface>
+
+    <!-- IMPLEMENTATION -->
+    <cc:implementation id="modalComposite">        
+        <b:modal id="modalDialogID" 
+                 title="Create a new account" 
+                 styleClass="modalPseudoClass">
+            <h:form id="modalForm"
+                    prependId="false" >
+                <p>
+                    <b:panelGrid colSpans="12">
+                        <h:outputText value="Content type*:"
+                                      class="webvert_bold_lable_layout"/>
+                        <b:selectOneMenu value="#{newContentModel.selectedContentType}">
+                            <f:selectItems value="#{newContentModel.contentTypes}"
+                                           var="contentType"
+                                           itemValue="#{contentType}"
+                                           itemLabel="#{contentType}"/>
+                        </b:selectOneMenu>
+                        <h:outputText value="Content value*:"
+                                      class="webvert_bold_lable_layout"/>
+                        <b:inputText value="#{newContentModel.contentValue}"
+                                     tooltip="#{component.valid? '' : 'The value has to be a valid image URL or displayable Text.' }"
+                                     styleClass="#{component.valid? '' : 'webvert_input_control_invalid' }"
+                                     required="true">
+                        </b:inputText>
+                        <h:outputText value="Target page on click*:"
+                                      class="webvert_bold_lable_layout"/>
+                        <b:inputText value="#{newContentModel.targetPage}"
+                                     styleClass="#{component.valid? '' : 'webvert_input_control_invalid' }"
+                                     tooltip="#{component.valid? '' : 'The value has to be a valid URL.' }"
+                                     required="true">
+                            <f:validator validatorId="urlValidator" />
+                        </b:inputText>
+                    </b:panelGrid>
+                </p>
+                <p style="margin-top: 30px; margin-bottom: 10px">
+                    <b:button value="Close" 
+                              dismiss="modal" 
+                              onclick="return false;"
+                              style="width: 128px"/>
+                    <b:commandButton value="Ok" 
+                                     ajax="true"
+                                     p:data-toggle="modal"
+                                     process="@form"
+                                     class="webvert_primary_button_color"
+                                     actionListener="#{newContentModel.applyChanges}"
+                                     action="#{cc.attrs.bean[cc.attrs.methodName]}"
+                                     style="width: 128px; margin-left: 10px">
+                        <f:setPropertyActionListener target="#{cc.attrs.bean[cc.attrs.propertyName]}"
+                                                     value="#{newContentModel.content}" />
+                    </b:commandButton>
+                </p>
+            </h:form>
+        </b:modal>
+    </cc:implementation>
+</html>

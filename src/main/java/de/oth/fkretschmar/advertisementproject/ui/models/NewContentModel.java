@@ -45,7 +45,7 @@ import org.omnifaces.cdi.ViewScoped;
  */
 @Named
 @ViewScoped
-public class NewEditContentModel extends AbstractModel {
+public class NewContentModel extends AbstractModel {
 
     // --------------- Private fields ---------------
     /**
@@ -196,24 +196,51 @@ public class NewEditContentModel extends AbstractModel {
     }
     
     
-    /**
-     * Sets the content that is being edited.
-     * 
-     * @param content   the edit content.
-     */
-    public void setContent(Content content) {
-        if(content != null) {
-            this.selectedContentType = content.getContentType();
-            
-            if (this.selectedContentType == ContentType.IMAGE_URL)
-                this.contentValue = ((URL)content.getValue()).toExternalForm();
-            else if (this.selectedContentType == ContentType.TEXT)
-                this.contentValue = content.getValue().toString();
-            
-            this.description = content.getDescription();
-            this.numberOfRequests = content.getNumberOfRequests();
-        }
-    }
+//    /**
+//     * Sets the content that is being edited.
+//     * 
+//     * @param content   the edit content.
+//     */
+//    public void setContent(Content content) {
+//        if(content != null) {
+//            this.selectedContentType = content.getContentType();
+//            
+//            if (this.selectedContentType == ContentType.IMAGE_URL)
+//                this.contentValue = ((URL)content.getValue()).toExternalForm();
+//            else if (this.selectedContentType == ContentType.TEXT)
+//                this.contentValue = content.getValue().toString();
+//            
+//            this.description = content.getDescription();
+//            this.numberOfRequests = content.getNumberOfRequests();
+//            this.postDecimalPointAmount = content.getPricePerRequest().getAmountMinorLong();
+//            this.preDecimalPointAmount = content.getPricePerRequest().getAmountMajorLong();
+//            
+//            this.selectedAges = new ArrayList<String>();
+//            this.selectedGenders = new ArrayList<String>();
+//            this.selectedMaritalStatus = new ArrayList<String>();
+//            this.selectedPurposesOfUse = new ArrayList<String>();
+//            
+//            content.getContext().getAge().forEach(
+//                    target -> this.selectedAges.add(
+//                            Integer.toString(target.getFlagValue())));
+//            
+//            content.getContext().getGender().forEach(
+//                    target -> this.selectedGenders.add(
+//                            Integer.toString(target.getFlagValue())));
+//            
+//            content.getContext().getMaritalStatus().forEach(
+//                    target -> this.selectedMaritalStatus.add(
+//                            Integer.toString(target.getFlagValue())));
+//            
+//            content.getContext().getPurposeOfUse().forEach(
+//                    target -> this.selectedPurposesOfUse.add(
+//                            Integer.toString(target.getFlagValue())));
+//            
+//            this.targetPage = content.getTargetUrl().toExternalForm();
+//            
+//            this.content = content;
+//        }
+//    }
 
     // --------------- Public getters ---------------
     /**
@@ -252,7 +279,7 @@ public class NewEditContentModel extends AbstractModel {
                     .value(this.selectedContentType == ContentType.IMAGE_URL ? new URL(this.contentValue) : this.contentValue)
                     .build();
         } catch (MalformedURLException ex) {
-            Logger.getLogger(NewEditContentModel.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(NewContentModel.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

@@ -9,9 +9,13 @@
       xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
     <composite:interface>
         <composite:attribute name="contents" />
-        <composite:attribute name="enableEdit" />
+        <composite:attribute name="enableDelete" />
         <composite:attribute name="enableNew" />
         <composite:attribute name="modalId" />
+
+        <composite:attribute name="deletePropertyName"/>
+        <composite:attribute name="deleteMethodName"/>
+        <composite:attribute name="bean"/>
     </composite:interface>
 
     <composite:implementation>
@@ -80,7 +84,7 @@
                                         </b:row>
                                         <b:row class="webvert_co_lable_row_layout">
                                             <b:column span="6">
-                                                <h:outputText value="Number of requests ordered:"
+                                                <h:outputText value="Number of requests left:"
                                                               class="webvert_bold_lable_layout"/>
                                             </b:column>
                                             <b:column span="6">
@@ -89,10 +93,13 @@
                                         </b:row>
                                     </b:column>
                                     <b:column span="1" style="height: 100%">
-                                        <b:commandButton icon="pencil"
+                                        <b:commandButton icon="remove"
                                                          value=""
                                                          class="webvert_co_edit_button_layout"
-                                                         rendered="#{cc.attrs.enableEdit eq 'true'}">
+                                                         action="#{cc.attrs.bean[cc.attrs.deleteMethodName]}"
+                                                         rendered="#{cc.attrs.enableDelete eq 'true'}">
+                                            <f:setPropertyActionListener target="#{cc.attrs.bean[cc.attrs.deletePropertyName]}"
+                                                                         value="#{content}" />
                                         </b:commandButton>
                                     </b:column>
                                 </b:panel>
