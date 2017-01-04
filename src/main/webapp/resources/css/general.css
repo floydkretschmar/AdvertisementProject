@@ -103,6 +103,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 .panel-body {
     padding: 0px !important;
     height: 100%;
+    position: relative;
 }
 
 .dropdown-header {

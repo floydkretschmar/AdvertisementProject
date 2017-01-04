@@ -45,10 +45,21 @@
                                     <b:panel title="#{campaign.name}"
                                              collapsed="true">
                                         <b:row class="webvert_ca_row_layout webvert_ca_first_row_layout">
-                                            <h3 class="webvert_heading_color_dark
-                                                webvert_ca_inner_heading_layout">
-                                                #{campaign.name}
-                                            </h3>
+                                            <b:column span="11"
+                                                      style="padding-left: 0px">
+                                                <h3 class="webvert_heading_color_dark
+                                                    webvert_ca_inner_heading_layout">
+                                                    #{campaign.name}
+                                                </h3>
+                                            </b:column>
+                                            <b:column span="1"
+                                                      class="webvert_co_new_button_column_layout"
+                                                      style="position: absolute; padding-left: 0px; padding-top: 32px; right: 0; top: 0">
+                                                <b:commandButton icon="remove"
+                                                                 value=""
+                                                                 style="position: absolute; right: 0; margin-right: 32px; "
+                                                                 rendered="#{campaignModel.campaignState eq 'RUNNING'}"/>
+                                            </b:column>
                                         </b:row>
                                         <b:row class="webvert_ca_row_layout webvert_ca_other_row_layout">
                                             <h:outputText value="Started: "
