@@ -25,15 +25,15 @@
 
                         <!--<h2 class="webvert_form_heading_color_dark">Campaigns</h2>-->
                         <b:tabLinks class="webvert_ca_tab_layout">
-                            <b:navCommandLink value="Currently Running Campaigns"
+                            <b:navCommandLink value="Currently Running Campaigns (#{campaignModel.getCampaignCountForState('RUNNING')})"
                                               update="@form"
                                               active="#{campaignModel.campaignState eq 'RUNNING'}"
                                               action="#{campaignModel.setCampaignState('RUNNING')}"/>
-                            <b:navCommandLink value="Ended Campaigns"
+                            <b:navCommandLink value="Ended Campaigns (#{campaignModel.getCampaignCountForState('ENDED')})"
                                               update="@form"
                                               active="#{campaignModel.campaignState eq 'ENDED'}"
                                               action="#{campaignModel.setCampaignState('ENDED')}"/>
-                            <b:navCommandLink value="Cancelled Campaigns"
+                            <b:navCommandLink value="Cancelled Campaigns (#{campaignModel.getCampaignCountForState('CANCELLED')})"
                                               update="@form"
                                               active="#{campaignModel.campaignState eq 'CANCELLED'}"
                                               action="#{campaignModel.setCampaignState('CANCELLED')}"/>
@@ -57,7 +57,8 @@
                                                       style="position: absolute; padding-left: 0px; padding-top: 32px; right: 0; top: 0">
                                                 <b:commandButton icon="remove"
                                                                  value=""
-                                                                 style="position: absolute; right: 0; margin-right: 32px; "
+                                                                 style="position: absolute; right: 0; margin-right: 32px;"
+                                                                 action="#{campaignModel.cancelCampaign(campaign)}"
                                                                  rendered="#{campaignModel.campaignState eq 'RUNNING'}"/>
                                             </b:column>
                                         </b:row>

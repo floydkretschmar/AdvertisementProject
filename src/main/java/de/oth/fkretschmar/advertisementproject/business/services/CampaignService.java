@@ -139,7 +139,7 @@ public class CampaignService implements Serializable, ICampaignService {
     public Campaign cancelCampaign(Campaign campaign) {        
         campaign = this.campaignRepository.merge(campaign);
         campaign.setCampaignState(CampaignState.CANCELLED);
-        this.deleteCampaignContents(campaign);
+//        this.deleteCampaignContents(campaign);
         return campaign;
     }
     
@@ -155,7 +155,7 @@ public class CampaignService implements Serializable, ICampaignService {
     public Campaign endCampaign(Campaign campaign) {
         campaign = this.campaignRepository.merge(campaign);
         campaign.setCampaignState(CampaignState.ENDED);
-        this.deleteCampaignContents(campaign);
+//        this.deleteCampaignContents(campaign);
         return campaign;
     }
 
