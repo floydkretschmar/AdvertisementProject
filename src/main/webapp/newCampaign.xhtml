@@ -7,7 +7,8 @@
       xmlns:b="http://bootsfaces.net/ui"
       xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
       xmlns:prim="http://primefaces.org/ui"
-      xmlns:composites="http://xmlns.jcp.org/jsf/composite/composites">
+      xmlns:composites="http://xmlns.jcp.org/jsf/composite/composites"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <h:head>
         <h:outputStylesheet library="css" name="style.css"/>
     </h:head>
@@ -32,6 +33,7 @@
                                 <b:column span="7"
                                           style="padding-right: 0px">
                                     <b:inputText value="#{newCampaignModel.name}"
+                                                 styleClass="#{component.valid? '' : 'webvert_input_control_invalid' }"
                                                  required="true"></b:inputText>
                                 </b:column>
                             </b:row>
@@ -42,7 +44,9 @@
                                 </b:column>
                                 <b:column span="7"
                                           style="padding-right: 0px">
-                                    <b:selectOneMenu value="#{newCampaignModel.selectedInterval}">
+                                    <b:selectOneMenu value="#{newCampaignModel.selectedInterval}"
+                                                     styleClass="#{component.valid? '' : 'webvert_input_control_invalid' }"
+                                                     required="true">
                                         <f:selectItems value="#{newCampaignModel.paymentIntervals}"
                                                        var="interval"
                                                        itemValue="#{interval}"
@@ -56,23 +60,42 @@
                                     <h:outputText value="Account:" 
                                                   class="webvert_bold_lable_layout"/>
                                 </b:column>
-                                <b:column span="7"
-                                          style="padding-right: 0px">
-                                    <b:selectOneMenu value="#{newCampaignModel.selectedAccount}">
-                                        <f:converter binding="#{newCampaignModel.accountConverter}"/>	                    
-                                        <f:selectItems value="#{newCampaignModel.accounts}" 
-                                                       var="account" 
-                                                       itemLabel="#{account.id}"/>
-                                    </b:selectOneMenu>
-                                </b:column>
-                                <b:column span="1"
-                                          style="padding-left: 8px">
-                                    <b:commandButton icon="plus"
-                                                     value=""
-                                                     p:data-target=".accountModal"
-                                                     p:data-toggle="modal"
-                                                     onclick="return false;"/>
-                                </b:column>
+
+                                <c:choose>
+                                    <c:when test="#{not empty newCampaignModel.accounts}">
+                                        <b:column span="7"
+                                                  style="padding-right: 0px">
+                                            <b:selectOneMenu value="#{newCampaignModel.selectedAccount}"
+                                                             styleClass="#{component.valid? '' : 'webvert_input_control_invalid' }"
+                                                             required="true">
+                                                <f:converter binding="#{newCampaignModel.accountConverter}"/>
+                                                <f:selectItems value="#{newCampaignModel.accounts}" 
+                                                               var="account" 
+                                                               itemLabel="#{account.id}"/>
+                                            </b:selectOneMenu>
+                                        </b:column>
+                                        <b:column span="1"
+                                                  style="padding-left: 8px">
+                                            <b:commandButton icon="plus"
+                                                             value=""
+                                                             p:data-target=".accountModal"
+                                                             p:data-toggle="modal"
+                                                             onclick="return false;"/>
+                                        </b:column>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <b:column span="7"
+                                                  style="padding-right: 0px; font-size: 18px">
+                                            <h:outputText value="No accounts available. "></h:outputText>
+                                            <h:commandLink p:data-target=".accountModal"
+                                                           p:data-toggle="modal"
+                                                           onclick="return false;"
+                                                           class="webvert_heading_color_dark"
+                                                           value="Create a new account.">           
+                                            </h:commandLink>
+                                        </b:column>
+                                    </c:otherwise>
+                                </c:choose>
                             </b:row>
                         </b:container>
                         <composites:DisplayContentsComposite enableDelete="true"

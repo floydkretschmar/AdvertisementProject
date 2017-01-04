@@ -47,7 +47,7 @@ public class PasswordValidator implements Validator {
     @Override
     public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
         String password = (String) value;
-        String confirm = (String) component.getAttributes().get("confirm").toString();
+        String confirm = (String) component.getAttributes().get("confirm");
 
         if (password == null || confirm == null) {
             return; // Just ignore and let required="true" do its job.
