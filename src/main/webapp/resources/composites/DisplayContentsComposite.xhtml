@@ -6,7 +6,8 @@
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
       xmlns:b="http://bootsfaces.net/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:converters="http://webvert.com/Converters">
     <composite:interface>
         <composite:attribute name="contents" />
         <composite:attribute name="enableDelete" />
@@ -79,7 +80,9 @@
                                                               class="webvert_bold_lable_layout"/>
                                             </b:column>
                                             <b:column span="6">
-                                                <h:outputText value="#{content.pricePerRequest}"/>
+                                                <h:outputText value="#{content.pricePerRequest}">
+                                                    <converters:convertMoney/>
+                                                </h:outputText>
                                             </b:column>
                                         </b:row>
                                         <b:row class="webvert_co_lable_row_layout">
