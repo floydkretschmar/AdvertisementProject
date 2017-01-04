@@ -65,6 +65,7 @@ public class Campaign extends AbstractAutoGenerateKeyedEntity {
      */
     @NotNull
     @Column(name = "CAMPAIGN_STATE")
+    @Enumerated(EnumType.STRING)
     @Getter
     @Setter
     private CampaignState campaignState = CampaignState.RUNNING;
