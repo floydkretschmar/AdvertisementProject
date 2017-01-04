@@ -25,6 +25,7 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.TreeMap;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -47,7 +48,7 @@ import org.joda.money.Money;
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 @ToString(callSuper = true)
 public class Bill extends AbstractAutoGenerateKeyedEntity {
-    
+
     /**
      * Stores the campaign for which this bill applies.
      */
@@ -57,36 +58,27 @@ public class Bill extends AbstractAutoGenerateKeyedEntity {
     @Getter
     @Setter
     private Campaign campaign;
-    
-    
+
     /**
      * Stores the items that make up the bill.
      */
     @NotNull
     @OneToMany
-    @JoinColumn(name="BILL_ID", referencedColumnName="ID")
+    @JoinColumn(name = "BILL_ID", referencedColumnName = "ID")
     private final Collection<BillItem> items = new ArrayList<BillItem>();
-    
-    
-    /**
-     * Stores the items that make up the bill.
-     */
-    @Transient
-    private final Map<Long, BillItem> itemMap = new TreeMap<Long, BillItem>();
-    
+
     /**
      * Stores the total price of the bill.
      */
     @Transient
     @Getter
     private Money totalPrice;
-    
+
     // --------------- Private constructors ---------------
-    
     /**
      * Creates a new instance of {@link Bill} using the specified bill items.
-     * 
-     * @param campaign 
+     *
+     * @param campaign
      */
     private Bill(BillItem[] items) {
         super();
@@ -94,69 +86,34 @@ public class Bill extends AbstractAutoGenerateKeyedEntity {
             this.addItem(item);
         }
     }
-    
+
     // --------------- Public getters and setters ---------------
- 
-    
-    /**
-     * Gets the map between an item and the corresponding content.
-     * 
-     * @return  the bank items of the bill as an unmodifiable map.
-     */
-    public Map<Long, BillItem> getItemMap() {
-        return Collections.unmodifiableMap(this.itemMap);
-    }
-    
     /**
      * Gets the items that make up the bill.
-     * 
-     * @return  the bank items of the bill as an unmodifiable collection.
+     *
+     * @return the bank items of the bill as an unmodifiable collection.
      */
     public Collection<BillItem> getItems() {
         return Collections.unmodifiableCollection(this.items);
     }
-    
+
     // --------------- Public methods ---------------
-    
-    
     /**
      * Adds an addtional item to the bill.
-     * 
-     * @param   item    the item that describes a single billing position.
-     * @return  {@code true} if the item was added, otherwise {@code false}
+     *
+     * @param item the item that describes a single billing position.
+     * @return {@code true} if the item was added, otherwise {@code false}
      */
     public boolean addItem(BillItem item) {
-        if(this.items.add(item)) {
+        if (this.items.add(item)) {
             this.addToTotalPrice(item);
-            this.itemMap.put(item.getContent().getId(), item);
-            
             return false;
         }
-        
+
         return false;
     }
-    
-    
-    /**
-     * Replace an existing item with a updated version.
-     * @param item  that will be replaced.
-     */
-    public void replaceItem(BillItem item) {
-        if(this.itemMap.containsKey(item.getContent().getId())) {
-            this.items.removeIf(storedItem -> storedItem.getContent().equals(item.getContent()));
-            this.items.add(item);
 
-            BillItem oldItem = this.itemMap.get(item.getContent().getId());
-            this.totalPrice.minus(oldItem.getItemPrice());
-            this.addToTotalPrice(item);
-
-            this.itemMap.remove(item.getContent().getId());
-            this.itemMap.put(item.getContent().getId(), item);
-        }
-    }
-    
     // --------------- Protected methods ---------------
-    
     /**
      * Performs the work of initializing the total price when loading the bill
      * from the database.
@@ -165,50 +122,43 @@ public class Bill extends AbstractAutoGenerateKeyedEntity {
     protected void postLoad() {
         for (BillItem item : this.items) {
             this.addToTotalPrice(item);
-            this.itemMap.put(item.getContent().getId(), item);
         }
     }
-    
+
     // --------------- Private methods ---------------
-    
-    
     /**
      * Adds the price of the specified item to the total price of the bill. If
      * the total price has not been set, the total price will be initialized
      * with the price of the specified item.
-     * 
-     * @param item  the item whose price will be added.
+     *
+     * @param item the item whose price will be added.
      */
     private void addToTotalPrice(BillItem item) {
         Money itemPrice = item.getItemPrice();
 
-        if(this.totalPrice == null) {
+        if (this.totalPrice == null) {
             this.totalPrice = Money.of(itemPrice);
-        }
-        else {
+        } else {
             this.totalPrice.plus(itemPrice);
         }
     }
-    
+
     // --------------- Private static methods ---------------
-    
-    
     /**
-     * The method that builds the basis of the auto generated builder:
-     * Validates the input and creates the corresponding {@link Bill}.
-     * 
-     * @param   campaign 
-     * @return  the built {@link Bill}.
-     * @throws  BuilderValidationException  that indicates that one or more of 
-     *                                      of the given creation parameters are
-     *                                      invalid.
+     * The method that builds the basis of the auto generated builder: Validates
+     * the input and creates the corresponding {@link Bill}.
+     *
+     * @param campaign
+     * @return the built {@link Bill}.
+     * @throws BuilderValidationException that indicates that one or more of of
+     * the given creation parameters are invalid.
      */
     @Builder(
-            builderMethodName = "createBill", 
+            builderMethodName = "createBill",
             builderClassName = "BillBuilder",
             buildMethodName = "build")
     private static Bill validateAndCreateBill(
-            BillItem...items) throws BuilderValidationException {
+            BillItem... items) throws BuilderValidationException {
         return new Bill(items);
     }
 }

@@ -23,9 +23,12 @@ import de.oth.fkretschmar.advertisementproject.entities.base.AbstractStringKeyed
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -71,9 +74,9 @@ public class User extends AbstractStringKeyedEntity {
     /**
      * Stores the accounts an user has specified.
      */
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "USER_ID", referencedColumnName = "ID")
-    private final Collection<Account> accounts = new ArrayList<Account>();
+    private final Set<Account> accounts = new HashSet<Account>();
     
     /**
      * Stores the address of the user.
@@ -89,8 +92,8 @@ public class User extends AbstractStringKeyedEntity {
      * Stores the campaigns comissioned by the user.
      */
     @NotNull
-    @OneToMany(mappedBy = "comissioner")
-    private final Collection<Campaign> campaigns = new ArrayList<Campaign>();
+    @OneToMany(mappedBy = "comissioner", fetch = FetchType.EAGER)
+    private final Set<Campaign> campaigns = new HashSet<Campaign>();
     
     /**
      * Stores the name of the company the user is buying ads for.

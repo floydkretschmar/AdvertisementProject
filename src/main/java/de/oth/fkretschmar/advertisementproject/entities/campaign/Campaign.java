@@ -28,6 +28,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -82,7 +83,7 @@ public class Campaign extends AbstractAutoGenerateKeyedEntity {
      * Stores the contents that make up the campaign.
      */
     @NotNull
-    @OneToMany(mappedBy = "campaign")
+    @OneToMany(mappedBy = "campaign", fetch = FetchType.EAGER)
     private final Collection<Content> contents
             = new ArrayList<Content>();
     

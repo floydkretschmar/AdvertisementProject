@@ -36,6 +36,7 @@ import de.oth.fkretschmar.advertisementproject.entities.billing.PayPalAccount;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 import javax.ejb.Schedule;
@@ -200,7 +201,7 @@ public class BillService implements Serializable, IBillService {
         
         Map<Long, Bill> bills = new TreeMap<Long, Bill>();
         Map<Long, Campaign> campaigns = new TreeMap<Long, Campaign>();
-                
+        Map<Long, Map<Long, BillItem>> billItemMaps = new TreeMap<Long, Map<Long, BillItem>>();
         
         requests.forEach(request -> 
         {
@@ -208,19 +209,21 @@ public class BillService implements Serializable, IBillService {
             Campaign campaign = content.getCampaign();
 
             // 1.   find out whether or not a bill has already been created for 
-            //      the campaign that this request is bound to
+            //      the campaign that this request is bound to...
             Bill bill = null;
             if(bills.containsKey(campaign.getId())) {
+                //... and get the bill as well as the corresponding bill items
+                // if the bill already exists
                 bill = bills.get(campaign.getId());
+                Map<Long, BillItem> billItems = billItemMaps.get(campaign.getId());
 
                 // 2.   if a bill already exists, find out whether or not there
                 //      is already a corresponding bill item to the content of
                 //      this request
                 BillItem billItem = null;
-                if (bill.getItemMap().containsKey(content.getId())) {
+                if (billItems.containsKey(content.getId())) {
                     // A corresponding bill item already exists so get it...
-                    billItem = bill.getItemMap().get(
-                                            content.getId());
+                    billItem = billItems.get(content.getId());
 
                     // ... add the additional request ...
                     billItem = BillItem.createBillItem()
@@ -229,7 +232,7 @@ public class BillService implements Serializable, IBillService {
                             .build();
                     
                     // ... and replace the old item.
-                    bill.replaceItem(billItem);
+                    billItems.replace(content.getId(), billItem);
                 }
                 else {
                     // No corresponding bill item exists so just create a new
@@ -238,7 +241,7 @@ public class BillService implements Serializable, IBillService {
                             .content(content)
                             .contentRequests(1)
                             .build();
-                    bill.addItem(billItem);
+                    billItems.put(content.getId(), billItem);
                 }
                 
                 // replace the found bill with the changed bill
@@ -246,21 +249,30 @@ public class BillService implements Serializable, IBillService {
             }
             else {
                 // 3.   If a bill does not exist already, just create a new one,
-                //      add a bill item for this change request and store it.
+                //      create a map for the bill items, add a bill item for 
+                //      this change request and store it in the map.
+                Map<Long, BillItem> billItems = new HashMap<>();
                 BillItem billItem = BillItem.createBillItem()
                             .content(content)
                             .contentRequests(1)
                             .build();
-                BillItem[] items = {billItem};
-                bill = Bill.createBill().items(items).build();
+                billItems.put(content.getId(), billItem);
+                billItemMaps.put(campaign.getId(), billItems);
+                
+                bill = Bill.createBill().build();
                 bills.put(campaign.getId(), bill);
+                
                 campaigns.put(campaign.getId(), campaign);
             }
         });
         
         bills.forEach((campaignId, bill) -> 
         {
-            // Create each bill for its existing campaign...
+            // Add all corresponding bill items to the bill...
+            Map<Long, BillItem> billItems = billItemMaps.get(campaignId);
+            billItems.values().forEach(billItem -> bill.addItem(billItem));
+            
+            // ... create each bill for its existing campaign...
             Campaign campaign = this.createBillForCampaign(
                     campaigns.get(campaignId), bill);
             // ... inform the current user, that the campaign has changed...
