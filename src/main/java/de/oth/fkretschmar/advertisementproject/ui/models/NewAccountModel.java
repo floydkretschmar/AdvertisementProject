@@ -20,7 +20,6 @@ import de.oth.fkretschmar.advertisementproject.entities.billing.Account;
 import de.oth.fkretschmar.advertisementproject.entities.billing.BankAccount;
 import de.oth.fkretschmar.advertisementproject.entities.billing.PayPalAccount;
 import de.oth.fkretschmar.advertisementproject.ui.models.base.AbstractModel;
-import javax.faces.event.ActionEvent;
 import javax.inject.Named;
 import lombok.Getter;
 import lombok.Setter;
@@ -36,12 +35,12 @@ public class NewAccountModel extends AbstractModel {
 
     // --------------- Private fields ---------------
     
-    /**
-     * Stores the account that is being build or being edited.
-     */
-    @Getter
-    @Setter
-    private Account account;
+//    /**
+//     * Stores the account that is being build or being edited.
+//     */
+//    @Getter
+//    @Setter
+//    private Account account;
 
     /**
      * Stores the BIC of the account that will be created.
@@ -98,18 +97,21 @@ public class NewAccountModel extends AbstractModel {
     
     
     /**
-     * Applies all the changes defined in the account dialog and stores the
-     * created account.
+     * Gets the account being build.
+     * 
+     * @return 
      */
-    public void applyChanges() {
-        if(this.isBankAccount()) {
-            this.account = BankAccount.createBankAccount()
+    public Account getAccount() {
+        if(this.isBankAccount() && this.bic != null && this.iban != null) {
+            return BankAccount.createBankAccount()
                     .bic(this.bic)
                     .iban(this.iban).build();
         }
-        else {
-            this.account = PayPalAccount.createPayPalAccount()
+        else if (this.payPalName != null) {
+            return PayPalAccount.createPayPalAccount()
                     .eMailAddress(this.payPalName).build();
         }
+        
+        return null;
     }
 }

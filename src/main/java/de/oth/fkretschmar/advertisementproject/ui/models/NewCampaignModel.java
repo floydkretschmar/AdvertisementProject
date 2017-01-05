@@ -27,6 +27,7 @@ import de.oth.fkretschmar.advertisementproject.ui.models.base.AbstractModel;
 import java.util.ArrayList;
 import java.util.Collection;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.event.AjaxBehaviorEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
 import lombok.Getter;
@@ -145,17 +146,14 @@ public class NewCampaignModel extends AbstractModel {
     /**
      * Adds a newly created account to the account list of the user.
      *
-     * @return the next navigation point.
+     * @param entity
      */
-    public String addNewAccount() {
+    public void addNewAccount(Object entity) {
         this.applicationModel.processAndChangeCurrentUser(
                 user -> this.userService.createAccountForUser(
                         user, 
-                        this.newAccount));
-                
-        return "newCampaign";
+                        (Account)entity));
     }
-    
 
     /**
      * Cancels the campaign creation and redirects to the campaign overview.

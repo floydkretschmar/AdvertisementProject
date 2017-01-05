@@ -16,11 +16,12 @@
         <ui:composition template="./resources/templates/PresentationAreaTemplate.xhtml">
             <ui:define name="main_content"
                        id="mainContentID">
-                <b:panel class="webvert_pa_content_layout">
+                <b:panel id="new_campaign_panel"
+                         class="webvert_pa_content_layout">
                     <h:form id="new_campaign_form"
-                            prependId="false" 
                             style="height: 100%; position: relative;">
-                        <b:container class="webvert_nc_container_layout">
+                        <b:container id="new_campaign_container"
+                                     class="webvert_nc_container_layout">
                             <h2 class="webvert_heading_color_dark webvert_heading_layout">
                                 Create a new campaign
                             </h2>
@@ -55,7 +56,7 @@
                                 </b:column>
                             </b:row>
 
-                            <b:row style="padding-top: 16px">
+                            <b:row style="padding-top: 16px" id="accountRow">
                                 <b:column span="4">
                                     <h:outputText value="Account:" 
                                                   class="webvert_bold_lable_layout"/>
@@ -63,10 +64,12 @@
 
                                 <c:choose>
                                     <c:when test="#{not empty newCampaignModel.accounts}">
-                                        <b:column span="7"
+                                        <b:column id="accountSelectorColumn"
+                                                  span="7"
                                                   style="padding-right: 0px">
-                                            <b:selectOneMenu value="#{newCampaignModel.selectedAccount}"
-                                                             styleClass="#{component.valid? '' : 'webvert_input_control_invalid' }"
+                                            <b:selectOneMenu id="accountSelector"
+                                                             value="#{newCampaignModel.selectedAccount}"
+                                                             styleClass="#{component.valid? 'accountSelectorClass' : 'webvert_input_control_invalid accountSelectorClass' }"
                                                              required="true">
                                                 <f:converter binding="#{newCampaignModel.accountConverter}"/>
                                                 <f:selectItems value="#{newCampaignModel.accounts}" 
@@ -125,9 +128,7 @@
                                                   methodName="addNewContent"
                                                   propertyName="newContent"/>
 
-                <composites:AccountModalComposite bean="#{newCampaignModel}"
-                                                  methodName="addNewAccount"
-                                                  propertyName="newAccount"/>
+                <composites:AccountModalComposite notifiedListener="#{newCampaignModel.addNewAccount}"/>
             </ui:define>
         </ui:composition>
     </h:body>
