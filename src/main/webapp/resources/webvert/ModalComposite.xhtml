@@ -5,24 +5,31 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:b="http://bootsfaces.net/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
-      xmlns:inner="http://xmlns.jcp.org/jsf/composite/innerComposites">
+      xmlns:inner="http://xmlns.jcp.org/jsf/composite/innerComposites"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
     <!-- INTERFACE -->
     <cc:interface componentType="createEntityContainer">
         <cc:attribute name="notifiedListener" method-signature="void listener(java.lang.Object)" />
         <cc:attribute name="renderOnOk" />
+        <cc:attribute name="modalType" />
     </cc:interface>
 
     <!-- IMPLEMENTATION -->
-    <cc:implementation id="modalComposite">        
-        <b:modal id="modalDialogID" 
-                 title="Create a new content" 
-                 styleClass="modalPseudoClass contentModal">
-            <h:form id="modalForm"
-                    prependId="false" >
+    <cc:implementation id="modalAccountComposite">        
+        <b:modal id="modalAccountDialogID" 
+                 title="Create a new account" 
+                 styleClass="modalPseudoClass #{cc.attrs.modalType}Modal">
+            <h:form id="modalForm">
                 <p>
-                    <inner:contentFormComposite></inner:contentFormComposite>
+                    <c:choose>
+                        <c:when test="#{cc.attrs.modalType eq 'account'}">
+                            <inner:accountFormComposite/>
+                        </c:when>
+                        <c:when test="#{cc.attrs.modalType eq 'content'}">
+                            <inner:contentFormComposite/>
+                        </c:when>
+                    </c:choose>
                 </p>
                 <p style="margin-top: 30px; margin-bottom: 10px">
                     <b:button value="Close" 
@@ -32,10 +39,17 @@
                     <b:fetchBeanInfos />
                     <b:commandButton value="Ok" 
                                      ajax="true"
-                                     oncomplete="if(!validationFailed) $('.contentModal').modal('hide')"
+                                     oncomplete="if(!validationFailed) $('.#{cc.attrs.modalType}Modal').modal('hide')"
                                      class="webvert_primary_button_color"
                                      style="width: 128px; margin-left: 10px">
-                        <f:attribute name="entity" value="#{newContentModel.content}" />
+                        <c:choose>
+                            <c:when test="#{cc.attrs.modalType eq 'account'}">
+                                <f:attribute name="entity" value="#{newAccountModel.account}" />
+                            </c:when>
+                            <c:when test="#{cc.attrs.modalType eq 'content'}">
+                                <f:attribute name="entity" value="#{newContentModel.content}" />
+                            </c:when>
+                        </c:choose>
                         <f:ajax listener="#{cc.notifiedListener}" 
                                 execute="@form"
                                 render="@form #{cc.attrs.renderOnOk}"/>

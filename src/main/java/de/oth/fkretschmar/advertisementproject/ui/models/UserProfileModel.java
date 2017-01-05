@@ -56,10 +56,6 @@ public class UserProfileModel extends AbstractModel {
     @Setter
     private boolean editing;
     
-    @Getter
-    @Setter
-    private Account newAccount;
-    
     /**
      * Stores the repository used to manage {@link User} entities.
      */
@@ -67,8 +63,8 @@ public class UserProfileModel extends AbstractModel {
     private IUserService userService;
 
     
-    public void addNewAccount() {
-        this.currentUserCopy.addAccount(this.newAccount);
+    public void addNewAccount(Object entity) {
+        this.currentUserCopy.addAccount((Account)entity);
     }
     
     @PostConstruct

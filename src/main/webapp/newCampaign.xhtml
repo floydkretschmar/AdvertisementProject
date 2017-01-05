@@ -8,6 +8,7 @@
       xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
       xmlns:prim="http://primefaces.org/ui"
       xmlns:composites="http://xmlns.jcp.org/jsf/composite/composites"
+      xmlns:webvert="http://xmlns.jcp.org/jsf/composite/webvert"
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <h:head>
         <h:outputStylesheet library="css" name="style.css"/>
@@ -126,12 +127,14 @@
                         </b:row>
                     </h:form>
                 </b:panel>
-
-                <composites:ContentModalComposite notifiedListener="#{newCampaignModel.addNewContent}"
-                                                  renderOnOk=":new_campaign_form:**:displayContents"/>
-
-                <composites:AccountModalComposite notifiedListener="#{newCampaignModel.addNewAccount}"
-                                                  renderOnOk=":new_campaign_form:**:accountSelector"/>
+                
+                <webvert:ModalComposite modalType="account"
+                                        notifiedListener="#{newCampaignModel.addNewAccount}"
+                                        renderOnOk=":new_campaign_form:**:accountSelector"/>
+                
+                <webvert:ModalComposite modalType="content"
+                                        notifiedListener="#{newCampaignModel.addNewContent}"
+                                        renderOnOk=":new_campaign_form:**:displayContents"/>
             </ui:define>
         </ui:composition>
     </h:body>

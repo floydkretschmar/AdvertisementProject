@@ -68,7 +68,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 /* ------------ OVERRIDE EXISTING ------------*/
 
 /* Targets the panel on which the content of the general campaign page and the page to create new campaigns are displayed*/
-#campaigns_panel.panel-group, #new_campaign_panel.panel-group {
+#campaigns_panel.panel-group, #new_campaign_panel.panel-group, #user_profile_panel.panel-group {
     height: calc(100% - 35px - 3em);
     opacity: 0.83;
     margin-bottom: 3em;
