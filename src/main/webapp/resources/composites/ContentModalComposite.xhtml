@@ -6,14 +6,12 @@
       xmlns:b="http://bootsfaces.net/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
-      xmlns:prim="http://primefaces.org/ui"
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+      xmlns:inner="http://xmlns.jcp.org/jsf/composite/innerComposites">
 
     <!-- INTERFACE -->
-    <cc:interface>
-        <cc:attribute name="propertyName" required="true" />
-        <cc:attribute name="methodName" required="true" />
-        <cc:attribute name="bean" required="true" />
+    <cc:interface componentType="createEntityContainer">
+        <cc:attribute name="notifiedListener" method-signature="void listener(java.lang.Object)" />
+        <cc:attribute name="renderOnOk" />
     </cc:interface>
 
     <!-- IMPLEMENTATION -->
@@ -24,154 +22,23 @@
             <h:form id="modalForm"
                     prependId="false" >
                 <p>
-                    <b:panelGrid colSpans="12">
-                        <h:outputText value="Description"
-                                      class="webvert_bold_lable_layout"/>
-                        <b:inputTextarea value="#{newContentModel.description}"/>
-                        <h:outputText value="Content type *"
-                                      class="webvert_bold_lable_layout"/>
-                        <b:selectOneMenu value="#{newContentModel.selectedContentType}"
-                                         binding="#{ct}"
-                                         required="true">
-                            <f:selectItems value="#{newContentModel.contentTypes}"
-                                           var="contentType"
-                                           itemValue="#{contentType}"
-                                           itemLabel="#{contentType}"/>
-                        </b:selectOneMenu>
-                        <h:outputText value="Content value *"
-                                      class="webvert_bold_lable_layout"/>
-                        <b:inputText value="#{newContentModel.contentValue}"
-                                     styleClass="#{component.valid? '' : 'webvert_input_control_invalid' }"
-                                     required="true">
-                            <f:validator validatorId="contentValueValidator" />
-                            <f:attribute name="param" value="#{ct}" /> 
-                        </b:inputText>
-                        <h:outputText value="Target page on click *"
-                                      class="webvert_bold_lable_layout"/>
-                        <b:inputText value="#{newContentModel.targetPage}"
-                                     styleClass="#{component.valid? '' : 'webvert_input_control_invalid' }"
-                                     tooltip="#{component.valid? '' : 'The value has to be a valid URL.' }"
-                                     required="true">
-                            <f:validator validatorId="urlValidator" />
-                        </b:inputText>
-                        <h:outputText value="Price per request *"
-                                      class="webvert_bold_lable_layout"/>
-                        <b:row>
-                            <b:column span="9" style="padding-right: 0px">
-                                <b:inputText styleClass="#{component.valid? '' : 'webvert_input_control_invalid' }"
-                                             value="#{newContentModel.preDecimalPointAmount}"
-                                             tooltip="#{component.valid? '' : 'The value has to be a number.' }"
-                                             binding="#{preDecimal}" 
-                                             required="true">
-                                    <f:validator validatorId="moneyGreaterZeroValidator" />
-                                    <f:attribute name="otherPart" value="#{postDecimal.submittedValue}" />
-                                    <f:convertNumber integerOnly="true" 
-                                                     type="number"
-                                                     />
-                                    <f:facet name="append">
-                                        <h:outputText value=","/>
-                                    </f:facet>
-                                </b:inputText>
-                            </b:column>
-                            <b:column span="3" style="padding-left: 0px">
-                                <b:inputText styleClass="#{component.valid? '' : 'webvert_input_control_invalid' }"
-                                             value="#{newContentModel.postDecimalPointAmount}"
-                                             tooltip="#{component.valid? '' : 'The value has to be a two digit number.' }"
-                                             binding="#{postDecimal}" 
-                                             required="true">
-                                    <f:validator validatorId="moneyGreaterZeroValidator" />
-                                    <f:attribute name="otherPart" value="#{preDecimal.submittedValue}" />
-                                    <f:convertNumber integerOnly="true" 
-                                                     type="number" 
-                                                     maxIntegerDigits="2"
-                                                     minIntegerDigits="2"/>
-                                    <f:facet name="append">
-                                        <h:outputText value="€"
-                                                      id="currencyFacet"/>
-                                    </f:facet>
-                                </b:inputText>
-                            </b:column>
-                        </b:row>
-                        <h:outputText value="Number of requests *"
-                                      class="webvert_bold_lable_layout"/>
-                        <b:inputText styleClass="#{component.valid? '' : 'webvert_input_control_invalid' }"
-                                     value="#{newContentModel.numberOfRequests}"
-                                     required="true">
-                            <f:convertNumber integerOnly="true" type="number"/>
-                            <f:validator validatorId="greaterZeroValidator" />
-                        </b:inputText>
-
-                        <b:row style="margin-bottom: 10px">
-                            <b:column span="3" style="padding-right: 0px">
-                                <h:outputText value="Target ages *"
-                                              class="webvert_bold_lable_layout"/>
-                                <prim:selectManyMenu value="#{newContentModel.selectedAges}" 
-                                                     showCheckbox="true"
-                                                     required="true"
-                                                     label="Target ages">
-                                    <f:selectItems value="#{newContentModel.targetAges}"
-                                                   var="age" 
-                                                   itemValue="#{age.flagValue}" 
-                                                   itemLabel="#{age}"/>
-                                </prim:selectManyMenu>
-                            </b:column>
-                            <b:column span="3" style="padding-right: 0px">
-                                <h:outputText value="Target genders *"
-                                              class="webvert_bold_lable_layout"/>
-                                <prim:selectManyMenu value="#{newContentModel.selectedGenders}"
-                                                     label="Target genders"
-                                                     showCheckbox="true"
-                                                     required="true">
-                                    <f:selectItems value="#{newContentModel.targetGenders}"
-                                                   var="gender" 
-                                                   itemValue="#{gender.flagValue}" 
-                                                   itemLabel="#{gender}"/>
-                                </prim:selectManyMenu>
-                            </b:column>
-                            <b:column span="3" style="padding-right: 0px">
-                                <h:outputText value="Targeted marital status *"
-                                              class="webvert_bold_lable_layout"/>
-                                <prim:selectManyMenu value="#{newContentModel.selectedMaritalStatus}"
-                                                     label="Targeted marital status"
-                                                     showCheckbox="true"
-                                                     required="true">
-                                    <f:selectItems value="#{newContentModel.targetMaritalStatus}"
-                                                   var="status" 
-                                                   itemValue="#{status.flagValue}" 
-                                                   itemLabel="#{status}"/>
-                                </prim:selectManyMenu>
-                            </b:column>
-                            <b:column span="3" style="padding-right: 0px">
-                                <h:outputText value="Target purposes of use *"
-                                              class="webvert_bold_lable_layout"/>
-                                <prim:selectManyMenu value="#{newContentModel.selectedPurposesOfUse}"
-                                                     label="Target purposes of use"
-                                                     showCheckbox="true"
-                                                     required="true">
-                                    <f:selectItems value="#{newContentModel.targetPurposesOfUse}"
-                                                   var="purpose" 
-                                                   itemValue="#{purpose.flagValue}" 
-                                                   itemLabel="#{purpose}"/>
-                                </prim:selectManyMenu>
-                            </b:column>
-                        </b:row>
-                    </b:panelGrid>
+                    <inner:contentFormComposite></inner:contentFormComposite>
                 </p>
                 <p style="margin-top: 30px; margin-bottom: 10px">
                     <b:button value="Close" 
                               dismiss="modal" 
                               onclick="return false;"
                               style="width: 128px"/>
+                    <b:fetchBeanInfos />
                     <b:commandButton value="Ok" 
                                      ajax="true"
-                                     p:data-toggle="modal"
-                                     process="@form"
+                                     oncomplete="if(!validationFailed) $('.contentModal').modal('hide')"
                                      class="webvert_primary_button_color"
-                                     actionListener="#{newContentModel.applyChanges}"
-                                     action="#{cc.attrs.bean[cc.attrs.methodName]}"
                                      style="width: 128px; margin-left: 10px">
-                        <f:setPropertyActionListener target="#{cc.attrs.bean[cc.attrs.propertyName]}"
-                                                     value="#{newContentModel.content}" />
+                        <f:attribute name="entity" value="#{newContentModel.content}" />
+                        <f:ajax listener="#{cc.notifiedListener}" 
+                                execute="@form"
+                                render="@form #{cc.attrs.renderOnOk}"/>
                     </b:commandButton>
                 </p>
             </h:form>

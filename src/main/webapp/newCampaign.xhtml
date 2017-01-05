@@ -101,14 +101,17 @@
                                 </c:choose>
                             </b:row>
                         </b:container>
-                        <composites:DisplayContentsComposite enableDelete="true"
-                                                             enableNew="true"
-                                                             bean="#{newCampaignModel}"
-                                                             deletePropertyName="deleteContent"
-                                                             deleteMethodName="removeContent"
-                                                             headerClass="webvert_nc_co_row_layout"
-                                                             accordionClass="webvert_nc_co_accordion_layout"
-                                                             contents="#{newCampaignModel.newContents}"/>
+                        <b:row id="displayContents"
+                               style="margin-left: 0px; margin-right: 0px">
+                            <composites:DisplayContentsComposite enableDelete="true"
+                                                                 enableNew="true"
+                                                                 bean="#{newCampaignModel}"
+                                                                 deletePropertyName="deleteContent"
+                                                                 deleteMethodName="removeContent"
+                                                                 headerClass="webvert_nc_co_row_layout"
+                                                                 accordionClass="webvert_nc_co_accordion_layout"
+                                                                 contents="#{newCampaignModel.newContents}"/>
+                        </b:row>
                         <b:row style="float: right; position: absolute; bottom: 0; right: 0; margin-right: 0px">
                             <b:commandButton value="Cancel" 
                                              action="#{newCampaignModel.cancel}"
@@ -124,11 +127,11 @@
                     </h:form>
                 </b:panel>
 
-                <composites:ContentModalComposite bean="#{newCampaignModel}"
-                                                  methodName="addNewContent"
-                                                  propertyName="newContent"/>
+                <composites:ContentModalComposite notifiedListener="#{newCampaignModel.addNewContent}"
+                                                  renderOnOk=":new_campaign_form:**:displayContents"/>
 
-                <composites:AccountModalComposite notifiedListener="#{newCampaignModel.addNewAccount}"/>
+                <composites:AccountModalComposite notifiedListener="#{newCampaignModel.addNewAccount}"
+                                                  renderOnOk=":new_campaign_form:**:accountSelector"/>
             </ui:define>
         </ui:composition>
     </h:body>

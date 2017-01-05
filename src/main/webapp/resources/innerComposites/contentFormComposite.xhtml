@@ -1,0 +1,149 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:prim="http://primefaces.org/ui">
+
+    <!-- INTERFACE -->
+    <cc:interface>
+    </cc:interface>
+
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+        <b:panelGrid colSpans="12">
+            <h:outputText value="Description"
+                          class="webvert_bold_lable_layout"/>
+            <b:inputTextarea value="#{newContentModel.description}"/>
+            <h:outputText value="Content type *"
+                          class="webvert_bold_lable_layout"/>
+            <b:selectOneMenu value="#{newContentModel.selectedContentType}"
+                             binding="#{ct}"
+                             required="true">
+                <f:selectItems value="#{newContentModel.contentTypes}"
+                               var="contentType"
+                               itemValue="#{contentType}"
+                               itemLabel="#{contentType}"/>
+            </b:selectOneMenu>
+            <h:outputText value="Content value *"
+                          class="webvert_bold_lable_layout"/>
+            <b:inputText value="#{newContentModel.contentValue}"
+                         styleClass="#{component.valid? '' : 'webvert_input_control_invalid' }"
+                         required="true">
+                <f:validator validatorId="contentValueValidator" />
+                <f:attribute name="param" value="#{ct}" /> 
+            </b:inputText>
+            <h:outputText value="Target page on click *"
+                          class="webvert_bold_lable_layout"/>
+            <b:inputText value="#{newContentModel.targetPage}"
+                         styleClass="#{component.valid? '' : 'webvert_input_control_invalid' }"
+                         tooltip="#{component.valid? '' : 'The value has to be a valid URL.' }"
+                         required="true">
+                <f:validator validatorId="urlValidator" />
+            </b:inputText>
+            <h:outputText value="Price per request *"
+                          class="webvert_bold_lable_layout"/>
+            <b:row>
+                <b:column span="9" style="padding-right: 0px">
+                    <b:inputText styleClass="#{component.valid? '' : 'webvert_input_control_invalid' }"
+                                 value="#{newContentModel.preDecimalPointAmount}"
+                                 tooltip="#{component.valid? '' : 'The value has to be a number.' }"
+                                 binding="#{preDecimal}" 
+                                 required="true">
+                        <f:validator validatorId="moneyGreaterZeroValidator" />
+                        <f:attribute name="otherPart" value="#{postDecimal.submittedValue}" />
+                        <f:convertNumber integerOnly="true" 
+                                         type="number"
+                                         />
+                        <f:facet name="append">
+                            <h:outputText value=","/>
+                        </f:facet>
+                    </b:inputText>
+                </b:column>
+                <b:column span="3" style="padding-left: 0px">
+                    <b:inputText styleClass="#{component.valid? '' : 'webvert_input_control_invalid' }"
+                                 value="#{newContentModel.postDecimalPointAmount}"
+                                 tooltip="#{component.valid? '' : 'The value has to be a two digit number.' }"
+                                 binding="#{postDecimal}" 
+                                 required="true">
+                        <f:validator validatorId="moneyGreaterZeroValidator" />
+                        <f:attribute name="otherPart" value="#{preDecimal.submittedValue}" />
+                        <f:convertNumber integerOnly="true" 
+                                         type="number" 
+                                         maxIntegerDigits="2"
+                                         minIntegerDigits="2"/>
+                        <f:facet name="append">
+                            <h:outputText value="€"
+                                          id="currencyFacet"/>
+                        </f:facet>
+                    </b:inputText>
+                </b:column>
+            </b:row>
+            <h:outputText value="Number of requests *"
+                          class="webvert_bold_lable_layout"/>
+            <b:inputText styleClass="#{component.valid? '' : 'webvert_input_control_invalid' }"
+                         value="#{newContentModel.numberOfRequests}"
+                         required="true">
+                <f:convertNumber integerOnly="true" type="number"/>
+                <f:validator validatorId="greaterZeroValidator" />
+            </b:inputText>
+
+            <b:row style="margin-bottom: 10px">
+                <b:column span="3" style="padding-right: 0px">
+                    <h:outputText value="Target ages *"
+                                  class="webvert_bold_lable_layout"/>
+                    <prim:selectManyMenu value="#{newContentModel.selectedAges}" 
+                                         showCheckbox="true"
+                                         required="true"
+                                         label="Target ages">
+                        <f:selectItems value="#{newContentModel.targetAges}"
+                                       var="age" 
+                                       itemValue="#{age.flagValue}" 
+                                       itemLabel="#{age}"/>
+                    </prim:selectManyMenu>
+                </b:column>
+                <b:column span="3" style="padding-right: 0px">
+                    <h:outputText value="Target genders *"
+                                  class="webvert_bold_lable_layout"/>
+                    <prim:selectManyMenu value="#{newContentModel.selectedGenders}"
+                                         label="Target genders"
+                                         showCheckbox="true"
+                                         required="true">
+                        <f:selectItems value="#{newContentModel.targetGenders}"
+                                       var="gender" 
+                                       itemValue="#{gender.flagValue}" 
+                                       itemLabel="#{gender}"/>
+                    </prim:selectManyMenu>
+                </b:column>
+                <b:column span="3" style="padding-right: 0px">
+                    <h:outputText value="Targeted marital status *"
+                                  class="webvert_bold_lable_layout"/>
+                    <prim:selectManyMenu value="#{newContentModel.selectedMaritalStatus}"
+                                         label="Targeted marital status"
+                                         showCheckbox="true"
+                                         required="true">
+                        <f:selectItems value="#{newContentModel.targetMaritalStatus}"
+                                       var="status" 
+                                       itemValue="#{status.flagValue}" 
+                                       itemLabel="#{status}"/>
+                    </prim:selectManyMenu>
+                </b:column>
+                <b:column span="3" style="padding-right: 0px">
+                    <h:outputText value="Target purposes of use *"
+                                  class="webvert_bold_lable_layout"/>
+                    <prim:selectManyMenu value="#{newContentModel.selectedPurposesOfUse}"
+                                         label="Target purposes of use"
+                                         showCheckbox="true"
+                                         required="true">
+                        <f:selectItems value="#{newContentModel.targetPurposesOfUse}"
+                                       var="purpose" 
+                                       itemValue="#{purpose.flagValue}" 
+                                       itemLabel="#{purpose}"/>
+                    </prim:selectManyMenu>
+                </b:column>
+            </b:row>
+        </b:panelGrid>
+    </cc:implementation>
+</html>

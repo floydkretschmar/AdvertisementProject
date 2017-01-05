@@ -48,12 +48,6 @@ import org.omnifaces.cdi.ViewScoped;
 public class NewContentModel extends AbstractModel {
 
     // --------------- Private fields ---------------
-    /**
-     * Stores the content that is being build or being edited.
-     */
-    @Getter
-    @Setter
-    private Content content;
 
     /**
      * Stores the value of the content that will be created.
@@ -194,62 +188,14 @@ public class NewContentModel extends AbstractModel {
     public TargetPurposeOfUse[] getTargetPurposesOfUse() {
         return TargetPurposeOfUse.values();
     }
-    
-    
-//    /**
-//     * Sets the content that is being edited.
-//     * 
-//     * @param content   the edit content.
-//     */
-//    public void setContent(Content content) {
-//        if(content != null) {
-//            this.selectedContentType = content.getContentType();
-//            
-//            if (this.selectedContentType == ContentType.IMAGE_URL)
-//                this.contentValue = ((URL)content.getValue()).toExternalForm();
-//            else if (this.selectedContentType == ContentType.TEXT)
-//                this.contentValue = content.getValue().toString();
-//            
-//            this.description = content.getDescription();
-//            this.numberOfRequests = content.getNumberOfRequests();
-//            this.postDecimalPointAmount = content.getPricePerRequest().getAmountMinorLong();
-//            this.preDecimalPointAmount = content.getPricePerRequest().getAmountMajorLong();
-//            
-//            this.selectedAges = new ArrayList<String>();
-//            this.selectedGenders = new ArrayList<String>();
-//            this.selectedMaritalStatus = new ArrayList<String>();
-//            this.selectedPurposesOfUse = new ArrayList<String>();
-//            
-//            content.getContext().getAge().forEach(
-//                    target -> this.selectedAges.add(
-//                            Integer.toString(target.getFlagValue())));
-//            
-//            content.getContext().getGender().forEach(
-//                    target -> this.selectedGenders.add(
-//                            Integer.toString(target.getFlagValue())));
-//            
-//            content.getContext().getMaritalStatus().forEach(
-//                    target -> this.selectedMaritalStatus.add(
-//                            Integer.toString(target.getFlagValue())));
-//            
-//            content.getContext().getPurposeOfUse().forEach(
-//                    target -> this.selectedPurposesOfUse.add(
-//                            Integer.toString(target.getFlagValue())));
-//            
-//            this.targetPage = content.getTargetUrl().toExternalForm();
-//            
-//            this.content = content;
-//        }
-//    }
 
     // --------------- Public getters ---------------
+    
     /**
-     * Applies all the changes defined in the content dialog and stores the
-     * created content.
-     *
-     * @param event the arguments of the event.
+     * Retrieves the content that is being built by the page.
+     * @return  the newly created content.
      */
-    public void applyChanges(ActionEvent event) {
+    public Content getContent() {
         EnumSet<TargetAge> ages = EnumSet.noneOf(TargetAge.class);
         this.selectedAges.forEach(age -> ages.add(TargetAge.of(Integer.parseInt(age))));
 
@@ -263,7 +209,7 @@ public class NewContentModel extends AbstractModel {
         this.selectedPurposesOfUse.forEach(purpose -> purposes.add(TargetPurposeOfUse.of(Integer.parseInt(purpose))));
 
         try {
-            this.content = Content.createContent()
+            return Content.createContent()
                     .contentType(this.selectedContentType)
                     .context(TargetContext.createTargetContext()
                             .targetAges(ages)
@@ -279,7 +225,7 @@ public class NewContentModel extends AbstractModel {
                     .value(this.selectedContentType == ContentType.IMAGE_URL ? new URL(this.contentValue) : this.contentValue)
                     .build();
         } catch (MalformedURLException ex) {
-            Logger.getLogger(NewContentModel.class.getName()).log(Level.SEVERE, null, ex);
+            throw new IllegalArgumentException(ex.getMessage());
         }
     }
 }

@@ -62,20 +62,6 @@ public class NewCampaignModel extends AbstractModel {
     private Content deleteContent;
     
     /**
-     * Stores the new content sent as an argument by the modal.
-     */
-    @Getter
-    @Setter
-    private Content newContent;
-    
-    /**
-     * Stores the new account sent as an argument by the modal.
-     */
-    @Getter
-    @Setter
-    private Account newAccount;
-    
-    /**
      * Stores the name of the new campaign.
      */
     @Getter
@@ -135,11 +121,10 @@ public class NewCampaignModel extends AbstractModel {
      * Adds a newly created content to the content list of the campaign that is
      * being created.
      *
-     * @return the next navigation point.
+     * @param entity    the content that will be added.
      */
-    public String addNewContent() {
-        this.newContents.add(this.newContent);
-        return "newCampaign";
+    public void addNewContent(Object entity) {
+        this.newContents.add((Content)entity);
     }
     
     
