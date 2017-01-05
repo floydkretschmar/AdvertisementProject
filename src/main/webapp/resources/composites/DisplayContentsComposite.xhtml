@@ -8,16 +8,15 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
       xmlns:converters="http://webvert.com/Converters">
-    <composite:interface>
+    <composite:interface componentType="createEntityContainer">
         <composite:attribute name="contents" />
         <composite:attribute name="enableDelete" />
         <composite:attribute name="enableNew" />
         <composite:attribute name="accordionClass"/>
         <composite:attribute name="headerClass"/>
 
-        <composite:attribute name="deletePropertyName"/>
-        <composite:attribute name="deleteMethodName"/>
-        <composite:attribute name="bean"/>
+        <composite:attribute name="notifiedListener" method-signature="void listener(java.lang.Object)" />
+        <composite:attribute name="renderOnDelete" />
     </composite:interface>
 
     <composite:implementation>
@@ -40,85 +39,84 @@
             </b:column>
         </b:row>
 
-        <c:choose>
-            <c:when test="#{not empty cc.attrs.contents}">
-                <b:accordion class="#{cc.attrs.accordionClass}">
-                    <c:forEach items="#{contentModel.getContentTypesForContents(cc.attrs.contents)}"
-                               var="contentType"
+        <b:accordion id="accordion"
+                     class="#{cc.attrs.accordionClass}"
+                     rendered="#{not empty cc.attrs.contents}">
+            <c:forEach items="#{contentModel.getContentTypesForContents(cc.attrs.contents)}"
+                       var="contentType"
+                       id="forEachCampaign">
+                <b:panel title="#{contentType}" style="height: 100%">
+                    <c:forEach items="#{contentModel.getContentWithType(cc.attrs.contents, contentType)}"
+                               var="content"
                                id="forEachCampaign">
-                        <b:panel title="#{contentType}" style="height: 100%">
-                            <c:forEach items="#{contentModel.getContentWithType(cc.attrs.contents, contentType)}"
-                                       var="content"
-                                       id="forEachCampaign">
-                                <b:panel class="webvert_co_accordion_panel_layout">
-                                    <b:column span="3" 
-                                              style="#{contentType eq 'Image URL' ? 'padding-top: 0px' : 'padding-top: 16px'}">
-                                        <c:choose>
-                                            <c:when test="#{contentType eq 'Image URL'}">
-                                                <img src="#{content.value}" 
-                                                     class="webvert_co_image_layout"/>
-                                            </c:when>
-                                            <c:otherwise>
-                                                <h:outputText value="#{content.value}" 
-                                                              style="padding-top: 16px"/>
-                                            </c:otherwise>
-                                        </c:choose>
+                        <b:panel class="webvert_co_accordion_panel_layout">
+                            <b:column span="3" 
+                                      style="#{contentType eq 'Image URL' ? 'padding-top: 0px' : 'padding-top: 16px'}">
+                                <c:choose>
+                                    <c:when test="#{contentType eq 'Image URL'}">
+                                        <img src="#{content.value}" 
+                                             class="webvert_co_image_layout"/>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <h:outputText value="#{content.value}" 
+                                                      style="padding-top: 16px"/>
+                                    </c:otherwise>
+                                </c:choose>
+                            </b:column>
+                            <b:column span="8">
+                                <b:row class="webvert_co_lable_row_layout">
+                                    <b:column span="6">
+                                        <h:outputText value="Description:" 
+                                                      class="webvert_bold_lable_layout"/>
                                     </b:column>
-                                    <b:column span="8">
-                                        <b:row class="webvert_co_lable_row_layout">
-                                            <b:column span="6">
-                                                <h:outputText value="Description:" 
-                                                              class="webvert_bold_lable_layout"/>
-                                            </b:column>
-                                            <b:column span="6">
-                                                <h:outputText value="#{content.description}"/>
-                                            </b:column>
-                                        </b:row>
-                                        <b:row class="webvert_co_lable_row_layout">
-                                            <b:column span="6">
-                                                <h:outputText value="Price per request:"
-                                                              class="webvert_bold_lable_layout"/>
-                                            </b:column>
-                                            <b:column span="6">
-                                                <h:outputText value="#{content.pricePerRequest}">
-                                                    <converters:convertMoney/>
-                                                </h:outputText>
-                                            </b:column>
-                                        </b:row>
-                                        <b:row class="webvert_co_lable_row_layout">
-                                            <b:column span="6">
-                                                <h:outputText value="Number of requests left:"
-                                                              class="webvert_bold_lable_layout"/>
-                                            </b:column>
-                                            <b:column span="6">
-                                                <h:outputText value="#{content.numberOfRequests}"/>
-                                            </b:column>
-                                        </b:row>
+                                    <b:column span="6">
+                                        <h:outputText value="#{content.description}"/>
                                     </b:column>
-                                    <b:column span="1" style="height: 100%">
-                                        <b:commandButton icon="remove"
-                                                         value=""
-                                                         class="webvert_co_edit_button_layout"
-                                                         action="#{cc.attrs.bean[cc.attrs.deleteMethodName]}"
-                                                         rendered="#{cc.attrs.enableDelete eq 'true'}">
-                                            <f:setPropertyActionListener target="#{cc.attrs.bean[cc.attrs.deletePropertyName]}"
-                                                                         value="#{content}" />
-                                        </b:commandButton>
+                                </b:row>
+                                <b:row class="webvert_co_lable_row_layout">
+                                    <b:column span="6">
+                                        <h:outputText value="Price per request:"
+                                                      class="webvert_bold_lable_layout"/>
                                     </b:column>
-                                </b:panel>
-                            </c:forEach>
+                                    <b:column span="6">
+                                        <h:outputText value="#{content.pricePerRequest}">
+                                            <converters:convertMoney/>
+                                        </h:outputText>
+                                    </b:column>
+                                </b:row>
+                                <b:row class="webvert_co_lable_row_layout">
+                                    <b:column span="6">
+                                        <h:outputText value="Number of requests left:"
+                                                      class="webvert_bold_lable_layout"/>
+                                    </b:column>
+                                    <b:column span="6">
+                                        <h:outputText value="#{content.numberOfRequests}"/>
+                                    </b:column>
+                                </b:row>
+                            </b:column>
+                            <b:column span="1" style="height: 100%">
+                                <b:commandButton icon="remove"
+                                                 value=""
+                                                 ajax="true"
+                                                 class="webvert_co_edit_button_layout"
+                                                 style="width: 128px; margin-left: 10px"
+                                                 rendered="#{cc.attrs.enableDelete eq 'true'}">
+                                    <f:attribute name="entity" value="#{content}" />
+                                    <f:ajax listener="#{cc.notifiedListener}" 
+                                            render="#{cc.attrs.renderOnDelete}"/>
+                                </b:commandButton>
+                            </b:column>
                         </b:panel>
                     </c:forEach>
-                </b:accordion>
+                </b:panel>
+            </c:forEach>
+        </b:accordion>
 
-            </c:when>
-            <c:otherwise>
-                <h4 class="webvert_heading_color_dark"
-                    style="text-align: center; margin-top: 10px">
-                    There are currently no contents available to display
-                </h4>
-            </c:otherwise>
-        </c:choose>
+        <h4 class="webvert_heading_color_dark"
+            style="text-align: center; margin-top: 10px"
+            rendered="#{empty cc.attrs.contents}">
+            There are currently no contents available to display
+        </h4>
     </composite:implementation>
 </html>
 

@@ -105,10 +105,9 @@
                         <b:row id="displayContents"
                                style="margin-left: 0px; margin-right: 0px">
                             <composites:DisplayContentsComposite enableDelete="true"
+                                                                 notifiedListener="#{newCampaignModel.removeContent}"
+                                                                 renderOnDelete=":new_campaign_form:**:displayContents"
                                                                  enableNew="true"
-                                                                 bean="#{newCampaignModel}"
-                                                                 deletePropertyName="deleteContent"
-                                                                 deleteMethodName="removeContent"
                                                                  headerClass="webvert_nc_co_row_layout"
                                                                  accordionClass="webvert_nc_co_accordion_layout"
                                                                  contents="#{newCampaignModel.newContents}"/>

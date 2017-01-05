@@ -55,13 +55,6 @@ public class NewCampaignModel extends AbstractModel {
     private ICampaignService campaignService;
     
     /**
-     * Stores the content that should be removed sent as an argument by the modal.
-     */
-    @Getter
-    @Setter
-    private Content deleteContent;
-    
-    /**
      * Stores the name of the new campaign.
      */
     @Getter
@@ -131,7 +124,7 @@ public class NewCampaignModel extends AbstractModel {
     /**
      * Adds a newly created account to the account list of the user.
      *
-     * @param entity
+     * @param entity    the account that will be added.
      */
     public void addNewAccount(Object entity) {
         this.applicationModel.processAndChangeCurrentUser(
@@ -155,11 +148,10 @@ public class NewCampaignModel extends AbstractModel {
      * Removes one of the newly created contents from the content list of the 
      * campaing that is being created.
      * 
-     * @return the next navigation point.
+     * @param entity    the content that will be added.
      */
-    public String removeContent() {
-        this.newContents.remove(this.deleteContent);
-        return "newCampaign";
+    public void removeContent(Object entity) {
+        this.newContents.remove((Content)entity);
     }
 
     /**
