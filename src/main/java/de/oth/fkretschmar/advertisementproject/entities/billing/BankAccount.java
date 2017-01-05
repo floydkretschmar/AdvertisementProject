@@ -65,6 +65,15 @@ public class BankAccount extends Account {
     @Getter
     private String bic;
 
+    /**
+     * Stores the IBAN identifying the bank account.
+     */
+    @NotNull
+    @Column(name = "IBAN")
+    @Getter
+    private String iban;
+
+
     // --------------- Private constructors ---------------
     
     /**
@@ -75,20 +84,8 @@ public class BankAccount extends Account {
      * @param   bic     that identifies a banking institution.
      */
     private BankAccount(String iban, String bic) {
-        super(iban);
+        this.iban = iban;
         this.bic = bic;
-    }
-
-    // --------------- Public getters and setters ---------------
-
-    
-    /**
-     * Gets the IBAN identifying the account of the transaction.
-     *
-     * @return  the IBAN of the account.
-     */
-    public String getIban() {
-        return this.getId();
     }
     
     

@@ -17,9 +17,12 @@
 package de.oth.fkretschmar.advertisementproject.entities.billing;
 
 import de.oth.fkretschmar.advertisementproject.entities.exceptions.BuilderValidationException;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
@@ -43,8 +46,19 @@ public class PayPalAccount extends Account {
      */
     public static final PayPalAccount OWN_ACCOUNT 
             = PayPalAccount.createPayPalAccount()
-                    .eMailAddress("testuser@gmail.com")
+                    .name("testuser@gmail.com")
                     .build();
+    
+    
+    // --------------- Private fields ---------------
+
+    /**
+     * Stores the name identifying the pay pal account.
+     */
+    @NotNull
+    @Column(name = "name")
+    @Getter
+    private String name;
     
     // --------------- Private constructors ---------------
 
@@ -52,23 +66,10 @@ public class PayPalAccount extends Account {
     /**
      * Creates a new instance of {@link PayPalAccount} using the e-mail address.
      * 
-     * @param   eMailAddress    that is used to identify an paypal account.
+     * @param   name    that is used to identify an paypal account.
      */
-    private PayPalAccount(String eMailAddress) {
-        super(eMailAddress);
-    }
-    
-    
-    // --------------- Public getters and setters ---------------
-
-    /**
-     * Gets the the text used to identify an account when interacting with
-     * the external system.
-     * 
-     * @return  the text that identifies an account.
-     */
-    public String getEMailAddress() {
-        return this.getId();
+    private PayPalAccount(String name) {
+        this.name = name;
     }
     
     // --------------- Public static methods ---------------
@@ -78,7 +79,7 @@ public class PayPalAccount extends Account {
      * The method that builds the basis of the auto generated builder:
      * Validates the input and creates the corresponding {@link PayPalAccount}.
      * 
-     * @param   eMailAddress    that is used to identify an paypal account.
+     * @param   name    that is used to identify an paypal account.
      * @return  the built {@link PayPalAccount}.
      * @throws  BuilderValidationException  that indicates that one or more of 
      *                                      of the given creation parameters are
@@ -89,12 +90,12 @@ public class PayPalAccount extends Account {
             builderClassName = "PayPalAccountBuilder",
             buildMethodName = "build")
     private static PayPalAccount validateAndCreatePayPalAccount(
-            String eMailAddress) throws BuilderValidationException {
-        if(eMailAddress == null || eMailAddress.isEmpty())
+            String name) throws BuilderValidationException {
+        if(name == null || name.isEmpty())
             throw new BuilderValidationException(
                     PayPalAccount.class,
                     "The e-mail address can not be null or empty.");
         
-        return new PayPalAccount(eMailAddress);
+        return new PayPalAccount(name);
     }
 }

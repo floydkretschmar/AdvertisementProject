@@ -63,43 +63,31 @@
                                                   class="webvert_bold_lable_layout"/>
                                 </b:column>
 
-                                <c:choose>
-                                    <c:when test="#{not empty newCampaignModel.accounts}">
-                                        <b:column id="accountSelectorColumn"
-                                                  span="7"
-                                                  style="padding-right: 0px">
-                                            <b:selectOneMenu id="accountSelector"
-                                                             value="#{newCampaignModel.selectedAccount}"
-                                                             styleClass="#{component.valid? 'accountSelectorClass' : 'webvert_input_control_invalid accountSelectorClass' }"
-                                                             required="true">
-                                                <f:converter binding="#{newCampaignModel.accountConverter}"/>
-                                                <f:selectItems value="#{newCampaignModel.accounts}" 
-                                                               var="account" 
-                                                               itemLabel="#{account.id}"/>
-                                            </b:selectOneMenu>
-                                        </b:column>
-                                        <b:column span="1"
-                                                  style="padding-left: 8px">
-                                            <b:commandButton icon="plus"
-                                                             value=""
-                                                             p:data-target=".accountModal"
-                                                             p:data-toggle="modal"
-                                                             onclick="return false;"/>
-                                        </b:column>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <b:column span="7"
-                                                  style="padding-right: 0px; font-size: 18px">
-                                            <h:outputText value="No accounts available. "></h:outputText>
-                                            <h:commandLink p:data-target=".accountModal"
-                                                           p:data-toggle="modal"
-                                                           onclick="return false;"
-                                                           class="webvert_heading_color_dark"
-                                                           value="Create a new account.">           
-                                            </h:commandLink>
-                                        </b:column>
-                                    </c:otherwise>
-                                </c:choose>
+                                <b:column id="accountSelectorColumn"
+                                          span="7"
+                                          style="padding-right: 0px"
+                                          rendered="#{not empty newCampaignModel.accounts}">
+                                    <b:selectOneMenu id="accountSelector"
+                                                     value="#{newCampaignModel.selectedAccount}"
+                                                     styleClass="#{component.valid? 'accountSelectorClass' : 'webvert_input_control_invalid accountSelectorClass' }"
+                                                     required="true">
+                                        <f:converter binding="#{newCampaignModel.accountConverter}"/>
+                                        <f:selectItems value="#{newCampaignModel.accounts}" 
+                                                       var="account" 
+                                                       itemLabel="#{newCampaignModel.getAccountLabel(account)}"/>
+                                    </b:selectOneMenu>
+                                </b:column>
+                                <b:column span="7"
+                                          style="padding-right: 0px; font-size: 18px"
+                                          rendered="#{empty newCampaignModel.accounts}">
+                                    <h:outputText value="No accounts available. "></h:outputText>
+                                    <h:commandLink p:data-target=".accountModal"
+                                                   p:data-toggle="modal"
+                                                   onclick="return false;"
+                                                   class="webvert_heading_color_dark"
+                                                   value="Create a new account.">           
+                                    </h:commandLink>
+                                </b:column>
                             </b:row>
                         </b:container>
                         <b:row id="displayContents"
@@ -126,11 +114,11 @@
                         </b:row>
                     </h:form>
                 </b:panel>
-                
+
                 <webvert:ModalComposite modalType="account"
                                         notifiedListener="#{newCampaignModel.addNewAccount}"
-                                        renderOnOk=":new_campaign_form:**:accountSelector"/>
-                
+                                        renderOnOk=":new_campaign_form:**:accountRow"/>
+
                 <webvert:ModalComposite modalType="content"
                                         notifiedListener="#{newCampaignModel.addNewContent}"
                                         renderOnOk=":new_campaign_form:**:displayContents"/>

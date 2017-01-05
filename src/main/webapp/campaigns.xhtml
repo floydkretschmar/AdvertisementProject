@@ -74,8 +74,7 @@
                                         <b:row class="webvert_ca_row_layout webvert_ca_other_row_layout">
                                             <h:outputText value="Payment Account: "
                                                           class="webvert_bold_lable_layout"/>
-                                            <h:outputText value="#{campaign.paymentAccount}">
-                                                <f:converter binding="#{campaignModel.accountConverter}"/>	
+                                            <h:outputText value="#{campaignModel.getAccountLabel(campaign.paymentAccount)}">
                                             </h:outputText>
                                         </b:row>
                                         <composites:DisplayContentsComposite contents="#{campaignModel.getContentForCampaignId(campaign.id)}"

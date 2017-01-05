@@ -93,7 +93,7 @@
                                         <f:converter binding="#{userProfileModel.accountConverter}"/>	                    
                                         <f:selectItems value="#{userProfileModel.currentUserCopy.accounts}" 
                                                        var="account" 
-                                                       itemLabel="#{account.id}"/>
+                                                       itemLabel="#{userProfileModel.getAccountLabel(account)}"/>
                                     </b:selectOneMenu>
                                 </b:column>
                                 <b:column span="#{userProfileModel.editing? '1' : '0'}"

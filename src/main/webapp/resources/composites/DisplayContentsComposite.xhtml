@@ -99,7 +99,6 @@
                                                  value=""
                                                  ajax="true"
                                                  class="webvert_co_edit_button_layout"
-                                                 style="width: 128px; margin-left: 10px"
                                                  rendered="#{cc.attrs.enableDelete eq 'true'}">
                                     <f:attribute name="entity" value="#{content}" />
                                     <f:ajax listener="#{cc.notifiedListener}" 
@@ -112,11 +111,12 @@
             </c:forEach>
         </b:accordion>
 
-        <h4 class="webvert_heading_color_dark"
-            style="text-align: center; margin-top: 10px"
-            rendered="#{empty cc.attrs.contents}">
-            There are currently no contents available to display
-        </h4>
+        <b:row rendered="#{empty cc.attrs.contents}">
+            <h4 class="webvert_heading_color_dark"
+                style="text-align: center; margin-top: 10px">
+                There are currently no contents available to display
+            </h4>
+        </b:row>
     </composite:implementation>
 </html>
 

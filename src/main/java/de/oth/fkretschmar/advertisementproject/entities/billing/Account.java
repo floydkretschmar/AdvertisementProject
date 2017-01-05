@@ -17,8 +17,7 @@
 package de.oth.fkretschmar.advertisementproject.entities.billing;
 
 
-import de.oth.fkretschmar.advertisementproject.entities.base.AbstractStringKeyedEntity;
-
+import de.oth.fkretschmar.advertisementproject.entities.base.AbstractRandomStringKeyedEntity;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
@@ -36,17 +35,6 @@ import lombok.ToString;
 @Inheritance(strategy = InheritanceType.JOINED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString(callSuper = true)
-public abstract class Account extends AbstractStringKeyedEntity {   
+public abstract class Account extends AbstractRandomStringKeyedEntity {   
     
-    // --------------- Protected constructors ---------------
-    
-    /**
-     * Creates a new instance of {@link Account} using the specified identifier
-     * using the specified account id.
-     * 
-     * @param   accountId   that uniquely identifies an account.
-     */
-    protected Account(String accountId) {
-        super(accountId);
-    }
 }

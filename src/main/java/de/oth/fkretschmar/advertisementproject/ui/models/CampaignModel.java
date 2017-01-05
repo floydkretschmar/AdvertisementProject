@@ -20,6 +20,7 @@ import de.oth.fkretschmar.advertisementproject.business.services.base.ICampaignS
 import de.oth.fkretschmar.advertisementproject.entities.campaign.Campaign;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.CampaignState;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.Content;
+import de.oth.fkretschmar.advertisementproject.ui.models.base.AbstractAccountModel;
 import de.oth.fkretschmar.advertisementproject.ui.models.base.AbstractModel;
 import java.util.Collection;
 import java.util.Optional;
@@ -35,7 +36,7 @@ import org.omnifaces.cdi.ViewScoped;
  */
 @Named
 @ViewScoped
-public class CampaignModel extends AbstractModel {
+public class CampaignModel extends AbstractAccountModel {
 
     // --------------- Private fields ---------------
     /**

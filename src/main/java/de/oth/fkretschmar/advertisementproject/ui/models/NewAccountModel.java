@@ -109,7 +109,7 @@ public class NewAccountModel extends AbstractModel {
         }
         else if (this.payPalName != null) {
             return PayPalAccount.createPayPalAccount()
-                    .eMailAddress(this.payPalName).build();
+                    .name(this.payPalName).build();
         }
         
         return null;

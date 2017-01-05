@@ -23,11 +23,10 @@ import de.oth.fkretschmar.advertisementproject.entities.campaign.Campaign;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.Content;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.PaymentInterval;
 import de.oth.fkretschmar.advertisementproject.entities.user.User;
-import de.oth.fkretschmar.advertisementproject.ui.models.base.AbstractModel;
+import de.oth.fkretschmar.advertisementproject.ui.models.base.AbstractAccountModel;
 import java.util.ArrayList;
 import java.util.Collection;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.event.AjaxBehaviorEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
 import lombok.Getter;
@@ -39,9 +38,10 @@ import lombok.Setter;
  */
 @Named
 @SessionScoped
-public class NewCampaignModel extends AbstractModel {
+public class NewCampaignModel extends AbstractAccountModel {
 
     // --------------- Private fields ---------------
+    
     /**
      * Stores the service used to manage the entire application.
      */
@@ -89,6 +89,8 @@ public class NewCampaignModel extends AbstractModel {
     private IUserService userService;
 
     // --------------- Public getter und setter ---------------
+
+    
     /**
      * Gets all accounts of the user that is currently logged in.
      *
@@ -97,7 +99,8 @@ public class NewCampaignModel extends AbstractModel {
     public Collection<Account> getAccounts() {
         return applicationModel.processCurrentUser(user -> user.getAccounts());
     }
-
+    
+    
     /**
      * Gets all possible payment intervals.
      *
@@ -180,6 +183,7 @@ public class NewCampaignModel extends AbstractModel {
     }
 
     // --------------- Private methods ---------------
+    
     /**
      * Resets the new campaign model to its original state.
      */

@@ -31,6 +31,7 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.enterprise.context.RequestScoped;
 import javax.faces.event.ActionEvent;
 import javax.inject.Named;
 import lombok.Getter;
@@ -44,7 +45,7 @@ import org.omnifaces.cdi.ViewScoped;
  * @author Admin
  */
 @Named
-@ViewScoped
+@RequestScoped
 public class NewContentModel extends AbstractModel {
 
     // --------------- Private fields ---------------

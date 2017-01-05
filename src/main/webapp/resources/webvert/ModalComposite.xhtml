@@ -39,7 +39,7 @@
                     <b:fetchBeanInfos />
                     <b:commandButton value="Ok" 
                                      ajax="true"
-                                     oncomplete="if(!validationFailed) $('.#{cc.attrs.modalType}Modal').modal('hide')"
+                                     oncomplete="if(!validationFailed) { $('.#{cc.attrs.modalType}Modal').modal('hide'); }"
                                      class="webvert_primary_button_color"
                                      style="width: 128px; margin-left: 10px">
                         <c:choose>

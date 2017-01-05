@@ -131,3 +131,7 @@ td
 .form-control[disabled] {
     cursor: inherit !important;
 }
+
+.btn.disabled {
+    cursor: inherit !important;
+}
