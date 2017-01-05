@@ -20,17 +20,17 @@ import de.oth.fkretschmar.advertisementproject.entities.billing.Account;
 import de.oth.fkretschmar.advertisementproject.entities.billing.BankAccount;
 import de.oth.fkretschmar.advertisementproject.entities.billing.PayPalAccount;
 import de.oth.fkretschmar.advertisementproject.ui.models.base.AbstractModel;
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 import lombok.Getter;
 import lombok.Setter;
-import org.omnifaces.cdi.ViewScoped;
 
 /**
  *
  * @author Admin
  */
 @Named
-@ViewScoped
+@RequestScoped
 public class NewAccountModel extends AbstractModel {
 
     // --------------- Private fields ---------------
@@ -102,16 +102,23 @@ public class NewAccountModel extends AbstractModel {
      * @return 
      */
     public Account getAccount() {
-        if(this.isBankAccount() && this.bic != null && this.iban != null) {
-            return BankAccount.createBankAccount()
+        Account account = null;
+        
+        if(this.isBankAccount()) {
+            account = BankAccount.createBankAccount()
                     .bic(this.bic)
                     .iban(this.iban).build();
         }
-        else if (this.payPalName != null) {
-            return PayPalAccount.createPayPalAccount()
+        else {
+            account = PayPalAccount.createPayPalAccount()
                     .name(this.payPalName).build();
         }
         
-        return null;
+        this.bic = "";
+        this.iban = "";
+        this.payPalName = "";
+        this.selectedAccountType = "Bank account";
+        
+        return account;
     }
 }

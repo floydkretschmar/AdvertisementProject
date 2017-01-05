@@ -29,16 +29,12 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.enterprise.context.RequestScoped;
-import javax.faces.event.ActionEvent;
 import javax.inject.Named;
 import lombok.Getter;
 import lombok.Setter;
 import org.joda.money.CurrencyUnit;
 import org.joda.money.Money;
-import org.omnifaces.cdi.ViewScoped;
 
 /**
  *
@@ -210,7 +206,7 @@ public class NewContentModel extends AbstractModel {
         this.selectedPurposesOfUse.forEach(purpose -> purposes.add(TargetPurposeOfUse.of(Integer.parseInt(purpose))));
 
         try {
-            return Content.createContent()
+            Content content = Content.createContent()
                     .contentType(this.selectedContentType)
                     .context(TargetContext.createTargetContext()
                             .targetAges(ages)
@@ -225,6 +221,20 @@ public class NewContentModel extends AbstractModel {
                             this.preDecimalPointAmount * 100 + this.postDecimalPointAmount))
                     .value(this.selectedContentType == ContentType.IMAGE_URL ? new URL(this.contentValue) : this.contentValue)
                     .build();
+            
+            this.contentValue = "";
+            this.description = "";
+            this.numberOfRequests = 0;
+            this.postDecimalPointAmount = 0;
+            this.preDecimalPointAmount = 0;
+            this.selectedAges.clear();
+            this.selectedContentType = ContentType.IMAGE_URL;
+            this.selectedGenders.clear();
+            this.selectedMaritalStatus.clear();
+            this.selectedPurposesOfUse.clear();
+            this.targetPage = "";
+            
+            return content;
         } catch (MalformedURLException ex) {
             throw new IllegalArgumentException(ex.getMessage());
         }
