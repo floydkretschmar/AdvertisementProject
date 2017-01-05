@@ -16,11 +16,16 @@
  */
 package de.oth.fkretschmar.advertisementproject.ui.models;
 
+import de.oth.fkretschmar.advertisementproject.business.services.base.IUserService;
 import de.oth.fkretschmar.advertisementproject.entities.billing.Account;
+import de.oth.fkretschmar.advertisementproject.entities.user.User;
 import de.oth.fkretschmar.advertisementproject.ui.models.base.AbstractModel;
 import java.util.Collection;
+import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.inject.Named;
+import lombok.Getter;
+import lombok.Setter;
 import org.omnifaces.cdi.ViewScoped;
 
 /**
@@ -33,51 +38,64 @@ public class UserProfileModel extends AbstractModel {
 
     // --------------- Private fields ---------------
     
+    @Getter
+    @Setter
+    private Collection<Account> accounts;
+    
     /**
      * Stores the service used to manage the entire application.
      */
     @Inject
     private ApplicationModel applicationModel;
 
-    // --------------- Public getters and setters ---------------
+    @Getter
+    @Setter
+    private User currentUserCopy;
     
-    public Collection<Account> getAccounts() {
-        return this.applicationModel.processCurrentUser(
-                user -> user.getAccounts());
+    @Getter
+    @Setter
+    private boolean editing;
+    
+    @Getter
+    @Setter
+    private Account newAccount;
+    
+    /**
+     * Stores the repository used to manage {@link User} entities.
+     */
+    @Inject
+    private IUserService userService;
+
+    
+    public void addNewAccount() {
+        this.currentUserCopy.addAccount(this.newAccount);
     }
     
-    public String getAreaCode() {
-        return this.applicationModel.processCurrentUser(
-                user -> user.getAddress().getAreaCode());
+    @PostConstruct
+    public void initialize() {
+        this.currentUserCopy = this.applicationModel.processCurrentUser(user -> 
+        {
+            User copy = User.createUser()
+                    .address(user.getAddress())
+                    .company(user.getCompany())
+                    .eMailAddress(user.geteMailAddress())
+                    .firstName(user.getFirstName())
+                    .lastName(user.getLastName())
+                    .password(user.getPassword())
+                    .build();
+            user.getAccounts().forEach(account -> copy.addAccount(account));
+            user.getCampaigns().forEach(campaign -> copy.addCampaign(campaign));
+            return copy;
+        });
+        this.editing = false;
     }
     
-    public String getCity() {
-        return this.applicationModel.processCurrentUser(
-                user -> user.getAddress().getCity());
-    }
-    
-    public String getCompany() {
-        return this.applicationModel.processCurrentUser(
-                user -> user.getCompany());
-    }
-    
-    public String getCountry() {
-        return this.applicationModel.processCurrentUser(
-                user -> user.getAddress().getCountry());
-    }
-    
-    public String getFirstName() {
-        return this.applicationModel.processCurrentUser(
-                user -> user.getFirstName());
-    }
-    
-    public String getLastName() {
-        return this.applicationModel.processCurrentUser(
-                user -> user.getLastName());
-    }
-    
-    public String getStreet() {
-        return this.applicationModel.processCurrentUser(
-                user -> user.getAddress().getStreet());
+    public String saveChanges() {
+        this.applicationModel.processAndChangeCurrentUser(user -> 
+        {
+            return this.userService.changeUserBasicInformation(user, this.currentUserCopy);
+        });
+        this.editing = false;
+        return "userProfile";
     }
 }

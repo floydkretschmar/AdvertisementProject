@@ -100,10 +100,8 @@ public class NewAccountModel extends AbstractModel {
     /**
      * Applies all the changes defined in the account dialog and stores the
      * created account.
-     *
-     * @param event the arguments of the event.
      */
-    public void applyChanges(ActionEvent event) {
+    public void applyChanges() {
         if(this.isBankAccount()) {
             this.account = BankAccount.createBankAccount()
                     .bic(this.bic)

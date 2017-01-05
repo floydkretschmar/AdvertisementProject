@@ -29,16 +29,17 @@ import de.oth.fkretschmar.advertisementproject.entities.campaign.CampaignState;
 import de.oth.fkretschmar.advertisementproject.entities.user.Password;
 import de.oth.fkretschmar.advertisementproject.entities.user.User;
 import java.io.Serializable;
+import java.util.stream.Collectors;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 
 /**
- * The service that offers functionality related to the management of 
+ * The service that offers functionality related to the management of
  * {@link User} instances.
- * 
- * @author  fkre    Floyd Kretschmar
+ *
+ * @author fkre Floyd Kretschmar
  */
 @RequestScoped
 public class UserService implements Serializable, IUserService {
@@ -49,19 +50,19 @@ public class UserService implements Serializable, IUserService {
      */
     @Inject
     private AddressRepository addressRepository;
-    
+
     /**
      * Stores the repository used to manage {@link Account} entities.
      */
     @Inject
     private IAccountService accountService;
-    
+
     /**
      * Stores the repository used to manage {@link Campaign} entities.
      */
     @Inject
     private ICampaignService campaignService;
-    
+
     /**
      * Stores the service that manages {@link Password} entities.
      */
@@ -75,8 +76,6 @@ public class UserService implements Serializable, IUserService {
     private UserRepository userRepository;
 
     // --------------- Public methods ---------------
-    
-    
     /**
      * Authenticates an user using the specified e-mail and password.
      *
@@ -92,24 +91,22 @@ public class UserService implements Serializable, IUserService {
     public User authenticateUser(
             String eMail, char[] password) throws UserServiceException {
         User user = this.userRepository.find(eMail);
-            
+
         if (user == null || !PasswordService.equals(user.getPassword(), password)) {
             throw new UserServiceException("The user was not found.");
         }
-        
+
         return user;
     }
-    
-    
+
     /**
      * Changes the {@link Password} of the specified {@link User}.
-     * 
-     * @param   user                    whose password will be changed.
-     * @param   newPassword             that represents the new password in its
-     *                                  unsafe form.
-     * @return  the User whose password was changed.
-     * @throws  PasswordException       that indicates an error during the 
-     *                                  processing of passwords.
+     *
+     * @param user whose password will be changed.
+     * @param newPassword that represents the new password in its unsafe form.
+     * @return the User whose password was changed.
+     * @throws PasswordException that indicates an error during the processing
+     * of passwords.
      */
     @Transactional(Transactional.TxType.REQUIRED)
     @Override
@@ -119,27 +116,66 @@ public class UserService implements Serializable, IUserService {
             throw new IllegalArgumentException("The password change failed: "
                     + "the user was not set.");
         }
-        
+
         Password newSafePassword = PasswordService.generate(newPassword);
         Password currentPassword = user.getPassword();
-        
+
         user = this.userRepository.merge(user);
         this.passwordService.deletePassword(currentPassword);
-        
+
         this.passwordService.createPassword(newSafePassword);
         user.setPassword(newSafePassword);
-        
+
         return user;
     }
-    
-    
+
     /**
-     * Creates a new {@link Account} and links it to the already existing 
+     * Applies all changes of the specified changed user to the the
+     * {@link User}.
+     *
+     * @param user that will be changed.
+     * @param changedUser that contains all the changes that will be made to the
+     * user.
+     * @return the changed user.
+     */
+    @Transactional(Transactional.TxType.REQUIRED)
+    @Override
+    public User changeUserBasicInformation(User user, User changedUser) {
+        if (user == null) {
+            throw new IllegalArgumentException("The password change failed: "
+                    + "the user was not set.");
+        }
+
+        user = this.userRepository.merge(user);
+
+        user.setAddress(changedUser.getAddress());
+        user.setCompany(changedUser.getCompany());
+        user.setFirstName(changedUser.getFirstName());
+        user.setLastName(changedUser.getLastName());
+
+        
+        final User tmpUser = user;
+        // get all the accounts that are not contained in the list of the old 
+        // user
+        for(Account account : changedUser.getAccounts().stream()
+                .filter(account -> 
+                {
+                    return !tmpUser.getAccounts().contains(account);
+                })
+                .collect(Collectors.toList())) {
+            user = this.createAccountForUser(user, account);
+        }
+
+        return user;
+    }
+
+    /**
+     * Creates a new {@link Account} and links it to the already existing
      * specified {@link User}.
-     * 
-     * @param   user        to which a new account will be added.
-     * @param   account     that will be added to the user.
-     * @return              the changed user.
+     *
+     * @param user to which a new account will be added.
+     * @param account that will be added to the user.
+     * @return the changed user.
      */
     @Transactional
     @Override
@@ -147,21 +183,20 @@ public class UserService implements Serializable, IUserService {
         if (user == null) {
             throw new IllegalArgumentException("The user was not set.");
         }
-        
+
         this.accountService.createAccount(account);
         user = this.userRepository.merge(user);
         user.addAccount(account);
         return user;
     }
-    
-    
+
     /**
      * Creates a new {@link User} using the data specified on the user object.
-     * 
-     * @param   user    that contains the data for the new user that will be 
-     *                  created.§
-     * @throws  UserServiceException    that indicates that the email address 
-     *                                  has already been picked.
+     *
+     * @param user that contains the data for the new user that will be
+     * created.§
+     * @throws UserServiceException that indicates that the email address has
+     * already been picked.
      */
     @Transactional
     @Override
@@ -169,12 +204,12 @@ public class UserService implements Serializable, IUserService {
         // the creation of accounts, campaigns and contents need a logged in 
         // user -> therefore: the user cannot have accounts, campaigns or 
         // contents during creation.
-        
+
         if (this.userRepository.find(user.geteMailAddress()) != null) {
             throw new UserServiceException("An user already exists for the"
                     + " specified e-mail address.");
         }
-        
+
         final Address address = user.getAddress();
         this.addressRepository.persist(address);
 
@@ -182,12 +217,11 @@ public class UserService implements Serializable, IUserService {
         this.passwordService.createPassword(password);
         this.userRepository.persist(user);
     }
-    
-    
+
     /**
      * Removes the {@link User} and all its subsequent data.
-     * 
-     * @param   user    that will be deleted.
+     *
+     * @param user that will be deleted.
      */
     @Transactional
     @Override
@@ -196,58 +230,56 @@ public class UserService implements Serializable, IUserService {
             throw new IllegalArgumentException("The password change failed: "
                     + "the user was not set.");
         }
-        
+
         // remove address
         this.addressRepository.remove(user.getAddress());
         user.setAddress(null);
-        
+
         // remove password
         this.passwordService.deletePassword(user.getPassword());
         user.setPassword(null);
-        
+
         // remove all contents
         Object[] accounts = user.getAccounts().toArray();
-        
+
         for (int i = 0; i < accounts.length; i++) {
-            if(accounts[i] instanceof Account){
-                user.removeAccount((Account)accounts[i]);
-                this.accountService.deleteAccount((Account)accounts[i]);
+            if (accounts[i] instanceof Account) {
+                user.removeAccount((Account) accounts[i]);
+                this.accountService.deleteAccount((Account) accounts[i]);
             }
         }
-        
+
         // cancel all campaigns
         Object[] campaigns = user.getCampaigns().toArray();
-        
+
         for (int i = 0; i < campaigns.length; i++) {
-            if(campaigns[i] instanceof Campaign 
-                    && ((Campaign)campaigns[i]).getCampaignState() == CampaignState.RUNNING){
-                user.removeCampaign((Campaign)campaigns[i]);
-                this.campaignService.cancelCampaign((Campaign)campaigns[i]);
+            if (campaigns[i] instanceof Campaign
+                    && ((Campaign) campaigns[i]).getCampaignState() == CampaignState.RUNNING) {
+                user.removeCampaign((Campaign) campaigns[i]);
+                this.campaignService.cancelCampaign((Campaign) campaigns[i]);
             }
         }
-        
+
         this.userRepository.remove(user);
     }
-    
-    
+
     /**
      * Finds an {@link User} using the unique e-mail address.
-     * 
-     * @param   idAsString  the id that defines the entity in text form.
-     * @return  the user with the specified e-mail address.
+     *
+     * @param idAsString the id that defines the entity in text form.
+     * @return the user with the specified e-mail address.
      */
     @Override
     public User find(String idAsString) {
         return this.userRepository.find(idAsString);
     }
 
-    
     /**
      * Deletes an {@link Account} from an already existing {@link User}.
-     * 
-     * @param   user    from which the account will be deleted.
-     * @param   account that will be deleted.
-     * @return          the changed user.
+     *
+     * @param user from which the account will be deleted.
+     * @param account that will be deleted.
+     * @return the changed user.
      */
     @Transactional
     @Override
@@ -256,7 +288,7 @@ public class UserService implements Serializable, IUserService {
             throw new IllegalArgumentException("The password change failed: "
                     + "the user was not set.");
         }
-        
+
         user = this.userRepository.merge(user);
         user.removeAccount(account);
         this.accountService.deleteAccount(account);

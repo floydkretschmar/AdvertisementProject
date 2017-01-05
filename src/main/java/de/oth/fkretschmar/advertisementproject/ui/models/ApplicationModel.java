@@ -52,7 +52,7 @@ public class ApplicationModel extends AbstractModel {
     private User currentUser;
     
     /**
-     * 
+     * Stores the repository used to manage {@link User} entities.
      */
     @Inject
     private IUserService userService;

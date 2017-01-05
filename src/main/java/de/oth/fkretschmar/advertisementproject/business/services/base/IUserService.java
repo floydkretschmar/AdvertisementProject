@@ -21,6 +21,7 @@ import de.oth.fkretschmar.advertisementproject.business.services.UserServiceExce
 import de.oth.fkretschmar.advertisementproject.entities.billing.Account;
 import de.oth.fkretschmar.advertisementproject.entities.user.Password;
 import de.oth.fkretschmar.advertisementproject.entities.user.User;
+import java.util.Collection;
 
 /**
  *
@@ -54,6 +55,17 @@ public interface IUserService extends IEntityService<User> {
      */
     public User changePassword(
             User user, char[] newPassword);
+    
+    
+    /**
+     * Applies all changes of the specified changed user to the the {@link User}.
+     * 
+     * @param user          that will be changed.
+     * @param changedUser   that contains all the changes that will be made to 
+     *                      the user.
+     * @return  the changed user.
+     */
+    public User changeUserBasicInformation(User user, User changedUser);
     
     
     /**

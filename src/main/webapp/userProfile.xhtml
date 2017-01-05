@@ -20,9 +20,23 @@
                             prependId="false" 
                             style="height: 100%; position: relative;">
                         <b:container class="webvert_nc_container_layout">
-                            <h2 class="webvert_heading_color_dark webvert_heading_layout">
-                                User profile
-                            </h2>
+                            <b:row style="margin: 0px">
+                                <b:column span="11"
+                                          style="padding-left: 0px">
+                                    <h2 class="webvert_heading_color_dark webvert_heading_layout">
+                                        User profile
+                                    </h2>
+                                </b:column>
+                                <b:column span="1"
+                                          class="webvert_co_new_button_column_layout"
+                                          style="position: absolute; padding-left: 0px; right: 0; top: 0">
+                                    <b:commandButton icon="pencil"
+                                                     value=""
+                                                     style="position: absolute; right: 0;"
+                                                     update="@form"
+                                                     action="#{userProfileModel.setEditing(true)}"/>
+                                </b:column>
+                            </b:row>
 
                             <h4 class="webvert_heading_color_dark webvert_heading_layout">
                                 Personal information
@@ -31,16 +45,16 @@
                             <b:panelGrid colSpans="4, 4, 4">
                                 <h:outputText value="Name:" 
                                               class="webvert_bold_lable_layout"/>
-                                <b:inputText value="#{userProfileModel.firstName}"
-                                             disabled="true"></b:inputText>
-                                <b:inputText value="#{userProfileModel.lastName}"
-                                             disabled="true"></b:inputText>
+                                <b:inputText value="#{userProfileModel.currentUserCopy.firstName}"
+                                             disabled="#{not userProfileModel.editing}"></b:inputText>
+                                <b:inputText value="#{userProfileModel.currentUserCopy.lastName}"
+                                             disabled="#{not userProfileModel.editing}"></b:inputText>
                             </b:panelGrid>
                             <b:panelGrid colSpans="4, 8">
                                 <h:outputText value="Company:" 
                                               class="webvert_bold_lable_layout"/>
-                                <b:inputText value="#{userProfileModel.company}"
-                                             disabled="true"></b:inputText>
+                                <b:inputText value="#{userProfileModel.currentUserCopy.company}"
+                                             disabled="#{not userProfileModel.editing}"></b:inputText>
                             </b:panelGrid>
 
                             <h4 class="webvert_heading_color_dark webvert_heading_layout">
@@ -50,20 +64,20 @@
                             <b:panelGrid colSpans="4, 8">
                                 <h:outputText value="Street:" 
                                               class="webvert_bold_lable_layout"/>
-                                <b:inputText value="#{userProfileModel.street}"
-                                             disabled="true"></b:inputText>
+                                <b:inputText value="#{userProfileModel.currentUserCopy.address.street}"
+                                             disabled="#{not userProfileModel.editing}"></b:inputText>
                                 <h:outputText value="Area code:" 
                                               class="webvert_bold_lable_layout"/>
-                                <b:inputText value="#{userProfileModel.areaCode}"
-                                             disabled="true"></b:inputText>
+                                <b:inputText value="#{userProfileModel.currentUserCopy.address.areaCode}"
+                                             disabled="#{not userProfileModel.editing}"></b:inputText>
                                 <h:outputText value="City:" 
                                               class="webvert_bold_lable_layout"/>
-                                <b:inputText value="#{userProfileModel.city}"
-                                             disabled="true"></b:inputText>
+                                <b:inputText value="#{userProfileModel.currentUserCopy.address.city}"
+                                             disabled="#{not userProfileModel.editing}"></b:inputText>
                                 <h:outputText value="County:" 
                                               class="webvert_bold_lable_layout"/>
-                                <b:inputText value="#{userProfileModel.country}"
-                                             disabled="true"></b:inputText>
+                                <b:inputText value="#{userProfileModel.currentUserCopy.address.country}"
+                                             disabled="#{not userProfileModel.editing}"></b:inputText>
                             </b:panelGrid>
 
                             <b:row style="padding-top: 16px">
@@ -71,18 +85,16 @@
                                     <h:outputText value="Account:" 
                                                   class="webvert_bold_lable_layout"/>
                                 </b:column>
-                                <b:column span="7"
-                                          style="padding-right: 0px">
+                                <b:column span="#{userProfileModel.editing? '7' : '8'}">
                                     <b:selectOneMenu>
                                         <f:converter binding="#{userProfileModel.accountConverter}"/>	                    
-                                        <f:selectItems value="#{userProfileModel.accounts}" 
+                                        <f:selectItems value="#{userProfileModel.currentUserCopy.accounts}" 
                                                        var="account" 
                                                        itemLabel="#{account.id}"/>
                                     </b:selectOneMenu>
                                 </b:column>
-                                <b:column span="1"
-                                          style="padding-left: 8px"
-                                          rendered="false">
+                                <b:column span="#{userProfileModel.editing? '1' : '0'}"
+                                          style="padding-left: 8px">
                                     <b:commandButton icon="plus"
                                                      value=""
                                                      p:data-target=".accountModal"
@@ -90,10 +102,24 @@
                                                      onclick="return false;"/>
                                 </b:column>
                             </b:row>
+                            <b:row style="float: right; position: absolute; bottom: 0; right: 0; margin-right: 0px">
+                                <b:commandButton value="Cancel" 
+                                                 action="#{userProfileModel.initialize}"
+                                                 rendered="#{userProfileModel.editing}"
+                                                 style="width: 128px; margin-left: 10px">
+                                </b:commandButton>
+                                <b:commandButton value="Ok" 
+                                                 action="#{userProfileModel.saveChanges}"
+                                                 class="webvert_primary_button_color 
+                                                 webvert_button_bordercolor"
+                                                 rendered="#{userProfileModel.editing}"
+                                                 style="width: 128px; margin-left: 10px">
+                                </b:commandButton>
+                            </b:row>
                         </b:container>
                     </h:form>
                 </b:panel>
-                <composites:AccountModalComposite bean="#{newCampaignModel}"
+                <composites:AccountModalComposite bean="#{userProfileModel}"
                                                   methodName="addNewAccount"
                                                   propertyName="newAccount"/>
             </ui:define>
