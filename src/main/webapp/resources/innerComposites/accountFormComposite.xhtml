@@ -5,8 +5,11 @@
       xmlns:b="http://bootsfaces.net/ui"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:o="http://omnifaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:prim="http://primefaces.org/ui">
 
+    <h:head>
+    </h:head>
     <!-- INTERFACE -->
     <cc:interface>
     </cc:interface>
@@ -14,7 +17,7 @@
     <!-- IMPLEMENTATION -->
     <cc:implementation>
         <o:importConstants type="de.oth.fkretschmar.advertisementproject.ui.AccountType" />
-        
+
         <b:tabLinks class="webvert_ca_tab_layout">
             <b:navCommandLink value="Bank account"
                               update="@form"

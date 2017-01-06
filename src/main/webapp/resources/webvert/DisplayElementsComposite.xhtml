@@ -7,7 +7,11 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
       xmlns:o="http://omnifaces.org/ui"
-      xmlns:innerComposites="http://xmlns.jcp.org/jsf/composite/innerComposites">
+      xmlns:prim="http://primefaces.org/ui"
+      xmlns:innerComposites="http://xmlns.jcp.org/jsf/composite/innerComposites"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <h:head>
+    </h:head>
     <composite:interface componentType="displayElementsContainer">
         <composite:attribute name="elements" required="true"/>
         <composite:attribute name="headerItems" required="true"/>
@@ -76,15 +80,19 @@
                                id="forEachCampaign">
                         <b:panel class="#{cc.attrs.panelClass} webvert_de_accordion_panel_layout">
                             <b:column span="#{cc.attrs.enableDelete eq 'true' ? '11' : '12'}">
-                                <innerComposites:displayContentComposite content="#{element}"
-                                                                         contentType="#{headerItem}"
-                                                                         rendered="#{cc.attrs.elementType eq ElementType.CONTENT}"/>
-                                <innerComposites:displayBankAccountComposite account="#{element}"
-                                                                             rendered="#{cc.attrs.elementType eq ElementType.ACCOUNT and accountModel.isBankAccount(element)}"/>
-                                <innerComposites:displayPayPalAccountComposite account="#{element}"
-                                                                               rendered="#{cc.attrs.elementType eq ElementType.ACCOUNT and accountModel.isPayPalAccount(element)}"/>
-                                <innerComposites:displayBillComposite bill="#{element}"
-                                                                      rendered="#{cc.attrs.elementType eq ElementType.BILL}"/>
+                                <c:if test="#{cc.attrs.elementType eq ElementType.CONTENT}">
+                                    <innerComposites:displayContentComposite content="#{element}"
+                                                                             contentType="#{headerItem}"/>
+                                </c:if>
+                                <c:if test="#{cc.attrs.elementType eq ElementType.ACCOUNT and accountModel.isBankAccount(element)}">
+                                    <innerComposites:displayBankAccountComposite account="#{element}"/>
+                                </c:if>
+                                <c:if test="#{cc.attrs.elementType eq ElementType.ACCOUNT and accountModel.isPayPalAccount(element)}">
+                                    <innerComposites:displayPayPalAccountComposite account="#{element}"/>
+                                </c:if>
+                                <c:if test="#{cc.attrs.elementType eq 'bill'}">
+                                    <innerComposites:displayBillComposite bill="#{element}"/>
+                                </c:if>
                             </b:column>
                             <b:column span="#{cc.attrs.enableDelete eq 'true' ? '1' : '0'}">
                                 <b:commandButton icon="remove"

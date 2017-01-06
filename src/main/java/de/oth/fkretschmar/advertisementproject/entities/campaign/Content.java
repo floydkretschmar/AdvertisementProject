@@ -86,7 +86,7 @@ public class Content extends AbstractRandomStringKeyedEntity
      * price.
      */
     @NotNull
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne
     @Getter
     @Setter
     @JoinColumn(name = "CONTEXT_ID")

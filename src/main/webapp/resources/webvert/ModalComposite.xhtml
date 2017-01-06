@@ -6,7 +6,10 @@
       xmlns:b="http://bootsfaces.net/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:inner="http://xmlns.jcp.org/jsf/composite/innerComposites"
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:prim="http://primefaces.org/ui">
+    <h:head>
+    </h:head>
 
     <!-- INTERFACE -->
     <cc:interface componentType="createEntityContainer">
@@ -16,7 +19,7 @@
     </cc:interface>
 
     <!-- IMPLEMENTATION -->
-    <cc:implementation id="modalAccountComposite">        
+    <cc:implementation id="modalAccountComposite">   
         <b:modal id="modalAccountDialogID" 
                  title="Create a new account" 
                  styleClass="modalPseudoClass #{cc.attrs.modalType}Modal">

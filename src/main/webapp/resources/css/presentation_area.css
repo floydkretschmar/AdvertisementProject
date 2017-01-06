@@ -43,6 +43,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     opacity: 0.83;
 }
 
+.webvert_pa_ad_layout {
+    margin-top: 3em;
+    margin-bottom: 3em;
+    margin-right: 3em;
+    height: calc(100% - 35px - 3em);
+    opacity: 0.83;
+}
+
 .webvert_pa_row_layout {
     margin: 0 !important; 
     height: 100%;

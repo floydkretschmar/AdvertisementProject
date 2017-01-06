@@ -4,15 +4,15 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:b="http://bootsfaces.net/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:prim="http://primefaces.org/ui">
 
     <h:head>
-        <h:outputStylesheet library="css" name="style.css"/>
     </h:head>
 
     <h:body>        
         <ui:composition template="BaseLayoutTemplate.xhtml">
-            <ui:define name="content">    
+            <ui:define name="content"> 
                 <b:row class="webvert_pa_row_layout">
                     <b:column span="2" class="webvert_pa_column_layout">
                         <ui:insert name="menu">
@@ -59,12 +59,20 @@
                             </h:form>
                         </ui:insert>
                     </b:column>
-                    <b:column span="10" class="webvert_pa_column_layout">
+                    <b:column span="9" class="webvert_pa_column_layout">
                         <!--<b:panel class="webvert_pa_content_layout">-->
                         <ui:insert name="main_content">
                             Main Content
                         </ui:insert>
                         <!--</b:panel>-->
+                    </b:column>
+                    <b:column span="1" class="webvert_pa_column_layout">
+                        <ui:insert name="advert">
+                            <b:panel class="webvert_pa_ad_layout"
+                                     collapsible="false">
+                                Test
+                            </b:panel>
+                        </ui:insert>
                     </b:column>
                 </b:row>
             </ui:define>
