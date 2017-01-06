@@ -28,6 +28,11 @@ public class ElementType {
      * Defines the access string for an account element.
      */
     public static final String ACCOUNT = "account";
+
+    /**
+     * Defines the access string for an bill element.
+     */
+    public static final String BILL = "bill";
     
     /**
      * Defines the access string for an content element.

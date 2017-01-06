@@ -1,0 +1,54 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:converters="http://webvert.com/Converters"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <!-- INTERFACE -->
+    <cc:interface>
+        <cc:attribute name="bill" type="de.oth.fkretschmar.advertisementproject.entities.billing.Bill"/>
+    </cc:interface>
+
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+        <b:row class="webvert_co_lable_row_layout">
+            <b:column span="12">
+                <b:dataTable value="#{cc.attrs.bill.items}" 
+                             var="billItem"
+                             styleClass="order-table" 
+                             paginated="false"
+                             customOptions="bInfo: false"
+                             searching="false">
+                    <h:column>
+                        <f:facet name="header">Content-ID</f:facet>
+                        <h:outputText value="#{billItem.content.id}"/>
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header">Number of requests</f:facet>
+                        <h:outputText value="#{billItem.contentRequests}"/>
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header">Item price</f:facet>
+                        <h:outputText value="#{billItem.itemPrice}">
+                            <converters:convertMoney/>
+                        </h:outputText>
+                    </h:column>
+                </b:dataTable>
+            </b:column>
+        </b:row>
+        <b:row class="webvert_co_lable_row_layout">
+            <b:column span="6">
+                <h:outputText value="Total price:" 
+                              class="webvert_bold_lable_layout"/>
+            </b:column>
+            <b:column span="6">
+                <h:outputText value="#{cc.attrs.bill.totalPrice}"/>
+            </b:column>
+        </b:row>
+    </cc:implementation>
+</html>

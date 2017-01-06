@@ -28,6 +28,10 @@ import javax.faces.event.AjaxBehaviorEvent;
 @FacesComponent("createEntityContainer")
 public class CreateEntityContainer extends UINamingContainer {
 
+    /**
+     * Invokes the specified notified listener passing the attribute.
+     * @param event 
+     */
     public void notifiedListener(AjaxBehaviorEvent event) {
         MethodExpression notifiedListener = (MethodExpression) getAttributes().get("notifiedListener");
         Object entity = (Object) event.getComponent().getAttributes().get("entity");
@@ -35,5 +39,4 @@ public class CreateEntityContainer extends UINamingContainer {
         if (entity != null)
             notifiedListener.invoke(getFacesContext().getELContext(), new Object[] { entity });
     }
-
 }

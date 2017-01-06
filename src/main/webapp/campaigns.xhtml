@@ -17,6 +17,7 @@
         <ui:composition template="./resources/templates/PresentationAreaTemplate.xhtml">
             <ui:define name="main_content">
                 <o:importConstants type="de.oth.fkretschmar.advertisementproject.entities.campaign.CampaignState" />
+                <o:importConstants type="de.oth.fkretschmar.advertisementproject.ui.ElementType" />
 
                 <b:panel class="webvert_pa_content_layout"
                          id="campaigns_panel">
@@ -80,9 +81,20 @@
                                             </h:outputText>
                                         </b:row>
                                         <webvert:DisplayElementsComposite elements="#{campaign.contents}"
-                                                                          elementType="content"
+                                                                          useOwnformatHeaderItemAction="false"
+                                                                          elementType="#{ElementType.CONTENT}"
                                                                           panelClass="webvert_co_accordion_panel_layout"
                                                                           headerItems="#{campaignModel.getContentTypesForCampaign(campaign)}"
+                                                                          headerClass="webvert_ca_row_layout webvert_ca_other_row_layout"
+                                                                          accordionClass="webvert_ca_row_layout webvert_ca_co_accordion_layout"
+                                                                          enableDelete="false"
+                                                                          enableNew="false"/>
+                                        <webvert:DisplayElementsComposite elements="#{campaign.bills}"
+                                                                          useOwnformatHeaderItemAction="true"
+                                                                          formatHeaderItemAction="#{campaignModel.formatBillHeaderItem}"
+                                                                          elementType="#{ElementType.BILL}"
+                                                                          panelClass="webvert_bi_accordion_panel_layout"
+                                                                          headerItems="#{campaignModel.getBillHeadersForCampaign(campaign)}"
                                                                           headerClass="webvert_ca_row_layout webvert_ca_other_row_layout"
                                                                           accordionClass="webvert_ca_row_layout webvert_ca_co_accordion_layout"
                                                                           enableDelete="false"

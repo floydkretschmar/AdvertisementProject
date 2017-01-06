@@ -12,14 +12,16 @@
         <composite:attribute name="elements" required="true"/>
         <composite:attribute name="headerItems" required="true"/>
         <composite:attribute name="elementType" required="true"/>
+        <composite:attribute name="useOwnformatHeaderItemAction" required="true"/>
+        <composite:attribute name="enableDelete" required="true"/>
+        <composite:attribute name="enableNew" required="true"/>
 
-        <composite:attribute name="enableDelete" />
-        <composite:attribute name="enableNew" />
         <composite:attribute name="accordionClass"/>
         <composite:attribute name="panelClass"/>
         <composite:attribute name="headerClass"/>
 
         <composite:attribute name="notifiedListener" method-signature="void listener(java.lang.Object)" />
+        <composite:attribute name="formatHeaderItemAction" method-signature="java.lang.String listener(java.lang.Object)" />
         <composite:attribute name="renderOnDelete" />
     </composite:interface>
 
@@ -43,6 +45,14 @@
                     Accounts
                 </h3>
             </b:column>
+            <b:column span="1"
+                      class="webvert_de_header_column_layout"
+                      rendered="#{cc.attrs.elementType eq ElementType.BILL}">
+                <h3 class="webvert_heading_color_dark 
+                    webvert_de_inner_heading_layout">
+                    Bills
+                </h3>
+            </b:column>
             <b:column span="11"
                       class="webvert_de_new_button_column_layout">
                 <b:commandButton icon="plus"
@@ -60,19 +70,23 @@
             <c:forEach items="#{cc.attrs.headerItems}"
                        var="headerItem"
                        id="forEachCampaign">
-                <b:panel title="#{headerItem}" style="height: 100%">
+                <b:panel title="#{cc.attrs.useOwnformatHeaderItemAction eq 'true' ? cc.formatHeaderItemAction(headerItem) : headerItem}" style="height: 100%">
                     <c:forEach items="#{cc.filterElementsForCriteria(cc.attrs.elements, headerItem, cc.attrs.elementType)}"
                                var="element"
                                id="forEachCampaign">
                         <b:panel class="#{cc.attrs.panelClass} webvert_de_accordion_panel_layout">
-                            <innerComposites:displayContentComposite content="#{element}"
-                                                                     contentType="#{headerItem}"
-                                                                     rendered="#{cc.attrs.elementType eq ElementType.CONTENT}"/>
-                            <innerComposites:displayBankAccountComposite account="#{element}"
-                                                                         rendered="#{cc.attrs.elementType eq ElementType.ACCOUNT and accountModel.isBankAccount(element)}"/>
-                            <innerComposites:displayPayPalAccountComposite account="#{element}"
-                                                                           rendered="#{cc.attrs.elementType eq ElementType.ACCOUNT and accountModel.isPayPalAccount(element)}"/>
-                            <b:column span="1" style="height: 100%; float: right;">
+                            <b:column span="#{cc.attrs.enableDelete eq 'true' ? '11' : '12'}">
+                                <innerComposites:displayContentComposite content="#{element}"
+                                                                         contentType="#{headerItem}"
+                                                                         rendered="#{cc.attrs.elementType eq ElementType.CONTENT}"/>
+                                <innerComposites:displayBankAccountComposite account="#{element}"
+                                                                             rendered="#{cc.attrs.elementType eq ElementType.ACCOUNT and accountModel.isBankAccount(element)}"/>
+                                <innerComposites:displayPayPalAccountComposite account="#{element}"
+                                                                               rendered="#{cc.attrs.elementType eq ElementType.ACCOUNT and accountModel.isPayPalAccount(element)}"/>
+                                <innerComposites:displayBillComposite bill="#{element}"
+                                                                      rendered="#{cc.attrs.elementType eq ElementType.BILL}"/>
+                            </b:column>
+                            <b:column span="#{cc.attrs.enableDelete eq 'true' ? '1' : '0'}">
                                 <b:commandButton icon="remove"
                                                  value=""
                                                  ajax="true"
@@ -91,8 +105,8 @@
 
         <b:row rendered="#{empty cc.attrs.elements}">
             <h4 class="webvert_heading_color_dark"
-                style="text-align: center; margin-top: 10px">
-                There are currently no contents available to display
+                style="text-align: center; margin-top: 10px; margin-bottom: 16px">
+                There are currently no #{cc.attrs.elementType}s available to display
             </h4>
         </b:row>
     </composite:implementation>

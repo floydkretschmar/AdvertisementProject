@@ -63,7 +63,7 @@ public class Bill extends AbstractAutoGenerateKeyedEntity {
      * Stores the items that make up the bill.
      */
     @NotNull
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "BILL_ID", referencedColumnName = "ID")
     private final Collection<BillItem> items = new ArrayList<BillItem>();
 

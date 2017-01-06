@@ -38,6 +38,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     margin-right: 0px !important;*/
 }
 
+.webvert_bi_accordion_panel_layout {
+    height: 200px; 
+}
+
 .webvert_ca_co_accordion_layout {
     margin-bottom: 32px !important; 
     margin-top: 16px !important; 

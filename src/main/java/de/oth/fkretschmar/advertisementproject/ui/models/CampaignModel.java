@@ -17,12 +17,19 @@
 package de.oth.fkretschmar.advertisementproject.ui.models;
 
 import de.oth.fkretschmar.advertisementproject.business.services.base.ICampaignService;
+import de.oth.fkretschmar.advertisementproject.entities.billing.Bill;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.Campaign;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.CampaignState;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.Content;
 import de.oth.fkretschmar.advertisementproject.ui.models.base.AbstractModel;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
@@ -99,36 +106,64 @@ public class CampaignModel extends AccountModel {
             user.addCampaign(this.campaignService.cancelCampaign(campaign));
             return user;
         });
-        
+
         return "overview";
     }
     
+    
     /**
-     * Gets the number of campaigns a user has that are in the specified 
-     * state.
+     * Formats the bill header item to a readable string.
      * 
-     * @param campaignState the campaign state.
-     * @return  the number of campaigns.
+     * @param   element   the bill header that will be formatted.
+     * @return  the formated bill header.
      */
-    public int getCampaignCountForState(CampaignState campaignState) {        
-        return this.applicationModel.processCurrentUser(
-                        user -> user.getCampaigns()
-                                .stream()
-                                .filter(campaign -> campaign.getCampaignState() == campaignState)
-                                .collect(Collectors.toList()).size());
+    public String formatBillHeaderItem(Object element) {
+        LocalDateTime billHeader = (LocalDateTime)element;
+        return billHeader.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG));
     }
     
 
     /**
+     * Gets the headers to display bills for the specified campaign.
+     *
+     * @param campaign the campaign for which the campaign headers will be
+     * extracted.
+     * @return the extracted bill headers.
+     */
+    public Collection<LocalDateTime> getBillHeadersForCampaign(Campaign campaign) {
+        Collection<LocalDateTime> billHeaders = new ArrayList<LocalDateTime>();
+
+        for (Bill bill : campaign.getBills()) {
+            billHeaders.add(bill.getGenerationDate());
+        }
+
+        return billHeaders;
+    }
+
+    /**
+     * Gets the number of campaigns a user has that are in the specified state.
+     *
+     * @param campaignState the campaign state.
+     * @return the number of campaigns.
+     */
+    public int getCampaignCountForState(CampaignState campaignState) {
+        return this.applicationModel.processCurrentUser(
+                user -> user.getCampaigns()
+                        .stream()
+                        .filter(campaign -> campaign.getCampaignState() == campaignState)
+                        .collect(Collectors.toList()).size());
+    }
+
+    /**
      * Gets the types of contents that exist for a specified campaign.
      *
-     * @param campaign  the campaign for which the content types will be
-     *                  extracted.
+     * @param campaign the campaign for which the content types will be
+     * extracted.
      * @return the collection of content types for all the specified contents.
      */
     public Collection<String> getContentTypesForCampaign(Campaign campaign) {
         List<String> contentTypes = campaign.getContents().stream()
-                .sorted((content1, content2) 
+                .sorted((content1, content2)
                         -> content1.getContentType().name().compareTo(content2.getContentType().name()))
                 .map(content -> {
                     return content.getContentType().getLabel();
@@ -138,12 +173,12 @@ public class CampaignModel extends AccountModel {
 
         return contentTypes;
     }
-    
+
     /**
      * Retrieves the campaign state for the specified string representation.
-     * 
+     *
      * @param campaignStateName the string representation of the campaign state.
-     * @return  the campaign state.
+     * @return the campaign state.
      */
     private CampaignState getCampaignStateForName(String campaignStateName) {
         if (campaignStateName.equalsIgnoreCase(CampaignState.RUNNING.name())) {

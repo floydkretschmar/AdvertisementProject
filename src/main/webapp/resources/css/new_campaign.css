@@ -27,6 +27,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     margin-bottom: 16px;
 }
 
+.webvert_ac_accordion_panel_layout {
+    height: 90px; 
+}
+
 .webvert_nc_co_row_layout {
     margin-left: 0px !important; 
     margin-right: 0px !important;

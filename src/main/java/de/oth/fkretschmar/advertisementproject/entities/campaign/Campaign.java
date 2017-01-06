@@ -58,9 +58,9 @@ public class Campaign extends AbstractAutoGenerateKeyedEntity {
      * Stores all the bills that have been payed so far during the campaign.
      */
     @NotNull
-    @OneToMany(mappedBy = "campaign")
-    private final Collection<Bill> bills
-            = new ArrayList<Bill>();
+    @OneToMany(mappedBy = "campaign", fetch = FetchType.EAGER)
+    private final Set<Bill> bills
+            = new HashSet<Bill>();
     
     /**
      * Stores the state of the campaign.

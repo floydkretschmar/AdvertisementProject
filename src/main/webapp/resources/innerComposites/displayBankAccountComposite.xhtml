@@ -13,26 +13,24 @@
 
     <!-- IMPLEMENTATION -->
     <cc:implementation>
-        <b:column span="8">
-            <b:row class="webvert_co_lable_row_layout">
-                <b:column span="6">
-                    <h:outputText value="IBAN:" 
-                                  class="webvert_bold_lable_layout"/>
-                </b:column>
-                <b:column span="6">
-                    <h:outputText value="#{cc.attrs.account.iban}"/>
-                </b:column>
-            </b:row>
-            <b:row class="webvert_co_lable_row_layout">
-                <b:column span="6">
-                    <h:outputText value="BIC:"
-                                  class="webvert_bold_lable_layout"/>
-                </b:column>
-                <b:column span="6">
-                    <h:outputText value="#{cc.attrs.account.bic}">
-                    </h:outputText>
-                </b:column>
-            </b:row>
-        </b:column>
+        <b:row class="webvert_co_lable_row_layout">
+            <b:column span="6">
+                <h:outputText value="IBAN:" 
+                              class="webvert_bold_lable_layout"/>
+            </b:column>
+            <b:column span="6">
+                <h:outputText value="#{cc.attrs.account.iban}"/>
+            </b:column>
+        </b:row>
+        <b:row class="webvert_co_lable_row_layout">
+            <b:column span="6">
+                <h:outputText value="BIC:"
+                              class="webvert_bold_lable_layout"/>
+            </b:column>
+            <b:column span="6">
+                <h:outputText value="#{cc.attrs.account.bic}">
+                </h:outputText>
+            </b:column>
+        </b:row>
     </cc:implementation>
 </html>
