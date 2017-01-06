@@ -6,6 +6,7 @@
       xmlns:b="http://bootsfaces.net/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:o="http://omnifaces.org/ui"
       xmlns:innerComposites="http://xmlns.jcp.org/jsf/composite/innerComposites">
     <composite:interface componentType="displayElementsContainer">
         <composite:attribute name="elements" required="true"/>
@@ -22,19 +23,30 @@
     </composite:interface>
 
     <composite:implementation>
+        <o:importConstants type="de.oth.fkretschmar.advertisementproject.ui.ElementType" />
+
         <b:row class="#{cc.attrs.headerClass}">
             <b:column span="1"
-                      class="webvert_co_header_column_layout">
+                      class="webvert_de_header_column_layout"
+                      rendered="#{cc.attrs.elementType eq ElementType.CONTENT}">
                 <h3 class="webvert_heading_color_dark 
-                    webvert_ca_inner_heading_layout">
+                    webvert_de_inner_heading_layout">
                     Contents
                 </h3>
             </b:column>
+            <b:column span="1"
+                      class="webvert_de_header_column_layout"
+                      rendered="#{cc.attrs.elementType eq ElementType.ACCOUNT}">
+                <h3 class="webvert_heading_color_dark 
+                    webvert_de_inner_heading_layout">
+                    Accounts
+                </h3>
+            </b:column>
             <b:column span="11"
-                      class="webvert_co_new_button_column_layout">
+                      class="webvert_de_new_button_column_layout">
                 <b:commandButton icon="plus"
                                  value=""
-                                 p:data-target=".contentModal"
+                                 p:data-target=".#{cc.attrs.elementType}Modal"
                                  p:data-toggle="modal"
                                  onclick="return false;"
                                  rendered="#{cc.attrs.enableNew eq 'true'}"/>
@@ -51,19 +63,19 @@
                     <c:forEach items="#{cc.filterElementsForCriteria(cc.attrs.elements, headerItem, cc.attrs.elementType)}"
                                var="element"
                                id="forEachCampaign">
-                        <b:panel class="webvert_co_accordion_panel_layout">
+                        <b:panel class="webvert_de_accordion_panel_layout">
                             <innerComposites:displayContentComposite content="#{element}"
                                                                      contentType="#{headerItem}"
-                                                                     rendered="#{cc.attrs.elementType eq 'content'}"/>
+                                                                     rendered="#{cc.attrs.elementType eq ElementType.CONTENT}"/>
                             <innerComposites:displayBankAccountComposite account="#{element}"
-                                                                         rendered="#{cc.attrs.elementType eq 'account' and accountModel.isBankAccount(element)}"/>
+                                                                         rendered="#{cc.attrs.elementType eq ElementType.ACCOUNT and accountModel.isBankAccount(element)}"/>
                             <innerComposites:displayPayPalAccountComposite account="#{element}"
-                                                                           rendered="#{cc.attrs.elementType eq 'account' and accountModel.isPayPalAccount(element)}"/>
-                            <b:column span="1" style="height: 100%">
+                                                                           rendered="#{cc.attrs.elementType eq ElementType.ACCOUNT and accountModel.isPayPalAccount(element)}"/>
+                            <b:column span="1" style="height: 100%; float: right;">
                                 <b:commandButton icon="remove"
                                                  value=""
                                                  ajax="true"
-                                                 class="webvert_co_edit_button_layout"
+                                                 class="webvert_de_edit_button_layout"
                                                  rendered="#{cc.attrs.enableDelete eq 'true'}">
                                     <f:attribute name="entity" value="#{element}" />
                                     <f:ajax listener="#{cc.notifiedListener}" 

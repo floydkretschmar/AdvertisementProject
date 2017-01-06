@@ -16,8 +16,13 @@
  */
 package de.oth.fkretschmar.advertisementproject.ui.containers;
 
+import de.oth.fkretschmar.advertisementproject.entities.billing.Account;
+import de.oth.fkretschmar.advertisementproject.entities.billing.BankAccount;
+import de.oth.fkretschmar.advertisementproject.entities.billing.PayPalAccount;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.Content;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.ContentType;
+import de.oth.fkretschmar.advertisementproject.ui.AccountType;
+import de.oth.fkretschmar.advertisementproject.ui.ElementType;
 import java.util.Collection;
 import java.util.stream.Collectors;
 import javax.faces.component.FacesComponent;
@@ -43,12 +48,19 @@ public class DisplayElementsContainer extends CreateEntityContainer {
             Collection<Object> elements, 
             Object criteria, 
             String selector) {
-        if (selector.equals("content")) {
+        if (selector.equals(ElementType.CONTENT)) {
             return elements.stream()
                 .map(element -> (Content)element)
                 .filter(content -> content.getContentType() == ContentType.getContentType(criteria.toString()))
                 .sorted((content1, content2)
                         -> content1.getContentType().name().compareTo(content2.getContentType().name()))
+                .collect(Collectors.toList());
+        }
+        else if (selector.equals(ElementType.ACCOUNT)) {
+            return elements.stream()
+                .map(element -> (Account)element)
+                .filter(account -> (account instanceof BankAccount && criteria.toString().equals(AccountType.BANK_ACCOUNT))
+                        || (account instanceof PayPalAccount && criteria.toString().equals(AccountType.PAYPAL_ACCOUNT)))
                 .collect(Collectors.toList());
         }
         

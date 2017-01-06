@@ -18,8 +18,12 @@ package de.oth.fkretschmar.advertisementproject.ui.models;
 
 import de.oth.fkretschmar.advertisementproject.business.services.base.IUserService;
 import de.oth.fkretschmar.advertisementproject.entities.billing.Account;
+import de.oth.fkretschmar.advertisementproject.entities.billing.BankAccount;
+import de.oth.fkretschmar.advertisementproject.entities.billing.PayPalAccount;
 import de.oth.fkretschmar.advertisementproject.entities.user.User;
+import de.oth.fkretschmar.advertisementproject.ui.AccountType;
 import de.oth.fkretschmar.advertisementproject.ui.models.base.AbstractModel;
+import java.util.ArrayList;
 import java.util.Collection;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -59,6 +63,19 @@ public class UserProfileModel extends AccountModel {
     private IUserService userService;
 
     
+    public Collection<String> getAccountTypes() {
+        ArrayList<String> accounts = new ArrayList<String>();
+        
+        for (Account account : this.currentUserCopy.getAccounts()) {
+            if  (account instanceof BankAccount)
+                accounts.add(AccountType.BANK_ACCOUNT);
+            else if (account instanceof PayPalAccount)
+                accounts.add(AccountType.PAYPAL_ACCOUNT);
+        }
+        
+        return accounts;
+    }
+    
     public void addNewAccount(Object entity) {
         this.currentUserCopy.addAccount((Account)entity);
     }
@@ -80,6 +97,10 @@ public class UserProfileModel extends AccountModel {
             return copy;
         });
         this.editing = false;
+    }
+    
+    public void removeAccount(Object element) {
+        this.currentUserCopy.removeAccount((Account)element);
     }
     
     public String saveChanges() {

@@ -79,10 +79,10 @@ public class CampaignModel extends AccountModel {
     /**
      * Sets the campaign state of the campaigns that will be displayed.
      *
-     * @param campaignStateName the name of the campaign state.
+     * @param campaignState the campaign state.
      */
-    public void setCampaignState(String campaignStateName) {
-        this.campaignState = this.getCampaignStateForName(campaignStateName);
+    public void setCampaignState(CampaignState campaignState) {
+        this.campaignState = campaignState;
     }
 
     // --------------- Public methods ---------------
@@ -107,16 +107,14 @@ public class CampaignModel extends AccountModel {
      * Gets the number of campaigns a user has that are in the specified 
      * state.
      * 
-     * @param campaignStateName the string representation of the campaign state.
+     * @param campaignState the campaign state.
      * @return  the number of campaigns.
      */
-    public int getCampaignCountForState(String campaignStateName) {
-        CampaignState state = this.getCampaignStateForName(campaignStateName);
-        
+    public int getCampaignCountForState(CampaignState campaignState) {        
         return this.applicationModel.processCurrentUser(
                         user -> user.getCampaigns()
                                 .stream()
-                                .filter(campaign -> campaign.getCampaignState() == state)
+                                .filter(campaign -> campaign.getCampaignState() == campaignState)
                                 .collect(Collectors.toList()).size());
     }
     

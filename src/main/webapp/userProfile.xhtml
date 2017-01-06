@@ -3,10 +3,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:f="http://java.sun.com/jsf/core"
       xmlns:b="http://bootsfaces.net/ui"
       xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
-      xmlns:prim="http://primefaces.org/ui"
+      xmlns:composites="http://xmlns.jcp.org/jsf/composite/composites"
       xmlns:webvert="http://xmlns.jcp.org/jsf/composite/webvert">
     <h:head>
         <h:outputStylesheet library="css" name="style.css"/>
@@ -29,7 +28,7 @@
                                     </h2>
                                 </b:column>
                                 <b:column span="1"
-                                          class="webvert_co_new_button_column_layout"
+                                          class="webvert_de_new_button_column_layout"
                                           style="position: absolute; padding-left: 0px; right: 0; top: 0">
                                     <b:commandButton icon="pencil"
                                                      value=""
@@ -82,29 +81,19 @@
                                              disabled="#{not userProfileModel.editing}"></b:inputText>
                             </b:panelGrid>
 
-                            <b:row style="padding-top: 16px">
-                                <b:column span="4">
-                                    <h:outputText value="Account:" 
-                                                  class="webvert_bold_lable_layout"/>
-                                </b:column>
-                                <b:column span="#{userProfileModel.editing? '7' : '8'}"
-                                          style="#{userProfileModel.editing? 'padding-right: 0px;' : ''}">
-                                    <b:selectOneMenu id="accountSelector">
-                                        <f:converter binding="#{userProfileModel.accountConverter}"/>	                    
-                                        <f:selectItems value="#{userProfileModel.currentUserCopy.accounts}" 
-                                                       var="account" 
-                                                       itemLabel="#{userProfileModel.getAccountLabel(account)}"/>
-                                    </b:selectOneMenu>
-                                </b:column>
-                                <b:column span="#{userProfileModel.editing? '1' : '0'}"
-                                          style="padding-left: 0px;">
-                                    <b:commandButton icon="plus"
-                                                     value=""
-                                                     p:data-target=".accountModal"
-                                                     p:data-toggle="modal"
-                                                     onclick="return false;"
-                                                     style="float: right;"
-                                                     rendered="#{userProfileModel.editing}"/>
+                            <b:row style="padding-top: 16px"
+                                   id="displayAccounts">
+                                <b:column span="12"
+                                          style="padding-right: 0px;">
+                                    <composites:DisplayElementsComposite notifiedListener="#{userProfileModel.removeAccount}"
+                                                                         renderOnDelete=":user_profile_form:**:displayAccounts"
+                                                                         enableNew="#{userProfileModel.editing}"
+                                                                         enableDelete="#{userProfileModel.editing}"
+                                                                         headerClass="webvert_nc_co_row_layout"
+                                                                         accordionClass="webvert_nc_co_accordion_layout"
+                                                                         elements="#{userProfileModel.currentUserCopy.accounts}"
+                                                                         headerItems="#{userProfileModel.accountTypes}"
+                                                                         elementType="account"/>
                                 </b:column>
                             </b:row>
                             <b:row style="float: right; position: absolute; bottom: 0; right: 0; margin-right: 0px">
@@ -126,7 +115,7 @@
                 </b:panel>
                 <webvert:ModalComposite modalType="account"
                                         notifiedListener="#{userProfileModel.addNewAccount}"
-                                        renderOnOk=":user_profile_form:**:accountSelector"/>
+                                        renderOnOk=":user_profile_form:**:displayAccounts"/>
             </ui:define>
         </ui:composition>
     </h:body>

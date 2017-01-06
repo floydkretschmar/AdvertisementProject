@@ -16,6 +16,7 @@
  */
 package de.oth.fkretschmar.advertisementproject.ui.models;
 
+import de.oth.fkretschmar.advertisementproject.ui.AccountType;
 import de.oth.fkretschmar.advertisementproject.entities.billing.Account;
 import de.oth.fkretschmar.advertisementproject.entities.billing.BankAccount;
 import de.oth.fkretschmar.advertisementproject.entities.billing.PayPalAccount;
@@ -34,13 +35,6 @@ import org.omnifaces.cdi.ViewScoped;
 public class NewAccountModel extends AbstractModel {
 
     // --------------- Private fields ---------------
-    
-//    /**
-//     * Stores the account that is being build or being edited.
-//     */
-//    @Getter
-//    @Setter
-//    private Account account;
 
     /**
      * Stores the BIC of the account that will be created.
@@ -68,43 +62,20 @@ public class NewAccountModel extends AbstractModel {
      */
     @Getter
     @Setter
-    private String selectedAccountType = "Bank account";
-
-    // --------------- Public getters and setters ---------------
-
-    /**
-     * Gets the value indicating if the selected account type is a bank account.
-     *
-     * @return {@code true} if the selected account is a bank account, otherwise
-     * {@code false}.
-     */
-    public boolean isBankAccount() {
-        return this.selectedAccountType.equals("Bank account");
-    }
-
-    /**
-     * Gets the value indicating if the selected account type is a paypal
-     * account.
-     *
-     * @return {@code true} if the selected account is a paypal account,
-     * otherwise {@code false}.
-     */
-    public boolean isPayPalAccount() {
-        return this.selectedAccountType.equals("PayPal account");
-    }
+    private String selectedAccountType = AccountType.BANK_ACCOUNT;
 
     // --------------- Public getters ---------------
     
     
     /**
-     * Gets the account being build.
+     * Gets the account that is being build.
      * 
-     * @return 
+     * @return  the fully created bank account or pay pal account.
      */
     public Account getAccount() {
         Account account = null;
         
-        if(this.isBankAccount()) {
+        if(this.selectedAccountType.equals(AccountType.BANK_ACCOUNT)) {
             account = BankAccount.createBankAccount()
                     .bic(this.bic)
                     .iban(this.iban).build();
@@ -117,7 +88,7 @@ public class NewAccountModel extends AbstractModel {
         this.bic = "";
         this.iban = "";
         this.payPalName = "";
-        this.selectedAccountType = "Bank account";
+        this.selectedAccountType = AccountType.BANK_ACCOUNT;
         
         return account;
     }

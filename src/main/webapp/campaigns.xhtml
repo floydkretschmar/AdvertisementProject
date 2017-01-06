@@ -7,6 +7,7 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:converters="http://webvert.com/Converters"
+      xmlns:o="http://omnifaces.org/ui"
       xmlns:composites="http://java.sun.com/jsf/composite/composites">
     <h:head>
         <title>Webvert</title>
@@ -15,6 +16,7 @@
     <h:body>
         <ui:composition template="./resources/templates/PresentationAreaTemplate.xhtml">
             <ui:define name="main_content">
+                <o:importConstants type="de.oth.fkretschmar.advertisementproject.entities.campaign.CampaignState" />
 
                 <b:panel class="webvert_pa_content_layout"
                          id="campaigns_panel">
@@ -26,18 +28,18 @@
 
                         <!--<h2 class="webvert_form_heading_color_dark">Campaigns</h2>-->
                         <b:tabLinks class="webvert_ca_tab_layout">
-                            <b:navCommandLink value="Currently Running Campaigns (#{campaignModel.getCampaignCountForState('RUNNING')})"
+                            <b:navCommandLink value="Currently Running Campaigns (#{campaignModel.getCampaignCountForState(CampaignState.RUNNING)})"
                                               update="@form"
-                                              active="#{campaignModel.campaignState eq 'RUNNING'}"
-                                              action="#{campaignModel.setCampaignState('RUNNING')}"/>
-                            <b:navCommandLink value="Ended Campaigns (#{campaignModel.getCampaignCountForState('ENDED')})"
+                                              active="#{campaignModel.campaignState eq CampaignState.RUNNING}"
+                                              action="#{campaignModel.setCampaignState(CampaignState.RUNNING)}"/>
+                            <b:navCommandLink value="Ended Campaigns (#{campaignModel.getCampaignCountForState(CampaignState.ENDED)})"
                                               update="@form"
-                                              active="#{campaignModel.campaignState eq 'ENDED'}"
-                                              action="#{campaignModel.setCampaignState('ENDED')}"/>
-                            <b:navCommandLink value="Cancelled Campaigns (#{campaignModel.getCampaignCountForState('CANCELLED')})"
+                                              active="#{campaignModel.campaignState eq CampaignState.ENDED}"
+                                              action="#{campaignModel.setCampaignState(CampaignState.ENDED)}"/>
+                            <b:navCommandLink value="Cancelled Campaigns (#{campaignModel.getCampaignCountForState(CampaignState.CANCELLED)})"
                                               update="@form"
-                                              active="#{campaignModel.campaignState eq 'CANCELLED'}"
-                                              action="#{campaignModel.setCampaignState('CANCELLED')}"/>
+                                              active="#{campaignModel.campaignState eq CampaignState.CANCELLED}"
+                                              action="#{campaignModel.setCampaignState(CampaignState.CANCELLED)}"/>
                         </b:tabLinks>
                         <c:choose>
                             <c:when test="#{not empty campaignModel.campaigns}">
@@ -49,18 +51,18 @@
                                             <b:column span="11"
                                                       style="padding-left: 0px">
                                                 <h3 class="webvert_heading_color_dark
-                                                    webvert_ca_inner_heading_layout">
+                                                    webvert_de_inner_heading_layout">
                                                     #{campaign.name}
                                                 </h3>
                                             </b:column>
                                             <b:column span="1"
-                                                      class="webvert_co_new_button_column_layout"
+                                                      class="webvert_de_new_button_column_layout"
                                                       style="position: absolute; padding-left: 0px; padding-top: 32px; right: 0; top: 0">
                                                 <b:commandButton icon="remove"
                                                                  value=""
                                                                  style="position: absolute; right: 0; margin-right: 32px;"
                                                                  action="#{campaignModel.cancelCampaign(campaign)}"
-                                                                 rendered="#{campaignModel.campaignState eq 'RUNNING'}"/>
+                                                                 rendered="#{campaignModel.campaignState eq CampaignState.RUNNING}"/>
                                             </b:column>
                                         </b:row>
                                         <b:row class="webvert_ca_row_layout webvert_ca_other_row_layout">

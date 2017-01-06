@@ -19,13 +19,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     Author     : fkre
 */
 
-.webvert_co_accordion_panel_layout {
-    margin: 16px !important; 
-    padding-bottom: 0px; 
-    height: 120px; 
-    position: relative;
-}
-
 .webvert_co_image_layout {
     height: 120px; 
     max-width: 100%;
@@ -34,23 +27,5 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 .webvert_co_lable_row_layout {
     padding-top: 16px;
-}
-
-.webvert_co_edit_button_layout {
-    bottom: 0; 
-    right: 0; 
-    position: absolute; 
-    margin: 16px !important;
-}
-
-.col-md-11.webvert_co_new_button_column_layout {
-    margin-top: 6px;
-    margin-left: 10px;
-    width: inherit;
-    padding-right: 0px;
-}
-
-.col-md-1.webvert_co_header_column_layout {
-    padding-left: 0px;
 }
 
