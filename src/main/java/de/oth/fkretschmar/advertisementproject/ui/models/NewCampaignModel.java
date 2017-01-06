@@ -26,6 +26,8 @@ import de.oth.fkretschmar.advertisementproject.entities.user.User;
 import de.oth.fkretschmar.advertisementproject.ui.models.base.AbstractAccountModel;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -100,6 +102,23 @@ public class NewCampaignModel extends AbstractAccountModel {
         return applicationModel.processCurrentUser(user -> user.getAccounts());
     }
     
+    /**
+     * Gets the types of contents that exist.
+     *
+     * @return the collection of content types for all the specified contents.
+     */
+    public Collection<String> getContentTypes() {
+        List<String> contentTypes = this.newContents.stream()
+                .sorted((content1, content2) 
+                        -> content1.getContentType().name().compareTo(content2.getContentType().name()))
+                .map(content -> {
+                    return content.getContentType().getLabel();
+                })
+                .distinct()
+                .collect(Collectors.toList());
+
+        return contentTypes;
+    }
     
     /**
      * Gets all possible payment intervals.

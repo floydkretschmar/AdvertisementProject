@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:converters="http://webvert.com/Converters">
+
+    <!-- INTERFACE -->
+    <cc:interface>
+        <cc:attribute name="content" type="de.oth.fkretschmar.advertisementproject.entities.campaign.Content"/>
+        <cc:attribute name="contentType" />
+    </cc:interface>
+
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+        <b:column span="3" 
+                  style="#{cc.attrs.contentType eq 'Image URL' ? 'padding-top: 0px' : 'padding-top: 16px'}">
+            <c:choose>
+                <c:when test="#{cc.attrs.contentType eq 'Image URL'}">
+                    <img src="#{cc.attrs.content.value}" 
+                         class="webvert_co_image_layout"/>
+                </c:when>
+                <c:otherwise>
+                    <h:outputText value="#{cc.attrs.content.value}" 
+                                  style="padding-top: 16px"/>
+                </c:otherwise>
+            </c:choose>
+        </b:column>
+        <b:column span="8">
+            <b:row class="webvert_co_lable_row_layout">
+                <b:column span="6">
+                    <h:outputText value="Description:" 
+                                  class="webvert_bold_lable_layout"/>
+                </b:column>
+                <b:column span="6">
+                    <h:outputText value="#{cc.attrs.content.description}"/>
+                </b:column>
+            </b:row>
+            <b:row class="webvert_co_lable_row_layout">
+                <b:column span="6">
+                    <h:outputText value="Price per request:"
+                                  class="webvert_bold_lable_layout"/>
+                </b:column>
+                <b:column span="6">
+                    <h:outputText value="#{cc.attrs.content.pricePerRequest}">
+                        <converters:convertMoney/>
+                    </h:outputText>
+                </b:column>
+            </b:row>
+            <b:row class="webvert_co_lable_row_layout">
+                <b:column span="6">
+                    <h:outputText value="Number of requests left:"
+                                  class="webvert_bold_lable_layout"/>
+                </b:column>
+                <b:column span="6">
+                    <h:outputText value="#{cc.attrs.content.numberOfRequests}"/>
+                </b:column>
+            </b:row>
+        </b:column>
+    </cc:implementation>
+</html>

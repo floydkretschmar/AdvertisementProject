@@ -92,13 +92,15 @@
                         </b:container>
                         <b:row id="displayContents"
                                style="margin-left: 0px; margin-right: 0px">
-                            <composites:DisplayContentsComposite enableDelete="true"
+                            <composites:DisplayElementsComposite enableDelete="true"
                                                                  notifiedListener="#{newCampaignModel.removeContent}"
                                                                  renderOnDelete=":new_campaign_form:**:displayContents"
                                                                  enableNew="true"
                                                                  headerClass="webvert_nc_co_row_layout"
                                                                  accordionClass="webvert_nc_co_accordion_layout"
-                                                                 contents="#{newCampaignModel.newContents}"/>
+                                                                 elements="#{newCampaignModel.newContents}"
+                                                                 headerItems="#{newCampaignModel.getContentTypes()}"
+                                                                 elementType="content"/>
                         </b:row>
                         <b:row style="float: right; position: absolute; bottom: 0; right: 0; margin-right: 0px">
                             <b:commandButton value="Cancel" 

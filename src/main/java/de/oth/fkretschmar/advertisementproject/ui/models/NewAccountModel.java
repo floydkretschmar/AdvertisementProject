@@ -20,17 +20,17 @@ import de.oth.fkretschmar.advertisementproject.entities.billing.Account;
 import de.oth.fkretschmar.advertisementproject.entities.billing.BankAccount;
 import de.oth.fkretschmar.advertisementproject.entities.billing.PayPalAccount;
 import de.oth.fkretschmar.advertisementproject.ui.models.base.AbstractModel;
-import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 import lombok.Getter;
 import lombok.Setter;
+import org.omnifaces.cdi.ViewScoped;
 
 /**
  *
  * @author Admin
  */
 @Named
-@RequestScoped
+@ViewScoped
 public class NewAccountModel extends AbstractModel {
 
     // --------------- Private fields ---------------

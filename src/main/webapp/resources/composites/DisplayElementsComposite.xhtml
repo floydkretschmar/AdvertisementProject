@@ -1,0 +1,82 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:innerComposites="http://xmlns.jcp.org/jsf/composite/innerComposites">
+    <composite:interface componentType="displayElementsContainer">
+        <composite:attribute name="elements" required="true"/>
+        <composite:attribute name="headerItems" required="true"/>
+        <composite:attribute name="elementType" required="true"/>
+        
+        <composite:attribute name="enableDelete" />
+        <composite:attribute name="enableNew" />
+        <composite:attribute name="accordionClass"/>
+        <composite:attribute name="headerClass"/>
+
+        <composite:attribute name="notifiedListener" method-signature="void listener(java.lang.Object)" />
+        <composite:attribute name="renderOnDelete" />
+    </composite:interface>
+
+    <composite:implementation>
+        <b:row class="#{cc.attrs.headerClass}">
+            <b:column span="1"
+                      class="webvert_co_header_column_layout">
+                <h3 class="webvert_heading_color_dark 
+                    webvert_ca_inner_heading_layout">
+                    Contents
+                </h3>
+            </b:column>
+            <b:column span="11"
+                      class="webvert_co_new_button_column_layout">
+                <b:commandButton icon="plus"
+                                 value=""
+                                 p:data-target=".contentModal"
+                                 p:data-toggle="modal"
+                                 onclick="return false;"
+                                 rendered="#{cc.attrs.enableNew eq 'true'}"/>
+            </b:column>
+        </b:row>
+
+        <b:accordion id="accordion"
+                     class="#{cc.attrs.accordionClass}"
+                     rendered="#{not empty cc.attrs.elements}">
+            <c:forEach items="#{cc.attrs.headerItems}"
+                       var="headerItem"
+                       id="forEachCampaign">
+                <b:panel title="#{headerItem}" style="height: 100%">
+                    <c:forEach items="#{cc.filterElementsForCriteria(cc.attrs.elements, headerItem, cc.attrs.elementType)}"
+                               var="element"
+                               id="forEachCampaign">
+                        <b:panel class="webvert_co_accordion_panel_layout">
+                            <innerComposites:displayContentComposite content="#{element}"
+                                                                     contentType="#{headerItem}"/>
+                            <b:column span="1" style="height: 100%">
+                                <b:commandButton icon="remove"
+                                                 value=""
+                                                 ajax="true"
+                                                 class="webvert_co_edit_button_layout"
+                                                 rendered="#{cc.attrs.enableDelete eq 'true'}">
+                                    <f:attribute name="entity" value="#{element}" />
+                                    <f:ajax listener="#{cc.notifiedListener}" 
+                                            render="#{cc.attrs.renderOnDelete}"/>
+                                </b:commandButton>
+                            </b:column>
+                        </b:panel>
+                    </c:forEach>
+                </b:panel>
+            </c:forEach>
+        </b:accordion>
+
+        <b:row rendered="#{empty cc.attrs.elements}">
+            <h4 class="webvert_heading_color_dark"
+                style="text-align: center; margin-top: 10px">
+                There are currently no contents available to display
+            </h4>
+        </b:row>
+    </composite:implementation>
+</html>
+

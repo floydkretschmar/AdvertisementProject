@@ -23,6 +23,7 @@ import de.oth.fkretschmar.advertisementproject.entities.campaign.Content;
 import de.oth.fkretschmar.advertisementproject.ui.models.base.AbstractAccountModel;
 import de.oth.fkretschmar.advertisementproject.ui.models.base.AbstractModel;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
@@ -119,29 +120,27 @@ public class CampaignModel extends AbstractAccountModel {
                                 .filter(campaign -> campaign.getCampaignState() == state)
                                 .collect(Collectors.toList()).size());
     }
+    
 
     /**
-     * Gets the contents for the specified campaign id.
+     * Gets the types of contents that exist for a specified campaign.
      *
-     * @param id the id of the campaign for which the contents
-     * @return the collection of contents available for the specified campaign.
+     * @param campaign  the campaign for which the content types will be
+     *                  extracted.
+     * @return the collection of content types for all the specified contents.
      */
-    public Collection<Content> getContentForCampaignId(String id) {
-        Optional<Campaign> selectedCampaign
-                = this.applicationModel.processCurrentUser(
-                        user -> user.getCampaigns()
-                                .stream()
-                                .filter(campaign -> campaign.getId() == Long.parseLong(id))
-                                .findFirst());
+    public Collection<String> getContentTypesForCampaign(Campaign campaign) {
+        List<String> contentTypes = campaign.getContents().stream()
+                .sorted((content1, content2) 
+                        -> content1.getContentType().name().compareTo(content2.getContentType().name()))
+                .map(content -> {
+                    return content.getContentType().getLabel();
+                })
+                .distinct()
+                .collect(Collectors.toList());
 
-        if (!selectedCampaign.isPresent()) {
-            throw new IllegalArgumentException("The id does not belong to a "
-                    + "valid campaign");
-        }
-
-        return selectedCampaign.get().getContents();
+        return contentTypes;
     }
-    
     
     /**
      * Retrieves the campaign state for the specified string representation.
