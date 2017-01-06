@@ -8,7 +8,7 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:converters="http://webvert.com/Converters"
       xmlns:o="http://omnifaces.org/ui"
-      xmlns:composites="http://java.sun.com/jsf/composite/composites">
+      xmlns:webvert="http://java.sun.com/jsf/composite/webvert">
     <h:head>
         <title>Webvert</title>
         <h:outputStylesheet library="css" name="style.css"  />
@@ -79,13 +79,14 @@
                                             <h:outputText value="#{campaignModel.getAccountLabel(campaign.paymentAccount)}">
                                             </h:outputText>
                                         </b:row>
-                                        <composites:DisplayElementsComposite elements="#{campaign.contents}"
-                                                                             elementType="content"
-                                                                             headerItems="#{campaignModel.getContentTypesForCampaign(campaign)}"
-                                                                             headerClass="webvert_ca_row_layout webvert_ca_other_row_layout"
-                                                                             accordionClass="webvert_ca_row_layout webvert_ca_co_accordion_layout"
-                                                                             enableDelete="false"
-                                                                             enableNew="false"/>
+                                        <webvert:DisplayElementsComposite elements="#{campaign.contents}"
+                                                                          elementType="content"
+                                                                          panelClass="webvert_co_accordion_panel_layout"
+                                                                          headerItems="#{campaignModel.getContentTypesForCampaign(campaign)}"
+                                                                          headerClass="webvert_ca_row_layout webvert_ca_other_row_layout"
+                                                                          accordionClass="webvert_ca_row_layout webvert_ca_co_accordion_layout"
+                                                                          enableDelete="false"
+                                                                          enableNew="false"/>
                                     </b:panel>
                                 </c:forEach>
                             </c:when>

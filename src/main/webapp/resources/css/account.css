@@ -19,17 +19,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     Author     : fkre
 */
 
-.webvert_co_image_layout {
-    height: 120px; 
-    max-width: 100%;
-    padding: 16px;
-}
-
-.webvert_co_accordion_panel_layout {
-    height: 120px; 
-}
-
-.webvert_co_lable_row_layout {
-    padding-top: 16px;
+.webvert_ac_accordion_panel_layout {
+    height: 90px; 
 }
 

@@ -6,7 +6,6 @@
       xmlns:b="http://bootsfaces.net/ui"
       xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
       xmlns:o="http://omnifaces.org/ui"
-      xmlns:composites="http://xmlns.jcp.org/jsf/composite/composites"
       xmlns:webvert="http://xmlns.jcp.org/jsf/composite/webvert">
     <h:head>
         <h:outputStylesheet library="css" name="style.css"/>
@@ -87,21 +86,24 @@
                                    id="displayAccounts">
                                 <b:column span="12"
                                           style="padding-right: 0px;">
-                                    <composites:DisplayElementsComposite notifiedListener="#{userProfileModel.removeAccount}"
-                                                                         renderOnDelete=":user_profile_form:**:displayAccounts"
-                                                                         enableNew="#{userProfileModel.editing}"
-                                                                         enableDelete="#{userProfileModel.editing}"
-                                                                         headerClass="webvert_nc_co_row_layout"
-                                                                         accordionClass="webvert_nc_co_accordion_layout"
-                                                                         elements="#{userProfileModel.currentUserCopy.accounts}"
-                                                                         headerItems="#{userProfileModel.accountTypes}"
-                                                                         elementType="#{ElementType.ACCOUNT}"/>
+                                    <webvert:DisplayElementsComposite notifiedListener="#{userProfileModel.removeAccount}"
+                                                                      renderOnDelete=":user_profile_form:**:displayAccounts"
+                                                                      enableNew="#{userProfileModel.editing}"
+                                                                      enableDelete="#{userProfileModel.editing}"
+                                                                      panelClass="webvert_ac_accordion_panel_layout"
+                                                                      headerClass="webvert_nc_co_row_layout"
+                                                                      accordionClass="webvert_nc_co_accordion_layout"
+                                                                      elements="#{userProfileModel.currentUserCopy.accounts}"
+                                                                      headerItems="#{userProfileModel.accountTypes}"
+                                                                      elementType="#{ElementType.ACCOUNT}"/>
                                 </b:column>
                             </b:row>
                             <b:row style="float: right; position: absolute; bottom: 0; right: 0; margin-right: 0px">
                                 <b:commandButton value="Cancel" 
                                                  action="#{userProfileModel.initialize}"
                                                  rendered="#{userProfileModel.editing}"
+                                                 update="@form"
+                                                 process="@form"
                                                  style="width: 128px; margin-left: 10px">
                                 </b:commandButton>
                                 <b:commandButton value="Ok" 

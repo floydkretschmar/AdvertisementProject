@@ -20,6 +20,7 @@ import de.oth.fkretschmar.advertisementproject.business.services.base.IUserServi
 import de.oth.fkretschmar.advertisementproject.entities.billing.Account;
 import de.oth.fkretschmar.advertisementproject.entities.billing.BankAccount;
 import de.oth.fkretschmar.advertisementproject.entities.billing.PayPalAccount;
+import de.oth.fkretschmar.advertisementproject.entities.user.Address;
 import de.oth.fkretschmar.advertisementproject.entities.user.User;
 import de.oth.fkretschmar.advertisementproject.ui.AccountType;
 import de.oth.fkretschmar.advertisementproject.ui.models.base.AbstractModel;
@@ -86,7 +87,11 @@ public class UserProfileModel extends AccountModel {
         this.currentUserCopy = this.applicationModel.processCurrentUser(user -> 
         {
             User copy = User.createUser()
-                    .address(user.getAddress())
+                    .address(Address.createAddress()
+                                .areaCode(user.getAddress().getAreaCode())
+                                .city(user.getAddress().getCity())
+                                .country(user.getAddress().getCountry())
+                                .street(user.getAddress().getStreet()).build())
                     .company(user.getCompany())
                     .eMailAddress(user.geteMailAddress())
                     .firstName(user.getFirstName())

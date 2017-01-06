@@ -16,6 +16,7 @@
         <composite:attribute name="enableDelete" />
         <composite:attribute name="enableNew" />
         <composite:attribute name="accordionClass"/>
+        <composite:attribute name="panelClass"/>
         <composite:attribute name="headerClass"/>
 
         <composite:attribute name="notifiedListener" method-signature="void listener(java.lang.Object)" />
@@ -63,7 +64,7 @@
                     <c:forEach items="#{cc.filterElementsForCriteria(cc.attrs.elements, headerItem, cc.attrs.elementType)}"
                                var="element"
                                id="forEachCampaign">
-                        <b:panel class="webvert_de_accordion_panel_layout">
+                        <b:panel class="#{cc.attrs.panelClass} webvert_de_accordion_panel_layout">
                             <innerComposites:displayContentComposite content="#{element}"
                                                                      contentType="#{headerItem}"
                                                                      rendered="#{cc.attrs.elementType eq ElementType.CONTENT}"/>
