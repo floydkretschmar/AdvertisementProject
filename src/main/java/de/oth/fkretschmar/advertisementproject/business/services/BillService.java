@@ -201,7 +201,7 @@ public class BillService implements Serializable, IBillService {
         
         Map<Long, Bill> bills = new TreeMap<Long, Bill>();
         Map<Long, Campaign> campaigns = new TreeMap<Long, Campaign>();
-        Map<Long, Map<Long, BillItem>> billItemMaps = new TreeMap<Long, Map<Long, BillItem>>();
+        Map<Long, Map<String, BillItem>> billItemMaps = new TreeMap<Long, Map<String, BillItem>>();
         
         requests.forEach(request -> 
         {
@@ -215,7 +215,7 @@ public class BillService implements Serializable, IBillService {
                 //... and get the bill as well as the corresponding bill items
                 // if the bill already exists
                 bill = bills.get(campaign.getId());
-                Map<Long, BillItem> billItems = billItemMaps.get(campaign.getId());
+                Map<String, BillItem> billItems = billItemMaps.get(campaign.getId());
 
                 // 2.   if a bill already exists, find out whether or not there
                 //      is already a corresponding bill item to the content of
@@ -251,7 +251,7 @@ public class BillService implements Serializable, IBillService {
                 // 3.   If a bill does not exist already, just create a new one,
                 //      create a map for the bill items, add a bill item for 
                 //      this change request and store it in the map.
-                Map<Long, BillItem> billItems = new HashMap<>();
+                Map<String, BillItem> billItems = new HashMap<>();
                 BillItem billItem = BillItem.createBillItem()
                             .content(content)
                             .contentRequests(1)
@@ -269,7 +269,7 @@ public class BillService implements Serializable, IBillService {
         bills.forEach((campaignId, bill) -> 
         {
             // Add all corresponding bill items to the bill...
-            Map<Long, BillItem> billItems = billItemMaps.get(campaignId);
+            Map<String, BillItem> billItems = billItemMaps.get(campaignId);
             billItems.values().forEach(billItem -> bill.addItem(billItem));
             
             // ... create each bill for its existing campaign...

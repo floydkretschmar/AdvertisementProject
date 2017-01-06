@@ -164,7 +164,7 @@ public class ContentService implements Serializable, IContentService, IContentPr
         MoneyFormatter formater = formaterBuilder.toFormatter(Locale.GERMANY);  
         results.forEach(result -> matchingContents.add(
                     new MatchingContent(
-                            ((BigInteger)result[0]).longValue(),
+                            (String)result[0],
                             formater.parseMoney((String)result[1]),
                             ((BigInteger)result[2]).intValue(),
                             ((BigDecimal)result[3]).intValue()
@@ -189,8 +189,7 @@ public class ContentService implements Serializable, IContentService, IContentPr
                     }).findFirst();
         
         if(bestContent.isPresent()) {
-            Content content = this.contentRepository.find(
-                    bestContent.get().getContentId());
+            Content content = this.contentRepository.find(bestContent.get().getContentId());
             this.createContentRequest(source, content);
             return Optional.of(content);
         }
@@ -272,7 +271,7 @@ public class ContentService implements Serializable, IContentService, IContentPr
         * Stpres the id of the actual content that has been matched.
         */
        @Getter
-       private final long contentId;
+       private final String contentId;
 
        /**
         * Stores the monetary amount tbe creator of the content is willing to pay

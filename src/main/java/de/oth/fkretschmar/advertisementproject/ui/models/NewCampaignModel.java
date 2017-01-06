@@ -23,7 +23,6 @@ import de.oth.fkretschmar.advertisementproject.entities.campaign.Campaign;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.Content;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.PaymentInterval;
 import de.oth.fkretschmar.advertisementproject.entities.user.User;
-import de.oth.fkretschmar.advertisementproject.ui.models.base.AbstractAccountModel;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -40,7 +39,7 @@ import lombok.Setter;
  */
 @Named
 @SessionScoped
-public class NewCampaignModel extends AbstractAccountModel {
+public class NewCampaignModel extends AccountModel {
 
     // --------------- Private fields ---------------
     

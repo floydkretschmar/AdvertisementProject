@@ -36,7 +36,7 @@ import javax.persistence.StoredProcedureQuery;
  * @author  fkre    Floyd Kretschmar
  */
 @Dependent
-public class ContentRepository extends AbstractJPARepository<Long, Content> {
+public class ContentRepository extends AbstractJPARepository<String, Content> {
     
     // --------------- Private static constants ---------------
     

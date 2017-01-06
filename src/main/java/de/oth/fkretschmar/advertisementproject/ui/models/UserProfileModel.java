@@ -19,7 +19,6 @@ package de.oth.fkretschmar.advertisementproject.ui.models;
 import de.oth.fkretschmar.advertisementproject.business.services.base.IUserService;
 import de.oth.fkretschmar.advertisementproject.entities.billing.Account;
 import de.oth.fkretschmar.advertisementproject.entities.user.User;
-import de.oth.fkretschmar.advertisementproject.ui.models.base.AbstractAccountModel;
 import de.oth.fkretschmar.advertisementproject.ui.models.base.AbstractModel;
 import java.util.Collection;
 import javax.annotation.PostConstruct;
@@ -35,7 +34,7 @@ import org.omnifaces.cdi.ViewScoped;
  */
 @Named
 @ViewScoped
-public class UserProfileModel extends AbstractAccountModel {
+public class UserProfileModel extends AccountModel {
 
     // --------------- Private fields ---------------
         

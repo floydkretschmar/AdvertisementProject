@@ -24,6 +24,8 @@ import de.oth.fkretschmar.advertisementproject.entities.base.AbstractAutoGenerat
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -85,8 +87,8 @@ public class Campaign extends AbstractAutoGenerateKeyedEntity {
      */
     @NotNull
     @OneToMany(mappedBy = "campaign", fetch = FetchType.EAGER)
-    private final Collection<Content> contents
-            = new ArrayList<Content>();
+    private final Set<Content> contents
+            = new HashSet<Content>();
     
     /**
      * Stores the interval in which the order is being paid for.

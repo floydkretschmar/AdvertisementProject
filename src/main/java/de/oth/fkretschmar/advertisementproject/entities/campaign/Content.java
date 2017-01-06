@@ -19,6 +19,7 @@ package de.oth.fkretschmar.advertisementproject.entities.campaign;
 import de.oth.fkretschmar.advertisementproject.entities.exceptions.ContentDataCorruptedException;
 import de.oth.fkretschmar.advertisementproject.entities.exceptions.BuilderValidationException;
 import de.oth.fkretschmar.advertisementproject.entities.base.AbstractAutoGenerateKeyedEntity;
+import de.oth.fkretschmar.advertisementproject.entities.base.AbstractRandomStringKeyedEntity;
 import de.oth.fkretschmar.advertisementproject.entities.base.IDeletable;
 import de.oth.fkretschmar.advertisementproject.entities.base.converter.MoneyAttributeConverter;
 
@@ -56,8 +57,8 @@ import org.joda.money.Money;
 @Entity(name = "T_CONTENT")
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 @ToString(callSuper = true, exclude = "campaign")
-public class Content extends AbstractAutoGenerateKeyedEntity
-        implements IDeletable<Long> {
+public class Content extends AbstractRandomStringKeyedEntity
+        implements IDeletable<String> {
     
     // --------------- Private fields ---------------
 

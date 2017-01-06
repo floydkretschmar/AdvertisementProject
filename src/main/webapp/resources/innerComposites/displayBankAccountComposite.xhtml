@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:converters="http://webvert.com/Converters">
+
+    <!-- INTERFACE -->
+    <cc:interface>
+        <cc:attribute name="account" type="de.oth.fkretschmar.advertisementproject.entities.billing.BankAccount"/>
+    </cc:interface>
+
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+        <b:column span="8">
+            <b:row class="webvert_co_lable_row_layout">
+                <b:column span="6">
+                    <h:outputText value="IBAN:" 
+                                  class="webvert_bold_lable_layout"/>
+                </b:column>
+                <b:column span="6">
+                    <h:outputText value="#{cc.attrs.account.iban}"/>
+                </b:column>
+            </b:row>
+            <b:row class="webvert_co_lable_row_layout">
+                <b:column span="6">
+                    <h:outputText value="BIC:"
+                                  class="webvert_bold_lable_layout"/>
+                </b:column>
+                <b:column span="6">
+                    <h:outputText value="#{cc.attrs.account.bic}">
+                        <converters:convertMoney/>
+                    </h:outputText>
+                </b:column>
+            </b:row>
+        </b:column>
+    </cc:implementation>
+</html>

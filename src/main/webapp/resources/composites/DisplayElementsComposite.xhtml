@@ -11,7 +11,7 @@
         <composite:attribute name="elements" required="true"/>
         <composite:attribute name="headerItems" required="true"/>
         <composite:attribute name="elementType" required="true"/>
-        
+
         <composite:attribute name="enableDelete" />
         <composite:attribute name="enableNew" />
         <composite:attribute name="accordionClass"/>
@@ -53,7 +53,12 @@
                                id="forEachCampaign">
                         <b:panel class="webvert_co_accordion_panel_layout">
                             <innerComposites:displayContentComposite content="#{element}"
-                                                                     contentType="#{headerItem}"/>
+                                                                     contentType="#{headerItem}"
+                                                                     rendered="#{cc.attrs.elementType eq 'content'}"/>
+                            <innerComposites:displayBankAccountComposite account="#{element}"
+                                                                         rendered="#{cc.attrs.elementType eq 'account' and accountModel.isBankAccount(element)}"/>
+                            <innerComposites:displayPayPalAccountComposite account="#{element}"
+                                                                           rendered="#{cc.attrs.elementType eq 'account' and accountModel.isPayPalAccount(element)}"/>
                             <b:column span="1" style="height: 100%">
                                 <b:commandButton icon="remove"
                                                  value=""

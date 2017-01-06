@@ -29,6 +29,16 @@ import lombok.ToString;
 /**
  * Represents an entity that is keyed by a uniqe string value.
  * 
+ * NOTE: This type of entity is used instead of AbstractAutoGenerateKeyedEntity
+ *       when I need the ID of the entity to be unique BEFORE saving it for the
+ *       first time. This is the case when I am storing the entities in Sets
+ *       to allow for problem free eager loading and at the same time I am not
+ *       saving the elements of the set as a bulk.
+ *       For example: When adding contents to a new campaign I only save the 
+ *                    campaign and its contents after the user explicitly pushes
+ *                    the save button. So Contents (which are stored in a set) 
+ *                    have to have a unique ID before they ever get saved.
+ * 
  * @author  fkre    Floyd Kretschmar
  */
 @MappedSuperclass
