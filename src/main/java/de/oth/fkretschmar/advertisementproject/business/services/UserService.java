@@ -154,16 +154,28 @@ public class UserService implements Serializable, IUserService {
         user.setLastName(changedUser.getLastName());
 
         
-        final User tmpUser = user;
+        final User tmpOldUser = user;
         // get all the accounts that are not contained in the list of the old 
-        // user
+        // user and create them
         for(Account account : changedUser.getAccounts().stream()
                 .filter(account -> 
                 {
-                    return !tmpUser.getAccounts().contains(account);
+                    return !tmpOldUser.getAccounts().contains(account);
                 })
                 .collect(Collectors.toList())) {
             user = this.createAccountForUser(user, account);
+        }
+        
+        final User tmpNewUser = changedUser;
+        // get all the accounts that are not contained in the list of the new 
+        // user and delete them
+        for(Account account : user.getAccounts().stream()
+                .filter(account -> 
+                {
+                    return !tmpNewUser.getAccounts().contains(account);
+                })
+                .collect(Collectors.toList())) {
+            user = this.deleteAccountFromUser(user, account);
         }
 
         return user;

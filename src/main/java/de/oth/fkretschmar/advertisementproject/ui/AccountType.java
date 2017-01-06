@@ -26,10 +26,10 @@ public class AccountType {
     /**
      * Defines the access string for a bank account.
      */
-    public static final String BANK_ACCOUNT = "Bank account";
+    public static final String BANK_ACCOUNT = "Bank accounts";
     
     /**
      * Defines the access string for a paypal account.
      */
-    public static final String PAYPAL_ACCOUNT = "PayPal account";
+    public static final String PAYPAL_ACCOUNT = "PayPal accounts";
 }

@@ -5,6 +5,7 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:b="http://bootsfaces.net/ui"
       xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:o="http://omnifaces.org/ui"
       xmlns:composites="http://xmlns.jcp.org/jsf/composite/composites"
       xmlns:webvert="http://xmlns.jcp.org/jsf/composite/webvert">
     <h:head>
@@ -14,6 +15,7 @@
         <ui:composition template="./resources/templates/PresentationAreaTemplate.xhtml">
             <ui:define name="main_content"
                        id="mainContentID">
+                <o:importConstants type="de.oth.fkretschmar.advertisementproject.ui.ElementType" />
                 <b:panel class="webvert_pa_content_layout"
                          id="user_profile_panel">
                     <h:form id="user_profile_form"
@@ -93,7 +95,7 @@
                                                                          accordionClass="webvert_nc_co_accordion_layout"
                                                                          elements="#{userProfileModel.currentUserCopy.accounts}"
                                                                          headerItems="#{userProfileModel.accountTypes}"
-                                                                         elementType="account"/>
+                                                                         elementType="#{ElementType.ACCOUNT}"/>
                                 </b:column>
                             </b:row>
                             <b:row style="float: right; position: absolute; bottom: 0; right: 0; margin-right: 0px">

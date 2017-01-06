@@ -25,6 +25,7 @@ import de.oth.fkretschmar.advertisementproject.ui.AccountType;
 import de.oth.fkretschmar.advertisementproject.ui.models.base.AbstractModel;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -67,13 +68,13 @@ public class UserProfileModel extends AccountModel {
         ArrayList<String> accounts = new ArrayList<String>();
         
         for (Account account : this.currentUserCopy.getAccounts()) {
-            if  (account instanceof BankAccount)
+            if  (account instanceof BankAccount && !accounts.contains(AccountType.BANK_ACCOUNT))
                 accounts.add(AccountType.BANK_ACCOUNT);
-            else if (account instanceof PayPalAccount)
+            else if (account instanceof PayPalAccount && !accounts.contains(AccountType.PAYPAL_ACCOUNT))
                 accounts.add(AccountType.PAYPAL_ACCOUNT);
         }
         
-        return accounts;
+        return accounts.stream().sorted().collect(Collectors.toList());
     }
     
     public void addNewAccount(Object entity) {
