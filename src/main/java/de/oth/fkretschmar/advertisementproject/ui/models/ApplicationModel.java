@@ -16,15 +16,20 @@
  */
 package de.oth.fkretschmar.advertisementproject.ui.models;
 
+import de.oth.fkretschmar.advertisementproject.business.annotation.ContentChanged;
+import de.oth.fkretschmar.advertisementproject.business.events.EntityEvent;
 import de.oth.fkretschmar.advertisementproject.business.services.PasswordException;
 import de.oth.fkretschmar.advertisementproject.business.services.UserServiceException;
 import de.oth.fkretschmar.advertisementproject.business.services.base.IUserService;
+import de.oth.fkretschmar.advertisementproject.entities.campaign.Campaign;
+import de.oth.fkretschmar.advertisementproject.entities.campaign.Content;
 import de.oth.fkretschmar.advertisementproject.entities.user.User;
 import de.oth.fkretschmar.advertisementproject.ui.models.base.AbstractModel;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Function;
 import javax.enterprise.context.SessionScoped;
+import javax.enterprise.event.Observes;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -162,5 +167,44 @@ public class ApplicationModel extends AbstractModel {
             return "overview";
         
         return null;
+    }
+    
+    // --------------- Private methods ---------------
+    
+    
+    /**
+     * Listens to any event that indicates that a content has changed and 
+     * replaces all relevant contents 
+     * @param contentChangedEvent 
+     */
+    private void contentChangedListener(
+            @Observes @ContentChanged EntityEvent<Content> contentChangedEvent) {
+        ApplicationModel.LOCK.lock();
+
+        try {
+            Campaign eventCampaign = contentChangedEvent.getEntity().getCampaign();
+            
+            if(this.currentUser.getId().equals(eventCampaign.getComissioner().getId())) {
+                Campaign targetCampaign = null;
+                for(Campaign campaign : this.currentUser.getCampaigns()) {
+                    if(campaign.getId().longValue() == eventCampaign.getId().longValue()) {
+                        targetCampaign = campaign;
+                        break;
+                    }
+                }
+                
+                if (targetCampaign != null) {
+                    for(Content content : targetCampaign.getContents()) {
+                        if(content.getId().equals(contentChangedEvent.getEntity().getId())) {
+                            targetCampaign.removeContent(content);
+                            targetCampaign.addContent(contentChangedEvent.getEntity());
+                            break;
+                        }
+                    }
+                }
+            }
+        } finally {
+            ApplicationModel.LOCK.unlock();
+        }
     }
 }

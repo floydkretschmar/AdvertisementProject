@@ -16,6 +16,8 @@
  */
 package de.oth.fkretschmar.advertisementproject.business.services;
 
+import de.oth.fkretschmar.advertisementproject.business.annotation.ContentChanged;
+import de.oth.fkretschmar.advertisementproject.business.events.EntityEvent;
 import de.oth.fkretschmar.advertisementproject.business.repositories.CampaignRepository;
 import de.oth.fkretschmar.advertisementproject.business.repositories.ContentRepository;
 import de.oth.fkretschmar.advertisementproject.business.repositories.ContentRequestRepository;
@@ -37,6 +39,7 @@ import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
 
 import javax.enterprise.context.RequestScoped;
+import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -67,6 +70,12 @@ public class ContentService implements Serializable, IContentService, IContentPr
      */
     @Inject
     private CampaignService campaignService;
+    
+    /**
+     * Stores the sender of the content changed event.
+     */
+    @Inject @ContentChanged
+    private Event<EntityEvent<Content>> contentChangedEventSender;
 
     /**
      * Stores the repository used to manage {@link Content} entites.
@@ -234,6 +243,7 @@ public class ContentService implements Serializable, IContentService, IContentPr
         
         // remove one from the number of requests of this specific content
         content.setNumberOfRequests(content.getNumberOfRequests() - 1);
+        this.contentChangedEventSender.fire(new EntityEvent<Content>(content));
         
         // if the number of requests on this content are depleted 
         // -> make sure the campaign still has a non depleted content
