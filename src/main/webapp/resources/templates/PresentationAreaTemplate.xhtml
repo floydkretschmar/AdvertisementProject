@@ -5,7 +5,9 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:b="http://bootsfaces.net/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:prim="http://primefaces.org/ui">
+      xmlns:prim="http://primefaces.org/ui"
+      xmlns:o="http://omnifaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
     <h:head>
     </h:head>
@@ -59,18 +61,37 @@
                             </h:form>
                         </ui:insert>
                     </b:column>
-                    <b:column span="9" class="webvert_pa_column_layout">
+                    <b:column span="#{not empty advertisementModel.content ? '8' : '10'}" class="webvert_pa_column_layout">
                         <!--<b:panel class="webvert_pa_content_layout">-->
                         <ui:insert name="main_content">
                             Main Content
                         </ui:insert>
                         <!--</b:panel>-->
                     </b:column>
-                    <b:column span="1" class="webvert_pa_column_layout">
+                    <b:column span="#{not empty advertisementModel.content ? '2' : '0'}" 
+                              class="webvert_pa_column_ad_layout">
                         <ui:insert name="advert">
-                            <b:panel class="webvert_pa_ad_layout"
+                            <o:importConstants type="de.oth.fkretschmar.advertisementproject.entities.campaign.ContentType" />
+                            <b:panel id="adPanels"
+                                     class="webvert_pa_ad_layout"
                                      collapsible="false">
-                                Test
+                                <b:panel style="text-align: center;">
+                                    <h:outputText value="Advertisement:"
+                                                  style="font-weight: bold"/>
+                                </b:panel>
+                                <b:panel id="adImagePanel"
+                                         rendered="#{advertisementModel.content.contentType eq ContentType.IMAGE_URL}"
+                                         style="min-height: 300px; display: table; padding: 10px; width: 100%">
+                                    <img src="#{advertisementModel.content.value}" 
+                                         class="webvert_pa_image_ad_layout"
+                                         style="display:table-cell; margin-left:auto; margin-right:auto;"/>
+                                </b:panel>
+                                <b:panel id="adTextPanel"
+                                         rendered="#{advertisementModel.content.contentType eq ContentType.TEXT}"
+                                         style="text-align: center; min-height: 300px; display: table; width: 100%;padding: 10px;">
+                                    <h:outputText value="#{advertisementModel.content.value}" 
+                                                  style="padding-top: 16px"/>
+                                </b:panel>
                             </b:panel>
                         </ui:insert>
                     </b:column>
