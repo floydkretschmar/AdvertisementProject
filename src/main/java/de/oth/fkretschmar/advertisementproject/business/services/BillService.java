@@ -45,23 +45,22 @@ import javax.inject.Inject;
 import javax.transaction.Transactional;
 
 /**
- * The service that offers functionality relatetd to the generation and 
+ * The service that offers functionality relatetd to the generation and
  * management of {@link Bill} instances.
  *
- * @author  fkre    Floyd Kretschmar
+ * @author fkre Floyd Kretschmar
  */
 @Singleton
 public class BillService implements Serializable, IBillService {
 
     // --------------- Private fields ---------------
-
     /**
      * Stores the service used to manage {@link BankAccount} entities.
      */
     @Inject
     @BankTransaction
     private ITransactionService bankTransactionService;
-    
+
     /**
      * Stores the repository used to manage {@link Bill} entites.
      */
@@ -73,13 +72,13 @@ public class BillService implements Serializable, IBillService {
      */
     @Inject
     private BillItemRepository billItemRepository;
-    
+
     /**
      * Stores the repository used to manage {@link Campaign} entites.
      */
     @Inject
     private CampaignRepository campaignRepository;
-    
+
     /**
      * Stores the service used to manage {@link Campaign} entites.
      */
@@ -91,7 +90,7 @@ public class BillService implements Serializable, IBillService {
      */
     @Inject
     private ContentRequestRepository contentRequestRepository;
-    
+
     /**
      * Stores the service used to manage {@link PayPalAccount} entities.
      */
@@ -100,215 +99,209 @@ public class BillService implements Serializable, IBillService {
     private ITransactionService payPalTransactionService;
 
     // --------------- Public methods ---------------
-    
-    
     /**
-     * Performs the work of billing the latest set of content requests and 
+     * Performs the work of billing the latest set of content requests and
      * setting up the payment job for campaigns that are payed monthly.
      */
-    @Schedule(minute = "*/3")
+    @Schedule(hour = "*", minute = "*/3", second = "*")
     @Transactional
     public void billMonthlyContentRequests() {
         this.billContentRequests(PaymentInterval.MONTHLY);
     }
-    
-    
+
     /**
-     * Performs the work of billing the latest set of content requests and 
+     * Performs the work of billing the latest set of content requests and
      * setting up the payment job for campaigns that are payed quaterly.
      */
-    @Schedule(minute = "*/9")
+    @Schedule(hour = "*", minute = "*/9", second = "*")
     @Transactional
     public void billQuaterlyContentRequests() {
         this.billContentRequests(PaymentInterval.QUATERLY);
     }
-    
-    
+
     /**
-     * Performs the work of billing the latest set of content requests and 
+     * Performs the work of billing the latest set of content requests and
      * setting up the payment job for campaigns that are payed yearly.
      */
-    @Schedule(minute = "*/36")
+    @Schedule(hour = "*", minute = "*/36", second = "*")
     @Transactional
     public void billYearlyContentRequests() {
         this.billContentRequests(PaymentInterval.YEARLY);
     }
-    
+
     /**
-     * Creates a new {@link Bill} and links it to the already existing 
-     * specified {@link Campaign}.
-     * 
-     * @param   campaign    to which the bill will be linked.
-     * @param   bill        that will be created.
-     * @return              the changed campaign.
+     * Creates a new {@link Bill} and links it to the already existing specified
+     * {@link Campaign}.
+     *
+     * @param campaign to which the bill will be linked.
+     * @param bill that will be created.
+     * @return the changed campaign.
      */
     @Transactional
     @Override
     public Campaign createBillForCampaign(Campaign campaign, Bill bill) {
-        
+
         // 1. persist the bill items
         this.billItemRepository.persist(bill.getItems());
-        
+
         // 2. set the campaign on the bill
         campaign = this.campaignRepository.merge(campaign);
         bill.setCampaign(campaign);
-        
+
         // 3. persist the bill
         this.billRepository.persist(bill);
-        
+
         // 4. set the bill on the campaign
         campaign.addBill(bill);
-        
+
         return campaign;
     }
-    
-    
+
     /**
      * Deletes the specified {@link Bill} from the database.
-     * 
-     * @param   bill    that will be deleted.
+     *
+     * @param bill that will be deleted.
      */
     @Transactional
     @Override
     public void deleteBill(Bill bill) {
         Object[] items = bill.getItems().toArray();
-        
+
         for (int i = 0; i < items.length; i++) {
-            if(items[i] instanceof BillItem){
+            if (items[i] instanceof BillItem) {
                 // only call remove because the bill and bill items are 
                 // undeletable so still keep their connection
-                this.billItemRepository.remove((BillItem)items[i]);
+                this.billItemRepository.remove((BillItem) items[i]);
             }
         }
-        
+
         this.billRepository.remove(bill);
     }
-    
+
     // --------------- Private methods ---------------
-    
-    
     /**
-     * Performs the work of billing the latest set of content requests and 
+     * Performs the work of billing the latest set of content requests and
      * setting up the payment job for the specified payment interval.
-     * @param interval  the interval.
+     *
+     * @param interval the interval.
      */
     @Transactional
     private void billContentRequests(PaymentInterval interval) {
         // finds all requests that have been made since the last interval and 
         // that have the specified pazment interval
-        Collection<ContentRequest> requests 
+        Collection<ContentRequest> requests
                 = this.contentRequestRepository.findForPaymentInterval(interval);
-        
+
         Map<Long, Bill> bills = new TreeMap<Long, Bill>();
         Map<Long, Campaign> campaigns = new TreeMap<Long, Campaign>();
         Map<Long, Map<String, BillItem>> billItemMaps = new TreeMap<Long, Map<String, BillItem>>();
-        
-        requests.forEach(request -> 
-        {
-            Content content = request.getContent();
-            Campaign campaign = content.getCampaign();
 
-            // 1.   find out whether or not a bill has already been created for 
-            //      the campaign that this request is bound to...
-            Bill bill = null;
-            if(bills.containsKey(campaign.getId())) {
-                //... and get the bill as well as the corresponding bill items
-                // if the bill already exists
-                bill = bills.get(campaign.getId());
-                Map<String, BillItem> billItems = billItemMaps.get(campaign.getId());
+        if (requests != null && requests.size() > 0) {
+            for (ContentRequest request : requests) {
+                Content content = request.getContent();
+                Campaign campaign = content.getCampaign();
 
-                // 2.   if a bill already exists, find out whether or not there
-                //      is already a corresponding bill item to the content of
-                //      this request
-                BillItem billItem = null;
-                if (billItems.containsKey(content.getId())) {
-                    // A corresponding bill item already exists so get it...
-                    billItem = billItems.get(content.getId());
+                // 1.   find out whether or not a bill has already been created for 
+                //      the campaign that this request is bound to...
+                Bill bill = null;
+                if (bills.containsKey(campaign.getId())) {
+                    //... and get the bill as well as the corresponding bill items
+                    // if the bill already exists
+                    bill = bills.get(campaign.getId());
+                    Map<String, BillItem> billItems = billItemMaps.get(campaign.getId());
 
-                    // ... add the additional request ...
-                    billItem = BillItem.createBillItem()
-                            .content(content)
-                            .contentRequests(billItem.getContentRequests() + 1)
-                            .build();
-                    
-                    // ... and replace the old item.
-                    billItems.replace(content.getId(), billItem);
-                }
-                else {
-                    // No corresponding bill item exists so just create a new
-                    // one and add it to the bill.
-                    billItem = BillItem.createBillItem()
+                    // 2.   if a bill already exists, find out whether or not there
+                    //      is already a corresponding bill item to the content of
+                    //      this request
+                    BillItem billItem = null;
+                    if (billItems.containsKey(content.getId())) {
+                        // A corresponding bill item already exists so get it...
+                        billItem = billItems.get(content.getId());
+
+                        // ... add the additional request ...
+                        billItem = BillItem.createBillItem()
+                                .content(content)
+                                .contentRequests(billItem.getContentRequests() + 1)
+                                .build();
+
+                        // ... and replace the old item.
+                        billItems.replace(content.getId(), billItem);
+                    } else {
+                        // No corresponding bill item exists so just create a new
+                        // one and add it to the bill.
+                        billItem = BillItem.createBillItem()
+                                .content(content)
+                                .contentRequests(1)
+                                .build();
+                        billItems.put(content.getId(), billItem);
+                    }
+
+                    // replace the found bill with the changed bill
+                    bills.replace(campaign.getId(), bill);
+                } else {
+                    // 3.   If a bill does not exist already, just create a new one,
+                    //      create a map for the bill items, add a bill item for 
+                    //      this change request and store it in the map.
+                    Map<String, BillItem> billItems = new HashMap<>();
+                    BillItem billItem = BillItem.createBillItem()
                             .content(content)
                             .contentRequests(1)
                             .build();
                     billItems.put(content.getId(), billItem);
+                    billItemMaps.put(campaign.getId(), billItems);
+
+                    bill = Bill.createBill().build();
+                    bills.put(campaign.getId(), bill);
+
+                    campaigns.put(campaign.getId(), campaign);
                 }
-                
-                // replace the found bill with the changed bill
-                bills.replace(campaign.getId(), bill);
             }
-            else {
-                // 3.   If a bill does not exist already, just create a new one,
-                //      create a map for the bill items, add a bill item for 
-                //      this change request and store it in the map.
-                Map<String, BillItem> billItems = new HashMap<>();
-                BillItem billItem = BillItem.createBillItem()
-                            .content(content)
-                            .contentRequests(1)
-                            .build();
-                billItems.put(content.getId(), billItem);
-                billItemMaps.put(campaign.getId(), billItems);
-                
-                bill = Bill.createBill().build();
-                bills.put(campaign.getId(), bill);
-                
-                campaigns.put(campaign.getId(), campaign);
-            }
-        });
-        
-        bills.forEach((campaignId, bill) -> 
-        {
-            // Add all corresponding bill items to the bill...
-            Map<String, BillItem> billItems = billItemMaps.get(campaignId);
-            billItems.values().forEach(billItem -> bill.addItem(billItem));
-            
-            // ... create each bill for its existing campaign...
-            Campaign campaign = this.createBillForCampaign(
-                    campaigns.get(campaignId), bill);
-            // ... inform the current user, that the campaign has changed...
-            this.campaignService.changeCampaignForUser(
-                            campaign.getComissioner(), 
-                            campaign);
-            // ... and actually pay for the bill.
-            if (campaign.getPaymentAccount() instanceof PayPalAccount)
-                this.payPalTransactionService.transfer(
-                        bill.getTotalPrice(), 
-                        campaign.getPaymentAccount(), 
-                        PayPalAccount.OWN_ACCOUNT, 
-                        String.format(
-                                "Payment for bill %s of campaign %s", 
-                                bill.getId(),
-                                campaign.getId()));
-            else if (campaign.getPaymentAccount() instanceof BankAccount)
-                this.bankTransactionService.transfer(
-                        bill.getTotalPrice(), 
-                        campaign.getPaymentAccount(), 
-                        BankAccount.OWN_ACCOUNT, 
-                        String.format(
-                                "Payment for bill %s of campaign %s", 
-                                bill.getId(),
-                                campaign.getId()));
-        });
-        
-        // Set the corresponding bill on the requests so next time around the
-        // paid requests are not loaded.
-        requests.forEach(request -> 
-        {
-            ContentRequest mergedRequest 
-                    = this.contentRequestRepository.merge(request);
-            
-            long campaignId = mergedRequest.getContent().getCampaign().getId();
-            mergedRequest.setBill(bills.get(campaignId));
-        });
+
+            bills.forEach((campaignId, bill)
+                    -> {
+                // Add all corresponding bill items to the bill...
+                Map<String, BillItem> billItems = billItemMaps.get(campaignId);
+                billItems.values().forEach(billItem -> bill.addItem(billItem));
+
+                // ... create each bill for its existing campaign...
+                Campaign campaign = this.createBillForCampaign(
+                        campaigns.get(campaignId), bill);
+                // ... inform the current user, that the campaign has changed...
+                this.campaignService.changeCampaignForUser(
+                        campaign.getComissioner(),
+                        campaign);
+                // ... and actually pay for the bill.
+                if (campaign.getPaymentAccount() instanceof PayPalAccount) {
+                    this.payPalTransactionService.transfer(
+                            bill.getTotalPrice(),
+                            campaign.getPaymentAccount(),
+                            PayPalAccount.OWN_ACCOUNT,
+                            String.format(
+                                    "Payment for bill %s of campaign %s",
+                                    bill.getId(),
+                                    campaign.getId()));
+                } else if (campaign.getPaymentAccount() instanceof BankAccount) {
+                    this.bankTransactionService.transfer(
+                            bill.getTotalPrice(),
+                            campaign.getPaymentAccount(),
+                            BankAccount.OWN_ACCOUNT,
+                            String.format(
+                                    "Payment for bill %s of campaign %s",
+                                    bill.getId(),
+                                    campaign.getId()));
+                }
+            });
+
+            // Set the corresponding bill on the requests so next time around the
+            // paid requests are not loaded.
+            requests.forEach(request
+                    -> {
+                ContentRequest mergedRequest
+                        = this.contentRequestRepository.merge(request);
+
+                long campaignId = mergedRequest.getContent().getCampaign().getId();
+                mergedRequest.setBill(bills.get(campaignId));
+            });
+        }
     }
 }

@@ -64,7 +64,6 @@ public class ApplicationModel extends AbstractModel {
     
     // --------------- Public methods ---------------
     
-    
     /**
      * Authenticates an user using the specified e-mail and password.
      *

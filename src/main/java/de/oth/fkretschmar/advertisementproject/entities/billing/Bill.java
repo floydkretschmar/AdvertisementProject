@@ -82,8 +82,10 @@ public class Bill extends AbstractAutoGenerateKeyedEntity {
      */
     private Bill(BillItem[] items) {
         super();
-        for (BillItem item : items) {
-            this.addItem(item);
+        if (items != null) {
+            for (BillItem item : items) {
+                this.addItem(item);
+            }
         }
     }
 
