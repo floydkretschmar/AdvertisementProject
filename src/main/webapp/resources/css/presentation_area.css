@@ -75,10 +75,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 .webvert_pa_image_ad_layout {
     max-width: 100%;
-    vertical-align: middle;
 }
 
-#adTextPanelcontent, #adImagePanelContent {
-    display: table-cell;
+#adTextPanelcontent, #adImagePanelcontent {
+    display: table-cell !important;
     vertical-align: middle;
 }

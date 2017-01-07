@@ -139,7 +139,7 @@ public class Bill extends AbstractAutoGenerateKeyedEntity {
         if (this.totalPrice == null) {
             this.totalPrice = Money.of(itemPrice);
         } else {
-            this.totalPrice.plus(itemPrice);
+            this.totalPrice = this.totalPrice.plus(itemPrice);
         }
     }
 

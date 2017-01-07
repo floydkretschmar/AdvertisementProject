@@ -22,6 +22,7 @@ import de.oth.fkretschmar.advertisementproject.entities.base.AbstractAutoGenerat
 import de.oth.fkretschmar.advertisementproject.entities.base.AbstractRandomStringKeyedEntity;
 import de.oth.fkretschmar.advertisementproject.entities.base.IDeletable;
 import de.oth.fkretschmar.advertisementproject.entities.base.converter.MoneyAttributeConverter;
+import de.oth.fkretschmar.advertisementproject.entities.user.User;
 
 import java.io.Serializable;
 import java.net.MalformedURLException;
@@ -36,6 +37,8 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
@@ -56,9 +59,25 @@ import org.joda.money.Money;
  */
 @Entity(name = "T_CONTENT")
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
+@NamedQueries({
+    @NamedQuery(
+            name = Content.FIND_ALL_ACTIVE, 
+            query = " select CONTENT "
+                    + "from T_CONTENT CONTENT "
+                    + "where CONTENT.numberOfRequests > 0 "
+                    + "AND CONTENT.campaign.campaignState = de.oth.fkretschmar.advertisementproject.entities.campaign.CampaignState.RUNNING")
+})
 @ToString(callSuper = true, exclude = "campaign")
 public class Content extends AbstractRandomStringKeyedEntity
         implements IDeletable<String> {
+    
+    // --------------- Public static constants ---------------
+    
+    /**
+     * Defines the name of the query to find all active contents (number of 
+     * requests greater 0 and campaign is not cancelled).
+     */
+    public static final String FIND_ALL_ACTIVE = "User.findAllActive";
     
     // --------------- Private fields ---------------
 

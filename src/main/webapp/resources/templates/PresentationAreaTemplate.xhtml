@@ -69,12 +69,14 @@
                         <!--</b:panel>-->
                     </b:column>
                     <b:column span="#{not empty advertisementModel.content ? '2' : '0'}" 
-                              class="webvert_pa_column_ad_layout">
+                              class="webvert_pa_column_ad_layout"
+                              rendered="#{not empty advertisementModel.content}">
                         <ui:insert name="advert">
                             <o:importConstants type="de.oth.fkretschmar.advertisementproject.entities.campaign.ContentType" />
                             <b:panel id="adPanels"
                                      class="webvert_pa_ad_layout"
-                                     collapsible="false">
+                                     collapsible="false"
+                                     rendered="#{not empty advertisementModel.content}">
                                 <b:panel style="text-align: center;">
                                     <h:outputText value="Advertisement:"
                                                   style="font-weight: bold"/>
