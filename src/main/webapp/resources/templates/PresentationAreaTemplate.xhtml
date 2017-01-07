@@ -81,19 +81,21 @@
                                     <h:outputText value="Advertisement:"
                                                   style="font-weight: bold"/>
                                 </b:panel>
-                                <b:panel id="adImagePanel"
-                                         rendered="#{advertisementModel.content.contentType eq ContentType.IMAGE_URL}"
-                                         style="min-height: 300px; display: table; padding: 10px; width: 100%">
-                                    <img src="#{advertisementModel.content.value}" 
-                                         class="webvert_pa_image_ad_layout"
-                                         style="display:table-cell; margin-left:auto; margin-right:auto;"/>
-                                </b:panel>
-                                <b:panel id="adTextPanel"
-                                         rendered="#{advertisementModel.content.contentType eq ContentType.TEXT}"
-                                         style="text-align: center; min-height: 300px; display: table; width: 100%;padding: 10px;">
-                                    <h:outputText value="#{advertisementModel.content.value}" 
-                                                  style="padding-top: 16px"/>
-                                </b:panel>
+                                <h:outputLink value="#{advertisementModel.content.targetUrl}">
+                                    <b:panel id="adImagePanel"
+                                             rendered="#{advertisementModel.content.contentType eq ContentType.IMAGE_URL}"
+                                             style="min-height: 300px; display: table; padding: 10px; width: 100%">
+                                        <img src="#{advertisementModel.content.value}" 
+                                             class="webvert_pa_image_ad_layout"
+                                             style="display:table-cell; margin-left:auto; margin-right:auto;"/>
+                                    </b:panel>
+                                    <b:panel id="adTextPanel"
+                                             rendered="#{advertisementModel.content.contentType eq ContentType.TEXT}"
+                                             style="text-align: center; min-height: 300px; display: table; width: 100%;padding: 10px;">
+                                        <h:outputText value="#{advertisementModel.content.value}" 
+                                                      style="padding-top: 16px"/>
+                                    </b:panel>
+                                </h:outputLink>
                             </b:panel>
                         </ui:insert>
                     </b:column>

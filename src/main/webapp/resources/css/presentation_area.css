@@ -69,6 +69,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 .webvert_pa_column_ad_layout {
     height: 100%;
     padding-right: 3em !important;
+    padding-left: 0px !important;
     /*display: table !important;*/
 }
 
