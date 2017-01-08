@@ -16,10 +16,15 @@
  */
 package de.oth.fkretschmar.advertisementproject.business.services;
 
+import de.jreichl.service.web.ITransactionWS;
+import de.jreichl.service.web.TransactionFailedException_Exception;
+import de.jreichl.service.web.TransactionWSService;
 import de.oth.fkretschmar.advertisementproject.business.annotation.BankTransaction;
 import de.oth.fkretschmar.advertisementproject.business.services.base.ITransactionService;
 import de.oth.fkretschmar.advertisementproject.entities.billing.Account;
+import de.oth.fkretschmar.advertisementproject.entities.billing.BankAccount;
 import javax.enterprise.context.RequestScoped;
+import javax.xml.ws.WebServiceRef;
 import org.joda.money.Money;
 
 /**
@@ -30,30 +35,62 @@ import org.joda.money.Money;
 @RequestScoped
 public class BankTransactionService implements ITransactionService {
 
+    @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_8081/BankReichl/TransactionWS.wsdl")
+    private TransactionWSService service;
+
     /**
      * Transfers the specified amount from the sender to the recipient using the
      * specified transaction reason.
-     * 
-     * @param amount        the amount that will be transfered.
-     * @param sender        the sender of the transaction.
-     * @param recipient     the recipient of the transaction.
-     * @param description   the description explaining the reason for the 
-     *                      transaction.
+     *
+     * @param   amount      the amount that will be transfered.
+     * @param   sender      the sender of the transaction.
+     * @param   recipient   the recipient of the transaction.
+     * @param   description the description explaining the reason for the
+     * transaction.
+     * @throws TransactionFailedException   that indicates that the transaction
+     *                                      has not been successfull.
      */
     @Override
     public void transfer(
-            Money amount, 
-            Account sender, 
-            Account recipient, 
-            String description) {
-        // TODO: call the web service of a bank.
-        System.out.println(
-                String.format(
-                        "Here could be a pay pal transaction of %s amount "
-                        + "from the account %s to the account %s.", 
-                        amount.toString(),
-                        sender.toString(),
-                        recipient.toString()));
+            Money amount,
+            Account sender,
+            Account recipient,
+            String description) throws TransactionFailedException {
+        if (sender instanceof BankAccount && recipient instanceof BankAccount) {
+            try {
+                ITransactionWS port = service.getTransactionWSPort();
+                boolean result = port.transfer(
+                        amount.getAmountMinorLong(), 
+                        ((BankAccount)sender).getIban(), 
+                        ((BankAccount)recipient).getIban(), 
+                        description);
+                System.out.println("Result = " + result);
+            } catch (TransactionFailedException_Exception ex) {
+                // TODO: find better way of determining the failure reason
+                if (ex.getFaultInfo().getMessage().contains("Nicht genügend Geld")) {
+                    throw new TransactionFailedException(
+                            ex.getFaultInfo().getMessage(), 
+                            TransactionFailureReason.SENDER_OUT_OF_MONEY);
+                }
+                else if (ex.getFaultInfo().getMessage().contains(
+                        String.format(
+                                "%s is not a valid IBAN", 
+                                ((BankAccount)sender).getIban()))) {
+                    throw new TransactionFailedException(
+                            ex.getFaultInfo().getMessage(), 
+                            TransactionFailureReason.SENDER_NOT_VALID);
+                }
+                else if (ex.getFaultInfo().getMessage().contains(
+                        String.format(
+                                "%s is not a valid IBAN", 
+                                ((BankAccount)recipient).getIban()))) {
+                    throw new TransactionFailedException(
+                            ex.getFaultInfo().getMessage(), 
+                            TransactionFailureReason.RECIPIENT_NOT_VALID);
+                }
+            }
+        }
+
     }
-    
+
 }

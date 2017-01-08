@@ -39,6 +39,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.Schedule;
 import javax.ejb.Singleton;
 import javax.inject.Inject;
@@ -103,7 +105,7 @@ public class BillService implements Serializable, IBillService {
      * Performs the work of billing the latest set of content requests and
      * setting up the payment job for campaigns that are payed monthly.
      */
-    @Schedule(hour = "*", minute = "*/3", second = "*")
+    @Schedule(hour = "*", minute = "*", second = "*/30")
     @Transactional
     public void billMonthlyContentRequests() {
         this.billContentRequests(PaymentInterval.MONTHLY);
@@ -270,25 +272,32 @@ public class BillService implements Serializable, IBillService {
                 this.campaignService.changeCampaignForUser(
                         campaign.getComissioner(),
                         campaign);
-                // ... and actually pay for the bill.
-                if (campaign.getPaymentAccount() instanceof PayPalAccount) {
-                    this.payPalTransactionService.transfer(
-                            bill.getTotalPrice(),
-                            campaign.getPaymentAccount(),
-                            PayPalAccount.OWN_ACCOUNT,
-                            String.format(
-                                    "Payment for bill %s of campaign %s",
-                                    bill.getId(),
-                                    campaign.getId()));
-                } else if (campaign.getPaymentAccount() instanceof BankAccount) {
-                    this.bankTransactionService.transfer(
-                            bill.getTotalPrice(),
-                            campaign.getPaymentAccount(),
-                            BankAccount.OWN_ACCOUNT,
-                            String.format(
-                                    "Payment for bill %s of campaign %s",
-                                    bill.getId(),
-                                    campaign.getId()));
+
+                try {
+                    // ... and actually pay for the bill.
+                    if (campaign.getPaymentAccount() instanceof PayPalAccount) {
+                        this.payPalTransactionService.transfer(
+                                bill.getTotalPrice(),
+                                campaign.getPaymentAccount(),
+                                PayPalAccount.OWN_ACCOUNT,
+                                String.format(
+                                        "Payment for bill %s of campaign %s",
+                                        bill.getId(),
+                                        campaign.getId()));
+                    } else if (campaign.getPaymentAccount() instanceof BankAccount) {
+                        this.bankTransactionService.transfer(
+                                bill.getTotalPrice(),
+                                campaign.getPaymentAccount(),
+                                BankAccount.OWN_ACCOUNT,
+                                String.format(
+                                        "Payment for bill %s of campaign %s",
+                                        bill.getId(),
+                                        campaign.getId()));
+                    }
+                } catch (TransactionFailedException ex) {
+                    if (ex.getReason() == TransactionFailureReason.SENDER_OUT_OF_MONEY) {
+                        // TODO: handle the failed payment with overdue notice
+                    }
                 }
             });
 

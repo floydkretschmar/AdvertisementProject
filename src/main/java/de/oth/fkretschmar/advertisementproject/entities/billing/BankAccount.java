@@ -50,8 +50,8 @@ public class BankAccount extends Account {
      */
     public static final BankAccount OWN_ACCOUNT 
             = BankAccount.createBankAccount()
-                    .bic("123")
-                    .iban("456")
+                    .bic("REIBKDE1")
+                    .iban("DE21772300000000000000")
                     .build();
 
     // --------------- Private fields ---------------

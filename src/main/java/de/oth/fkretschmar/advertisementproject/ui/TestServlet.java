@@ -154,8 +154,8 @@ public class TestServlet extends HttpServlet {
                 // create and remove accounts for user:
                 
                 Account acc = BankAccount.createBankAccount()
-                        .iban("DE948309535956456")
-                        .bic("GENOD43945").build();
+                        .iban("DE21772300000000000000")
+                        .bic("REIBKDE1").build();
                 
 //                ApplicationService.processCurrentUser(currentUser -> {
                    user = this.userService.createAccountForUser(user, acc);
@@ -163,8 +163,8 @@ public class TestServlet extends HttpServlet {
                 
                 
                 Account acc2 = BankAccount.createBankAccount()
-                        .iban("DE55555555555555555555")
-                        .bic("GENOD43945").build();
+                        .iban("DE21772300000000000001")
+                        .bic("REIBKDE1").build();
 
 //                ApplicationService.processCurrentUser(currentUser -> {
                     user = this.userService.createAccountForUser(user, acc2);
@@ -277,7 +277,7 @@ public class TestServlet extends HttpServlet {
                         .items(bitems)
                         .build();
                 
-                campaign = this.billService.createBillForCampaign(campaign, bill);
+//                campaign = this.billService.createBillForCampaign(campaign, bill);
                 
                 
 //                for(int i = 0; i < 50; i++) {
@@ -291,10 +291,10 @@ public class TestServlet extends HttpServlet {
 //                    out.println(bestContent.get().getId());
 //                }
 //                out.println("<br>");
-                for(int i = 0; i < 10; i++) {
-                    Optional<Content> bestContent = this.adProvider.requestRandomContent("myself");
-                    out.println(bestContent.get().getId());
-                }
+//                for(int i = 0; i < 10; i++) {
+//                    Optional<Content> bestContent = this.adProvider.requestRandomContent("myself");
+//                    out.println(bestContent.get().getId());
+//                }
                 
                 //this.billService.billContentRequests(PaymentInterval.MONTHLY);
                 

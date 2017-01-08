@@ -16,6 +16,7 @@
  */
 package de.oth.fkretschmar.advertisementproject.business.services.base;
 
+import de.oth.fkretschmar.advertisementproject.business.services.TransactionFailedException;
 import de.oth.fkretschmar.advertisementproject.entities.billing.Account;
 import org.joda.money.Money;
 
@@ -28,16 +29,18 @@ public interface ITransactionService {
     /**
      * Transfers the specified amount from the sender to the recipient using the
      * specified transaction reason.
-     * 
-     * @param amount        the amount that will be transfered.
-     * @param sender        the sender of the transaction.
-     * @param recipient     the recipient of the transaction.
-     * @param description   the description explaining the reason for the 
-     *                      transaction.
+     *
+     * @param   amount      the amount that will be transfered.
+     * @param   sender      the sender of the transaction.
+     * @param   recipient   the recipient of the transaction.
+     * @param   description the description explaining the reason for the
+     * transaction.
+     * @throws TransactionFailedException   that indicates that the transaction
+     *                                      has not been successfull.
      */
     public void transfer(
             Money amount,
-            Account sender, 
+            Account sender,
             Account recipient,
-            String description);
+            String description) throws TransactionFailedException;
 }

@@ -33,19 +33,21 @@ public class PayPalTransactionService implements ITransactionService {
     /**
      * Transfers the specified amount from the sender to the recipient using the
      * specified transaction reason.
-     * 
-     * @param amount        the amount that will be transfered.
-     * @param sender        the sender of the transaction.
-     * @param recipient     the recipient of the transaction.
-     * @param description   the description explaining the reason for the 
-     *                      transaction.
+     *
+     * @param   amount      the amount that will be transfered.
+     * @param   sender      the sender of the transaction.
+     * @param   recipient   the recipient of the transaction.
+     * @param   description the description explaining the reason for the
+     * transaction.
+     * @throws TransactionFailedException   that indicates that the transaction
+     *                                      has not been successfull.
      */
     @Override
     public void transfer(
             Money amount,
             Account sender, 
             Account recipient,
-            String description) {
+            String description) throws TransactionFailedException {
         System.out.println(
                 String.format(
                         "Here could be a pay pal transaction of %s amount "
