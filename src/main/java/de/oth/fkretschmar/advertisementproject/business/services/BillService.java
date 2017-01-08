@@ -141,7 +141,7 @@ public class BillService implements Serializable, IBillService {
      * Performs the work of billing the latest set of content requests and
      * setting up the payment job for campaigns that are payed monthly.
      */
-    @Schedule(hour = "*", minute = "*", second = "*/30")
+    @Schedule(hour = "*", minute = "*/3", second = "*")
     @Transactional
     public void billMonthlyContentRequests() {
         this.billContentRequests(PaymentInterval.MONTHLY);
