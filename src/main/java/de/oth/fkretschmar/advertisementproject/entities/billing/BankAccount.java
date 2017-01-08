@@ -37,22 +37,6 @@ import lombok.ToString;
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 @ToString(callSuper = true)
 public class BankAccount extends Account {
-    
-    // --------------- Public static fields ---------------
-    
-    /**
-     * Stores the own account that is the target for transactions.
-     * 
-     * NOTE: Should not be hard coded ofcourse but I am spending way to much 
-     * time on irrelevant shit already.
-     * 
-     * TODO: set valid values for BIC and IBAN
-     */
-    public static final BankAccount OWN_ACCOUNT 
-            = BankAccount.createBankAccount()
-                    .bic("REIBKDE1")
-                    .iban("DE21772300000000000000")
-                    .build();
 
     // --------------- Private fields ---------------
 

@@ -36,20 +36,6 @@ import lombok.ToString;
 @ToString(callSuper = true)
 public class PayPalAccount extends Account {
     
-    // --------------- Public static fields ---------------
-    
-    /**
-     * Stores the own account that is the target for transactions.
-     * 
-     * NOTE: Should not be hard coded ofcourse but I am spending way to much 
-     * time on irrelevant shit already.
-     */
-    public static final PayPalAccount OWN_ACCOUNT 
-            = PayPalAccount.createPayPalAccount()
-                    .name("testuser@gmail.com")
-                    .build();
-    
-    
     // --------------- Private fields ---------------
 
     /**

@@ -154,7 +154,7 @@ public class TestServlet extends HttpServlet {
                 // create and remove accounts for user:
                 
                 Account acc = BankAccount.createBankAccount()
-                        .iban("DE21772300000000000000")
+                        .iban("DE91772300000000000001")
                         .bic("REIBKDE1").build();
                 
 //                ApplicationService.processCurrentUser(currentUser -> {
@@ -162,14 +162,14 @@ public class TestServlet extends HttpServlet {
 //                });
                 
                 
-                Account acc2 = BankAccount.createBankAccount()
-                        .iban("DE21772300000000000001")
-                        .bic("REIBKDE1").build();
-
-//                ApplicationService.processCurrentUser(currentUser -> {
-                    user = this.userService.createAccountForUser(user, acc2);
-                    user = this.userService.deleteAccountFromUser(user, acc2);
-//                });
+//                Account acc2 = BankAccount.createBankAccount()
+//                        .iban("DE91772300000000000001")
+//                        .bic("REIBKDE1").build();
+//
+////                ApplicationService.processCurrentUser(currentUser -> {
+//                    user = this.userService.createAccountForUser(user, acc2);
+//                    user = this.userService.deleteAccountFromUser(user, acc2);
+////                });
                 
 
                 

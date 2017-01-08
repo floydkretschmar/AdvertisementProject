@@ -35,16 +35,17 @@ import de.oth.fkretschmar.advertisementproject.entities.campaign.PaymentInterval
 import de.oth.fkretschmar.advertisementproject.entities.billing.PayPalAccount;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ejb.Schedule;
 import javax.ejb.Singleton;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
+import org.joda.money.CurrencyUnit;
+import org.joda.money.Money;
 
 /**
  * The service that offers functionality relatetd to the generation and
@@ -54,6 +55,41 @@ import javax.transaction.Transactional;
  */
 @Singleton
 public class BillService implements Serializable, IBillService {
+
+    // --------------- Private static constants ---------------
+    
+    /**
+     * Defines the initial overdue charge if the account which is supposed to pay
+     * a bill has not enough money on it.
+     */
+    private static final Money INITIAL_OVERDUE_CHARGE 
+            = Money.of(CurrencyUnit.EUR, 10);
+    
+    /**
+     * Defines the own account that is the target for transactions.
+     * 
+     * NOTE: Should not be hard coded ofcourse but I am spending way to much 
+     * time on irrelevant shit already.
+     */
+    public static final BankAccount OWN_BANK_ACCOUNT 
+            = BankAccount.createBankAccount()
+                    .bic("REIBKDE1")
+                    .iban("DE21772300000000000000")
+                    .build();
+    
+    /**
+     * Defines the own account that is the target for transactions.
+     */
+    public static final PayPalAccount OWN_PAYPAL_ACCOUNT 
+            = PayPalAccount.createPayPalAccount()
+                    .name("testuser@gmail.com")
+                    .build();
+    /**
+     * Defines the subsequent overdue charge for every attempt to pay the 
+     * overdue bill, that fails.
+     */
+    private static final Money SUBSEQUENT_OVERDUE_CHARGE 
+            = Money.of(CurrencyUnit.EUR, 15);
 
     // --------------- Private fields ---------------
     /**
@@ -279,7 +315,7 @@ public class BillService implements Serializable, IBillService {
                         this.payPalTransactionService.transfer(
                                 bill.getTotalPrice(),
                                 campaign.getPaymentAccount(),
-                                PayPalAccount.OWN_ACCOUNT,
+                                BillService.OWN_PAYPAL_ACCOUNT,
                                 String.format(
                                         "Payment for bill %s of campaign %s",
                                         bill.getId(),
@@ -288,7 +324,7 @@ public class BillService implements Serializable, IBillService {
                         this.bankTransactionService.transfer(
                                 bill.getTotalPrice(),
                                 campaign.getPaymentAccount(),
-                                BankAccount.OWN_ACCOUNT,
+                                BillService.OWN_BANK_ACCOUNT,
                                 String.format(
                                         "Payment for bill %s of campaign %s",
                                         bill.getId(),
@@ -296,7 +332,8 @@ public class BillService implements Serializable, IBillService {
                     }
                 } catch (TransactionFailedException ex) {
                     if (ex.getReason() == TransactionFailureReason.SENDER_OUT_OF_MONEY) {
-                        // TODO: handle the failed payment with overdue notice
+                        bill.setOverdue(true);
+                        bill.setOverdueCharge(BillService.INITIAL_OVERDUE_CHARGE);
                     }
                 }
             });

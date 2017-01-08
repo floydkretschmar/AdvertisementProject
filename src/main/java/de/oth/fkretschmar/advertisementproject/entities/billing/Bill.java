@@ -19,11 +19,14 @@ package de.oth.fkretschmar.advertisementproject.entities.billing;
 import de.oth.fkretschmar.advertisementproject.entities.exceptions.BuilderValidationException;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.Campaign;
 import de.oth.fkretschmar.advertisementproject.entities.base.AbstractAutoGenerateKeyedEntity;
+import de.oth.fkretschmar.advertisementproject.entities.base.converter.MoneyAttributeConverter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 import java.util.TreeMap;
+import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -37,6 +40,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.Getter;
 import lombok.Setter;
+import org.joda.money.CurrencyUnit;
 import org.joda.money.Money;
 
 /**
@@ -58,6 +62,22 @@ public class Bill extends AbstractAutoGenerateKeyedEntity {
     @Getter
     @Setter
     private Campaign campaign;
+    
+    /**
+     * Stores the value indicating whether or not the campaign is overdue.
+     */
+    @Column(name = "OVERDUE")
+    @Getter
+    @Setter
+    private boolean overdue;
+    
+    /**
+     * Stores the amount of money being charged because the bill is overdue.
+     */
+    @Column(name = "OVERDUE_CHARGE", nullable = false)
+    @Getter
+    @Convert(converter = MoneyAttributeConverter.class)
+    private Money overdueCharge = Money.of(CurrencyUnit.EUR, 0);
 
     /**
      * Stores the items that make up the bill.
@@ -90,6 +110,7 @@ public class Bill extends AbstractAutoGenerateKeyedEntity {
     }
 
     // --------------- Public getters and setters ---------------
+    
     /**
      * Gets the items that make up the bill.
      *
@@ -97,6 +118,19 @@ public class Bill extends AbstractAutoGenerateKeyedEntity {
      */
     public Collection<BillItem> getItems() {
         return Collections.unmodifiableCollection(this.items);
+    }
+    
+    /**
+     * Sets the the amount of money being charged because the bill is overdue.
+     * @param overdueCharge     the overdue charge for the bill.
+     */
+    public void setOverdueCharge(Money overdueCharge) {
+        if (this.totalPrice != null && this.overdueCharge != null) {
+            this.totalPrice = this.totalPrice.minus(this.overdueCharge);
+        }
+        
+        this.addToTotalPrice(overdueCharge);
+        this.overdueCharge = overdueCharge;
     }
 
     // --------------- Public methods ---------------
@@ -108,7 +142,7 @@ public class Bill extends AbstractAutoGenerateKeyedEntity {
      */
     public boolean addItem(BillItem item) {
         if (this.items.add(item)) {
-            this.addToTotalPrice(item);
+            this.addToTotalPrice(item.getItemPrice());
             return false;
         }
 
@@ -123,7 +157,7 @@ public class Bill extends AbstractAutoGenerateKeyedEntity {
     @Override
     protected void postLoad() {
         for (BillItem item : this.items) {
-            this.addToTotalPrice(item);
+            this.addToTotalPrice(item.getItemPrice());
         }
     }
 
@@ -133,11 +167,9 @@ public class Bill extends AbstractAutoGenerateKeyedEntity {
      * the total price has not been set, the total price will be initialized
      * with the price of the specified item.
      *
-     * @param item the item whose price will be added.
+     * @param itemPrice the price that will be added.
      */
-    private void addToTotalPrice(BillItem item) {
-        Money itemPrice = item.getItemPrice();
-
+    private void addToTotalPrice(Money itemPrice) {
         if (this.totalPrice == null) {
             this.totalPrice = Money.of(itemPrice);
         } else {
