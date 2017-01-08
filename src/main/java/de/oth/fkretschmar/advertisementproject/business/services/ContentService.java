@@ -41,6 +41,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
+import javax.jws.WebService;
 import javax.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -55,6 +56,7 @@ import org.joda.money.format.MoneyFormatterBuilder;
  * @author  fkre    Floyd Kretschmar
  */
 @RequestScoped
+@WebService(endpointInterface = "de.oth.fkretschmar.advertisementproject.business.services.base.IContentProviderService")
 public class ContentService implements Serializable, IContentService, IContentProviderService {
 
     // --------------- Private fields ---------------

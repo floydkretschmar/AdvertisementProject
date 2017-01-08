@@ -19,10 +19,13 @@ package de.oth.fkretschmar.advertisementproject.business.services.base;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.Content;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.TargetContext;
 import java.util.Optional;
+import javax.jws.WebService;
+
 /**
  *
  * @author Admin
  */
+@WebService
 public interface IContentProviderService {
     
     /**
