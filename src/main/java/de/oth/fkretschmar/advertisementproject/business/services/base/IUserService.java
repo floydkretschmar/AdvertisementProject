@@ -21,7 +21,6 @@ import de.oth.fkretschmar.advertisementproject.business.services.UserServiceExce
 import de.oth.fkretschmar.advertisementproject.entities.billing.Account;
 import de.oth.fkretschmar.advertisementproject.entities.user.Password;
 import de.oth.fkretschmar.advertisementproject.entities.user.User;
-import java.util.Collection;
 
 /**
  *

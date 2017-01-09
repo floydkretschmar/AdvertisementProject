@@ -23,8 +23,6 @@ import de.oth.fkretschmar.advertisementproject.entities.base.converter.MoneyAttr
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Map;
-import java.util.TreeMap;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;

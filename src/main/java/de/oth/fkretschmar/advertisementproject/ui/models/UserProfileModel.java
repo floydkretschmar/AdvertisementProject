@@ -23,7 +23,6 @@ import de.oth.fkretschmar.advertisementproject.entities.billing.PayPalAccount;
 import de.oth.fkretschmar.advertisementproject.entities.user.Address;
 import de.oth.fkretschmar.advertisementproject.entities.user.User;
 import de.oth.fkretschmar.advertisementproject.ui.AccountType;
-import de.oth.fkretschmar.advertisementproject.ui.models.base.AbstractModel;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.stream.Collectors;
@@ -49,11 +48,19 @@ public class UserProfileModel extends AccountModel {
      */
     @Inject
     private ApplicationModel applicationModel;
-
+    
+    /**
+     * Stores the copy of the current user that is used to store and potentially
+     * revert changes.
+     */
     @Getter
     @Setter
     private User currentUserCopy;
     
+    /**
+     * Stores the value indicating whether or not the user profile is in editing
+     * mode.
+     */
     @Getter
     @Setter
     private boolean editing;
@@ -64,7 +71,14 @@ public class UserProfileModel extends AccountModel {
     @Inject
     private IUserService userService;
 
+    // --------------- Public getters and setters ---------------
+
     
+    /**
+     * Gets all account types that the application can handel.
+     * 
+     * @return  the list of valid account types. 
+     */
     public Collection<String> getAccountTypes() {
         ArrayList<String> accounts = new ArrayList<String>();
         
@@ -77,11 +91,23 @@ public class UserProfileModel extends AccountModel {
         
         return accounts.stream().sorted().collect(Collectors.toList());
     }
+
+    // --------------- Private fields ---------------
     
+    
+    /**
+     * Adds a newly added account to the list of accounts of the copied user.
+     * @param entity 
+     */
     public void addNewAccount(Object entity) {
         this.currentUserCopy.addAccount((Account)entity);
     }
     
+    
+    /**
+     * Initialize the model by creating an exact copy of the current user and
+     * setting the editing mode to false.
+     */
     @PostConstruct
     public void initialize() {
         this.currentUserCopy = this.applicationModel.processCurrentUser(user -> 
@@ -105,10 +131,22 @@ public class UserProfileModel extends AccountModel {
         this.editing = false;
     }
     
+    
+    /**
+     * Removes a newly created account from the copy of the user.
+     * 
+     * @param element   the account that will be deleted.
+     */
     public void removeAccount(Object element) {
         this.currentUserCopy.removeAccount((Account)element);
     }
     
+    
+    /**
+     * Applies the changes stored in the copied user to the actual current user.
+     * 
+     * @return the next navigation point.
+     */
     public String saveChanges() {
         this.applicationModel.processAndChangeCurrentUser(user -> 
         {

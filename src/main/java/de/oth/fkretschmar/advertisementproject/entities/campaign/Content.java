@@ -18,11 +18,9 @@ package de.oth.fkretschmar.advertisementproject.entities.campaign;
 
 import de.oth.fkretschmar.advertisementproject.entities.exceptions.ContentDataCorruptedException;
 import de.oth.fkretschmar.advertisementproject.entities.exceptions.BuilderValidationException;
-import de.oth.fkretschmar.advertisementproject.entities.base.AbstractAutoGenerateKeyedEntity;
 import de.oth.fkretschmar.advertisementproject.entities.base.AbstractRandomStringKeyedEntity;
 import de.oth.fkretschmar.advertisementproject.entities.base.IDeletable;
 import de.oth.fkretschmar.advertisementproject.entities.base.converter.MoneyAttributeConverter;
-import de.oth.fkretschmar.advertisementproject.entities.user.User;
 
 import java.io.Serializable;
 import java.net.MalformedURLException;
@@ -33,7 +31,6 @@ import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;

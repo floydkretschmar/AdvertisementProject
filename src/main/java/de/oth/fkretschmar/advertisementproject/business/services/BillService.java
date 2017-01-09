@@ -35,7 +35,6 @@ import de.oth.fkretschmar.advertisementproject.entities.campaign.PaymentInterval
 import de.oth.fkretschmar.advertisementproject.entities.billing.PayPalAccount;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;

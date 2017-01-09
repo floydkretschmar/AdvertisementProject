@@ -18,7 +18,6 @@ package de.oth.fkretschmar.advertisementproject.entities.campaign;
 
 import java.net.URL;
 
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 

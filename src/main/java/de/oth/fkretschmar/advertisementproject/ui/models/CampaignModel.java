@@ -20,17 +20,12 @@ import de.oth.fkretschmar.advertisementproject.business.services.base.ICampaignS
 import de.oth.fkretschmar.advertisementproject.entities.billing.Bill;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.Campaign;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.CampaignState;
-import de.oth.fkretschmar.advertisementproject.entities.campaign.Content;
-import de.oth.fkretschmar.advertisementproject.ui.models.base.AbstractModel;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Named;
