@@ -75,6 +75,7 @@ public class CampaignModel extends AccountModel {
 
         return campaigns.stream()
                 .filter(campaign -> campaign.getCampaignState() == this.campaignState)
+                .sorted((campaign1, campaign2) -> campaign1.getName().compareTo(campaign2.getName()))
                 .collect(Collectors.toList());
     }
 
@@ -164,6 +165,7 @@ public class CampaignModel extends AccountModel {
                     return content.getContentType().getLabel();
                 })
                 .distinct()
+                .sorted((contentType1, contentType2) -> contentType1.compareTo(contentType2))
                 .collect(Collectors.toList());
 
         return contentTypes;

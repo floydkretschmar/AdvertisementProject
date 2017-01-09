@@ -94,7 +94,8 @@
                                     <innerComposites:displayBillComposite bill="#{element}"/>
                                 </c:if>
                             </b:column>
-                            <b:column span="#{cc.attrs.enableDelete eq 'true' ? '1' : '0'}">
+                            <b:column span="#{cc.attrs.enableDelete eq 'true' ? '1' : '0'}"
+                                      style="position: static">
                                 <b:commandButton icon="remove"
                                                  value=""
                                                  ajax="true"
