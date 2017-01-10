@@ -20,7 +20,6 @@ import de.oth.fkretschmar.advertisementproject.ui.AccountType;
 import de.oth.fkretschmar.advertisementproject.entities.billing.Account;
 import de.oth.fkretschmar.advertisementproject.entities.billing.BankAccount;
 import de.oth.fkretschmar.advertisementproject.entities.billing.PayPalAccount;
-import de.oth.fkretschmar.advertisementproject.ui.models.base.AbstractModel;
 import javax.inject.Named;
 import lombok.Getter;
 import lombok.Setter;
@@ -32,7 +31,7 @@ import org.omnifaces.cdi.ViewScoped;
  */
 @Named
 @ViewScoped
-public class NewAccountModel extends AbstractModel {
+public class NewAccountModel {
 
     // --------------- Private fields ---------------
 

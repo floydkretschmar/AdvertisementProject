@@ -18,7 +18,6 @@ package de.oth.fkretschmar.advertisementproject.ui.models;
 
 import de.oth.fkretschmar.advertisementproject.business.services.base.IContentProviderService;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.Content;
-import de.oth.fkretschmar.advertisementproject.ui.models.base.AbstractModel;
 import java.util.Optional;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -33,7 +32,7 @@ import org.omnifaces.cdi.ViewScoped;
  */
 @Named
 @ViewScoped
-public class AdvertisementModel extends AbstractModel {
+public class AdvertisementModel {
     
     // --------------- Private fields ---------------
     

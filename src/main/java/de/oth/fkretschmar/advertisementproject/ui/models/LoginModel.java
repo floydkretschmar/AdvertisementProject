@@ -17,7 +17,6 @@
 package de.oth.fkretschmar.advertisementproject.ui.models;
 
 import de.oth.fkretschmar.advertisementproject.business.services.PasswordException;
-import de.oth.fkretschmar.advertisementproject.ui.models.base.AbstractModel;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -35,7 +34,7 @@ import lombok.Setter;
  */
 @Named
 @ViewScoped
-public class LoginModel extends AbstractModel {
+public class LoginModel {
 
     // --------------- Private static fields ---------------
     

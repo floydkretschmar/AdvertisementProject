@@ -24,7 +24,6 @@ import de.oth.fkretschmar.advertisementproject.business.services.base.IUserServi
 import de.oth.fkretschmar.advertisementproject.entities.campaign.Campaign;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.Content;
 import de.oth.fkretschmar.advertisementproject.entities.user.User;
-import de.oth.fkretschmar.advertisementproject.ui.models.base.AbstractModel;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Function;
@@ -40,7 +39,7 @@ import javax.inject.Named;
  */
 @Named
 @SessionScoped
-public class ApplicationModel extends AbstractModel {
+public class ApplicationModel {
 
     // --------------- Private static fields ---------------
 

@@ -23,7 +23,6 @@ import de.oth.fkretschmar.advertisementproject.entities.campaign.TargetContext;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.TargetGender;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.TargetMaritalStatus;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.TargetPurposeOfUse;
-import de.oth.fkretschmar.advertisementproject.ui.models.base.AbstractModel;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -42,7 +41,7 @@ import org.joda.money.Money;
  */
 @Named
 @RequestScoped
-public class NewContentModel extends AbstractModel {
+public class NewContentModel {
 
     // --------------- Private fields ---------------
 

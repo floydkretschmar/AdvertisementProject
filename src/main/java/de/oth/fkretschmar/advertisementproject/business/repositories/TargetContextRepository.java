@@ -16,7 +16,7 @@
  */
 package de.oth.fkretschmar.advertisementproject.business.repositories;
 
-import de.oth.fkretschmar.advertisementproject.business.repositories.base.AbstractJPARepository;
+import de.oth.fkretschmar.advertisementproject.business.repositories.base.AbstractRepository;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.TargetContext;
 
 import java.util.ArrayList;
@@ -29,7 +29,7 @@ import javax.enterprise.context.Dependent;
  * @author fkre
  */
 @Dependent
-public class TargetContextRepository extends AbstractJPARepository<Long, TargetContext> {
+public class TargetContextRepository extends AbstractRepository<Long, TargetContext> {
     
     // --------------- Public constructors ---------------
 

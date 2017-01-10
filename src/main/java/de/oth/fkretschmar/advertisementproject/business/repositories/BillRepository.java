@@ -16,7 +16,7 @@
  */
 package de.oth.fkretschmar.advertisementproject.business.repositories;
 
-import de.oth.fkretschmar.advertisementproject.business.repositories.base.AbstractJPARepository;
+import de.oth.fkretschmar.advertisementproject.business.repositories.base.AbstractRepository;
 import de.oth.fkretschmar.advertisementproject.entities.billing.Bill;
 
 import java.util.ArrayList;
@@ -29,7 +29,7 @@ import javax.enterprise.context.Dependent;
  * @author fkre
  */
 @Dependent
-public class BillRepository extends AbstractJPARepository<Long, Bill> {
+public class BillRepository extends AbstractRepository<Long, Bill> {
     
     // --------------- Public constructors ---------------
 

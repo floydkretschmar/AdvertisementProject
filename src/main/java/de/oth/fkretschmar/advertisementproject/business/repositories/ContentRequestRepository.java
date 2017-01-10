@@ -16,7 +16,7 @@
  */
 package de.oth.fkretschmar.advertisementproject.business.repositories;
 
-import de.oth.fkretschmar.advertisementproject.business.repositories.base.AbstractJPARepository;
+import de.oth.fkretschmar.advertisementproject.business.repositories.base.AbstractRepository;
 import de.oth.fkretschmar.advertisementproject.entities.billing.ContentRequest;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.PaymentInterval;
 
@@ -31,7 +31,7 @@ import javax.persistence.TypedQuery;
  * @author fkre
  */
 @Dependent
-public class ContentRequestRepository extends AbstractJPARepository<Long, ContentRequest> {
+public class ContentRequestRepository extends AbstractRepository<Long, ContentRequest> {
         
     // --------------- Public constructors ---------------
 

@@ -19,7 +19,6 @@ package de.oth.fkretschmar.advertisementproject.ui.models;
 import de.oth.fkretschmar.advertisementproject.entities.billing.Account;
 import de.oth.fkretschmar.advertisementproject.entities.billing.BankAccount;
 import de.oth.fkretschmar.advertisementproject.entities.billing.PayPalAccount;
-import de.oth.fkretschmar.advertisementproject.ui.models.base.AbstractModel;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 
@@ -30,7 +29,7 @@ import javax.inject.Named;
  */
 @Named
 @RequestScoped
-public class AccountModel extends AbstractModel {
+public class AccountModel {
     
     // --------------- Public getters and setters ---------------
     

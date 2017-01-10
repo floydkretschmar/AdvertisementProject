@@ -16,7 +16,7 @@
  */
 package de.oth.fkretschmar.advertisementproject.business.repositories;
 
-import de.oth.fkretschmar.advertisementproject.business.repositories.base.AbstractJPARepository;
+import de.oth.fkretschmar.advertisementproject.business.repositories.base.AbstractRepository;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.Content;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.TargetContext;
 
@@ -37,7 +37,7 @@ import javax.persistence.TypedQuery;
  * @author fkre Floyd Kretschmar
  */
 @Dependent
-public class ContentRepository extends AbstractJPARepository<String, Content> {
+public class ContentRepository extends AbstractRepository<String, Content> {
 
     // --------------- Private static constants ---------------
     private static final String MATCHING_CONTENTS_PROCEDURE
