@@ -140,6 +140,7 @@ public class UserService implements Serializable, IUserService {
         this.addressRepository.persist(changedUser.getAddress());
 
         user.setAddress(changedUser.getAddress());
+        user.setBirthdate(changedUser.getBirthdate());
         user.setCompany(changedUser.getCompany());
         user.setFirstName(changedUser.getFirstName());
         user.setLastName(changedUser.getLastName());

@@ -50,23 +50,49 @@
                                 <h:outputText value="Name:" 
                                               class="webvert_bold_lable_layout"/>
                                 <b:inputText value="#{userProfileModel.currentUserCopy.firstName}"
-                                             disabled="#{not userProfileModel.editing}"></b:inputText>
+                                             disabled="#{not userProfileModel.editing}"
+                                             styleClass="#{component.valid? '' : 'webvert_input_control_invalid' }"
+                                             required="true"></b:inputText>
                                 <b:inputText value="#{userProfileModel.currentUserCopy.lastName}"
-                                             disabled="#{not userProfileModel.editing}"></b:inputText>
+                                             disabled="#{not userProfileModel.editing}"
+                                             styleClass="#{component.valid? '' : 'webvert_input_control_invalid' }"
+                                             required="true"></b:inputText>
                             </b:panelGrid>
                             <b:panelGrid colSpans="4, 8">
                                 <h:outputText value="Company:" 
                                               class="webvert_bold_lable_layout"/>
                                 <b:inputText value="#{userProfileModel.currentUserCopy.company}"
                                              disabled="#{not userProfileModel.editing}"></b:inputText>
-                                <h:outputText value="Birthday:" 
-                                              class="webvert_bold_lable_layout"/>
-                                <b:inputText value="#{userProfileModel.currentUserCopy.birthdate}"
-                                             rendered="#{not userProfileModel.editing}"
-                                             disabled="#{not userProfileModel.editing}">
-                                    <converters:convertLocalDate pattern="dd.MM.yyyy"/>
-                                </b:inputText>
                             </b:panelGrid>
+
+                            <b:row>
+                                <b:column span="4">
+                                    <h:outputText value="Birthday:" 
+                                                  class="webvert_bold_lable_layout"/>
+                                </b:column>
+                                <b:column span="8">
+                                    <b:inputText value="#{userProfileModel.currentUserCopy.birthdate}"
+                                                 rendered="#{not userProfileModel.editing}"
+                                                 disabled="#{not userProfileModel.editing}"
+                                                 styleClass="#{component.valid? '' : 'webvert_input_control_invalid' }"
+                                                 required="true">
+                                        <converters:convertLocalDate pattern="dd.MM.yyyy"/>
+                                    </b:inputText>
+                                </b:column>
+                                <b:column span="8">
+                                    <b:datepicker id="birthday" 
+                                                  mode="toggle-icon" 
+                                                  placeholder="Birth date" 
+                                                  change-month="true"
+                                                  change-year="true"
+                                                  showWeek="true" 
+                                                  firstDay="1" 
+                                                  rendered="#{userProfileModel.editing}"
+                                                  value="#{userProfileModel.birthdate}"
+                                                  required="true">
+                                    </b:datepicker>
+                                </b:column>
+                            </b:row>
 
                             <h4 class="webvert_heading_color_dark webvert_heading_layout">
                                 Address
@@ -77,20 +103,28 @@
                                 <h:outputText value="Street:" 
                                               class="webvert_bold_lable_layout"/>
                                 <b:inputText value="#{userProfileModel.currentUserCopy.address.street}"
-                                             disabled="#{not userProfileModel.editing}"></b:inputText>
+                                             disabled="#{not userProfileModel.editing}"
+                                             styleClass="#{component.valid? '' : 'webvert_input_control_invalid' }"
+                                             required="true"></b:inputText>
                                 <b:inputText value="#{userProfileModel.currentUserCopy.address.houseNumber}"
-                                             disabled="#{not userProfileModel.editing}"></b:inputText>
+                                             disabled="#{not userProfileModel.editing}"
+                                             styleClass="#{component.valid? '' : 'webvert_input_control_invalid' }"
+                                             required="true"></b:inputText>
                             </b:panelGrid>
 
                             <b:panelGrid colSpans="4, 8">
                                 <h:outputText value="Area code:" 
                                               class="webvert_bold_lable_layout"/>
                                 <b:inputText value="#{userProfileModel.currentUserCopy.address.areaCode}"
-                                             disabled="#{not userProfileModel.editing}"></b:inputText>
+                                             disabled="#{not userProfileModel.editing}"
+                                             styleClass="#{component.valid? '' : 'webvert_input_control_invalid' }"
+                                             required="true"></b:inputText>
                                 <h:outputText value="City:" 
                                               class="webvert_bold_lable_layout"/>
                                 <b:inputText value="#{userProfileModel.currentUserCopy.address.city}"
-                                             disabled="#{not userProfileModel.editing}"></b:inputText>
+                                             disabled="#{not userProfileModel.editing}"
+                                             styleClass="#{component.valid? '' : 'webvert_input_control_invalid' }"
+                                             required="true"></b:inputText>
                                 <h:outputText value="County:" 
                                               class="webvert_bold_lable_layout"/>
                                 <b:inputText value="#{userProfileModel.currentUserCopy.address.country}"
@@ -116,10 +150,9 @@
                             </b:row>
                             <b:row style="float: right; position: absolute; bottom: 0; right: 0; margin-right: 0px">
                                 <b:commandButton value="Cancel" 
-                                                 action="#{userProfileModel.initialize}"
+                                                 action="userProfile"
                                                  rendered="#{userProfileModel.editing}"
-                                                 update="@form"
-                                                 process="@form"
+                                                 immediate="true"
                                                  style="width: 128px; margin-left: 10px">
                                 </b:commandButton>
                                 <b:commandButton value="Ok" 

@@ -24,8 +24,10 @@ import de.oth.fkretschmar.advertisementproject.entities.user.Address;
 import de.oth.fkretschmar.advertisementproject.entities.user.User;
 import de.oth.fkretschmar.advertisementproject.ui.AccountType;
 import java.io.Serializable;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -91,6 +93,25 @@ public class UserProfileModel implements Serializable {
         }
         
         return accounts.stream().sorted().collect(Collectors.toList());
+    }
+    
+    /**
+     * Gets the birthday of the user as a date.
+     * 
+     * @return 
+     */
+    public Date getBirthdate() {
+        return Date.from(this.currentUserCopy.getBirthdate().atStartOfDay(
+                ZoneId.systemDefault()).toInstant());
+    }
+    
+    /**
+     * Sets the birthday of the user as a date.
+     * @param date 
+     */
+    public void setBirthdate(Date date) {
+        this.currentUserCopy.setBirthdate(date.toInstant().atZone(
+                ZoneId.systemDefault()).toLocalDate());
     }
 
     // --------------- Private fields ---------------

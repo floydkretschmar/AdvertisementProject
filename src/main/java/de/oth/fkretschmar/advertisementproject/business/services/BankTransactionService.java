@@ -16,7 +16,6 @@
  */
 package de.oth.fkretschmar.advertisementproject.business.services;
 
-import de.jreichl.service.web.TransactionWSService;
 import de.oth.fkretschmar.advertisementproject.business.annotation.BankTransaction;
 import de.oth.fkretschmar.advertisementproject.business.services.base.ITransactionService;
 import de.oth.fkretschmar.advertisementproject.entities.billing.Account;
@@ -32,9 +31,6 @@ import org.joda.money.Money;
 @BankTransaction
 @RequestScoped
 public class BankTransactionService implements ITransactionService {
-
-    @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_8081/BankReichl/TransactionWS.wsdl")
-    private TransactionWSService service;
 
     /**
      * Transfers the specified amount from the sender to the recipient using the

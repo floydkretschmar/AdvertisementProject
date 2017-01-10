@@ -210,5 +210,6 @@ public class NewCampaignModel implements Serializable {
         this.newContents.clear();
         this.selectedAccount = null;
         this.selectedInterval = null;
+        this.name = "";
     }
 }
