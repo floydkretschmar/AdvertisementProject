@@ -20,7 +20,6 @@ import de.oth.fkretschmar.advertisementproject.business.repositories.AddressRepo
 import de.oth.fkretschmar.advertisementproject.business.repositories.UserRepository;
 import de.oth.fkretschmar.advertisementproject.business.services.base.IAccountService;
 import de.oth.fkretschmar.advertisementproject.business.services.base.ICampaignService;
-import de.oth.fkretschmar.advertisementproject.business.services.base.IPasswordService;
 import de.oth.fkretschmar.advertisementproject.business.services.base.IUserService;
 import de.oth.fkretschmar.advertisementproject.entities.billing.Account;
 import de.oth.fkretschmar.advertisementproject.entities.user.Address;
@@ -62,12 +61,6 @@ public class UserService implements Serializable, IUserService {
      */
     @Inject
     private ICampaignService campaignService;
-
-    /**
-     * Stores the service that manages {@link Password} entities.
-     */
-    @Inject
-    private IPasswordService passwordService;
 
     /**
      * Stores the repository used to manage {@link User} entites.
@@ -121,9 +114,6 @@ public class UserService implements Serializable, IUserService {
         Password currentPassword = user.getPassword();
 
         user = this.userRepository.merge(user);
-        this.passwordService.deletePassword(currentPassword);
-
-        this.passwordService.createPassword(newSafePassword);
         user.setPassword(newSafePassword);
 
         return user;
@@ -227,7 +217,6 @@ public class UserService implements Serializable, IUserService {
         this.addressRepository.persist(address);
 
         final Password password = user.getPassword();
-        this.passwordService.createPassword(password);
         this.userRepository.persist(user);
     }
 
@@ -247,10 +236,6 @@ public class UserService implements Serializable, IUserService {
         // remove address
         this.addressRepository.remove(user.getAddress());
         user.setAddress(null);
-
-        // remove password
-        this.passwordService.deletePassword(user.getPassword());
-        user.setPassword(null);
 
         // remove all contents
         Object[] accounts = user.getAccounts().toArray();

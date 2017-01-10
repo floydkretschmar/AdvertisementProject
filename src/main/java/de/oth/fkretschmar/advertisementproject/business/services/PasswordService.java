@@ -18,8 +18,6 @@ package de.oth.fkretschmar.advertisementproject.business.services;
 
 import de.oth.fkretschmar.advertisementproject.business.HashHelper;
 import de.oth.fkretschmar.advertisementproject.business.HashingException;
-import de.oth.fkretschmar.advertisementproject.business.repositories.PasswordRepository;
-import de.oth.fkretschmar.advertisementproject.business.services.base.IPasswordService;
 import de.oth.fkretschmar.advertisementproject.entities.exceptions.BuilderValidationException;
 import de.oth.fkretschmar.advertisementproject.entities.user.Password;
 import java.io.Serializable;
@@ -27,8 +25,6 @@ import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.Arrays;
 import javax.enterprise.context.RequestScoped;
-import javax.inject.Inject;
-import javax.transaction.Transactional;
 
 /**
  * The service that offers functionality relatetd to the generation and 
@@ -37,46 +33,9 @@ import javax.transaction.Transactional;
  * @author  fkre    Floyd Kretschmar
  */
 @RequestScoped
-public class PasswordService implements Serializable, IPasswordService {
-
-    // --------------- Private fields ---------------
-
-    /**
-     * Stores the repository used to manage {@link Password} entites.
-     */
-    @Inject
-    private PasswordRepository passwordRepository;
-    
-
-    // --------------- Public methods ---------------
-    
-    
-    /**
-     * Creates the specified {@link Password}.
-     * 
-     * @param   password    the password that will be saved.
-     */
-    @Transactional
-    @Override
-    public void createPassword(Password password) {
-        this.passwordRepository.persist(password);
-    }
-    
-    
-    /**
-     * Deletes the specified {@link Password} from the database.
-     * 
-     * @param   password    that will be deleted.
-     */
-    @Transactional
-    @Override
-    public void deletePassword(Password password) {
-        this.passwordRepository.remove(password);
-    }
-    
+public class PasswordService implements Serializable {
     
     // --------------- Punlic  static methods ---------------
-    
     
     /**
      * Creates a new safe hashed {@link Password} from an unsafe password.

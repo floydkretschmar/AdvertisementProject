@@ -21,9 +21,7 @@ import de.oth.fkretschmar.advertisementproject.entities.exceptions.BuilderValida
 import de.oth.fkretschmar.advertisementproject.entities.campaign.Campaign;
 import de.oth.fkretschmar.advertisementproject.entities.base.AbstractStringKeyedEntity;
 import de.oth.fkretschmar.advertisementproject.entities.base.converter.LocalDateAttributeConverter;
-import de.oth.fkretschmar.advertisementproject.entities.base.converter.LocalDateTimeAttributeConverter;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -140,7 +138,6 @@ public class User extends AbstractStringKeyedEntity {
      * Stores the current password of the user.
      */
     @NotNull
-    @OneToOne
     @Getter
     @Setter
     private Password password;

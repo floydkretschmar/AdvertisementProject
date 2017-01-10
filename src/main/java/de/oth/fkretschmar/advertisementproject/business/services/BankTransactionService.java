@@ -16,8 +16,6 @@
  */
 package de.oth.fkretschmar.advertisementproject.business.services;
 
-import de.jreichl.service.web.ITransactionWS;
-import de.jreichl.service.web.TransactionFailedException_Exception;
 import de.jreichl.service.web.TransactionWSService;
 import de.oth.fkretschmar.advertisementproject.business.annotation.BankTransaction;
 import de.oth.fkretschmar.advertisementproject.business.services.base.ITransactionService;

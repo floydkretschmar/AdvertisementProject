@@ -18,10 +18,8 @@ package de.oth.fkretschmar.advertisementproject.entities.user;
 
 
 import de.oth.fkretschmar.advertisementproject.entities.exceptions.BuilderValidationException;
-import de.oth.fkretschmar.advertisementproject.entities.base.AbstractAutoGenerateKeyedEntity;
-import de.oth.fkretschmar.advertisementproject.entities.base.IDeletable;
 import javax.persistence.Column;
-import javax.persistence.Entity;
+import javax.persistence.Embeddable;
 import javax.validation.constraints.NotNull;
 
 import lombok.AccessLevel;
@@ -36,12 +34,11 @@ import lombok.ToString;
  *
  * @author fkre Floyd Kretschmar
  */
-@Entity(name = "T_PASSWORD")
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-@ToString(callSuper = true)
-public class Password extends AbstractAutoGenerateKeyedEntity 
-        implements IDeletable<Long> {
+@ToString
+@Embeddable
+public class Password {
 
     // --------------- Private fields ---------------
 
