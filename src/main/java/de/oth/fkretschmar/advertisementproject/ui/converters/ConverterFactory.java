@@ -49,15 +49,13 @@ public class ConverterFactory {
      * @param   <T>                 the entity type.
      * @param   injectionPoint      the point of the injection.
      * @param   accountConverter    the injected converter for accounts.
-     * @param   dateConverter       the injected converter for local dates.
      * @return  the fitting entity  converter for the specified entity.
      */
     @Produces
     @ConverterInjection
     public <T> IConverter<T> createEntityConverter(
             InjectionPoint injectionPoint,
-            @New EntityConverter<Account> accountConverter,
-            @New LocalDateConverter dateConverter) {
+            @New EntityConverter<Account> accountConverter) {
         // see documentation in EntityServiceFactory
         ParameterizedType type = (ParameterizedType)injectionPoint.getType();
         Class entityType = (Class)type.getActualTypeArguments()[0];

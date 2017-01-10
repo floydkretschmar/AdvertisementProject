@@ -74,6 +74,14 @@ public class Address extends AbstractAutoGenerateKeyedEntity
     private String country;
     
     /**
+     * Stores the textual representation of the house number.
+     */
+    @Column(name = "HOUSE_NUMBER")
+    @Getter
+    @Setter
+    private String houseNumber;
+    
+    /**
      * Stores the textual representation of the street including the street 
      * number.
      */
@@ -93,8 +101,9 @@ public class Address extends AbstractAutoGenerateKeyedEntity
      * @param areaCode      the textual representation of the area code.
      * @param city          the name of the city in which the street can be 
      *                      found.
-     * @param countrythe    text that represents the country in which the 
+     * @param country       the text that represents the country in which the 
      *                      address can be found.
+     * @param houseNumber   textual representation of the house number.
      * @param street        the textual representation of the street including 
      *                      the street number.
      * @return the built {@link Address}.
@@ -110,6 +119,7 @@ public class Address extends AbstractAutoGenerateKeyedEntity
             String areaCode, 
             String city, 
             String country, 
+            String houseNumber,
             String street) throws BuilderValidationException {
         if(areaCode == null || areaCode.isEmpty())
             throw new BuilderValidationException(
@@ -121,12 +131,17 @@ public class Address extends AbstractAutoGenerateKeyedEntity
                     Address.class, 
                     "The city can not be null or empty.");
         
+        if(houseNumber == null || houseNumber.isEmpty())
+            throw new BuilderValidationException(
+                    Address.class, 
+                    "The house number can not be null or empty.");
+        
         if(street == null || street.isEmpty())
             throw new BuilderValidationException(
                     Address.class, 
                     "The street can not be null or empty.");
         
-        return new Address(areaCode, city, country, street);
+        return new Address(areaCode, city, country, houseNumber, street);
     }
     
 }

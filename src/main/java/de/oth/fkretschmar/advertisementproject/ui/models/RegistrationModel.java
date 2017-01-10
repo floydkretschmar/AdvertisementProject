@@ -23,6 +23,8 @@ import de.oth.fkretschmar.advertisementproject.entities.user.Address;
 import de.oth.fkretschmar.advertisementproject.entities.user.Password;
 import de.oth.fkretschmar.advertisementproject.entities.user.User;
 import de.oth.fkretschmar.advertisementproject.ui.models.base.AbstractModel;
+import java.time.ZoneId;
+import java.util.Date;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -36,91 +38,96 @@ import lombok.Setter;
 @Named
 @RequestScoped
 public class RegistrationModel extends AbstractModel {
-    
+
     // --------------- Private fields ---------------
-    
     /**
      * Stores the area code of the region the user lives in.
      */
     @Getter
     @Setter
     private String areaCode;
-    
+
+    /**
+     * Stores the birthday of the user.
+     */
+    @Getter
+    @Setter
+    private Date birthdate;
+
     /**
      * Stores the city the user lives in.
      */
     @Getter
     @Setter
     private String city;
-    
+
     /**
      * Stores the company the user works for.
      */
     @Getter
     @Setter
     private String company;
-    
+
     /**
      * Stores the country the user lives in.
      */
     @Getter
     @Setter
     private String country;
-    
+
     /**
-     * Stores the e-mail address of the user, used to authenticate with the 
+     * Stores the e-mail address of the user, used to authenticate with the
      * system.
      */
     @Getter
     @Setter
     private String eMailAddress;
-    
+
     /**
      * Stores the first name of the user.
      */
     @Getter
     @Setter
     private String firstName;
-    
+
     /**
      * Stores the house number of the user.
      */
     @Getter
     @Setter
     private String houseNumber;
-    
+
     /**
      * Stores the last name of the user.
      */
     @Getter
     @Setter
     private String lastName;
-    
+
     /**
      * Stores the user password.
      */
     @Getter
     @Setter
     private String password;
-    
+
     /**
      * Stores the street the user lives in.
      */
     @Getter
     @Setter
     private String street;
-    
+
     /**
      * Stores the service used to manage the entire application.
      */
     @Inject
     private IUserService userService;
-    
+
     // --------------- Public methods ---------------
-    
     /**
      * Registers a new user.
-     * 
+     *
      * @return the target page to navigate to after registration.
      */
     public String register() {
@@ -128,17 +135,17 @@ public class RegistrationModel extends AbstractModel {
                 .areaCode(this.areaCode.trim())
                 .city(this.city.trim())
                 .country(this.country.trim())
-                .street(String.format(
-                        "%s %s", 
-                        this.street.trim(), 
-                        this.houseNumber.trim()))
+                .houseNumber(this.houseNumber.trim())
+                .street(this.street.trim())
                 .build();
-        
+
         Password generatedPassword = PasswordService.generate(
                 this.password.toCharArray());
-        
+
+
         User user = User.createUser()
                 .address(address)
+                .birthdate(this.birthdate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate())
                 .company(this.company.trim())
                 .eMailAddress(this.eMailAddress.trim())
                 .firstName(this.firstName.trim())
@@ -150,17 +157,7 @@ public class RegistrationModel extends AbstractModel {
         } catch (UserServiceException ex) {
             // TODO: show error in the UI if the registration fails.
         }
-        
-        this.areaCode = "";
-        this.city = "";
-        this.company = "";
-        this.country = "";
-        this.firstName = "";
-        this.houseNumber = "";
-        this.lastName = "";
-        this.password = "";
-        this.street = "";
-        
+
         return "login";
     }
 }

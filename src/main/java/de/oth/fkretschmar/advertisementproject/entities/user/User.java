@@ -20,12 +20,17 @@ import de.oth.fkretschmar.advertisementproject.entities.billing.Account;
 import de.oth.fkretschmar.advertisementproject.entities.exceptions.BuilderValidationException;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.Campaign;
 import de.oth.fkretschmar.advertisementproject.entities.base.AbstractStringKeyedEntity;
+import de.oth.fkretschmar.advertisementproject.entities.base.converter.LocalDateAttributeConverter;
+import de.oth.fkretschmar.advertisementproject.entities.base.converter.LocalDateTimeAttributeConverter;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -88,6 +93,17 @@ public class User extends AbstractStringKeyedEntity {
     
     
     /**
+     * Stores the birthdate of the user.
+     */
+    @NotNull
+    @Column(name = "BIRTHDATE")
+    @Getter
+    @Setter
+    @Convert(converter = LocalDateAttributeConverter.class)
+    private LocalDate birthdate;
+    
+    
+    /**
      * Stores the campaigns comissioned by the user.
      */
     @NotNull
@@ -139,6 +155,7 @@ public class User extends AbstractStringKeyedEntity {
      * @param eMailAddress  that can be used to contact and uniquely identify a 
      *                      user.
      * @param address       the address of the user.
+     * @param birthdate     the birthdate of the user.
      * @param company       the name of the company the user is buying ads for.
      * @param firstName     the first name of the user.
      * @param lastName      the last name of the user.
@@ -147,12 +164,14 @@ public class User extends AbstractStringKeyedEntity {
     private User(
             String eMailAddress,
             Address address, 
+            LocalDate birthDate,
             String company, 
             String firstName,
             String lastName,
             Password password) {
         super(eMailAddress);
         this.address = address;
+        this.birthdate = birthDate;
         this.company = company;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -251,6 +270,7 @@ public class User extends AbstractStringKeyedEntity {
      * @param eMailAddress  that can be used to contact and uniquely identify a 
      *                      user.
      * @param address       the address of the user.
+     * @param birthdate     the birthdate of the user.
      * @param company       the name of the company the user is buying ads for.
      * @param firstName     the first name of the user.
      * @param lastName      the last name of the user.
@@ -264,6 +284,7 @@ public class User extends AbstractStringKeyedEntity {
     private static User validateAndCreateUser(
             String eMailAddress,
             Address address, 
+            LocalDate birthdate,
             String company, 
             String firstName,
             String lastName,
@@ -272,6 +293,11 @@ public class User extends AbstractStringKeyedEntity {
             throw new BuilderValidationException(
                     User.class,
                     "The address can not be null.");
+        
+        if(birthdate == null)
+            throw new BuilderValidationException(
+                    User.class,
+                    "The birthdate can not be null.");
         
         if(firstName == null || firstName.isEmpty())
             throw new BuilderValidationException(
@@ -291,6 +317,7 @@ public class User extends AbstractStringKeyedEntity {
         return new User(
                 eMailAddress,
                 address,
+                birthdate,
                 company,
                 firstName,
                 lastName,

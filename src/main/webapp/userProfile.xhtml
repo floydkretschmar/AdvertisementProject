@@ -6,6 +6,7 @@
       xmlns:b="http://bootsfaces.net/ui"
       xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
       xmlns:o="http://omnifaces.org/ui"
+      xmlns:converters="http://webvert.com/Converters"
       xmlns:webvert="http://xmlns.jcp.org/jsf/composite/webvert"
       xmlns:prim="http://primefaces.org/ui">
     <h:head>
@@ -58,17 +59,39 @@
                                               class="webvert_bold_lable_layout"/>
                                 <b:inputText value="#{userProfileModel.currentUserCopy.company}"
                                              disabled="#{not userProfileModel.editing}"></b:inputText>
+                                <h:outputText value="Birthday:" 
+                                              class="webvert_bold_lable_layout"/>
+                                <b:inputText value="#{userProfileModel.currentUserCopy.birthdate}"
+                                             rendered="#{not userProfileModel.editing}"
+                                             disabled="#{not userProfileModel.editing}">
+                                    <converters:convertLocalDate pattern="dd.MM.yyyy"/>
+                                </b:inputText>
+<!--                                <b:dateTimePicker id="birthday" 
+                                              mode="toggle-icon" 
+                                              placeholder="Birth date" 
+                                              showWeek="true" 
+                                              value="#{userProfileModel.currentUserCopy.birthdate}"
+                                              rendered="#{userProfileModel.editing}"
+                                              required="true">
+                                    <converters:convertLocalDate pattern="dd.MM.yyyy"/>
+                                </b:dateTimePicker>-->
                             </b:panelGrid>
 
                             <h4 class="webvert_heading_color_dark webvert_heading_layout">
                                 Address
                             </h4>
 
-                            <b:panelGrid colSpans="4, 8">
+
+                            <b:panelGrid colSpans="4, 7, 1">
                                 <h:outputText value="Street:" 
                                               class="webvert_bold_lable_layout"/>
                                 <b:inputText value="#{userProfileModel.currentUserCopy.address.street}"
                                              disabled="#{not userProfileModel.editing}"></b:inputText>
+                                <b:inputText value="#{userProfileModel.currentUserCopy.address.houseNumber}"
+                                             disabled="#{not userProfileModel.editing}"></b:inputText>
+                            </b:panelGrid>
+
+                            <b:panelGrid colSpans="4, 8">
                                 <h:outputText value="Area code:" 
                                               class="webvert_bold_lable_layout"/>
                                 <b:inputText value="#{userProfileModel.currentUserCopy.address.areaCode}"

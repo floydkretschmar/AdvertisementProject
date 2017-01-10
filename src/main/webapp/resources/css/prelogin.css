@@ -36,3 +36,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 .btn.webvert_prelogin_button_layout {
     margin-top: 20px;
 }
+
+#birthday.bf-error {
+    border-color: #ff9999;
+    background-color: #ffe6e6;
+}

@@ -147,6 +147,7 @@ public class UserService implements Serializable, IUserService {
         }
 
         user = this.userRepository.merge(user);
+        this.addressRepository.persist(changedUser.getAddress());
 
         user.setAddress(changedUser.getAddress());
         user.setCompany(changedUser.getCompany());

@@ -16,7 +16,8 @@
  */
 package de.oth.fkretschmar.advertisementproject.ui.converters;
 
-import java.time.LocalDate;
+import java.time.Instant;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 import javax.enterprise.context.Dependent;
@@ -27,16 +28,16 @@ import javax.faces.convert.FacesConverter;
  * @author fkre
  */
 @Dependent
-@FacesConverter("de.oth.fkretschmar.advertisementproject.ui.converters.LocalDateConverter")
-public class LocalDateConverter extends ExtendedTimeConverter<LocalDate> {
+@FacesConverter("de.oth.fkretschmar.advertisementproject.ui.converters.LocalDateTimeConverter")
+public class LocalDateTimeConverter extends ExtendedTimeConverter<LocalDateTime> {
     
     // --------------- Public constructors ---------------
 
     /**
      * Creates a new instance of {@link LocalDateTimeConverter}.
      */
-    public LocalDateConverter() {
-        super(LocalDate.class);
+    public LocalDateTimeConverter() {
+        super(LocalDateTime.class);
     }
 
     // --------------- Protected methods ---------------
@@ -45,16 +46,19 @@ public class LocalDateConverter extends ExtendedTimeConverter<LocalDate> {
      * {@inheritDoc}
      */
     @Override
-    protected Date convertToDate(LocalDate temporal) {
-        return Date.from(temporal.atStartOfDay(
-                ZoneId.systemDefault()).toInstant());
+    protected Date convertToDate(LocalDateTime temporal) {
+        Instant instant = temporal.atZone(ZoneId.systemDefault()).toInstant();
+        return Date.from(instant);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected LocalDate convertFromDate(Date date) {
-        return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+    protected LocalDateTime convertFromDate(Date date) {
+        Instant instant = Instant.ofEpochMilli(date.getTime());
+        return LocalDateTime.ofInstant(
+                instant,
+                ZoneId.systemDefault());
     }
 }

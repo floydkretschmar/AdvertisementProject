@@ -45,6 +45,8 @@ import de.oth.fkretschmar.advertisementproject.entities.user.User;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.EnumSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -116,7 +118,8 @@ public class TestServlet extends HttpServlet {
                                     .areaCode("95689")
                                     .city("Regensburg")
                                     .country("Deutschland")
-                                    .street("Dechbettener Straße 7").build();
+                                    .houseNumber("7")
+                                    .street("Dechbettener Straße").build();
 
                 User user = User.createUser()
                         .eMailAddress("fkretschmar@googlemail.com")
@@ -124,6 +127,7 @@ public class TestServlet extends HttpServlet {
                         .firstName("Floyd") 
                         .lastName("Kretschmar") 
                         .address(address)
+                        .birthdate(LocalDate.of(1992, Month.SEPTEMBER, 16))
                         .company("OptWare").build();
 
                 try {

@@ -29,6 +29,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         </converter>
     </tag>
     <tag>
+        <tag-name>convertLocalDateTime</tag-name>
+        <converter>
+            <converter-id>de.oth.fkretschmar.advertisementproject.ui.converters.LocalDateTimeConverter</converter-id>
+        </converter>
+    </tag>
+    <tag>
         <tag-name>convertMoney</tag-name>
         <converter>
             <converter-id>de.oth.fkretschmar.advertisementproject.ui.converters.MoneyConverter</converter-id>
