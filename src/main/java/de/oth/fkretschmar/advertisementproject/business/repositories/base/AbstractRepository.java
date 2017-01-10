@@ -65,7 +65,7 @@ public abstract class AbstractRepository<S, T extends Object & IEntity<S>> {
     
     
     /**
-     * Creates a new instance of {@link AbstractJPARepository} using the 
+     * Creates a new instance of {@link AbstractRepository} using the 
      * specified class type.
      * 
      * @param   entityType   the class type of the entity being managed by the

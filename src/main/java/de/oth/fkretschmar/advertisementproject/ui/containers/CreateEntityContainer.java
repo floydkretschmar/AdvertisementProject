@@ -30,7 +30,7 @@ public class CreateEntityContainer extends UINamingContainer {
 
     /**
      * Invokes the specified notified listener passing the attribute.
-     * @param event 
+     * @param   event   the ajax event of the listener.
      */
     public void notifiedListener(AjaxBehaviorEvent event) {
         MethodExpression notifiedListener = (MethodExpression) getAttributes().get("notifiedListener");

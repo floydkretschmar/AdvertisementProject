@@ -20,6 +20,7 @@ import de.oth.fkretschmar.advertisementproject.business.services.base.ICampaignS
 import de.oth.fkretschmar.advertisementproject.entities.billing.Bill;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.Campaign;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.CampaignState;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
@@ -38,7 +39,7 @@ import org.omnifaces.cdi.ViewScoped;
  */
 @Named
 @ViewScoped
-public class CampaignModel extends AccountModel {
+public class CampaignModel implements Serializable  {
 
     // --------------- Private fields ---------------
     /**

@@ -20,6 +20,7 @@ import de.oth.fkretschmar.advertisementproject.ui.AccountType;
 import de.oth.fkretschmar.advertisementproject.entities.billing.Account;
 import de.oth.fkretschmar.advertisementproject.entities.billing.BankAccount;
 import de.oth.fkretschmar.advertisementproject.entities.billing.PayPalAccount;
+import java.io.Serializable;
 import javax.inject.Named;
 import lombok.Getter;
 import lombok.Setter;
@@ -31,7 +32,7 @@ import org.omnifaces.cdi.ViewScoped;
  */
 @Named
 @ViewScoped
-public class NewAccountModel {
+public class NewAccountModel implements Serializable  {
 
     // --------------- Private fields ---------------
 

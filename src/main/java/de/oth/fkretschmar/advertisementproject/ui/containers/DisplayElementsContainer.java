@@ -76,8 +76,8 @@ public class DisplayElementsContainer extends CreateEntityContainer {
     
     /**
      * Redirects the formatting of the header item to the specified method.
-     * @param headerItem
-     * @return 
+     * @param   headerItem  the header item that will be formatted.
+     * @return  the formatted header item.
      */
     public String formatHeaderItemAction(Object headerItem) {
         MethodExpression formatHeaderItemAction = (MethodExpression) getAttributes().get("formatHeaderItemAction");

@@ -17,6 +17,7 @@
 package de.oth.fkretschmar.advertisementproject.ui.models;
 
 import de.oth.fkretschmar.advertisementproject.business.services.PasswordException;
+import java.io.Serializable;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -34,7 +35,7 @@ import lombok.Setter;
  */
 @Named
 @ViewScoped
-public class LoginModel {
+public class LoginModel implements Serializable  {
 
     // --------------- Private static fields ---------------
     

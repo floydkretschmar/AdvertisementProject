@@ -19,17 +19,32 @@ package de.oth.fkretschmar.advertisementproject.ui.models;
 import de.oth.fkretschmar.advertisementproject.entities.billing.Account;
 import de.oth.fkretschmar.advertisementproject.entities.billing.BankAccount;
 import de.oth.fkretschmar.advertisementproject.entities.billing.PayPalAccount;
+import de.oth.fkretschmar.advertisementproject.ui.annotations.ConverterInjection;
+import de.oth.fkretschmar.advertisementproject.ui.converters.IConverter;
+import java.io.Serializable;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
+import lombok.Getter;
 
 /**
- * The abstract base implementation of an ui model.
+ * 
  * 
  * @author Floyd
  */
 @Named
 @RequestScoped
-public class AccountModel {
+public class AccountModel implements Serializable {
+    
+    // --------------- Private fields ---------------
+    
+    /**
+     * Stores the accountConverter used to convert accounts for visualization.
+     */
+    @Inject
+    @ConverterInjection
+    @Getter
+    private IConverter<Account> accountConverter;
     
     // --------------- Public getters and setters ---------------
     

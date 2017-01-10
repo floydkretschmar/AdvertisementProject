@@ -22,6 +22,7 @@ import de.oth.fkretschmar.advertisementproject.business.services.base.IUserServi
 import de.oth.fkretschmar.advertisementproject.entities.user.Address;
 import de.oth.fkretschmar.advertisementproject.entities.user.Password;
 import de.oth.fkretschmar.advertisementproject.entities.user.User;
+import java.io.Serializable;
 import java.time.ZoneId;
 import java.util.Date;
 import javax.enterprise.context.RequestScoped;
@@ -36,7 +37,7 @@ import lombok.Setter;
  */
 @Named
 @RequestScoped
-public class RegistrationModel {
+public class RegistrationModel implements Serializable  {
 
     // --------------- Private fields ---------------
     /**

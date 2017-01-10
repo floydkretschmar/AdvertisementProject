@@ -23,6 +23,7 @@ import de.oth.fkretschmar.advertisementproject.entities.billing.PayPalAccount;
 import de.oth.fkretschmar.advertisementproject.entities.user.Address;
 import de.oth.fkretschmar.advertisementproject.entities.user.User;
 import de.oth.fkretschmar.advertisementproject.ui.AccountType;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.stream.Collectors;
@@ -39,7 +40,7 @@ import org.omnifaces.cdi.ViewScoped;
  */
 @Named
 @ViewScoped
-public class UserProfileModel extends AccountModel {
+public class UserProfileModel implements Serializable {
 
     // --------------- Private fields ---------------
         
@@ -97,7 +98,8 @@ public class UserProfileModel extends AccountModel {
     
     /**
      * Adds a newly added account to the list of accounts of the copied user.
-     * @param entity 
+     * 
+     * @param   entity  the account that will be added.
      */
     public void addNewAccount(Object entity) {
         this.currentUserCopy.addAccount((Account)entity);

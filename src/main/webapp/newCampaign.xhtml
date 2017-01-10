@@ -69,10 +69,10 @@
                                                      value="#{newCampaignModel.selectedAccount}"
                                                      styleClass="#{component.valid? 'accountSelectorClass' : 'webvert_input_control_invalid accountSelectorClass' }"
                                                      required="true">
-                                        <f:converter binding="#{newCampaignModel.accountConverter}"/>
+                                        <f:converter binding="#{accountModel.accountConverter}"/>
                                         <f:selectItems value="#{newCampaignModel.accounts}" 
                                                        var="account" 
-                                                       itemLabel="#{newCampaignModel.getAccountLabel(account)}"/>
+                                                       itemLabel="#{accountModel.getAccountLabel(account)}"/>
                                     </b:selectOneMenu>
                                 </b:column>
                                 <b:column span="7"

@@ -18,6 +18,7 @@ package de.oth.fkretschmar.advertisementproject.ui.models;
 
 import de.oth.fkretschmar.advertisementproject.business.services.base.IContentProviderService;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.Content;
+import java.io.Serializable;
 import java.util.Optional;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -26,13 +27,13 @@ import lombok.Getter;
 import org.omnifaces.cdi.ViewScoped;
 
 /**
- * The abstract base implementation of an ui model.
+ *
  * 
  * @author Floyd
  */
 @Named
 @ViewScoped
-public class AdvertisementModel {
+public class AdvertisementModel implements Serializable {
     
     // --------------- Private fields ---------------
     
