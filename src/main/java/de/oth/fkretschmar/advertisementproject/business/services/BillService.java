@@ -140,7 +140,7 @@ public class BillService implements Serializable, IBillService {
      * Performs the work of billing the latest set of content requests and
      * setting up the payment job for campaigns that are payed monthly.
      */
-    @Schedule(hour = "*", minute = "*/3", second = "*")
+    @Schedule(hour = "*", minute = "*/3", second = "0")
     @Transactional
     public void billMonthlyContentRequests() {
         this.billContentRequests(PaymentInterval.MONTHLY);
@@ -150,7 +150,7 @@ public class BillService implements Serializable, IBillService {
      * Performs the work of billing the latest set of content requests and
      * setting up the payment job for campaigns that are payed quaterly.
      */
-    @Schedule(hour = "*", minute = "*/9", second = "*")
+    @Schedule(hour = "*", minute = "*/9", second = "0")
     @Transactional
     public void billQuaterlyContentRequests() {
         this.billContentRequests(PaymentInterval.QUATERLY);
@@ -160,7 +160,7 @@ public class BillService implements Serializable, IBillService {
      * Performs the work of billing the latest set of content requests and
      * setting up the payment job for campaigns that are payed yearly.
      */
-    @Schedule(hour = "*", minute = "*/36", second = "*")
+    @Schedule(hour = "*", minute = "*/36", second = "0")
     @Transactional
     public void billYearlyContentRequests() {
         this.billContentRequests(PaymentInterval.YEARLY);
