@@ -24,7 +24,7 @@ import java.io.Serializable;
 import javax.inject.Named;
 import lombok.Getter;
 import lombok.Setter;
-import org.omnifaces.cdi.ViewScoped;
+import javax.faces.view.ViewScoped;
 
 /**
  *

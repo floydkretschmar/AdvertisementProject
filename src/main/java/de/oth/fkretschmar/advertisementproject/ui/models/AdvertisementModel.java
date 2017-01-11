@@ -24,7 +24,7 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.inject.Named;
 import lombok.Getter;
-import org.omnifaces.cdi.ViewScoped;
+import javax.faces.view.ViewScoped;
 
 /**
  *

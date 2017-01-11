@@ -87,6 +87,16 @@
                                     </h:commandLink>
                                 </b:column>
                             </b:row>
+                            <b:row>
+                                <b:column span="12"
+                                          id="errorMessage"
+                                          style="margin-top: 16px">
+                                    <b:alert severity="danger"
+                                             rendered="#{newCampaignModel.error}">
+                                        #{newCampaignModel.errorMessage}
+                                    </b:alert>
+                                </b:column>
+                            </b:row>
                         </b:container>
                         <b:row id="displayContents"
                                style="margin-left: 0px; margin-right: 0px">
@@ -110,6 +120,7 @@
                             </b:commandButton>
                             <b:commandButton value="Ok" 
                                              action="#{newCampaignModel.save}"
+                                             update="@form"
                                              class="webvert_primary_button_color 
                                              webvert_button_bordercolor"
                                              style="width: 128px; margin-left: 10px">
@@ -120,11 +131,11 @@
 
                 <webvert:ModalComposite modalType="account"
                                         notifiedListener="#{newCampaignModel.addNewAccount}"
-                                        renderOnOk=":new_campaign_form:**:accountRow"/>
+                                        renderOnOk=":new_campaign_form:**:accountRow :new_campaign_form:**:errorMessage"/>
 
                 <webvert:ModalComposite modalType="content"
                                         notifiedListener="#{newCampaignModel.addNewContent}"
-                                        renderOnOk=":new_campaign_form:**:displayContents"/>
+                                        renderOnOk=":new_campaign_form:**:displayContents :new_campaign_form:**:errorMessage"/>
             </ui:define>
         </ui:composition>
     </h:body>

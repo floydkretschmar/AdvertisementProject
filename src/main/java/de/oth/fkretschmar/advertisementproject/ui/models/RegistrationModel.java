@@ -25,19 +25,19 @@ import de.oth.fkretschmar.advertisementproject.entities.user.User;
 import java.io.Serializable;
 import java.time.ZoneId;
 import java.util.Date;
-import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import lombok.Getter;
 import lombok.Setter;
+import javax.faces.view.ViewScoped;
 
 /**
  *
  * @author fkre
  */
 @Named
-@RequestScoped
-public class RegistrationModel implements Serializable  {
+@ViewScoped
+public class RegistrationModel implements Serializable {
 
     // --------------- Private fields ---------------
     /**
@@ -82,6 +82,13 @@ public class RegistrationModel implements Serializable  {
     @Getter
     @Setter
     private String eMailAddress;
+
+    /**
+     * Stores the value indicating if the registration has failed.
+     */
+    @Getter
+    @Setter
+    private boolean error;
 
     /**
      * Stores the first name of the user.
@@ -142,7 +149,6 @@ public class RegistrationModel implements Serializable  {
         Password generatedPassword = PasswordService.generate(
                 this.password.toCharArray());
 
-
         User user = User.createUser()
                 .address(address)
                 .birthdate(this.birthdate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate())
@@ -155,9 +161,10 @@ public class RegistrationModel implements Serializable  {
         try {
             this.userService.createUser(user);
         } catch (UserServiceException ex) {
-            // TODO: show error in the UI if the registration fails.
+            this.error = true;
+            return null;
         }
-
+        
         return "login";
     }
 }

@@ -117,7 +117,6 @@ public class CampaignService implements Serializable, ICampaignService {
         // changed this trickery works
         for(Campaign oldCampaign : user.getCampaigns()) {
             if(oldCampaign.equals(campaign)) {
-                this.campaignRepository.remove(oldCampaign);
                 user.removeCampaign(oldCampaign);
                 break;
             }

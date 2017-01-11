@@ -4,6 +4,7 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:b="http://bootsfaces.net/ui"
       xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:o="http://omnifaces.org/ui"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:prim="http://primefaces.org/ui">
     <h:head>
@@ -15,29 +16,30 @@
     <h:body class="webvert">
         <ui:composition template="./resources/templates/BaseLayoutTemplate.xhtml">
             <ui:define name="content">
+                <o:importConstants type="de.oth.fkretschmar.advertisementproject.ui.ErrorMessages" />
                 <b:container class="webvert_prelogin_container">
                     <h:form class="form-signin
                             webvert_prelogin_form" 
                             prependId="false">
                         <b:row>
-                            <b:column medium-screen="12">
+                            <b:column span="12">
                                 <h2 class="form-signin-heading 
                                     webvert_heading_color
                                     webvert_heading_layout">Register</h2>
                             </b:column>
                         </b:row>
                         <b:row>
-                            <b:column medium-screen="12">
+                            <b:column span="12">
                                 <b:inputText id="email" 
                                              value="#{registrationModel.EMailAddress}"
                                              placeholder="Email address*" 
-                                             styleClass="#{component.valid ? '' : 'webvert_input_control_invalid' }"
+                                             styleClass="#{component.valid and not registrationModel.error ? '' : 'webvert_input_control_invalid' }"
                                              required="true">
                                 </b:inputText>
                             </b:column>
                         </b:row>
                         <b:row>
-                            <b:column medium-screen="12">
+                            <b:column span="12">
                                 <b:inputSecret id="password" 
                                                value="#{registrationModel.password}"
                                                placeholder="Password*" 
@@ -50,7 +52,7 @@
                             </b:column>
                         </b:row>
                         <b:row>
-                            <b:column medium-screen="12">
+                            <b:column span="12">
                                 <b:inputSecret id="confirm" 
                                                binding="#{confirmPassword}" 
                                                placeholder="Confirm password*" 
@@ -63,14 +65,14 @@
                             </b:column>
                         </b:row>
                         <b:row>
-                            <b:column medium-screen="12">
+                            <b:column span="12">
                                 <h4 id="personalInfo" class="form-signin-heading webvert_heading_color">
                                     Personal Information
                                 </h4>
                             </b:column>
                         </b:row>
                         <b:row>
-                            <b:column medium-screen="6">
+                            <b:column span="6">
                                 <b:inputText id="firstName" 
                                              value="#{registrationModel.firstName}"
                                              placeholder="First name*" 
@@ -79,7 +81,7 @@
                                              required="true">
                                 </b:inputText>
                             </b:column>
-                            <b:column medium-screen="6">
+                            <b:column span="6">
                                 <b:inputText id="lastName" 
                                              value="#{registrationModel.lastName}"
                                              placeholder="Last name*" 
@@ -102,21 +104,21 @@
                             </b:column>
                         </b:row>
                         <b:row>
-                            <b:column medium-screen="12">
+                            <b:column span="12">
                                 <b:inputText id="company" 
                                              value="#{registrationModel.company}"
                                              placeholder="Company" />
                             </b:column>
                         </b:row>
                         <b:row>
-                            <b:column medium-screen="12">
+                            <b:column span="12">
                                 <h4 id="personalInfo" class="form-signin-heading webvert_heading_color">
                                     Address
                                 </h4>
                             </b:column>
                         </b:row>
                         <b:row>
-                            <b:column medium-screen="10">
+                            <b:column span="10">
                                 <b:inputText id="street" 
                                              value="#{registrationModel.street}"
                                              placeholder="Street*"
@@ -124,7 +126,7 @@
                                              required="true">
                                 </b:inputText>
                             </b:column>
-                            <b:column medium-screen="2">
+                            <b:column span="2">
                                 <b:inputText id="number" 
                                              value="#{registrationModel.houseNumber}"
                                              placeholder="Nr.*" 
@@ -134,7 +136,7 @@
                             </b:column>
                         </b:row>
                         <b:row>
-                            <b:column medium-screen="4">
+                            <b:column span="4">
                                 <b:inputText id="areaCode" 
                                              value="#{registrationModel.areaCode}"
                                              placeholder="Area code*"
@@ -142,7 +144,7 @@
                                              required="true">
                                 </b:inputText>
                             </b:column>
-                            <b:column medium-screen="8">
+                            <b:column span="8">
                                 <b:inputText id="city" 
                                              value="#{registrationModel.city}"
                                              placeholder="City*" 
@@ -152,14 +154,22 @@
                             </b:column>
                         </b:row>
                         <b:row>
-                            <b:column medium-screen="12">
+                            <b:column span="12">
                                 <b:inputText id="country" 
                                              value="#{registrationModel.country}"
                                              placeholder="Country" />
                             </b:column>
                         </b:row>
                         <b:row>
-                            <b:column medium-screen="6">
+                            <b:column span="12">
+                                <b:alert severity="danger"
+                                         rendered="#{registrationModel.error}">
+                                    #{ErrorMessages.REGISTRATION_EMAIL_ALREADY_IN_USE}
+                                </b:alert>
+                            </b:column>
+                        </b:row>
+                        <b:row>
+                            <b:column span="6">
                                 <b:commandButton look="default btn-block" 
                                                  value="Canel" 
                                                  icon="remove" 
@@ -168,7 +178,7 @@
                                                  webvert_prelogin_button_layout"
                                                  action="login"/>
                             </b:column>
-                            <b:column medium-screen="6">
+                            <b:column span="6">
                                 <b:commandButton look="default btn-block" 
                                                  value="Register" 
                                                  icon="log-in" 

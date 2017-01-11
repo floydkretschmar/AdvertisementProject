@@ -17,6 +17,7 @@
 package de.oth.fkretschmar.advertisementproject.ui.models;
 
 import de.oth.fkretschmar.advertisementproject.business.services.PasswordException;
+import de.oth.fkretschmar.advertisementproject.ui.ErrorMessages;
 import java.io.Serializable;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -36,20 +37,6 @@ import lombok.Setter;
 @Named
 @ViewScoped
 public class LoginModel implements Serializable  {
-
-    // --------------- Private static fields ---------------
-    
-    /**
-     * Stores the error message for a failed authentication during login.
-     */
-    private static final String AUTHENTICATION_FAILED
-            = "The given e-mail address and/or password are incorrect.";
-    
-    /**
-     * Stores the error message for unexpected errors during login.
-     */
-    private static final String UNEXPECTED_ERROR 
-            = "An unexpected error occurred. Please try again.";
 
     // --------------- Private fields ---------------
     
@@ -117,13 +104,13 @@ public class LoginModel implements Serializable  {
                 return "overview";
             }
             else {
-                this.errorMessage = LoginModel.AUTHENTICATION_FAILED;
+                this.errorMessage = ErrorMessages.LOGIN_AUTHENTICATION_FAILED;
                 this.error = true;
                 this.password = null;
                 return null;
             }   
         } catch (PasswordException ex) {
-            this.errorMessage = LoginModel.UNEXPECTED_ERROR;
+            this.errorMessage = ErrorMessages.LOGIN_UNEXPECTED_ERROR;
             this.password = null;
             this.error = true;
             return null;
