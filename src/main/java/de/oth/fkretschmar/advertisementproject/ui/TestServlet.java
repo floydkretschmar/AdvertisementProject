@@ -34,6 +34,7 @@ import de.oth.fkretschmar.advertisementproject.entities.billing.BillItem;
 import de.oth.fkretschmar.advertisementproject.entities.exceptions.BuilderValidationException;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.Campaign;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.Content;
+import de.oth.fkretschmar.advertisementproject.entities.campaign.ContentFormat;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.PaymentInterval;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.TargetAge;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.TargetContext;
@@ -196,6 +197,7 @@ public class TestServlet extends HttpServlet {
                             .targetUrl(new URL("https://www.google.de"))
                             .context(context)
                             .numberOfRequests(100000)
+                            .format(ContentFormat.FULL_BANNER)
                             .pricePerRequest(Money.ofMinor(
                                     CurrencyUnit.EUR, 
                                     4)).build();
@@ -213,6 +215,7 @@ public class TestServlet extends HttpServlet {
                             .targetUrl(new URL("https://www.google.de"))
                             .context(context1)
                             .numberOfRequests(500000)
+                            .format(ContentFormat.SKYSCRAPER)
                             .pricePerRequest(Money.ofMinor(
                                     CurrencyUnit.EUR, 
                                     10)).build();
@@ -255,6 +258,7 @@ public class TestServlet extends HttpServlet {
                                 .targetUrl(new URL("https://www.google.de"))
                                 .context(context3)
                                 .numberOfRequests(200000)
+                            .format(ContentFormat.LEADERBOARD)
                                 .pricePerRequest(Money.ofMinor(
                                     CurrencyUnit.EUR, 
                                     20)).build();

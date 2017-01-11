@@ -17,6 +17,7 @@
 package de.oth.fkretschmar.advertisementproject.ui.models;
 
 import de.oth.fkretschmar.advertisementproject.entities.campaign.Content;
+import de.oth.fkretschmar.advertisementproject.entities.campaign.ContentFormat;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.ContentType;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.TargetAge;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.TargetContext;
@@ -27,6 +28,7 @@ import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.List;
 import javax.enterprise.context.RequestScoped;
@@ -100,6 +102,13 @@ public class NewContentModel implements Serializable  {
     private List<String> selectedAges;
 
     /**
+     * Stores the format of the content that will be created.
+     */
+    @Getter
+    @Setter
+    private ContentFormat selectedFormat;
+
+    /**
      * Stores the gender groups that will be targeted by the content that will
      * be created.
      */
@@ -148,6 +157,16 @@ public class NewContentModel implements Serializable  {
         }
 
         return filteredTypes;
+    }
+    
+    
+    /**
+     * Gets the list of formats the content can have.
+     * 
+     * @return the formats as a list.
+     */
+    public List<ContentFormat> getFormats() {
+        return Arrays.asList(ContentFormat.values());
     }
 
     /**
@@ -214,6 +233,7 @@ public class NewContentModel implements Serializable  {
                             .targetMaritalStatus(status)
                             .targetPurposeOfUses(purposes).build())
                     .description(this.description)
+                    .format(this.selectedFormat)
                     .numberOfRequests(this.numberOfRequests)
                     .targetUrl(new URL(this.targetPage))
                     .pricePerRequest(Money.ofMinor(
@@ -229,6 +249,7 @@ public class NewContentModel implements Serializable  {
             this.preDecimalPointAmount = 0;
             this.selectedAges.clear();
             this.selectedContentType = ContentType.IMAGE_URL;
+            this.selectedFormat = ContentFormat.FULL_BANNER;
             this.selectedGenders.clear();
             this.selectedMaritalStatus.clear();
             this.selectedPurposesOfUse.clear();

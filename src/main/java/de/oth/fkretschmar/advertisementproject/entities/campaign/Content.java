@@ -88,7 +88,7 @@ public class Content extends AbstractRandomStringKeyedEntity
     private Campaign campaign;
     
     /**
-     * Stores the enum that indicates the actual type of the object.
+     * Stores the enum that indicates the actual type of the content.
      */
     @NotNull
     @Column(name = "TYPE", nullable = false)
@@ -115,6 +115,15 @@ public class Content extends AbstractRandomStringKeyedEntity
     @Getter
     @Setter
     private String description;
+    
+    /**
+     * Stores the enum that indicates the actual format of the content.
+     */
+    @NotNull
+    @Column(name = "FORMAT", nullable = false)
+    @Enumerated(EnumType.STRING)
+    @Getter
+    private ContentFormat format;
     
     /**
      * Stores the number of contents that have been ordered for the target 
@@ -173,7 +182,8 @@ public class Content extends AbstractRandomStringKeyedEntity
      * @param   context         the target context of the specified order row 
      *                          that influinces the price.
      * @param   description     the text that gives a short description of the
-     *                          content..
+     *                          content.
+     * @param   format          the actual format of the content.
      * @param   numberOfRequests    the number of contents that have been 
      *                              ordered for the target context.
      * @param   pricePerRequest     the monetary amount tbe creator of the value 
@@ -186,6 +196,7 @@ public class Content extends AbstractRandomStringKeyedEntity
             ContentType contentType,
             TargetContext context, 
             String description, 
+            ContentFormat format,
             long numberOfRequests,
             Money pricePerRequest,
             URL targetUrl,
@@ -194,6 +205,7 @@ public class Content extends AbstractRandomStringKeyedEntity
         this.setTargetUrl(targetUrl);
         this.setDescription(description);
         this.context = context;
+        this.format = format;
         this.numberOfRequests = numberOfRequests;
         this.pricePerRequest = pricePerRequest;
     }
@@ -269,7 +281,8 @@ public class Content extends AbstractRandomStringKeyedEntity
      * @param   context         the target context of the specified order row 
      *                          that influinces the price.
      * @param   description     the text that gives a short description of the
-     *                          content..
+     *                          content.
+     * @param   format          the actual format of the content.
      * @param   numberOfRequests    the number of contents that have been 
      *                              ordered for the target context.
      * @param   pricePerRequest     the monetary amount tbe creator of the value 
@@ -290,6 +303,7 @@ public class Content extends AbstractRandomStringKeyedEntity
             ContentType contentType,
             TargetContext context, 
             String description, 
+            ContentFormat format,
             long numberOfRequests,
             Money pricePerRequest,
             URL targetUrl,
@@ -300,10 +314,16 @@ public class Content extends AbstractRandomStringKeyedEntity
                     "The content can not be null.");
         }
         
-        if (contentType == ContentType.UNDEFINED) {
+        if (contentType == ContentType.UNDEFINED || contentType == null) {
             throw new BuilderValidationException(
                     Content.class,
                     "The content type can not be undefined.");
+        }
+        
+        if (format == null) {
+            throw new BuilderValidationException(
+                    Content.class,
+                    "The format can not be undefined.");
         }
         
         if (!contentType.getContentType().isInstance(value)) {
@@ -341,6 +361,7 @@ public class Content extends AbstractRandomStringKeyedEntity
                 contentType, 
                 context, 
                 description, 
+                format,
                 numberOfRequests, 
                 pricePerRequest, 
                 targetUrl, 

@@ -30,6 +30,15 @@
                                itemValue="#{contentType}"
                                itemLabel="#{contentType}"/>
             </b:selectOneMenu>
+            <h:outputText value="Content format *"
+                          class="webvert_bold_lable_layout"/>
+            <b:selectOneMenu value="#{newContentModel.selectedFormat}"
+                             required="true">
+                <f:selectItems value="#{newContentModel.formats}"
+                               var="format"
+                               itemValue="#{format}"
+                               itemLabel="#{format}"/>
+            </b:selectOneMenu>
             <h:outputText value="Content value *"
                           class="webvert_bold_lable_layout"/>
             <b:inputText value="#{newContentModel.contentValue}"
