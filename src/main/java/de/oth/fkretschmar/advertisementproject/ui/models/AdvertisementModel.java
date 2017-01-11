@@ -18,6 +18,7 @@ package de.oth.fkretschmar.advertisementproject.ui.models;
 
 import de.oth.fkretschmar.advertisementproject.business.services.base.IContentProviderService;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.Content;
+import de.oth.fkretschmar.advertisementproject.entities.campaign.ContentFormat;
 import java.io.Serializable;
 import java.util.Optional;
 import javax.annotation.PostConstruct;
@@ -59,7 +60,8 @@ public class AdvertisementModel implements Serializable {
     @PostConstruct
     private void initializeContent() {
         Optional<Content> requestedContent 
-                = this.contentService.requestRandomContent("webvert");
+                = this.contentService.requestRandomContent("webvert", 
+                        ContentFormat.WIDE_SKYSCRAPER);
         
         if (requestedContent.isPresent()) {
             this.content = requestedContent.get();

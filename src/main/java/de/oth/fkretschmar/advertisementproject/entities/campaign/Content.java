@@ -62,7 +62,8 @@ import org.joda.money.Money;
             query = " select CONTENT "
                     + "from T_CONTENT CONTENT "
                     + "where CONTENT.numberOfRequests > 0 "
-                    + "AND CONTENT.campaign.campaignState = de.oth.fkretschmar.advertisementproject.entities.campaign.CampaignState.RUNNING")
+                    + "AND CONTENT.campaign.campaignState = de.oth.fkretschmar.advertisementproject.entities.campaign.CampaignState.RUNNING "
+                    + "AND CONTENT.format = ?1")
 })
 @ToString(callSuper = true, exclude = "campaign")
 public class Content extends AbstractRandomStringKeyedEntity

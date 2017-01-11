@@ -249,7 +249,7 @@ public class NewContentModel implements Serializable  {
             this.preDecimalPointAmount = 0;
             this.selectedAges.clear();
             this.selectedContentType = ContentType.IMAGE_URL;
-            this.selectedFormat = ContentFormat.FULL_BANNER;
+            this.selectedFormat = ContentFormat.HALF_PAGE;
             this.selectedGenders.clear();
             this.selectedMaritalStatus.clear();
             this.selectedPurposesOfUse.clear();

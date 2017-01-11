@@ -16,7 +16,9 @@
         <ui:composition template="BaseLayoutTemplate.xhtml">
             <ui:define name="content"> 
                 <b:row class="webvert_pa_row_layout">
-                    <b:column span="2" class="webvert_pa_column_layout">
+                    <b:column span="2" 
+                              class="webvert_pa_column_layout"
+                              style="float: left; width: inherit">
                         <ui:insert name="menu">
                             <h:form id="main_menu_form"
                                     prependId="false" 
@@ -61,16 +63,10 @@
                             </h:form>
                         </ui:insert>
                     </b:column>
-                    <b:column span="#{not empty advertisementModel.content ? '8' : '10'}" class="webvert_pa_column_layout">
-                        <!--<b:panel class="webvert_pa_content_layout">-->
-                        <ui:insert name="main_content">
-                            Main Content
-                        </ui:insert>
-                        <!--</b:panel>-->
-                    </b:column>
                     <b:column span="#{not empty advertisementModel.content ? '2' : '0'}" 
                               class="webvert_pa_column_ad_layout"
-                              rendered="#{not empty advertisementModel.content}">
+                              rendered="#{not empty advertisementModel.content}"
+                              style="float: right; width: inherit">
                         <ui:insert name="advert">
                             <o:importConstants type="de.oth.fkretschmar.advertisementproject.entities.campaign.ContentType" />
                             <b:panel id="adPanels"
@@ -84,10 +80,16 @@
                                 <h:outputLink value="#{advertisementModel.content.targetUrl}">
                                     <b:panel id="adImagePanel"
                                              rendered="#{advertisementModel.content.contentType eq ContentType.IMAGE_URL}"
-                                             style="min-height: 300px; display: table; padding: 10px; width: 100%">
+                                             style="
+                                             display: table; 
+                                             padding: 10px;">
                                         <img src="#{advertisementModel.content.value}" 
                                              class="webvert_pa_image_ad_layout"
-                                             style="display:table-cell; margin-left:auto; margin-right:auto;"/>
+                                             style="display:table-cell; 
+                                             margin-left:auto; 
+                                             margin-right:auto; 
+                                             height: #{advertisementModel.content.format.area.height}px;
+                                             width: #{advertisementModel.content.format.area.width}px;"/>
                                     </b:panel>
                                     <b:panel id="adTextPanel"
                                              rendered="#{advertisementModel.content.contentType eq ContentType.TEXT}"
@@ -99,6 +101,16 @@
                             </b:panel>
                         </ui:insert>
                     </b:column>
+                    <b:column span="#{not empty advertisementModel.content ? '8' : '10'}" 
+                              class="webvert_pa_column_layout"
+                              style="float: none; overflow: hidden; width: inherit">
+                        <!--<b:panel class="webvert_pa_content_layout">-->
+                        <ui:insert name="main_content">
+                            Main Content
+                        </ui:insert>
+                        <!--</b:panel>-->
+                    </b:column>
+                    
                 </b:row>
             </ui:define>
         </ui:composition>

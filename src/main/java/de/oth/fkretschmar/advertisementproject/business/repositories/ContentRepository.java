@@ -18,6 +18,7 @@ package de.oth.fkretschmar.advertisementproject.business.repositories;
 
 import de.oth.fkretschmar.advertisementproject.business.repositories.base.AbstractRepository;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.Content;
+import de.oth.fkretschmar.advertisementproject.entities.campaign.ContentFormat;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.TargetContext;
 
 import java.util.ArrayList;
@@ -55,12 +56,14 @@ public class ContentRepository extends AbstractRepository<String, Content> {
     /**
      * Finds a random content.
      *
+     * @param   format  the format that the content is supposed to have.
      * @return a random content.
      */
-    public Optional<Content> findRandomContent() {
+    public Optional<Content> findRandomContent(ContentFormat format) {
         TypedQuery<Content> query = this.accessQuery(
                 Content.class,
-                Content.FIND_ALL_ACTIVE);
+                Content.FIND_ALL_ACTIVE,
+                format);
 
         List<Content> results = query.getResultList();
 
@@ -76,11 +79,13 @@ public class ContentRepository extends AbstractRepository<String, Content> {
      * Retrieves all contents that best match the provided
      * {@link TargetContext}.
      *
-     * @param context the context that specifies the targets for the requestet
-     * content.
+     * @param   context the context that specifies the targets for the requestet
+     *                  content.
+     * @param   format  the format that the content is supposed to have.
      * @return the matching contents.
      */
-    public List<Object[]> findMatchingContents(TargetContext context) {
+    public List<Object[]> findMatchingContents(
+            TargetContext context, ContentFormat format) {
         StoredProcedureQuery query
                 = this.getEntityManager().createStoredProcedureQuery(
                         ContentRepository.MATCHING_CONTENTS_PROCEDURE);
@@ -101,6 +106,10 @@ public class ContentRepository extends AbstractRepository<String, Content> {
                 "TARGET_PURPOSE_OF_USE",
                 String.class,
                 ParameterMode.IN);
+        query.registerStoredProcedureParameter(
+                "CONTENT_FORMAT",
+                String.class,
+                ParameterMode.IN);
 
         query.setParameter(
                 "TARGET_AGE",
@@ -114,6 +123,7 @@ public class ContentRepository extends AbstractRepository<String, Content> {
         query.setParameter(
                 "TARGET_PURPOSE_OF_USE",
                 this.buildParameterString(context.getPurposeOfUse()));
+        query.setParameter("CONTENT_FORMAT", format.name());
 
         return query.getResultList();
     }

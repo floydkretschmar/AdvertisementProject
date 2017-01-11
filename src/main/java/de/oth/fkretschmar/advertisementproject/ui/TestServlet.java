@@ -197,7 +197,7 @@ public class TestServlet extends HttpServlet {
                             .targetUrl(new URL("https://www.google.de"))
                             .context(context)
                             .numberOfRequests(100000)
-                            .format(ContentFormat.FULL_BANNER)
+                            .format(ContentFormat.HALF_PAGE)
                             .pricePerRequest(Money.ofMinor(
                                     CurrencyUnit.EUR, 
                                     4)).build();
@@ -215,7 +215,7 @@ public class TestServlet extends HttpServlet {
                             .targetUrl(new URL("https://www.google.de"))
                             .context(context1)
                             .numberOfRequests(500000)
-                            .format(ContentFormat.SKYSCRAPER)
+                            .format(ContentFormat.WIDE_SKYSCRAPER)
                             .pricePerRequest(Money.ofMinor(
                                     CurrencyUnit.EUR, 
                                     10)).build();

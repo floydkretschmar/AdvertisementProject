@@ -24,6 +24,8 @@ import lombok.RequiredArgsConstructor;
 /**
  * Defines the different formats that an advertisement can come with.
  * 
+ * (https://support.google.com/adsense/answer/6002621?hl=en)
+ * 
  * @author Floyd
  */
 @RequiredArgsConstructor
@@ -32,9 +34,14 @@ public enum ContentFormat {
     // --------------- Enum fields ---------------
     
     /**
-     * Indicates that the content has the size of a full banner (468x60).
+     * Indicates that the content has the size of a half page (300x600).
      */
-    FULL_BANNER(new Rectangle(468, 60)),
+    HALF_PAGE(new Rectangle(300, 600)),
+    
+    /**
+     * Indicates that the content has the size of a large rectangle (336x280).
+     */
+    LARGE_RECTANGLE(new Rectangle(336, 280)),
     
     /**
      * Indicates that the content has the size of a leaderboard (728x90).
@@ -42,19 +49,14 @@ public enum ContentFormat {
     LEADERBOARD(new Rectangle(728, 90)),
     
     /**
-     * Indicates that the content has the size of a pop under (720x300).
+     * Indicates that the content has the size of a medium rectangle (300x250).
      */
-    POP_UNDER(new Rectangle(720, 300)),
+    MEDIUM_RECTANGLE(new Rectangle(300, 250)),
    
     /**
-     * Indicates that the content has the size of a skyscraper (120x600).
+     * Indicates that the content has the size of a wide skyscraper (160x600).
      */
-    SKYSCRAPER(new Rectangle(120, 600)),
-    
-    /**
-     * Indicates that the content has the size of a vertical rectangle (240x400).
-     */
-    VERTICAL_RECTANGLE(new Rectangle(240, 400));
+    WIDE_SKYSCRAPER(new Rectangle(160, 600));
     
     // --------------- Private fields ---------------
     

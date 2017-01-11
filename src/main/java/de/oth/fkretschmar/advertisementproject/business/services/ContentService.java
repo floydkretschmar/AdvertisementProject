@@ -27,6 +27,7 @@ import de.oth.fkretschmar.advertisementproject.business.services.base.IContentSe
 import de.oth.fkretschmar.advertisementproject.entities.campaign.Campaign;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.Content;
 import de.oth.fkretschmar.advertisementproject.entities.billing.ContentRequest;
+import de.oth.fkretschmar.advertisementproject.entities.campaign.ContentFormat;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.TargetContext;
 
 import java.io.Serializable;
@@ -157,14 +158,16 @@ public class ContentService implements Serializable, IContentService, IContentPr
      * {@link TargetContext}. 
      * 
      * @param source    the text that identifies the source of the request.
+     * @param format    the format that the content is supposed to have.
      * @param context   the context that specifies the targets for the requestet
      *                  content.
      * @return          the best matching content.
      */
     @Transactional
     @Override
-    public Optional<Content> requestContent(String source, TargetContext context) {
-        List<Object[]> results = this.contentRepository.findMatchingContents(context);
+    public Optional<Content> requestContent(
+            String source, ContentFormat format, TargetContext context) {
+        List<Object[]> results = this.contentRepository.findMatchingContents(context, format);
         
         if(results == null || results.isEmpty())
             return null;
@@ -205,7 +208,7 @@ public class ContentService implements Serializable, IContentService, IContentPr
             return Optional.of(content);
         }
         
-        return this.requestRandomContent(source);
+        return this.requestRandomContent(source, format);
     }
     
     
@@ -214,12 +217,15 @@ public class ContentService implements Serializable, IContentService, IContentPr
      * context.
      * 
      * @param   source  the text that identifies the source of the request.
+     * @param   format  the format that the content is supposed to have.
      * @return  the content that has been chosen randomly.
      */
     @Transactional
     @Override
-    public Optional<Content> requestRandomContent(String source) {
-        Optional<Content> randomContent = this.contentRepository.findRandomContent();
+    public Optional<Content> requestRandomContent(
+            String source, ContentFormat format) {
+        Optional<Content> randomContent 
+                = this.contentRepository.findRandomContent(format);
         
         if(randomContent.isPresent()) {
             this.createContentRequest(source, randomContent.get());

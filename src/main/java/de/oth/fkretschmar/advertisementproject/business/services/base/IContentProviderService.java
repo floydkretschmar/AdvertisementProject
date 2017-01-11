@@ -17,6 +17,7 @@
 package de.oth.fkretschmar.advertisementproject.business.services.base;
 
 import de.oth.fkretschmar.advertisementproject.entities.campaign.Content;
+import de.oth.fkretschmar.advertisementproject.entities.campaign.ContentFormat;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.TargetContext;
 import java.util.Optional;
 import javax.jws.WebService;
@@ -33,11 +34,13 @@ public interface IContentProviderService {
      * {@link TargetContext}. 
      * 
      * @param source    the text that identifies the source of the request.
+     * @param format    the format that the content is supposed to have.
      * @param context   the context that specifies the targets for the requestet
      *                  content.
      * @return          the best matching content.
      */
-    public Optional<Content> requestContent(String source, TargetContext context);
+    public Optional<Content> requestContent(
+            String source, ContentFormat format, TargetContext context);
     
     
     /**
@@ -45,7 +48,9 @@ public interface IContentProviderService {
      * context.
      * 
      * @param   source  the text that identifies the source of the request.
+     * @param   format  the format that the content is supposed to have.
      * @return  the content that has been chosen randomly.
      */
-    public Optional<Content> requestRandomContent(String source);
+    public Optional<Content> requestRandomContent(
+            String source, ContentFormat format);
 }
