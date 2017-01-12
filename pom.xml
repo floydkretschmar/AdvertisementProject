@@ -3,11 +3,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>de.oth.fkretschmar</groupId>
-    <artifactId>AdvertisementProject</artifactId>
+    <artifactId>WebvertKretschmar</artifactId>
     <version>1.0</version>
     <packaging>war</packaging>
 
-    <name>AdvertisementProject</name>
+    <name>WebvertKretschmar</name>
 
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>

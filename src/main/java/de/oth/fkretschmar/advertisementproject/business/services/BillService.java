@@ -238,6 +238,7 @@ public class BillService implements Serializable, IBillService {
             for (ContentRequest request : requests) {
                 Content content = request.getContent();
                 Campaign campaign = content.getCampaign();
+                
 
                 // 1.   find out whether or not a bill has already been created for 
                 //      the campaign that this request is bound to...
