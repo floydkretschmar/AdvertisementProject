@@ -24,7 +24,6 @@ import javax.enterprise.inject.New;
 import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.InjectionPoint;
 import javax.inject.Inject;
-import de.oth.fkretschmar.advertisementproject.ui.annotations.ConverterInjection;
 
 /**
  *
@@ -52,7 +51,6 @@ public class ConverterFactory {
      * @return  the fitting entity  converter for the specified entity.
      */
     @Produces
-    @ConverterInjection
     public <T> IConverter<T> createEntityConverter(
             InjectionPoint injectionPoint,
             @New EntityConverter<Account> accountConverter) {

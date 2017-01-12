@@ -95,6 +95,27 @@ public class UserProfileModel implements Serializable {
         return accounts.stream().sorted().collect(Collectors.toList());
     }
     
+    
+    /**
+     * Gets all the account of the user in an ordered manner.
+     * 
+     * @return  the collection of accounts.
+     */
+    public Collection<Account> getAccounts() {
+        return this.currentUserCopy.getAccounts()
+                .stream()
+                .sorted((acc1, acc2) -> 
+                {
+                   if(acc1 instanceof BankAccount) {
+                       return ((BankAccount)acc1).getIban().compareTo(((BankAccount)acc2).getIban());
+                   }
+                   else {
+                       return ((PayPalAccount)acc1).getName().compareTo(((PayPalAccount)acc2).getName());
+                   }
+                })
+                .collect(Collectors.toList());
+    }
+    
     /**
      * Gets the birthday of the user as a date.
      * 

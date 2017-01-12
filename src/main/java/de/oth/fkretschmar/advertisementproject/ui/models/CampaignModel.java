@@ -134,7 +134,9 @@ public class CampaignModel implements Serializable  {
             billHeaders.add(bill.getGenerationDate());
         }
 
-        return billHeaders;
+        return billHeaders.stream()
+                .sorted((bill1, bill2) -> bill2.compareTo(bill1))
+                .collect(Collectors.toList());
     }
 
     /**

@@ -19,6 +19,8 @@ package de.oth.fkretschmar.advertisementproject.ui.models;
 import de.oth.fkretschmar.advertisementproject.business.services.base.ICampaignService;
 import de.oth.fkretschmar.advertisementproject.business.services.base.IUserService;
 import de.oth.fkretschmar.advertisementproject.entities.billing.Account;
+import de.oth.fkretschmar.advertisementproject.entities.billing.BankAccount;
+import de.oth.fkretschmar.advertisementproject.entities.billing.PayPalAccount;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.Campaign;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.Content;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.PaymentInterval;
@@ -112,7 +114,18 @@ public class NewCampaignModel implements Serializable {
      * @return the user accounts.
      */
     public Collection<Account> getAccounts() {
-        return applicationModel.processCurrentUser(user -> user.getAccounts());
+        return applicationModel.processCurrentUser(
+                user -> user.getAccounts().stream()
+                .sorted((acc1, acc2) -> 
+                {
+                   if(acc1 instanceof BankAccount) {
+                       return ((BankAccount)acc1).getIban().compareTo(((BankAccount)acc2).getIban());
+                   }
+                   else {
+                       return ((PayPalAccount)acc1).getName().compareTo(((PayPalAccount)acc2).getName());
+                   }
+                })
+                .collect(Collectors.toList()));
     }
 
     /**

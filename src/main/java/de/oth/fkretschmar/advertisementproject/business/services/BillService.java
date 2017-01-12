@@ -91,6 +91,7 @@ public class BillService implements Serializable, IBillService {
             = Money.of(CurrencyUnit.EUR, 15);
 
     // --------------- Private fields ---------------
+    
     /**
      * Stores the service used to manage {@link BankAccount} entities.
      */

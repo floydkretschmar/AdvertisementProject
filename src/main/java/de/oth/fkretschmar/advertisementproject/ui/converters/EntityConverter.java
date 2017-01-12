@@ -20,7 +20,6 @@ import de.oth.fkretschmar.advertisementproject.business.services.base.IEntitySer
 import de.oth.fkretschmar.advertisementproject.entities.base.IEntity;
 import de.oth.fkretschmar.advertisementproject.entities.billing.Account;
 import java.io.Serializable;
-import javax.enterprise.context.Dependent;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -33,7 +32,6 @@ import lombok.Setter;
  * @author fkre
  * @param <T> the entity type.
  */
-@Dependent
 public class EntityConverter<T extends IEntity<?>>
         implements Converter, Serializable, IConverter<T> {
 

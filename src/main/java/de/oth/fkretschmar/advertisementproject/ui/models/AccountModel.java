@@ -42,7 +42,6 @@ public class AccountModel implements Serializable {
      * Stores the accountConverter used to convert accounts for visualization.
      */
     @Inject
-    @ConverterInjection
     @Getter
     private IConverter<Account> accountConverter;
     
