@@ -26,11 +26,12 @@ import de.oth.fkretschmar.advertisementproject.entities.campaign.Content;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.ContentType;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.PaymentInterval;
 import de.oth.fkretschmar.advertisementproject.entities.user.User;
-import de.oth.fkretschmar.advertisementproject.ui.ErrorMessages;
+import de.oth.fkretschmar.advertisementproject.ui.annotations.MessageBundle;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
@@ -73,6 +74,14 @@ public class NewCampaignModel implements Serializable {
     @Getter
     @Setter
     private String errorMessage;
+    
+    /**
+     * Stores the resource bundle that contains the translation texts for 
+     * messages.
+     */
+    @Inject
+    @MessageBundle
+    private transient ResourceBundle messages;
 
     /**
      * Stores the name of the new campaign.
@@ -211,12 +220,12 @@ public class NewCampaignModel implements Serializable {
     public String save() {
         if (this.selectedAccount == null) {
             this.error = true;
-            this.errorMessage = ErrorMessages.NEW_CAMPAIGN_ACCOUNT_NEEDED;
+            this.errorMessage = messages.getString("NEWCAMPAIGN_Error_AccountNeeded");
             return null;
         }
         else if (this.newContents.size() < 1) {
             this.error = true;
-            this.errorMessage = ErrorMessages.NEW_CAMPAIGN_CONTENT_NEEDED;
+            this.errorMessage = messages.getString("NEWCAMPAIGN_Error_ContentNeeded");
             return null;
         }
 

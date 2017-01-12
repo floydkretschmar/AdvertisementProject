@@ -22,12 +22,12 @@
                         <b:container id="new_campaign_container"
                                      class="webvert_nc_container_layout">
                             <h2 class="webvert_heading_color_dark webvert_heading_layout">
-                                Create a new campaign
+                                #{labels.NEWCAMPAIGN_Header_CreateANewCampaign}
                             </h2>
 
                             <b:row style="padding-top: 16px">
                                 <b:column span="4">
-                                    <h:outputText value="Name:" 
+                                    <h:outputText value="#{labels.NEWCAMPAIGN_OutputText_Name}" 
                                                   class="webvert_bold_lable_layout"/>
                                 </b:column>
                                 <b:column span="7"
@@ -39,7 +39,7 @@
                             </b:row>
                             <b:row style="padding-top: 16px">
                                 <b:column span="4">
-                                    <h:outputText value="Payment interval:" 
+                                    <h:outputText value="#{labels.NEWCAMPAIGN_OutputText_PaymentInterval}" 
                                                   class="webvert_bold_lable_layout"/>
                                 </b:column>
                                 <b:column span="7"
@@ -57,7 +57,7 @@
 
                             <b:row style="padding-top: 16px" id="accountRow">
                                 <b:column span="4">
-                                    <h:outputText value="Account:" 
+                                    <h:outputText value="#{labels.NEWCAMPAIGN_OutputText_Account}" 
                                                   class="webvert_bold_lable_layout"/>
                                 </b:column>
 
@@ -78,12 +78,12 @@
                                 <b:column span="7"
                                           style="padding-right: 0px; font-size: 18px"
                                           rendered="#{empty newCampaignModel.accounts}">
-                                    <h:outputText value="No accounts available. "></h:outputText>
+                                    <h:outputText value="#{labels.NEWCAMPAIGN_OutputText_NoAccountsAvailable}"></h:outputText>
                                     <h:commandLink p:data-target=".accountModal"
                                                    p:data-toggle="modal"
                                                    onclick="return false;"
                                                    class="webvert_heading_color_dark"
-                                                   value="Create a new account.">           
+                                                   value="#{labels.NEWCAMPAIGN_Link_CreateANewAccount}">           
                                     </h:commandLink>
                                 </b:column>
                             </b:row>
@@ -113,12 +113,12 @@
                                                               elementType="content"/>
                         </b:row>
                         <b:row style="float: right; position: absolute; bottom: 0; right: 0; margin-right: 0px">
-                            <b:commandButton value="Cancel" 
+                            <b:commandButton value="#{labels.NEWCAMPAIGN_Button_Cancel}" 
                                              immediate="true"
                                              action="#{newCampaignModel.cancel}"
                                              style="width: 128px; margin-left: 10px">
                             </b:commandButton>
-                            <b:commandButton value="Ok" 
+                            <b:commandButton value="#{labels.NEWCAMPAIGN_Button_Ok}" 
                                              action="#{newCampaignModel.save}"
                                              update="@form"
                                              class="webvert_primary_button_color 
@@ -131,12 +131,12 @@
 
                 <webvert:ModalComposite modalType="account"
                                         notifiedListener="#{newCampaignModel.addNewAccount}"
-                                        titel="Create a new account"
+                                        titel="#{labels.MODALACCOUNT_Title_CreateANewAccount}"
                                         renderOnOk=":new_campaign_form:**:accountRow :new_campaign_form:**:errorMessage"/>
 
                 <webvert:ModalComposite modalType="content"
                                         notifiedListener="#{newCampaignModel.addNewContent}"
-                                        titel="Create a new content"
+                                        titel="#{labels.MODALCONTENT_Title_CreateANewContent}"
                                         renderOnOk=":new_campaign_form:**:displayContents :new_campaign_form:**:errorMessage"/>
             </ui:define>
         </ui:composition>

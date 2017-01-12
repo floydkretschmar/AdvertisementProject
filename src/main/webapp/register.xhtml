@@ -4,7 +4,6 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:b="http://bootsfaces.net/ui"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:o="http://omnifaces.org/ui"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:prim="http://primefaces.org/ui">
     <h:head>
@@ -16,7 +15,6 @@
     <h:body class="webvert">
         <ui:composition template="./resources/templates/BaseLayoutTemplate.xhtml">
             <ui:define name="content">
-                <o:importConstants type="de.oth.fkretschmar.advertisementproject.ui.ErrorMessages" />
                 <b:container class="webvert_prelogin_container">
                     <h:form class="form-signin
                             webvert_prelogin_form" 
@@ -25,14 +23,16 @@
                             <b:column span="12">
                                 <h2 class="form-signin-heading 
                                     webvert_heading_color
-                                    webvert_heading_layout">Register</h2>
+                                    webvert_heading_layout">
+                                #{labels.REGISTER_Header_Register}
+                                </h2>
                             </b:column>
                         </b:row>
                         <b:row>
                             <b:column span="12">
                                 <b:inputText id="email" 
                                              value="#{registrationModel.EMailAddress}"
-                                             placeholder="Email address*" 
+                                             placeholder="#{labels.REGISTER_InputTextPlaceholder_EmailAddress}" 
                                              styleClass="#{component.valid and not registrationModel.error ? '' : 'webvert_input_control_invalid' }"
                                              required="true">
                                 </b:inputText>
@@ -42,7 +42,7 @@
                             <b:column span="12">
                                 <b:inputSecret id="password" 
                                                value="#{registrationModel.password}"
-                                               placeholder="Password*" 
+                                               placeholder="#{labels.REGISTER_InputTextPlaceholder_Password}" 
                                                binding="#{password}" 
                                                styleClass="#{component.valid? '' : 'webvert_input_control_invalid' }"
                                                required="true">
@@ -55,7 +55,7 @@
                             <b:column span="12">
                                 <b:inputSecret id="confirm" 
                                                binding="#{confirmPassword}" 
-                                               placeholder="Confirm password*" 
+                                               placeholder="#{labels.REGISTER_InputTextPlaceholder_ConfirmPassword}" 
                                                type="password"
                                                styleClass="#{component.valid? '' : 'webvert_input_control_invalid' }"
                                                required="true">
@@ -67,7 +67,7 @@
                         <b:row>
                             <b:column span="12">
                                 <h4 id="personalInfo" class="form-signin-heading webvert_heading_color">
-                                    Personal Information
+                                    #{labels.REGISTER_Header_PersonalInformation}
                                 </h4>
                             </b:column>
                         </b:row>
@@ -75,7 +75,7 @@
                             <b:column span="6">
                                 <b:inputText id="firstName" 
                                              value="#{registrationModel.firstName}"
-                                             placeholder="First name*" 
+                                             placeholder="#{labels.REGISTER_InputTextPlaceholder_FirstName}" 
                                              requiredMessage="Please enter your first name."
                                              styleClass="#{component.valid? '' : 'webvert_input_control_invalid' }"
                                              required="true">
@@ -84,7 +84,7 @@
                             <b:column span="6">
                                 <b:inputText id="lastName" 
                                              value="#{registrationModel.lastName}"
-                                             placeholder="Last name*" 
+                                             placeholder="#{labels.REGISTER_InputTextPlaceholder_LastName}" 
                                              required="true"
                                              styleClass="#{component.valid? '' : 'webvert_input_control_invalid' }">
                                 </b:inputText>
@@ -94,7 +94,7 @@
                             <b:column span="12" style="margin-bottom: 10px">
                                 <b:datepicker id="birthday" 
                                               mode="toggle-icon" 
-                                              placeholder="Birth date" 
+                                              placeholder="#{labels.REGISTER_InputTextPlaceholder_Birthdate}" 
                                               change-month="true"
                                               change-year="true"
                                               showWeek="true" 
@@ -107,13 +107,13 @@
                             <b:column span="12">
                                 <b:inputText id="company" 
                                              value="#{registrationModel.company}"
-                                             placeholder="Company" />
+                                             placeholder="#{labels.REGISTER_InputTextPlaceholder_Company}" />
                             </b:column>
                         </b:row>
                         <b:row>
                             <b:column span="12">
                                 <h4 id="personalInfo" class="form-signin-heading webvert_heading_color">
-                                    Address
+                                    #{labels.REGISTER_Header_Address}
                                 </h4>
                             </b:column>
                         </b:row>
@@ -121,7 +121,7 @@
                             <b:column span="10">
                                 <b:inputText id="street" 
                                              value="#{registrationModel.street}"
-                                             placeholder="Street*"
+                                             placeholder="#{labels.REGISTER_InputTextPlaceholder_Street}"
                                              styleClass="#{component.valid? '' : 'webvert_input_control_invalid' }"
                                              required="true">
                                 </b:inputText>
@@ -129,7 +129,7 @@
                             <b:column span="2">
                                 <b:inputText id="number" 
                                              value="#{registrationModel.houseNumber}"
-                                             placeholder="Nr.*" 
+                                             placeholder="#{labels.REGISTER_InputTextPlaceholder_HouseNumber}" 
                                              styleClass="#{component.valid? '' : 'webvert_input_control_invalid' }"
                                              required="true">
                                 </b:inputText>
@@ -139,7 +139,7 @@
                             <b:column span="4">
                                 <b:inputText id="areaCode" 
                                              value="#{registrationModel.areaCode}"
-                                             placeholder="Area code*"
+                                             placeholder="#{labels.REGISTER_InputTextPlaceholder_AreaCode}"
                                              styleClass="#{component.valid? '' : 'webvert_input_control_invalid' }"
                                              required="true">
                                 </b:inputText>
@@ -147,7 +147,7 @@
                             <b:column span="8">
                                 <b:inputText id="city" 
                                              value="#{registrationModel.city}"
-                                             placeholder="City*" 
+                                             placeholder="#{labels.REGISTER_InputTextPlaceholder_City}" 
                                              styleClass="#{component.valid? '' : 'webvert_input_control_invalid' }"
                                              required="true">
                                 </b:inputText>
@@ -157,21 +157,21 @@
                             <b:column span="12">
                                 <b:inputText id="country" 
                                              value="#{registrationModel.country}"
-                                             placeholder="Country" />
+                                             placeholder="#{labels.REGISTER_InputTextPlaceholder_Country}" />
                             </b:column>
                         </b:row>
                         <b:row>
                             <b:column span="12">
                                 <b:alert severity="danger"
                                          rendered="#{registrationModel.error}">
-                                    #{ErrorMessages.REGISTRATION_EMAIL_ALREADY_IN_USE}
+                                    #{messages.REGISTER_Error_EMailAlreadyInUse}
                                 </b:alert>
                             </b:column>
                         </b:row>
                         <b:row>
                             <b:column span="6">
                                 <b:commandButton look="default btn-block" 
-                                                 value="Canel" 
+                                                 value="#{labels.REGISTER_Button_Cancel}" 
                                                  icon="remove" 
                                                  immediate="true"
                                                  class="webvert_button_bordercolor
@@ -180,7 +180,7 @@
                             </b:column>
                             <b:column span="6">
                                 <b:commandButton look="default btn-block" 
-                                                 value="Register" 
+                                                 value="#{labels.REGISTER_Button_Register}" 
                                                  icon="log-in" 
                                                  class="webvert_primary_button_color 
                                                  webvert_button_bordercolor

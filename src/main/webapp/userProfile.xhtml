@@ -27,7 +27,7 @@
                                 <b:column span="11"
                                           style="padding-left: 0px">
                                     <h2 class="webvert_heading_color_dark webvert_heading_layout">
-                                        User profile
+                                        #{labels.USERPROFILE_Header_UserProfile}
                                     </h2>
                                 </b:column>
                                 <b:column span="1"
@@ -43,11 +43,11 @@
                             </b:row>
 
                             <h4 class="webvert_heading_color_dark webvert_heading_layout">
-                                Personal information
+                                #{labels.USERPROFILE_Header_PersonalInformation}
                             </h4>
 
                             <b:panelGrid colSpans="4, 4, 4">
-                                <h:outputText value="Name:" 
+                                <h:outputText value="#{labels.USERPROFILE_OutputText_Name}" 
                                               class="webvert_bold_lable_layout"/>
                                 <b:inputText value="#{userProfileModel.currentUserCopy.firstName}"
                                              disabled="#{not userProfileModel.editing}"
@@ -59,7 +59,7 @@
                                              required="true"></b:inputText>
                             </b:panelGrid>
                             <b:panelGrid colSpans="4, 8">
-                                <h:outputText value="Company:" 
+                                <h:outputText value="#{labels.USERPROFILE_OutputText_Company}" 
                                               class="webvert_bold_lable_layout"/>
                                 <b:inputText value="#{userProfileModel.currentUserCopy.company}"
                                              disabled="#{not userProfileModel.editing}"></b:inputText>
@@ -67,7 +67,7 @@
 
                             <b:row>
                                 <b:column span="4">
-                                    <h:outputText value="Birthday:" 
+                                    <h:outputText value="#{labels.USERPROFILE_OutputText_Birthday}" 
                                                   class="webvert_bold_lable_layout"/>
                                 </b:column>
                                 <b:column span="8">
@@ -95,12 +95,12 @@
                             </b:row>
 
                             <h4 class="webvert_heading_color_dark webvert_heading_layout">
-                                Address
+                                #{labels.USERPROFILE_Header_Address}
                             </h4>
 
 
                             <b:panelGrid colSpans="4, 7, 1">
-                                <h:outputText value="Street:" 
+                                <h:outputText value="#{labels.USERPROFILE_OutputText_Street}" 
                                               class="webvert_bold_lable_layout"/>
                                 <b:inputText value="#{userProfileModel.currentUserCopy.address.street}"
                                              disabled="#{not userProfileModel.editing}"
@@ -113,19 +113,19 @@
                             </b:panelGrid>
 
                             <b:panelGrid colSpans="4, 8">
-                                <h:outputText value="Area code:" 
+                                <h:outputText value="#{labels.USERPROFILE_OutputText_AreaCode}" 
                                               class="webvert_bold_lable_layout"/>
                                 <b:inputText value="#{userProfileModel.currentUserCopy.address.areaCode}"
                                              disabled="#{not userProfileModel.editing}"
                                              styleClass="#{component.valid? '' : 'webvert_input_control_invalid' }"
                                              required="true"></b:inputText>
-                                <h:outputText value="City:" 
+                                <h:outputText value="#{labels.USERPROFILE_OutputText_City}" 
                                               class="webvert_bold_lable_layout"/>
                                 <b:inputText value="#{userProfileModel.currentUserCopy.address.city}"
                                              disabled="#{not userProfileModel.editing}"
                                              styleClass="#{component.valid? '' : 'webvert_input_control_invalid' }"
                                              required="true"></b:inputText>
-                                <h:outputText value="Country:" 
+                                <h:outputText value="#{labels.USERPROFILE_OutputText_Country}" 
                                               class="webvert_bold_lable_layout"/>
                                 <b:inputText value="#{userProfileModel.currentUserCopy.address.country}"
                                              disabled="#{not userProfileModel.editing}"></b:inputText>
@@ -149,13 +149,13 @@
                                 </b:column>
                             </b:row>
                             <b:row style="float: right; position: absolute; bottom: 0; right: 0; margin-right: 0px">
-                                <b:commandButton value="Cancel" 
+                                <b:commandButton value="#{labels.USERPROFILE_Button_Cancel}" 
                                                  action="userProfile"
                                                  rendered="#{userProfileModel.editing}"
                                                  immediate="true"
                                                  style="width: 128px; margin-left: 10px">
                                 </b:commandButton>
-                                <b:commandButton value="Ok" 
+                                <b:commandButton value="#{labels.USERPROFILE_Button_Ok}" 
                                                  action="#{userProfileModel.saveChanges}"
                                                  class="webvert_primary_button_color 
                                                  webvert_button_bordercolor"
@@ -168,7 +168,7 @@
                 </b:panel>
                 <webvert:ModalComposite modalType="account"
                                         notifiedListener="#{userProfileModel.addNewAccount}"
-                                        titel="Create a new account"
+                                        titel="#{labels.MODALACCOUNT_Title_CreateANewAccount}"
                                         renderOnOk=":user_profile_form:**:displayAccounts"/>
             </ui:define>
         </ui:composition>

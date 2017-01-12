@@ -4,32 +4,43 @@
               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
               xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
               
+    <application>
+        <resource-bundle>
+            <base-name>translations.labels</base-name>
+            <var>labels</var>
+        </resource-bundle>
+        <resource-bundle>
+            <base-name>translations.messages</base-name>
+            <var>messages</var>
+        </resource-bundle>
+    </application>
+    
     <navigation-rule>
         <from-view-id>*</from-view-id>
-            <navigation-case>
-                <redirect>false</redirect>
-                <from-outcome>login</from-outcome>
-                <to-view-id>/login.xhtml</to-view-id>
-            </navigation-case>
-            <navigation-case>
-                <redirect>true</redirect>
-                <from-outcome>register</from-outcome>
-                <to-view-id>/register.xhtml</to-view-id>
-            </navigation-case>
-            <navigation-case>
-                <redirect>false</redirect>
-                <from-outcome>overview</from-outcome>
-                <to-view-id>/campaigns.xhtml</to-view-id>
-            </navigation-case>
-            <navigation-case>
-                <redirect>false</redirect>
-                <from-outcome>newCampaign</from-outcome>
-                <to-view-id>/newCampaign.xhtml</to-view-id>
-            </navigation-case>
-            <navigation-case>
-                <redirect>false</redirect>
-                <from-outcome>userProfile</from-outcome>
-                <to-view-id>/userProfile.xhtml</to-view-id>
-            </navigation-case>
+        <navigation-case>
+            <redirect>false</redirect>
+            <from-outcome>login</from-outcome>
+            <to-view-id>/login.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <redirect>true</redirect>
+            <from-outcome>register</from-outcome>
+            <to-view-id>/register.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <redirect>false</redirect>
+            <from-outcome>overview</from-outcome>
+            <to-view-id>/campaigns.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <redirect>false</redirect>
+            <from-outcome>newCampaign</from-outcome>
+            <to-view-id>/newCampaign.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <redirect>false</redirect>
+            <from-outcome>userProfile</from-outcome>
+            <to-view-id>/userProfile.xhtml</to-view-id>
+        </navigation-case>
     </navigation-rule>
 </faces-config>

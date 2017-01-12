@@ -7,7 +7,6 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:prim="http://primefaces.org/ui">
     <h:head>
-        <h:outputStylesheet library="css" name="prelogin.css"/>
         <f:metadata>
             <f:viewAction action="#{applicationModel.redirectFirstPage()}"/>
         </f:metadata>
@@ -21,14 +20,16 @@
                         <b:row>
                             <b:column medium-screen="12">
                                 <h1 class="form-signin-heading 
-                                           webvert_heading_color
-                                           webvert_heading_layout">Sign in</h1>
+                                    webvert_heading_color
+                                    webvert_heading_layout">
+                                    #{labels.LOGIN_Header_SignIn}
+                                </h1>
                             </b:column>
                         </b:row>
                         <b:row>
                             <b:column medium-screen="12">
                                 <b:inputText id="email" 
-                                             placeholder="Email address" 
+                                             placeholder="#{labels.LOGIN_InputTextPlaceholder_EmailAddress}" 
                                              value="#{loginModel.EMailAddress}">
                                     <f:facet name="prepend">
                                         <b:icon name="envelope" />
@@ -39,8 +40,8 @@
                         <b:row>
                             <b:column medium-screen="12">
                                 <b:inputSecret id="password" 
-                                             placeholder="Password" 
-                                             value="#{loginModel.password}">
+                                               placeholder="#{labels.LOGIN_InputTextPlaceholder_Password}" 
+                                               value="#{loginModel.password}">
                                     <f:facet name="prepend">
                                         <b:iconAwesome name="key" />
                                     </f:facet>
@@ -58,19 +59,19 @@
                         <b:row>
                             <b:column medium-screen="6">
                                 <b:commandButton look="default btn-block" 
-                                                 value="Register" 
+                                                 value="#{labels.LOGIN_Button_Register}" 
                                                  icon="pencil"
                                                  class="webvert_button_bordercolor
-                                                        webvert_login_button_layout"
+                                                 webvert_login_button_layout"
                                                  action="register"/>
                             </b:column>
                             <b:column medium-screen="6">
                                 <b:commandButton look="default btn-block" 
-                                                 value="Sign In" 
+                                                 value="#{labels.LOGIN_Button_SignIn}" 
                                                  icon="log-in" 
                                                  class="webvert_primary_button_color 
-                                                        webvert_button_bordercolor
-                                                        webvert_login_button_layout"
+                                                 webvert_button_bordercolor
+                                                 webvert_login_button_layout"
                                                  action="#{loginModel.login()}"/>
                             </b:column>
                         </b:row>

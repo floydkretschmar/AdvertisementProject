@@ -25,23 +25,32 @@
                     <h:form prependId="false" >
                         <h2 class="webvert_heading_color_dark 
                             webvert_heading_layout">
-                            Campaigns
+                            #{labels.CAMPAIGNS_Header_Campaigns}
                         </h2>
 
                         <!--<h2 class="webvert_form_heading_color_dark">Campaigns</h2>-->
                         <b:tabLinks class="webvert_ca_tab_layout">
-                            <b:navCommandLink value="Currently Running Campaigns (#{campaignModel.getCampaignCountForState(CampaignState.RUNNING)})"
-                                              update="@form"
+                            <b:navCommandLink update="@form"
                                               active="#{campaignModel.campaignState eq CampaignState.RUNNING}"
-                                              action="#{campaignModel.setCampaignState(CampaignState.RUNNING)}"/>
-                            <b:navCommandLink value="Ended Campaigns (#{campaignModel.getCampaignCountForState(CampaignState.ENDED)})"
-                                              update="@form"
+                                              action="#{campaignModel.setCampaignState(CampaignState.RUNNING)}">
+                                <h:outputFormat value="#{labels.CAMPAIGNS_Tab_CurrentlyRunningCampaigns}">
+                                    <f:param value="#{campaignModel.getCampaignCountForState(CampaignState.RUNNING)}"/>
+                                </h:outputFormat>
+                            </b:navCommandLink>
+                            <b:navCommandLink update="@form"
                                               active="#{campaignModel.campaignState eq CampaignState.ENDED}"
-                                              action="#{campaignModel.setCampaignState(CampaignState.ENDED)}"/>
-                            <b:navCommandLink value="Cancelled Campaigns (#{campaignModel.getCampaignCountForState(CampaignState.CANCELLED)})"
-                                              update="@form"
+                                              action="#{campaignModel.setCampaignState(CampaignState.ENDED)}">
+                                <h:outputFormat value="#{labels.CAMPAIGNS_Tab_EndedCampaigns}">
+                                    <f:param value="#{campaignModel.getCampaignCountForState(CampaignState.ENDED)}"/>
+                                </h:outputFormat>
+                            </b:navCommandLink>
+                            <b:navCommandLink update="@form"
                                               active="#{campaignModel.campaignState eq CampaignState.CANCELLED}"
-                                              action="#{campaignModel.setCampaignState(CampaignState.CANCELLED)}"/>
+                                              action="#{campaignModel.setCampaignState(CampaignState.CANCELLED)}">
+                                <h:outputFormat value="#{labels.CAMPAIGNS_Tab_CancelledCampaigns}">
+                                    <f:param value="#{campaignModel.getCampaignCountForState(CampaignState.CANCELLED)}"/>
+                                </h:outputFormat>
+                            </b:navCommandLink>
                         </b:tabLinks>
                         <c:choose>
                             <c:when test="#{not empty campaignModel.campaigns}">
@@ -68,15 +77,15 @@
                                             </b:column>
                                         </b:row>
                                         <b:row class="webvert_ca_row_layout webvert_ca_other_row_layout">
-                                            <h:outputText value="Started: "
+                                            <h:outputText value="#{labels.CAMPAIGNS_OutputText_Started}"
                                                           class="webvert_bold_lable_layout"/>
                                             <h:outputText value="#{campaign.generationDate}">\
                                                 <converters:convertLocalDateTime type="both" 
-                                                                             pattern="dd.MM.yyyy"/>
+                                                                                 pattern="dd.MM.yyyy"/>
                                             </h:outputText>
                                         </b:row>
                                         <b:row class="webvert_ca_row_layout webvert_ca_other_row_layout">
-                                            <h:outputText value="Payment Account: "
+                                            <h:outputText value="#{labels.CAMPAIGNS_OutputText_PaymentAccount}"
                                                           class="webvert_bold_lable_layout"/>
                                             <h:outputText value="#{accountModel.getAccountLabel(campaign.paymentAccount)}">
                                             </h:outputText>
@@ -105,7 +114,7 @@
                             </c:when>
                             <c:otherwise>
                                 <h2 class="webvert_heading_color_dark"
-                                    style="text-align: center">No campaigns available.</h2>
+                                    style="text-align: center">#{labels.CAMPAIGNS_Header_NoCampaignsAvailable}</h2>
                             </c:otherwise>
                         </c:choose>
                     </h:form>

@@ -17,8 +17,9 @@
 package de.oth.fkretschmar.advertisementproject.ui.models;
 
 import de.oth.fkretschmar.advertisementproject.business.services.PasswordException;
-import de.oth.fkretschmar.advertisementproject.ui.ErrorMessages;
+import de.oth.fkretschmar.advertisementproject.ui.annotations.MessageBundle;
 import java.io.Serializable;
+import java.util.ResourceBundle;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -74,8 +75,13 @@ public class LoginModel implements Serializable  {
     @Setter
     private String password;
     
-    
-    
+    /**
+     * Stores the resource bundle that contains the translation texts for 
+     * messages.
+     */
+    @Inject
+    @MessageBundle
+    private transient ResourceBundle messages;
     
     // --------------- Public constructors ---------------
 
@@ -104,13 +110,13 @@ public class LoginModel implements Serializable  {
                 return "overview";
             }
             else {
-                this.errorMessage = ErrorMessages.LOGIN_AUTHENTICATION_FAILED;
+                this.errorMessage = messages.getString("LOGIN_Error_AuthenticationFailed");
                 this.error = true;
                 this.password = null;
                 return null;
             }   
         } catch (PasswordException ex) {
-            this.errorMessage = ErrorMessages.LOGIN_UNEXPECTED_ERROR;
+            this.errorMessage = messages.getString("LOGIN_Error_UnexpectedError");
             this.password = null;
             this.error = true;
             return null;
