@@ -72,8 +72,8 @@ public class BillService implements Serializable, IBillService {
      */
     public static final BankAccount OWN_BANK_ACCOUNT 
             = BankAccount.createBankAccount()
-                    .bic("REIBKDE1")
-                    .iban("DE21772300000000000000")
+                    .bic("BYLADEM1DQE")
+                    .iban("DE72772300000000000052")
                     .build();
     
     /**

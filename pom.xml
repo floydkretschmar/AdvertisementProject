@@ -179,6 +179,26 @@
                 <groupId>org.jvnet.jax-ws-commons</groupId>
                 <artifactId>jaxws-maven-plugin</artifactId>
                 <version>2.3</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>wsimport</goal>
+                        </goals>
+                        <configuration>
+                            <wsdlFiles>
+                                <wsdlFile>im-lamport_8080/BankReichl/TransactionWS.wsdl</wsdlFile>
+                            </wsdlFiles>
+                            <packageName></packageName>
+                            <vmArgs>
+                                <vmArg>-Djavax.xml.accessExternalSchema=all</vmArg>
+                            </vmArgs>
+                            <wsdlLocation>http://im-lamport:8080/BankReichl/TransactionWS?wsdl</wsdlLocation>
+                            <staleFile>${project.build.directory}/jaxws/stale/TransactionWS.stale</staleFile>
+                        </configuration>
+                        <id>wsimport-generate-TransactionWS</id>
+                        <phase>generate-sources</phase>
+                    </execution>
+                </executions>
                 <dependencies>
                     <dependency>
                         <groupId>javax.xml</groupId>

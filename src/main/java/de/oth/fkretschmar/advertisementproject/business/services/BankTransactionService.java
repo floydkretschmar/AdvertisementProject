@@ -16,6 +16,8 @@
  */
 package de.oth.fkretschmar.advertisementproject.business.services;
 
+import de.jreichl.service.web.TransactionFailedException_Exception;
+import de.jreichl.service.web.TransactionWSService;
 import de.oth.fkretschmar.advertisementproject.business.annotation.BankTransaction;
 import de.oth.fkretschmar.advertisementproject.business.services.base.ITransactionService;
 import de.oth.fkretschmar.advertisementproject.entities.billing.Account;
@@ -31,6 +33,12 @@ import org.joda.money.Money;
 @BankTransaction
 @RequestScoped
 public class BankTransactionService implements ITransactionService {
+
+    /**
+     * Stores the transaction service used to execute the transaction.
+     */
+    @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/im-lamport_8080/BankReichl/TransactionWS.wsdl")
+    private TransactionWSService service;
 
     /**
      * Transfers the specified amount from the sender to the recipient using the
@@ -51,38 +59,40 @@ public class BankTransactionService implements ITransactionService {
             Account recipient,
             String description) throws TransactionFailedException {
         if (sender instanceof BankAccount && recipient instanceof BankAccount) {
-//            try {
-//                ITransactionWS port = service.getTransactionWSPort();
-//                boolean result = port.transfer(
-//                        amount.getAmountMinorLong(), 
-//                        ((BankAccount)sender).getIban(), 
-//                        ((BankAccount)recipient).getIban(), 
-//                        description);
-//                System.out.println("Result = " + result);
-//            } catch (TransactionFailedException_Exception ex) {
-//                // TODO: find better way of determining the failure reason
-//                if (ex.getFaultInfo().getMessage().contains("Nicht genügend Geld")) {
-//                    throw new TransactionFailedException(
-//                            ex.getFaultInfo().getMessage(), 
-//                            TransactionFailureReason.SENDER_OUT_OF_MONEY);
-//                }
-//                else if (ex.getFaultInfo().getMessage().contains(
-//                        String.format(
-//                                "%s is not a valid IBAN", 
-//                                ((BankAccount)sender).getIban()))) {
-//                    throw new TransactionFailedException(
-//                            ex.getFaultInfo().getMessage(), 
-//                            TransactionFailureReason.SENDER_NOT_VALID);
-//                }
-//                else if (ex.getFaultInfo().getMessage().contains(
-//                        String.format(
-//                                "%s is not a valid IBAN", 
-//                                ((BankAccount)recipient).getIban()))) {
-//                    throw new TransactionFailedException(
-//                            ex.getFaultInfo().getMessage(), 
-//                            TransactionFailureReason.RECIPIENT_NOT_VALID);
-//                }
-//            }
+            try {
+                    de.jreichl.service.web.ITransactionWS port = service.getTransactionWSPort();
+                    // TODO process result here
+                    boolean result = port.transfer(
+                            amount.getAmountMinorLong(), 
+                            ((BankAccount)sender).getIban(), 
+                            ((BankAccount)recipient).getIban(), 
+                            description);
+                    System.out.println("Result = "+result);
+
+            } catch (TransactionFailedException_Exception ex) {
+                // TODO: find better way of determining the failure reason
+                if (ex.getFaultInfo().getMessage().contains("Nicht genügend Geld")) {
+                    throw new TransactionFailedException(
+                            ex.getFaultInfo().getMessage(), 
+                            TransactionFailureReason.SENDER_OUT_OF_MONEY);
+                }
+                else if (ex.getFaultInfo().getMessage().contains(
+                        String.format(
+                                "%s is not a valid IBAN", 
+                                ((BankAccount)sender).getIban()))) {
+                    throw new TransactionFailedException(
+                            ex.getFaultInfo().getMessage(), 
+                            TransactionFailureReason.SENDER_NOT_VALID);
+                }
+                else if (ex.getFaultInfo().getMessage().contains(
+                        String.format(
+                                "%s is not a valid IBAN", 
+                                ((BankAccount)recipient).getIban()))) {
+                    throw new TransactionFailedException(
+                            ex.getFaultInfo().getMessage(), 
+                            TransactionFailureReason.RECIPIENT_NOT_VALID);
+                }
+            }
         }
 
     }

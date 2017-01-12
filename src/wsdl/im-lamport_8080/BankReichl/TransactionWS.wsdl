@@ -1,0 +1,73 @@
+<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://web.service.jreichl.de/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="TransactionWSService" targetNamespace="http://web.service.jreichl.de/">
+  <wsdl:types>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://web.service.jreichl.de/" attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://web.service.jreichl.de/">
+  <xs:element name="transfer" type="tns:transfer"/>
+  <xs:element name="transferResponse" type="tns:transferResponse"/>
+  <xs:complexType name="transfer">
+    <xs:sequence>
+      <xs:element name="amountInCent" type="xs:long"/>
+      <xs:element minOccurs="0" name="fromIBAN" type="xs:string"/>
+      <xs:element minOccurs="0" name="toIBAN" type="xs:string"/>
+      <xs:element minOccurs="0" name="description" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="transferResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:boolean"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="TransactionFailedException" type="tns:TransactionFailedException"/>
+  <xs:complexType name="TransactionFailedException">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="amountInCent" type="xs:long"/>
+      <xs:element minOccurs="0" name="transactionDate" type="xs:dateTime"/>
+      <xs:element minOccurs="0" name="toIBAN" type="xs:string"/>
+      <xs:element minOccurs="0" name="fromIBAN" type="xs:string"/>
+      <xs:element minOccurs="0" name="message" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="transfer">
+    <wsdl:part element="tns:transfer" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="transferResponse">
+    <wsdl:part element="tns:transferResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="TransactionFailedException">
+    <wsdl:part element="tns:TransactionFailedException" name="TransactionFailedException">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="ITransactionWS">
+    <wsdl:operation name="transfer">
+      <wsdl:input message="tns:transfer" name="transfer">
+    </wsdl:input>
+      <wsdl:output message="tns:transferResponse" name="transferResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:TransactionFailedException" name="TransactionFailedException">
+    </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="TransactionWSServiceSoapBinding" type="tns:ITransactionWS">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="transfer">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="transfer">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="transferResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="TransactionFailedException">
+        <soap:fault name="TransactionFailedException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="TransactionWSService">
+    <wsdl:port binding="tns:TransactionWSServiceSoapBinding" name="TransactionWSPort">
+      <soap:address location="http://im-lamport:8080/BankReichl/TransactionWS"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
