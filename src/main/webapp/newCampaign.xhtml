@@ -131,10 +131,12 @@
 
                 <webvert:ModalComposite modalType="account"
                                         notifiedListener="#{newCampaignModel.addNewAccount}"
+                                        titel="Create a new account"
                                         renderOnOk=":new_campaign_form:**:accountRow :new_campaign_form:**:errorMessage"/>
 
                 <webvert:ModalComposite modalType="content"
                                         notifiedListener="#{newCampaignModel.addNewContent}"
+                                        titel="Create a new content"
                                         renderOnOk=":new_campaign_form:**:displayContents :new_campaign_form:**:errorMessage"/>
             </ui:define>
         </ui:composition>

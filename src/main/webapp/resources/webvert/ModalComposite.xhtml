@@ -16,12 +16,13 @@
         <cc:attribute name="notifiedListener" method-signature="void listener(java.lang.Object)" />
         <cc:attribute name="renderOnOk" />
         <cc:attribute name="modalType" />
+        <cc:attribute name="titel"/>
     </cc:interface>
 
     <!-- IMPLEMENTATION -->
     <cc:implementation id="modalAccountComposite">   
         <b:modal id="modalAccountDialogID" 
-                 title="Create a new account" 
+                 title="#{cc.attrs.titel}" 
                  styleClass="modalPseudoClass #{cc.attrs.modalType}Modal">
             <h:form id="modalForm">
                 <p>

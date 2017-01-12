@@ -125,7 +125,7 @@
                                              disabled="#{not userProfileModel.editing}"
                                              styleClass="#{component.valid? '' : 'webvert_input_control_invalid' }"
                                              required="true"></b:inputText>
-                                <h:outputText value="County:" 
+                                <h:outputText value="Country:" 
                                               class="webvert_bold_lable_layout"/>
                                 <b:inputText value="#{userProfileModel.currentUserCopy.address.country}"
                                              disabled="#{not userProfileModel.editing}"></b:inputText>
@@ -168,6 +168,7 @@
                 </b:panel>
                 <webvert:ModalComposite modalType="account"
                                         notifiedListener="#{userProfileModel.addNewAccount}"
+                                        titel="Create a new account"
                                         renderOnOk=":user_profile_form:**:displayAccounts"/>
             </ui:define>
         </ui:composition>
