@@ -116,7 +116,7 @@ public class CampaignModel implements Serializable  {
      */
     public String formatBillHeaderItem(Object element) {
         LocalDateTime billHeader = (LocalDateTime)element;
-        return billHeader.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG));
+        return billHeader.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL));
     }
     
 

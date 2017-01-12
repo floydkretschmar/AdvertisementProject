@@ -141,7 +141,7 @@ public class Content extends AbstractRandomStringKeyedEntity
      * per request of this campaign content.
      **/
     @NotNull
-    @Column(name = "ITEM_PRICE", nullable = false)
+    @Column(name = "PRICE_PER_REQUEST", nullable = false)
     @Getter
     @Setter
     @Convert(converter = MoneyAttributeConverter.class)

@@ -19,7 +19,13 @@ package de.oth.fkretschmar.advertisementproject.ui.models;
 import de.oth.fkretschmar.advertisementproject.business.services.base.IContentProviderService;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.Content;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.ContentFormat;
+import de.oth.fkretschmar.advertisementproject.entities.campaign.TargetAge;
+import de.oth.fkretschmar.advertisementproject.entities.campaign.TargetContext;
+import de.oth.fkretschmar.advertisementproject.entities.campaign.TargetGender;
+import de.oth.fkretschmar.advertisementproject.entities.campaign.TargetMaritalStatus;
+import de.oth.fkretschmar.advertisementproject.entities.campaign.TargetPurposeOfUse;
 import java.io.Serializable;
+import java.util.EnumSet;
 import java.util.Optional;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -29,44 +35,54 @@ import javax.faces.view.ViewScoped;
 
 /**
  *
- * 
+ *
  * @author Floyd
  */
 @Named
 @ViewScoped
 public class AdvertisementModel implements Serializable {
-    
+
     // --------------- Private fields ---------------
-    
     /**
      * Stores the advertisement content.
      */
     @Getter
     private Content content;
-    
 
     /**
      * Stores the service used to manage requests for {@link Content} entites.
      */
     @Inject
     private IContentProviderService contentService;
-    
-    
+
     // --------------- Public methods ---------------
-    
     /**
      * Requests a random content from the database for display on every page.
      */
     @PostConstruct
     private void initializeContent() {
-        Optional<Content> requestedContent 
-                = this.contentService.requestRandomContent("webvert", 
-                        ContentFormat.WIDE_SKYSCRAPER);
-        
+        Optional<Content> requestedContent
+                = this.contentService.requestContent(
+                        "webvert",
+                        ContentFormat.WIDE_SKYSCRAPER,
+                        TargetContext.createTargetContext()
+                                .targetAges(EnumSet.of(TargetAge.ADULTS))
+                                .targetGenders(EnumSet.allOf(TargetGender.class))
+                                .targetMaritalStatus(EnumSet.of(
+                                        TargetMaritalStatus.DIVORCED,
+                                        TargetMaritalStatus.SINGLE,
+                                        TargetMaritalStatus.WIDOWED))
+                                .targetPurposeOfUses(EnumSet.of(
+                                        TargetPurposeOfUse.BUSINESS))
+                                .build());
+//        Optional<Content> requestedContent
+//                = this.contentService.requestRandomContent(
+//                        "webvert",
+//                        ContentFormat.WIDE_SKYSCRAPER);
+
         if (requestedContent.isPresent()) {
             this.content = requestedContent.get();
-        }
-        else {
+        } else {
             this.content = null;
         }
     }
