@@ -16,6 +16,7 @@
         <ui:composition template="./resources/templates/PresentationAreaTemplate.xhtml">
             <ui:define name="main_content"
                        id="mainContentID">
+                <o:importConstants type="de.oth.fkretschmar.advertisementproject.ui.ModalType" />
                 <o:importConstants type="de.oth.fkretschmar.advertisementproject.ui.ElementType" />
                 <b:panel class="webvert_pa_content_layout"
                          id="user_profile_panel">
@@ -166,7 +167,7 @@
                         </b:container>
                     </h:form>
                 </b:panel>
-                <webvert:ModalComposite modalType="account"
+                <webvert:ModalComposite modalType="#{ModalType.ACCOUNT}"
                                         notifiedListener="#{userProfileModel.addNewAccount}"
                                         titel="#{labels.MODALACCOUNT_Title_CreateANewAccount}"
                                         renderOnOk=":user_profile_form:**:displayAccounts"/>

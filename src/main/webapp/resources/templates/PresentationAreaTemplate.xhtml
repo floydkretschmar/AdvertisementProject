@@ -23,37 +23,37 @@
                             <h:form id="main_menu_form"
                                     prependId="false" 
                                     class="webvert_pa_form_layout">
-                                <b:panel title="Menu"
+                                <b:panel title="#{labels.PRESENTATIONAREA_Menu_Title}"
                                          class="webvert_pa_menu_layout"
                                          collapsible="false">
                                     <b:listLinks>
-                                        <b:navLink header="Campaigns"
+                                        <b:navLink header="#{labels.PRESENTATIONAREA_MenuItemGroup_Campaigns}"
                                                    class="webvert_pa_menu_item_layout"
                                                    style="margin-top: 20px;"/>
                                         <b:navCommandLink 
-                                            value="Overview" 
+                                            value="#{labels.PRESENTATIONAREA_MenuItem_Overview}" 
                                             icon="globe" 
                                             iconAlign="left" 
                                             action="overview"
                                             class="webvert_pa_menu_item_layout"/>
                                         <b:navCommandLink 
-                                            value="New Campaign" 
+                                            value="#{labels.PRESENTATIONAREA_MenuItem_NewCampaign}" 
                                             icon="pencil" 
                                             iconAlign="left" 
                                             update="@form"
                                             action="newCampaign"
                                             class="webvert_pa_menu_item_layout"/>
-                                        <b:navLink header="User"
+                                        <b:navLink header="#{labels.PRESENTATIONAREA_MenuItemGroup_User}"
                                                    class="webvert_pa_menu_item_layout"/>
                                         <b:navCommandLink 
-                                            value="Profile" 
+                                            value="#{labels.PRESENTATIONAREA_MenuItem_Profile}" 
                                             icon="user" 
                                             iconAlign="left" 
                                             update="@form"
                                             action="userProfile"
                                             class="webvert_pa_menu_item_layout"/>
                                         <b:navCommandLink 
-                                            value="Log out" 
+                                            value="#{labels.PRESENTATIONAREA_MenuItem_LogOut}" 
                                             icon="log-out" 
                                             iconAlign="left" 
                                             action="#{applicationModel.logOut()}"
@@ -75,7 +75,7 @@
                                      rendered="#{not empty advertisementModel.content}">
                                 <b:panel style="text-align: center;
                                          min-width: #{advertisementModel.content.format.area.width}px;">
-                                    <h:outputText value="Advertisement:"
+                                    <h:outputText value="#{labels.PRESENTATIONAREA_OutputText_Advertisement}"
                                                   style="font-weight: bold"/>
                                 </b:panel>
                                 <h:outputLink value="#{advertisementModel.content.targetUrl}">

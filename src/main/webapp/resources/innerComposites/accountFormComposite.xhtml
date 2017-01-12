@@ -19,13 +19,13 @@
         <o:importConstants type="de.oth.fkretschmar.advertisementproject.ui.AccountType" />
 
         <b:tabLinks class="webvert_ca_tab_layout">
-            <b:navCommandLink value="Bank account"
+            <b:navCommandLink value="#{labels.MODALACCOUNT_Tab_BankAccount}"
                               update="@form"
                               immediate="true"
                               ajax="true"
                               active="#{newAccountModel.selectedAccountType eq AccountType.BANK_ACCOUNT}"
                               action="#{newAccountModel.setSelectedAccountType(AccountType.BANK_ACCOUNT)}"/>
-            <b:navCommandLink value="PayPal account"
+            <b:navCommandLink value="#{labels.MODALACCOUNT_Tab_PayPalAccount}"
                               update="@form"
                               immediate="true"
                               ajax="true"
@@ -35,7 +35,7 @@
 
         <b:panelGrid colSpans="12">
             <h:outputText id="BIClabel"
-                          value="BIC *"
+                          value="#{labels.MODALACCOUNT_OutputText_Bic}"
                           class="webvert_bold_lable_layout"
                           rendered="#{newAccountModel.selectedAccountType eq AccountType.BANK_ACCOUNT}"/>
             <b:inputText id="BICinput"
@@ -47,7 +47,7 @@
                 <f:validator validatorId="bicValidator" />
             </b:inputText>
             <h:outputText id="IBANlabel"
-                          value="IBAN *"
+                          value="#{labels.MODALACCOUNT_OutputText_Iban}"
                           class="webvert_bold_lable_layout"
                           rendered="#{newAccountModel.selectedAccountType eq AccountType.BANK_ACCOUNT}"/>
             <b:inputText id="IBANinput"
@@ -59,7 +59,7 @@
                 <f:validator validatorId="ibanValidator" />
             </b:inputText>
             <h:outputText id="PayPallabel"
-                          value="PayPal e-mail address *"
+                          value="#{labels.MODALACCOUNT_OutputText_PayPalEMailAddress}"
                           class="webvert_bold_lable_layout"
                           rendered="#{newAccountModel.selectedAccountType eq AccountType.PAYPAL_ACCOUNT}"/>
             <b:inputText id="PayPalinput"

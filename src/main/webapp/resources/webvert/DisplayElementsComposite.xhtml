@@ -38,7 +38,7 @@
                       rendered="#{cc.attrs.elementType eq ElementType.CONTENT}">
                 <h3 class="webvert_heading_color_dark 
                     webvert_de_inner_heading_layout">
-                    Contents
+                    #{labels.DISPLAYELEMENTS_Header_Contents}
                 </h3>
             </b:column>
             <b:column span="1"
@@ -46,7 +46,7 @@
                       rendered="#{cc.attrs.elementType eq ElementType.ACCOUNT}">
                 <h3 class="webvert_heading_color_dark 
                     webvert_de_inner_heading_layout">
-                    Accounts
+                    #{labels.DISPLAYELEMENTS_Header_Accounts}
                 </h3>
             </b:column>
             <b:column span="1"
@@ -54,7 +54,7 @@
                       rendered="#{cc.attrs.elementType eq ElementType.BILL}">
                 <h3 class="webvert_heading_color_dark 
                     webvert_de_inner_heading_layout">
-                    Bills
+                    #{labels.DISPLAYELEMENTS_Header_Bills}
                 </h3>
             </b:column>
             <b:column span="11"
@@ -118,7 +118,9 @@
         <b:row rendered="#{empty cc.attrs.elements}">
             <h4 class="webvert_heading_color_dark"
                 style="text-align: center; margin-top: 10px; margin-bottom: 16px">
-                There are currently no #{cc.attrs.elementType}s available to display
+                <h:outputFormat value="#{labels.DISPLAYELEMENTS_OutputText_NoElementsAvailable}">
+                    <f:param value="#{cc.attrs.elementType}"/>
+                </h:outputFormat>
             </h4>
         </b:row>
     </composite:implementation>

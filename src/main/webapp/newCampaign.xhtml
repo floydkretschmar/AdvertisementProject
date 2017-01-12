@@ -6,6 +6,7 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:b="http://bootsfaces.net/ui"
       xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:o="http://omnifaces.org/ui"
       xmlns:webvert="http://xmlns.jcp.org/jsf/composite/webvert"
       xmlns:prim="http://primefaces.org/ui">
     <h:head>
@@ -15,6 +16,8 @@
         <ui:composition template="./resources/templates/PresentationAreaTemplate.xhtml">
             <ui:define name="main_content"
                        id="mainContentID">
+
+                <o:importConstants type="de.oth.fkretschmar.advertisementproject.ui.ModalType" />
                 <b:panel id="new_campaign_panel"
                          class="webvert_pa_content_layout">
                     <h:form id="new_campaign_form"
@@ -129,12 +132,12 @@
                     </h:form>
                 </b:panel>
 
-                <webvert:ModalComposite modalType="account"
+                <webvert:ModalComposite modalType="#{ModalType.ACCOUNT}"
                                         notifiedListener="#{newCampaignModel.addNewAccount}"
                                         titel="#{labels.MODALACCOUNT_Title_CreateANewAccount}"
                                         renderOnOk=":new_campaign_form:**:accountRow :new_campaign_form:**:errorMessage"/>
 
-                <webvert:ModalComposite modalType="content"
+                <webvert:ModalComposite modalType="#{ModalType.CONTENT}"
                                         notifiedListener="#{newCampaignModel.addNewContent}"
                                         titel="#{labels.MODALCONTENT_Title_CreateANewContent}"
                                         renderOnOk=":new_campaign_form:**:displayContents :new_campaign_form:**:errorMessage"/>
