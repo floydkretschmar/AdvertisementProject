@@ -70,7 +70,9 @@
 
         <b:accordion id="accordion"
                      class="#{cc.attrs.accordionClass}"
-                     rendered="#{not empty cc.attrs.elements}">
+                     rendered="#{not empty cc.attrs.elements}"
+                     style="max-height: 350px; overflow: scroll">
+
             <c:forEach items="#{cc.attrs.headerItems}"
                        var="headerItem"
                        id="forEachCampaign">
