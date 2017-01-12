@@ -23,6 +23,7 @@ import de.oth.fkretschmar.advertisementproject.entities.billing.BankAccount;
 import de.oth.fkretschmar.advertisementproject.entities.billing.PayPalAccount;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.Campaign;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.Content;
+import de.oth.fkretschmar.advertisementproject.entities.campaign.ContentType;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.PaymentInterval;
 import de.oth.fkretschmar.advertisementproject.entities.user.User;
 import de.oth.fkretschmar.advertisementproject.ui.ErrorMessages;
@@ -133,12 +134,12 @@ public class NewCampaignModel implements Serializable {
      *
      * @return the collection of content types for all the specified contents.
      */
-    public Collection<String> getContentTypes() {
-        List<String> contentTypes = this.newContents.stream()
+    public Collection<ContentType> getContentTypes() {
+        List<ContentType> contentTypes = this.newContents.stream()
                 .sorted((content1, content2)
                         -> content1.getContentType().name().compareTo(content2.getContentType().name()))
                 .map(content -> {
-                    return content.getContentType().getLabel();
+                    return content.getContentType();
                 })
                 .distinct()
                 .collect(Collectors.toList());
@@ -239,6 +240,7 @@ public class NewCampaignModel implements Serializable {
     }
 
     // --------------- Private methods ---------------
+    
     /**
      * Resets the new campaign model to its original state.
      */

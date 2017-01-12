@@ -73,7 +73,8 @@
                                      class="webvert_pa_ad_layout"
                                      collapsible="false"
                                      rendered="#{not empty advertisementModel.content}">
-                                <b:panel style="text-align: center;">
+                                <b:panel style="text-align: center;
+                                         min-width: #{advertisementModel.content.format.area.width}px;">
                                     <h:outputText value="Advertisement:"
                                                   style="font-weight: bold"/>
                                 </b:panel>
@@ -93,9 +94,15 @@
                                     </b:panel>
                                     <b:panel id="adTextPanel"
                                              rendered="#{advertisementModel.content.contentType eq ContentType.TEXT}"
-                                             style="text-align: center; min-height: 300px; display: table; width: 100%;padding: 10px;">
+                                             style="text-align: center; 
+                                             min-height: 300px; 
+                                             display: table; 
+                                             width: 100%;
+                                             padding: 10px;
+                                             min-height: #{advertisementModel.content.format.area.height}px;
+                                             min-width: #{advertisementModel.content.format.area.width}px;">
                                         <h:outputText value="#{advertisementModel.content.value}" 
-                                                      style="padding-top: 16px"/>
+                                                      style="padding-top: 16px;"/>
                                     </b:panel>
                                 </h:outputLink>
                             </b:panel>
@@ -110,7 +117,7 @@
                         </ui:insert>
                         <!--</b:panel>-->
                     </b:column>
-                    
+
                 </b:row>
             </ui:define>
         </ui:composition>

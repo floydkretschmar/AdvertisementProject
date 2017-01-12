@@ -71,12 +71,13 @@
         <b:accordion id="accordion"
                      class="#{cc.attrs.accordionClass}"
                      rendered="#{not empty cc.attrs.elements}"
-                     style="max-height: 350px; overflow: scroll">
+                     style="max-height: 350px; overflow: auto">
 
             <c:forEach items="#{cc.attrs.headerItems}"
                        var="headerItem"
                        id="forEachCampaign">
-                <b:panel title="#{cc.attrs.useOwnformatHeaderItemAction eq 'true' ? cc.formatHeaderItemAction(headerItem) : headerItem}" style="height: 100%">
+                <b:panel title="#{cc.attrs.useOwnformatHeaderItemAction eq 'true' ? cc.formatHeaderItemAction(headerItem) : headerItem}" 
+                         style="height: 100%">
                     <c:forEach items="#{cc.filterElementsForCriteria(cc.attrs.elements, headerItem, cc.attrs.elementType)}"
                                var="element"
                                id="forEachCampaign">

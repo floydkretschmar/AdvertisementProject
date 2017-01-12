@@ -45,34 +45,17 @@ public enum ContentType {
      * Indicates that the content of the advertisement is an URL linking to an
      * image.
      */
-    IMAGE_URL(URL.class, ContentType.IMAGE_URL_FORMATTED_NAME),
+    IMAGE_URL(URL.class),
     
     /**
      * Indicates that the content of the advertisement is a plain text.
      */
-    TEXT(String.class, ContentType.TEXT_FORMATTED_NAME),
+    TEXT(String.class),
     
     /**
      * Indicates that the content of the advertisement has not been defined.
      */
-    UNDEFINED(Object.class, ContentType.UNDEFINED_FORMATTED_NAME);
-    
-    // --------------- Public static constants ---------------
-    
-    /**
-     * Defines the formatted name of the IMAGE_URL state of the enum.
-     */
-    public static final String IMAGE_URL_FORMATTED_NAME = "Image URL";
-    
-    /**
-     * Defines the formatted name of the TEXT state of the enum.
-     */
-    public static final String TEXT_FORMATTED_NAME = "Text";
-    
-    /**
-     * Defines the formatted name of the UNDEFINED state of the enum.
-     */
-    public static final String UNDEFINED_FORMATTED_NAME = "Undefined";
+    UNDEFINED(Object.class);
     
     // --------------- Private fields ---------------
     
@@ -81,32 +64,4 @@ public enum ContentType {
      */
     @Getter
     private final Class contentType;
-    
-    
-    /**
-     * Stores the label that describes the content type.
-     */
-    @Getter
-    private final String label;
-    
-    // --------------- Public static methods ---------------
-    
-    
-    /**
-     * Returns the content type that corresponds with the well formatted name.
-     * 
-     * @param   formattedName   the well formatted name that represents the 
-     *                          content type.
-     * @return  the content type.
-     */
-    public static ContentType getContentType(String formattedName) {
-//        if (formattedName.equals(ContentType.IMAGE_FORMATTED_NAME))
-//            return ContentType.IMAGE;
-        if (formattedName.equals(ContentType.IMAGE_URL_FORMATTED_NAME))
-            return ContentType.IMAGE_URL;
-        else if (formattedName.equals(ContentType.TEXT_FORMATTED_NAME))
-            return ContentType.TEXT;
-        else
-            return ContentType.UNDEFINED;
-    }
 }

@@ -20,6 +20,7 @@ import de.oth.fkretschmar.advertisementproject.business.services.base.ICampaignS
 import de.oth.fkretschmar.advertisementproject.entities.billing.Bill;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.Campaign;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.CampaignState;
+import de.oth.fkretschmar.advertisementproject.entities.campaign.ContentType;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -160,15 +161,12 @@ public class CampaignModel implements Serializable  {
      * extracted.
      * @return the collection of content types for all the specified contents.
      */
-    public Collection<String> getContentTypesForCampaign(Campaign campaign) {
-        List<String> contentTypes = campaign.getContents().stream()
+    public Collection<ContentType> getContentTypesForCampaign(Campaign campaign) {
+        List<ContentType> contentTypes = campaign.getContents().stream()
                 .sorted((content1, content2)
                         -> content1.getContentType().name().compareTo(content2.getContentType().name()))
-                .map(content -> {
-                    return content.getContentType().getLabel();
-                })
+                .map((content) -> content.getContentType())
                 .distinct()
-                .sorted((contentType1, contentType2) -> contentType1.compareTo(contentType2))
                 .collect(Collectors.toList());
 
         return contentTypes;

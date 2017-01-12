@@ -53,7 +53,7 @@ public class DisplayElementsContainer extends CreateEntityContainer {
         if (selector.equals(ElementType.CONTENT)) {
             return elements.stream()
                     .map(element -> (Content) element)
-                    .filter(content -> content.getContentType() == ContentType.getContentType(criteria.toString()))
+                    .filter(content -> content.getContentType() == (ContentType)criteria)
                     .sorted((content1, content2)
                             -> content1.getContentType().name().compareTo(content2.getContentType().name()))
                     .collect(Collectors.toList());

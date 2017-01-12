@@ -5,6 +5,7 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
       xmlns:b="http://bootsfaces.net/ui"
+      xmlns:o="http://omnifaces.org/ui"
       xmlns:converters="http://webvert.com/Converters"
       xmlns:prim="http://primefaces.org/ui">
     <h:head>
@@ -18,10 +19,12 @@
 
     <!-- IMPLEMENTATION -->
     <cc:implementation>
+        <o:importConstants type="de.oth.fkretschmar.advertisementproject.entities.campaign.ContentType" />
+        
         <b:column span="4" 
-                  style="#{cc.attrs.contentType eq 'Image URL' ? 'padding-top: 0px' : 'padding-top: 16px'}">
+                  style="#{cc.attrs.contentType eq ContentType.IMAGE_URL ? 'padding-top: 0px' : 'padding-top: 16px'}">
             <c:choose>
-                <c:when test="#{cc.attrs.contentType eq 'Image URL'}">
+                <c:when test="#{cc.attrs.contentType eq ContentType.IMAGE_URL}">
                     <img src="#{cc.attrs.content.value}" 
                          class="webvert_co_image_layout"/>
                 </c:when>
