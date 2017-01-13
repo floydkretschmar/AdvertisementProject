@@ -33,8 +33,7 @@
                                             value="#{labels.PRESENTATIONAREA_MenuItem_Overview}" 
                                             icon="globe" 
                                             iconAlign="left" 
-                                            ajax="true"
-                                            onclick="ajax:applicationModel.setNextNavigationPoint('overview');javascript: $('.confirm').modal();"
+                                            action="overview"
                                             class="webvert_pa_menu_item_layout"/>
                                         <b:navCommandLink 
                                             value="#{labels.PRESENTATIONAREA_MenuItem_NewCampaign}" 
@@ -119,8 +118,6 @@
                     </b:column>
 
                 </b:row>
-                
-                <webvert:ConfirmationModalComposite/>
             </ui:define>
         </ui:composition>
 

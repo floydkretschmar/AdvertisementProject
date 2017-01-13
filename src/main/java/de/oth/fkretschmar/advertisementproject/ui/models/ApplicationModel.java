@@ -59,14 +59,6 @@ public class ApplicationModel implements Serializable  {
     private User currentUser;
     
     /**
-     * Stores the next navigation point that is supposed to be reached by the 
-     * menu.
-     */
-    @Getter
-    @Setter
-    private String nextNavigationPoint;
-    
-    /**
      * Stores the repository used to manage {@link User} entities.
      */
     @Inject
