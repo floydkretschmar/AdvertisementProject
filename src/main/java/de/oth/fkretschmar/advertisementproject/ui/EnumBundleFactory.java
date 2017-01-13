@@ -33,7 +33,7 @@ import javax.inject.Inject;
  * @author Admin
  */
 @Dependent
-public class MessageBundleFactory {
+public class EnumBundleFactory {
 
     /**
      * Injects the resource bundle that stores message translations.
@@ -41,12 +41,12 @@ public class MessageBundleFactory {
      * @return the resource bundle.
      */
     @Produces
-    @MessageBundle
-    public ResourceBundle getMessageBundle() {
+    @EnumBundle
+    public ResourceBundle getEnumBundle() {
         FacesContext context = FacesContext.getCurrentInstance();
         return context.getApplication().evaluateExpressionGet(
                 context,
-                "#{messages}",
+                "#{enums}",
                 PropertyResourceBundle.class);
     }
 }

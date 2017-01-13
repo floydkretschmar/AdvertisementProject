@@ -53,7 +53,7 @@
                                         <f:selectItems value="#{newCampaignModel.paymentIntervals}"
                                                        var="interval"
                                                        itemValue="#{interval}"
-                                                       itemLabel="#{interval}"/>
+                                                       itemLabel="#{resourcePickerModel.pickPaymentIntervalLabel(interval)}"/>
                                     </b:selectOneMenu>
                                 </b:column>
                             </b:row>
@@ -104,7 +104,6 @@
                         <b:row id="displayContents"
                                style="margin-left: 0px; margin-right: 0px">
                             <webvert:DisplayElementsComposite enableDelete="true"
-                                                              useOwnformatHeaderItemAction="false"
                                                               notifiedListener="#{newCampaignModel.removeContent}"
                                                               renderOnDelete=":new_campaign_form:**:displayContents"
                                                               enableNew="true"
@@ -112,6 +111,8 @@
                                                               headerClass="webvert_nc_co_row_layout"
                                                               accordionClass="webvert_nc_co_accordion_layout"
                                                               elements="#{newCampaignModel.newContents}"
+                                                              useOwnformatHeaderItemAction="true"
+                                                              formatHeaderItemAction="#{resourcePickerModel.pickContentTypeLabel}"
                                                               headerItems="#{newCampaignModel.getContentTypes()}"
                                                               elementType="content"/>
                         </b:row>

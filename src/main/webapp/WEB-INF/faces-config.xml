@@ -13,6 +13,10 @@
             <base-name>translations.messages</base-name>
             <var>messages</var>
         </resource-bundle>
+        <resource-bundle>
+            <base-name>translations.enums</base-name>
+            <var>enums</var>
+        </resource-bundle>
     </application>
     
     <navigation-rule>

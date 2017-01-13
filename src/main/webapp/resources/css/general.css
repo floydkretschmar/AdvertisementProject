@@ -135,3 +135,7 @@ td
 .btn.disabled {
     cursor: inherit !important;
 }
+
+.ui-selectmanymenu {
+    width: 100% !important;
+}

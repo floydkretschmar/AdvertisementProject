@@ -28,7 +28,7 @@
                 <f:selectItems value="#{newContentModel.contentTypes}"
                                var="contentType"
                                itemValue="#{contentType}"
-                               itemLabel="#{contentType}"/>
+                               itemLabel="#{resourcePickerModel.pickContentTypeLabel(contentType)}"/>
             </b:selectOneMenu>
             <h:outputText value="#{labels.MODALCONTENT_OutputText_ContentFormat}"
                           class="webvert_bold_lable_layout"/>
@@ -37,7 +37,7 @@
                 <f:selectItems value="#{newContentModel.formats}"
                                var="format"
                                itemValue="#{format}"
-                               itemLabel="#{format}"/>
+                               itemLabel="#{resourcePickerModel.pickContentFormatLabel(format)}"/>
             </b:selectOneMenu>
             <h:outputText value="#{labels.MODALCONTENT_OutputText_ContentValue}"
                           class="webvert_bold_lable_layout"/>
@@ -112,7 +112,7 @@
                         <f:selectItems value="#{newContentModel.targetAges}"
                                        var="age" 
                                        itemValue="#{age.flagValue}" 
-                                       itemLabel="#{age}"/>
+                                       itemLabel="#{resourcePickerModel.pickTargetAgeLabel(age)}"/>
                     </prim:selectManyMenu>
                 </b:column>
                 <b:column span="3" style="padding-right: 0px">
@@ -124,7 +124,7 @@
                         <f:selectItems value="#{newContentModel.targetGenders}"
                                        var="gender" 
                                        itemValue="#{gender.flagValue}" 
-                                       itemLabel="#{gender}"/>
+                                       itemLabel="#{resourcePickerModel.pickTargetGenderLabel(gender)}"/>
                     </prim:selectManyMenu>
                 </b:column>
                 <b:column span="3" style="padding-right: 0px">
@@ -136,7 +136,7 @@
                         <f:selectItems value="#{newContentModel.targetMaritalStatus}"
                                        var="status" 
                                        itemValue="#{status.flagValue}" 
-                                       itemLabel="#{status}"/>
+                                       itemLabel="#{resourcePickerModel.pickTargetMaritalStatusLabel(status)}"/>
                     </prim:selectManyMenu>
                 </b:column>
                 <b:column span="3" style="padding-right: 0px">
@@ -148,7 +148,7 @@
                         <f:selectItems value="#{newContentModel.targetPurposesOfUse}"
                                        var="purpose" 
                                        itemValue="#{purpose.flagValue}" 
-                                       itemLabel="#{purpose}"/>
+                                       itemLabel="#{resourcePickerModel.pickTargetPurposeOfUseLabel(purpose)}"/>
                     </prim:selectManyMenu>
                 </b:column>
             </b:row>

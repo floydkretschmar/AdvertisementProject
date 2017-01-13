@@ -26,8 +26,12 @@ import de.oth.fkretschmar.advertisementproject.entities.campaign.Content;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.ContentType;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.PaymentInterval;
 import de.oth.fkretschmar.advertisementproject.entities.user.User;
+import de.oth.fkretschmar.advertisementproject.ui.annotations.EnumBundle;
 import de.oth.fkretschmar.advertisementproject.ui.annotations.MessageBundle;
 import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -201,6 +205,7 @@ public class NewCampaignModel implements Serializable {
         this.reset();
         return "overview";
     }
+    
 
     /**
      * Removes one of the newly created contents from the content list of the
