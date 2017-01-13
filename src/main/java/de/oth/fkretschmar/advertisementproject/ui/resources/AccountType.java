@@ -14,22 +14,22 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.oth.fkretschmar.advertisementproject.ui;
+package de.oth.fkretschmar.advertisementproject.ui.resources;
 
 /**
- * Defines the different type of modals the application offers.
- * 
+ * Defines the different account types that can be managed by the application.
+ *
  * @author Admin
  */
-public class ModalType {
+public class AccountType {
     
     /**
-     * Defines the access string for an account modal.
+     * Defines the access string for a bank account.
      */
-    public static final String ACCOUNT = "accountModal";
+    public static final String BANK_ACCOUNT = "Bank accounts";
     
     /**
-     * Defines the access string for an content modal.
+     * Defines the access string for a paypal account.
      */
-    public static final String CONTENT = "contentModal";
+    public static final String PAYPAL_ACCOUNT = "PayPal accounts";
 }

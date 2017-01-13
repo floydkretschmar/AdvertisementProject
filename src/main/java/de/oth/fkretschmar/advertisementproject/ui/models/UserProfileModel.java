@@ -22,7 +22,7 @@ import de.oth.fkretschmar.advertisementproject.entities.billing.BankAccount;
 import de.oth.fkretschmar.advertisementproject.entities.billing.PayPalAccount;
 import de.oth.fkretschmar.advertisementproject.entities.user.Address;
 import de.oth.fkretschmar.advertisementproject.entities.user.User;
-import de.oth.fkretschmar.advertisementproject.ui.AccountType;
+import de.oth.fkretschmar.advertisementproject.ui.resources.AccountType;
 import java.io.Serializable;
 import java.time.ZoneId;
 import java.util.ArrayList;

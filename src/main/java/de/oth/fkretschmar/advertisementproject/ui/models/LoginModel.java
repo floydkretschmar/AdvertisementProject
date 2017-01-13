@@ -17,7 +17,7 @@
 package de.oth.fkretschmar.advertisementproject.ui.models;
 
 import de.oth.fkretschmar.advertisementproject.business.services.PasswordException;
-import de.oth.fkretschmar.advertisementproject.ui.annotations.MessageBundle;
+import de.oth.fkretschmar.advertisementproject.business.annotation.MessageBundle;
 import java.io.Serializable;
 import java.util.ResourceBundle;
 import javax.faces.view.ViewScoped;

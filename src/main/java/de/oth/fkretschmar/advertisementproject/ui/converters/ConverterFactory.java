@@ -18,6 +18,8 @@ package de.oth.fkretschmar.advertisementproject.ui.converters;
 
 import de.oth.fkretschmar.advertisementproject.business.services.base.IAccountService;
 import de.oth.fkretschmar.advertisementproject.entities.billing.Account;
+import de.oth.fkretschmar.advertisementproject.ui.converters.EntityConverter;
+import de.oth.fkretschmar.advertisementproject.ui.converters.IConverter;
 import java.lang.reflect.ParameterizedType;
 import javax.enterprise.context.Dependent;
 import javax.enterprise.inject.New;

@@ -14,10 +14,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.oth.fkretschmar.advertisementproject.ui;
+package de.oth.fkretschmar.advertisementproject.ui.resources;
 
-import de.oth.fkretschmar.advertisementproject.ui.annotations.EnumBundle;
-import de.oth.fkretschmar.advertisementproject.ui.annotations.MessageBundle;
+import de.oth.fkretschmar.advertisementproject.business.annotation.EnumBundle;
+import de.oth.fkretschmar.advertisementproject.business.annotation.MessageBundle;
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 import javax.enterprise.context.Dependent;
@@ -33,7 +33,7 @@ import javax.inject.Inject;
  * @author Admin
  */
 @Dependent
-public class MessageBundleFactory {
+public class ResourceBundleFactory {
 
     /**
      * Injects the resource bundle that stores message translations.
@@ -47,6 +47,21 @@ public class MessageBundleFactory {
         return context.getApplication().evaluateExpressionGet(
                 context,
                 "#{messages}",
+                PropertyResourceBundle.class);
+    }
+
+    /**
+     * Injects the resource bundle that stores enum translations.
+     *
+     * @return the resource bundle.
+     */
+    @Produces
+    @EnumBundle
+    public ResourceBundle getEnumBundle() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        return context.getApplication().evaluateExpressionGet(
+                context,
+                "#{enums}",
                 PropertyResourceBundle.class);
     }
 }

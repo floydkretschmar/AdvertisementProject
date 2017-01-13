@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 Admin
+ * Copyright (C) 2016 Admin
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,27 +14,22 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.oth.fkretschmar.advertisementproject.ui;
+package de.oth.fkretschmar.advertisementproject.business.annotation;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import javax.inject.Qualifier;
 
 /**
  *
  * @author Admin
  */
-public class Labels {
+@Qualifier	
+@Retention(RetentionPolicy.RUNTIME)	
+@Target({ElementType.METHOD, ElementType.FIELD, 
+        ElementType.PARAMETER, ElementType.TYPE})	
+public @interface EnumBundle {
     
-    
-    /**
-     * Defines the formatted name of the IMAGE_URL state of the enum.
-     */
-    public static final String IMAGE_URL_FORMATTED_NAME = "Image URL";
-    
-    /**
-     * Defines the formatted name of the TEXT state of the enum.
-     */
-    public static final String TEXT_FORMATTED_NAME = "Text";
-    
-    /**
-     * Defines the formatted name of the UNDEFINED state of the enum.
-     */
-    public static final String UNDEFINED_FORMATTED_NAME = "Undefined";
 }
