@@ -17,6 +17,7 @@
 package de.oth.fkretschmar.advertisementproject.business.services.base;
 
 import de.oth.fkretschmar.advertisementproject.entities.billing.Account;
+import de.oth.fkretschmar.advertisementproject.entities.user.User;
 
 /**
  *
@@ -27,18 +28,24 @@ public interface IAccountService extends IEntityService<Account> {
     // --------------- Public methods ---------------
     
     
-    /**
-     * Creates the specified {@link Account}.
-     * 
-     * @param   account    that will be saved.
-     */
-    public void createAccount(Account account);
-    
     
     /**
-     * Deletes the specified {@link Account} from the database.
+     * Creates a new {@link Account} and links it to the already existing 
+     * specified {@link User}.
      * 
-     * @param   account    that will be deleted.
+     * @param   user        to which a new account will be added.
+     * @param   account     that will be added to the user.
+     * @return              the changed user.
      */
-    public void deleteAccount(Account account);
+    public User createAccountForUser(User user, Account account);
+
+    
+    /**
+     * Deletes an {@link Account} from an already existing {@link User}.
+     * 
+     * @param   user    from which the account will be deleted.
+     * @param   account that will be deleted.
+     * @return          the changed user.
+     */
+    public User deleteAccountFromUser(User user, Account account);
 }

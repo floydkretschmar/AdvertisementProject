@@ -17,8 +17,10 @@
 package de.oth.fkretschmar.advertisementproject.business.services;
 
 import de.oth.fkretschmar.advertisementproject.business.repositories.AccountRepository;
+import de.oth.fkretschmar.advertisementproject.business.repositories.UserRepository;
 import de.oth.fkretschmar.advertisementproject.business.services.base.IAccountService;
 import de.oth.fkretschmar.advertisementproject.entities.billing.Account;
+import de.oth.fkretschmar.advertisementproject.entities.user.User;
 import java.io.Serializable;
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.inject.Default;
@@ -41,31 +43,56 @@ public class AccountService implements Serializable, IAccountService {
     @Inject
     private AccountRepository accountRepository;
 
+    /**
+     * Stores the repository used to manage {@link User} entites.
+     */
+    @Inject
+    private UserRepository userRepository;
+
 
     // --------------- Public methods ---------------
-    
-    
+
     /**
-     * Creates the specified {@link Account}.
-     * 
-     * @param   account    that will be saved.
+     * Creates a new {@link Account} and links it to the already existing
+     * specified {@link User}.
+     *
+     * @param user to which a new account will be added.
+     * @param account that will be added to the user.
+     * @return the changed user.
      */
     @Transactional
     @Override
-    public void createAccount(Account account) {
+    public User createAccountForUser(User user, Account account) {
+        if (user == null) {
+            throw new IllegalArgumentException("The user was not set.");
+        }
+
         this.accountRepository.persist(account);
+        user = this.userRepository.merge(user);
+        user.addAccount(account);
+        return user;
     }
-    
+
     
     /**
-     * Deletes the specified {@link Account} from the database.
-     * 
-     * @param   account    that will be deleted.
+     * Deletes an {@link Account} from an already existing {@link User}.
+     *
+     * @param user from which the account will be deleted.
+     * @param account that will be deleted.
+     * @return the changed user.
      */
     @Transactional
     @Override
-    public void deleteAccount(Account account) {
+    public User deleteAccountFromUser(User user, Account account) {
+        if (user == null) {
+            throw new IllegalArgumentException("The password change failed: "
+                    + "the user was not set.");
+        }
+
+        user = this.userRepository.merge(user);
+        user.removeAccount(account);
         this.accountRepository.remove(account);
+        return user;
     }
     
     

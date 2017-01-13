@@ -26,12 +26,9 @@ import de.oth.fkretschmar.advertisementproject.entities.campaign.Content;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.ContentType;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.PaymentInterval;
 import de.oth.fkretschmar.advertisementproject.entities.user.User;
-import de.oth.fkretschmar.advertisementproject.business.annotation.EnumBundle;
 import de.oth.fkretschmar.advertisementproject.business.annotation.MessageBundle;
+import de.oth.fkretschmar.advertisementproject.business.services.base.IAccountService;
 import java.io.Serializable;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -116,10 +113,10 @@ public class NewCampaignModel implements Serializable {
     private PaymentInterval selectedInterval;
 
     /**
-     * Stores the service that manages {@link User} entities.
+     * Stores the service that manages {@link Account} entities.
      */
     @Inject
-    private IUserService userService;
+    private IAccountService accountService;
 
     // --------------- Public getter und setter ---------------
     /**
@@ -189,7 +186,7 @@ public class NewCampaignModel implements Serializable {
      */
     public void addNewAccount(Object entity) {
         this.applicationModel.processAndChangeCurrentUser(
-                user -> this.userService.createAccountForUser(
+                user -> this.accountService.createAccountForUser(
                         user,
                         (Account) entity));
         this.error = false;

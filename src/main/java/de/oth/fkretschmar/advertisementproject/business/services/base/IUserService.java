@@ -68,17 +68,6 @@ public interface IUserService extends IEntityService<User> {
     
     
     /**
-     * Creates a new {@link Account} and links it to the already existing 
-     * specified {@link User}.
-     * 
-     * @param   user        to which a new account will be added.
-     * @param   account     that will be added to the user.
-     * @return              the changed user.
-     */
-    public User createAccountForUser(User user, Account account);
-    
-    
-    /**
      * Creates a new {@link User} using the data specified on the user object.
      * 
      * @param   user    that contains the data for the new user that will be 
@@ -103,14 +92,4 @@ public interface IUserService extends IEntityService<User> {
 //     * @return  the user with the specified e-mail address.
 //     */
 //    public User findUserForEMail(String eMailAddress);
-
-    
-    /**
-     * Deletes an {@link Account} from an already existing {@link User}.
-     * 
-     * @param   user    from which the account will be deleted.
-     * @param   account that will be deleted.
-     * @return          the changed user.
-     */
-    public User deleteAccountFromUser(User user, Account account);
 }

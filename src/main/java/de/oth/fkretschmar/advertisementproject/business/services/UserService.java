@@ -16,6 +16,7 @@
  */
 package de.oth.fkretschmar.advertisementproject.business.services;
 
+import de.oth.fkretschmar.advertisementproject.business.repositories.AccountRepository;
 import de.oth.fkretschmar.advertisementproject.business.repositories.AddressRepository;
 import de.oth.fkretschmar.advertisementproject.business.repositories.UserRepository;
 import de.oth.fkretschmar.advertisementproject.business.services.base.IAccountService;
@@ -49,6 +50,12 @@ public class UserService implements Serializable, IUserService {
      */
     @Inject
     private AddressRepository addressRepository;
+    
+    /**
+     * Stores the repository used to manage {@link Account} entities.
+     */
+    @Inject
+    private AccountRepository accountRepository;
 
     /**
      * Stores the repository used to manage {@link Account} entities.
@@ -111,7 +118,6 @@ public class UserService implements Serializable, IUserService {
         }
 
         Password newSafePassword = PasswordService.generate(newPassword);
-        Password currentPassword = user.getPassword();
 
         user = this.userRepository.merge(user);
         user.setPassword(newSafePassword);
@@ -155,7 +161,7 @@ public class UserService implements Serializable, IUserService {
                     return !tmpOldUser.getAccounts().contains(account);
                 })
                 .collect(Collectors.toList())) {
-            user = this.createAccountForUser(user, account);
+            user = this.accountService.createAccountForUser(user, account);
         }
         
         final User tmpNewUser = changedUser;
@@ -167,30 +173,9 @@ public class UserService implements Serializable, IUserService {
                     return !tmpNewUser.getAccounts().contains(account);
                 })
                 .collect(Collectors.toList())) {
-            user = this.deleteAccountFromUser(user, account);
+            user = this.accountService.deleteAccountFromUser(user, account);
         }
 
-        return user;
-    }
-
-    /**
-     * Creates a new {@link Account} and links it to the already existing
-     * specified {@link User}.
-     *
-     * @param user to which a new account will be added.
-     * @param account that will be added to the user.
-     * @return the changed user.
-     */
-    @Transactional
-    @Override
-    public User createAccountForUser(User user, Account account) {
-        if (user == null) {
-            throw new IllegalArgumentException("The user was not set.");
-        }
-
-        this.accountService.createAccount(account);
-        user = this.userRepository.merge(user);
-        user.addAccount(account);
         return user;
     }
 
@@ -216,8 +201,6 @@ public class UserService implements Serializable, IUserService {
 
         final Address address = user.getAddress();
         this.addressRepository.persist(address);
-
-        final Password password = user.getPassword();
         this.userRepository.persist(user);
     }
 
@@ -244,7 +227,7 @@ public class UserService implements Serializable, IUserService {
         for (int i = 0; i < accounts.length; i++) {
             if (accounts[i] instanceof Account) {
                 user.removeAccount((Account) accounts[i]);
-                this.accountService.deleteAccount((Account) accounts[i]);
+                this.accountRepository.remove((Account) accounts[i]);
             }
         }
 
@@ -271,26 +254,5 @@ public class UserService implements Serializable, IUserService {
     @Override
     public User find(String idAsString) {
         return this.userRepository.find(idAsString);
-    }
-
-    /**
-     * Deletes an {@link Account} from an already existing {@link User}.
-     *
-     * @param user from which the account will be deleted.
-     * @param account that will be deleted.
-     * @return the changed user.
-     */
-    @Transactional
-    @Override
-    public User deleteAccountFromUser(User user, Account account) {
-        if (user == null) {
-            throw new IllegalArgumentException("The password change failed: "
-                    + "the user was not set.");
-        }
-
-        user = this.userRepository.merge(user);
-        user.removeAccount(account);
-        this.accountService.deleteAccount(account);
-        return user;
     }
 }

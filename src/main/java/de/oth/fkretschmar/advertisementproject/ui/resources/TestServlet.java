@@ -20,6 +20,7 @@ import de.oth.fkretschmar.advertisementproject.business.repositories.ContentRepo
 import de.oth.fkretschmar.advertisementproject.business.services.PasswordException;
 import de.oth.fkretschmar.advertisementproject.business.services.PasswordService;
 import de.oth.fkretschmar.advertisementproject.business.services.UserServiceException;
+import de.oth.fkretschmar.advertisementproject.business.services.base.IAccountService;
 import de.oth.fkretschmar.advertisementproject.business.services.base.IBillService;
 import de.oth.fkretschmar.advertisementproject.business.services.base.ICampaignService;
 import de.oth.fkretschmar.advertisementproject.business.services.base.IContentProviderService;
@@ -70,6 +71,9 @@ public class TestServlet extends HttpServlet {
 
     @Inject
     private IUserService userService;
+    
+    @Inject
+    private IAccountService accountService;
     
 //    @Inject
 //    private ApplicationService authService;
@@ -162,7 +166,7 @@ public class TestServlet extends HttpServlet {
                         .bic("REIBKDE1").build();
                 
 //                ApplicationService.processCurrentUser(currentUser -> {
-                   user = this.userService.createAccountForUser(user, acc);
+                   user = this.accountService.createAccountForUser(user, acc);
 //                });
                 
                 
