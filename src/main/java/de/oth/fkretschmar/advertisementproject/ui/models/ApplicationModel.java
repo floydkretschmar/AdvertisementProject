@@ -33,6 +33,8 @@ import javax.enterprise.event.Observes;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  *
@@ -55,6 +57,14 @@ public class ApplicationModel implements Serializable  {
      * Stores the {@link User} that is currently logged into the system.
      */
     private User currentUser;
+    
+    /**
+     * Stores the next navigation point that is supposed to be reached by the 
+     * menu.
+     */
+    @Getter
+    @Setter
+    private String nextNavigationPoint;
     
     /**
      * Stores the repository used to manage {@link User} entities.
@@ -118,6 +128,7 @@ public class ApplicationModel implements Serializable  {
             ApplicationModel.LOCK.unlock();
         }
     }
+    
     
     /**
      * Provides thread safe processing of the {@link User} that is currently
