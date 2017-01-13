@@ -18,6 +18,9 @@ package de.oth.fkretschmar.advertisementproject.business.services;
 
 import de.oth.fkretschmar.advertisementproject.business.annotation.PayPalTransaction;
 import de.oth.fkretschmar.advertisementproject.business.annotation.BankTransaction;
+import de.oth.fkretschmar.advertisementproject.business.annotation.BillCreated;
+import de.oth.fkretschmar.advertisementproject.business.annotation.ContentChanged;
+import de.oth.fkretschmar.advertisementproject.business.events.EntityEvent;
 import de.oth.fkretschmar.advertisementproject.business.services.base.ITransactionService;
 import de.oth.fkretschmar.advertisementproject.business.repositories.BillItemRepository;
 import de.oth.fkretschmar.advertisementproject.business.repositories.BillRepository;
@@ -41,6 +44,7 @@ import java.util.Map;
 import java.util.TreeMap;
 import javax.ejb.Schedule;
 import javax.ejb.Singleton;
+import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 import org.joda.money.CurrencyUnit;
@@ -93,6 +97,13 @@ public class BillService implements Serializable, IBillService {
     // --------------- Private fields ---------------
     
     /**
+     * Stores the sender of the bill created event.
+     */
+    @Inject
+    @BillCreated
+    private Event<EntityEvent<Bill>> billCreatedEventSender;
+    
+    /**
      * Stores the service used to manage {@link BankAccount} entities.
      */
     @Inject
@@ -141,7 +152,7 @@ public class BillService implements Serializable, IBillService {
      * Performs the work of billing the latest set of content requests and
      * setting up the payment job for campaigns that are payed monthly.
      */
-    @Schedule(hour = "*", minute = "*/3", second = "0")
+    @Schedule(hour = "*", minute = "*/2", second = "0")
     @Transactional
     public void billMonthlyContentRequests() {
         this.billContentRequests(PaymentInterval.MONTHLY);
@@ -151,7 +162,7 @@ public class BillService implements Serializable, IBillService {
      * Performs the work of billing the latest set of content requests and
      * setting up the payment job for campaigns that are payed quaterly.
      */
-    @Schedule(hour = "*", minute = "*/9", second = "0")
+    @Schedule(hour = "*/1", minute = "0", second = "0")
     @Transactional
     public void billQuaterlyContentRequests() {
         this.billContentRequests(PaymentInterval.QUATERLY);
@@ -161,7 +172,7 @@ public class BillService implements Serializable, IBillService {
      * Performs the work of billing the latest set of content requests and
      * setting up the payment job for campaigns that are payed yearly.
      */
-    @Schedule(hour = "*", minute = "*/36", second = "0")
+    @Schedule(hour = "*/4", minute = "0", second = "0")
     @Transactional
     public void billYearlyContentRequests() {
         this.billContentRequests(PaymentInterval.YEARLY);
@@ -338,6 +349,10 @@ public class BillService implements Serializable, IBillService {
                     }
                 }
             });
+            
+            for (Bill bill : bills.values()) {
+                this.billCreatedEventSender.fire(new EntityEvent<Bill>(bill));
+            }
 
             // Set the corresponding bill on the requests so next time around the
             // paid requests are not loaded.

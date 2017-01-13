@@ -16,11 +16,13 @@
  */
 package de.oth.fkretschmar.advertisementproject.ui.models;
 
+import de.oth.fkretschmar.advertisementproject.business.annotation.BillCreated;
 import de.oth.fkretschmar.advertisementproject.business.annotation.ContentChanged;
 import de.oth.fkretschmar.advertisementproject.business.events.EntityEvent;
 import de.oth.fkretschmar.advertisementproject.business.services.PasswordException;
 import de.oth.fkretschmar.advertisementproject.business.services.UserServiceException;
 import de.oth.fkretschmar.advertisementproject.business.services.base.IUserService;
+import de.oth.fkretschmar.advertisementproject.entities.billing.Bill;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.Campaign;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.Content;
 import de.oth.fkretschmar.advertisementproject.entities.user.User;
@@ -173,6 +175,34 @@ public class ApplicationModel implements Serializable  {
     
     // --------------- Private methods ---------------
     
+    /**
+     * Listens to any event that indicates that a bill has been created.
+     * @param billCreatedEvent 
+     */
+    private void billCreatedListener(
+            @Observes @BillCreated EntityEvent<Bill> billCreatedEvent) {
+        ApplicationModel.LOCK.lock();
+
+        try {
+            Campaign eventCampaign = billCreatedEvent.getEntity().getCampaign();
+            
+            if(this.currentUser.getId().equals(eventCampaign.getComissioner().getId())) {
+                Campaign targetCampaign = null;
+                for(Campaign campaign : this.currentUser.getCampaigns()) {
+                    if(campaign.getId().longValue() == eventCampaign.getId().longValue()) {
+                        targetCampaign = campaign;
+                        break;
+                    }
+                }
+                
+                if (targetCampaign != null) {
+                    targetCampaign.addBill(billCreatedEvent.getEntity());
+                }
+            }
+        } finally {
+            ApplicationModel.LOCK.unlock();
+        }
+    }
     
     /**
      * Listens to any event that indicates that a content has changed and 
