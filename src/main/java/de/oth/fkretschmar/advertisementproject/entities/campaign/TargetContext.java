@@ -170,22 +170,22 @@ public class TargetContext extends AbstractAutoGenerateKeyedEntity
             EnumSet<TargetMaritalStatus> targetMaritalStatus, 
             EnumSet<TargetPurposeOfUse> targetPurposeOfUses) 
             throws BuilderValidationException {
-        if(targetAges == null)
+        if(targetAges == null || targetAges.isEmpty())
             throw new BuilderValidationException(
                     TargetContext.class,
                     "The set of target ages can not be null.");
         
-        if(targetGenders == null)
+        if(targetGenders == null || targetGenders.isEmpty())
             throw new BuilderValidationException(
                     TargetContext.class,
                     "The set of target genders can not be null.");
         
-        if(targetMaritalStatus == null)
+        if(targetMaritalStatus == null || targetMaritalStatus.isEmpty())
             throw new BuilderValidationException(
                     TargetContext.class,
                     "The set of target marital status can not be null.");
         
-        if(targetPurposeOfUses == null)
+        if(targetPurposeOfUses == null || targetPurposeOfUses.isEmpty())
             throw new BuilderValidationException(
                     TargetContext.class,
                     "The set of target purposes of use can not be null.");

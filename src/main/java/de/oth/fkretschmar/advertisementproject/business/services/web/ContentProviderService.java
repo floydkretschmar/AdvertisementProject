@@ -59,7 +59,6 @@ import org.joda.money.format.MoneyFormatterBuilder;
 public class ContentProviderService implements Serializable, IContentProviderService {
 
     // --------------- Private fields ---------------
-
     /**
      * Stores the service used to manage {@link Campaign} entites.
      */
@@ -92,26 +91,31 @@ public class ContentProviderService implements Serializable, IContentProviderSer
     private TargetContextRepository contextRepository;
 
     // --------------- Public methods ---------------
-    
     /**
      * Retrieves an advertisement content that best matches the provided
      * {@link TargetContext}.
      *
-     * @param source the text that identifies the source of the request.
-     * @param format the format that the content is supposed to have.
-     * @param context the context that specifies the targets for the requestet
-     * content.
+     * @param params the parameter of the request that is being made.
      * @return the best matching content.
      */
     @Transactional
     @Override
-    public Optional<Content> requestContent(
-            String source, ContentFormat format, TargetContext context) {
-        List<Object[]> results = this.contentRepository.findMatchingContents(context, format);
+    public ContentRequestResult requestContent(ContentRequestParameters params) {
+        if (!params.isTargeted())
+            return this.requestRandomContent(params.getSource(), params.getFormat());
+        
+        TargetContext context = TargetContext.createTargetContext()
+                .targetAges(params.getTargetAgeGroups())
+                .targetGenders(params.getTargetGenderGroups())
+                .targetMaritalStatus(params.getTargetMaritalStatusGroups())
+                .targetPurposeOfUses(params.getTargetPurposeOfUseGroups())
+                .build();
+        
+        List<Object[]> results = this.contentRepository.findMatchingContents(context, params.getFormat());
 
-        if (results == null || results.isEmpty()) {
-            return Optional.empty();
-        }
+        // if no fitting content has been found, send random 
+        if (results == null || results.isEmpty())
+            return this.requestRandomContent(params.getSource(), params.getFormat());
 
         List<MatchingContent> matchingContents = new ArrayList<MatchingContent>();
 
@@ -142,12 +146,12 @@ public class ContentProviderService implements Serializable, IContentProviderSer
                             content2.groupMatches,
                             content2.machtesInGroup),
                     content2.getPricePerRequest().getAmountMinorInt());
-            
+
             // build the ratio of the first value to the sum(of both value) * 100
             // Delivers a upper border between 1 and 100 that indicates how high
             // the percentage should be, that content 1 is chosen.
-            int upperBoarderOfcv1 = (int)((compareValue1 / (compareValue1 + compareValue2)) * 100);
-            
+            int upperBoarderOfcv1 = (int) ((compareValue1 / (compareValue1 + compareValue2)) * 100);
+
             // pics a value between 1 and 100:  if pickedVal < upper border = cv1
             //                                  if pickedVal > upper border = cv2                                
             int pickedValue = ThreadLocalRandom.current().nextInt(1, 100);
@@ -156,11 +160,16 @@ public class ContentProviderService implements Serializable, IContentProviderSer
 
         if (bestContent.isPresent()) {
             Content content = this.contentRepository.find(bestContent.get().getContentId());
-            this.createContentRequest(source, content);
-            return Optional.of(content);
+            this.createContentRequest(params.getSource(), content);
+            return ContentRequestResult.createContentDTO()
+                    .format(content.getFormat())
+                    .targetPage(content.getTargetUrl())
+                    .type(content.getContentType())
+                    .value(content.getValue()).build();
+
         }
 
-        return this.requestRandomContent(source, format);
+        return this.requestRandomContent(params.getSource(), params.getFormat());
     }
 
     /**
@@ -172,17 +181,23 @@ public class ContentProviderService implements Serializable, IContentProviderSer
      * @return the content that has been chosen randomly.
      */
     @Transactional
-    @Override
-    public Optional<Content> requestRandomContent(
+    private ContentRequestResult requestRandomContent(
             String source, ContentFormat format) {
         Optional<Content> randomContent
                 = this.contentRepository.findRandomContent(format);
 
         if (randomContent.isPresent()) {
-            this.createContentRequest(source, randomContent.get());
+            Content content = randomContent.get();
+
+            this.createContentRequest(source, content);
+            return ContentRequestResult.createContentDTO()
+                    .format(content.getFormat())
+                    .targetPage(content.getTargetUrl())
+                    .type(content.getContentType())
+                    .value(content.getValue()).build();
         }
 
-        return randomContent;
+        return null;
     }
 
     // --------------- Private methods ---------------

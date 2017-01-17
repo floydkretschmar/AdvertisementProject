@@ -16,10 +16,7 @@
  */
 package de.oth.fkretschmar.advertisementproject.business.services.web;
 
-import de.oth.fkretschmar.advertisementproject.entities.campaign.Content;
-import de.oth.fkretschmar.advertisementproject.entities.campaign.ContentFormat;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.TargetContext;
-import java.util.Optional;
 import javax.jws.WebService;
 
 /**
@@ -33,24 +30,8 @@ public interface IContentProviderService {
      * Retrieves an advertisement content that best matches the provided 
      * {@link TargetContext}. 
      * 
-     * @param source    the text that identifies the source of the request.
-     * @param format    the format that the content is supposed to have.
-     * @param context   the context that specifies the targets for the requestet
-     *                  content.
+     * @param params the parameter of the request that is being made.
      * @return          the best matching content.
      */
-    public Optional<Content> requestContent(
-            String source, ContentFormat format, TargetContext context);
-    
-    
-    /**
-     * Retrieves a random advertisement that has not been matched with any target
-     * context.
-     * 
-     * @param   source  the text that identifies the source of the request.
-     * @param   format  the format that the content is supposed to have.
-     * @return  the content that has been chosen randomly.
-     */
-    public Optional<Content> requestRandomContent(
-            String source, ContentFormat format);
+    public ContentRequestResult requestContent(ContentRequestParameters params);
 }

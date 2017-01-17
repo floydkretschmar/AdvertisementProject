@@ -16,6 +16,8 @@
  */
 package de.oth.fkretschmar.advertisementproject.ui.models;
 
+import de.oth.fkretschmar.advertisementproject.business.services.web.ContentRequestParameters;
+import de.oth.fkretschmar.advertisementproject.business.services.web.ContentRequestResult;
 import de.oth.fkretschmar.advertisementproject.business.services.web.IContentProviderService;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.Content;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.ContentFormat;
@@ -47,7 +49,7 @@ public class AdvertisementModel implements Serializable {
      * Stores the advertisement content.
      */
     @Getter
-    private Content content;
+    private ContentRequestResult content;
 
     /**
      * Stores the service used to manage requests for {@link Content} entites.
@@ -61,29 +63,19 @@ public class AdvertisementModel implements Serializable {
      */
     @PostConstruct
     private void initializeContent() {
-        Optional<Content> requestedContent
-                = this.contentService.requestContent(
-                        "webvert",
-                        ContentFormat.WIDE_SKYSCRAPER,
-                        TargetContext.createTargetContext()
-                                .targetAges(EnumSet.of(TargetAge.ADULTS))
-                                .targetGenders(EnumSet.allOf(TargetGender.class))
-                                .targetMaritalStatus(EnumSet.of(
-                                        TargetMaritalStatus.DIVORCED,
-                                        TargetMaritalStatus.SINGLE,
-                                        TargetMaritalStatus.WIDOWED))
-                                .targetPurposeOfUses(EnumSet.of(
-                                        TargetPurposeOfUse.BUSINESS))
-                                .build());
-//        Optional<Content> requestedContent
-//                = this.contentService.requestRandomContent(
-//                        "webvert",
-//                        ContentFormat.WIDE_SKYSCRAPER);
+        ContentRequestParameters params = new ContentRequestParameters();
 
-        if (requestedContent.isPresent()) {
-            this.content = requestedContent.get();
-        } else {
-            this.content = null;
-        }
+        params.setSource("webvert");
+        params.setFormat(ContentFormat.WIDE_SKYSCRAPER);
+        params.setTargetAgeGroups(EnumSet.of(TargetAge.ADULTS));
+        params.setTargetGenderGroups(EnumSet.allOf(TargetGender.class));
+        params.setTargetMaritalStatusGroups(EnumSet.of(
+                TargetMaritalStatus.DIVORCED,
+                TargetMaritalStatus.SINGLE,
+                TargetMaritalStatus.WIDOWED));
+        params.setTargetPurposeOfUseGroups(EnumSet.of(
+                TargetPurposeOfUse.BUSINESS));
+        
+        this.content = this.contentService.requestContent(params);
     }
 }
