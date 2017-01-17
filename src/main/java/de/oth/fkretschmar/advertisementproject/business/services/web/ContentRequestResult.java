@@ -72,6 +72,7 @@ public class ContentRequestResult implements Serializable {
     /**
      * Stores the actual value of the content.
      */
+    @Getter
     @XmlElement(name = "value")
     @NonNull
     private String value;
