@@ -186,7 +186,7 @@ public class ApplicationModel implements Serializable  {
         try {
             Campaign eventCampaign = billCreatedEvent.getEntity().getCampaign();
             
-            if(this.currentUser.getId().equals(eventCampaign.getComissioner().getId())) {
+            if(this.currentUser != null && this.currentUser.getId().equals(eventCampaign.getComissioner().getId())) {
                 Campaign targetCampaign = null;
                 for(Campaign campaign : this.currentUser.getCampaigns()) {
                     if(campaign.getId().longValue() == eventCampaign.getId().longValue()) {
@@ -216,7 +216,7 @@ public class ApplicationModel implements Serializable  {
         try {
             Campaign eventCampaign = contentChangedEvent.getEntity().getCampaign();
             
-            if(this.currentUser.getId().equals(eventCampaign.getComissioner().getId())) {
+            if(this.currentUser != null && this.currentUser.getId().equals(eventCampaign.getComissioner().getId())) {
                 Campaign targetCampaign = null;
                 for(Campaign campaign : this.currentUser.getCampaigns()) {
                     if(campaign.getId().longValue() == eventCampaign.getId().longValue()) {

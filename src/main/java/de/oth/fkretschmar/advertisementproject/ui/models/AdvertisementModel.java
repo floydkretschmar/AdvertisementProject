@@ -16,7 +16,7 @@
  */
 package de.oth.fkretschmar.advertisementproject.ui.models;
 
-import de.oth.fkretschmar.advertisementproject.business.services.web.ContentRequestParameters;
+import de.oth.fkretschmar.advertisementproject.business.services.web.RequestContext;
 import de.oth.fkretschmar.advertisementproject.business.services.web.ContentRequestResult;
 import de.oth.fkretschmar.advertisementproject.business.services.web.IContentProviderService;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.Content;
@@ -63,10 +63,8 @@ public class AdvertisementModel implements Serializable {
      */
     @PostConstruct
     private void initializeContent() {
-        ContentRequestParameters params = new ContentRequestParameters();
+        RequestContext params = new RequestContext();
 
-        params.setSource("webvert");
-        params.setFormat(ContentFormat.WIDE_SKYSCRAPER);
         params.setTargetAgeGroups(EnumSet.of(TargetAge.ADULTS));
         params.setTargetGenderGroups(EnumSet.allOf(TargetGender.class));
         params.setTargetMaritalStatusGroups(EnumSet.of(
@@ -76,6 +74,6 @@ public class AdvertisementModel implements Serializable {
         params.setTargetPurposeOfUseGroups(EnumSet.of(
                 TargetPurposeOfUse.BUSINESS));
         
-        this.content = this.contentService.requestContent(params);
+        this.content = this.contentService.requestContent("webvert", ContentFormat.WIDE_SKYSCRAPER, params);
     }
 }

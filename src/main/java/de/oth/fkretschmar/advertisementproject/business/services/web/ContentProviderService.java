@@ -55,7 +55,9 @@ import org.joda.money.format.MoneyFormatterBuilder;
  * @author fkre Floyd Kretschmar
  */
 @RequestScoped
-@WebService(endpointInterface = "de.oth.fkretschmar.advertisementproject.business.services.web.IContentProviderService")
+@WebService(
+        serviceName = "ContentProviderService",
+        endpointInterface = "de.oth.fkretschmar.advertisementproject.business.services.web.IContentProviderService")
 public class ContentProviderService implements Serializable, IContentProviderService {
 
     // --------------- Private fields ---------------
@@ -91,31 +93,38 @@ public class ContentProviderService implements Serializable, IContentProviderSer
     private TargetContextRepository contextRepository;
 
     // --------------- Public methods ---------------
+    
     /**
      * Retrieves an advertisement content that best matches the provided
      * {@link TargetContext}.
      *
-     * @param params the parameter of the request that is being made.
+     * @param source that requested the content.
+     * @param format the format of the content.
+     * @param requestContext the target context of the request.
      * @return the best matching content.
      */
     @Transactional
     @Override
-    public ContentRequestResult requestContent(ContentRequestParameters params) {
-        if (!params.isTargeted())
-            return this.requestRandomContent(params.getSource(), params.getFormat());
+    public ContentRequestResult requestContent(
+            String source,
+            ContentFormat format,
+            RequestContext requestContext) {
+        // if absolutely no target has been defined -> send untargeted content
+        if (!requestContext.isTargeted())
+            return this.requestUntargetedContent(source, format);
         
         TargetContext context = TargetContext.createTargetContext()
-                .targetAges(params.getTargetAgeGroups())
-                .targetGenders(params.getTargetGenderGroups())
-                .targetMaritalStatus(params.getTargetMaritalStatusGroups())
-                .targetPurposeOfUses(params.getTargetPurposeOfUseGroups())
+                .targetAges(requestContext.getTargetAgeGroups())
+                .targetGenders(requestContext.getTargetGenderGroups())
+                .targetMaritalStatus(requestContext.getTargetMaritalStatusGroups())
+                .targetPurposeOfUses(requestContext.getTargetPurposeOfUseGroups())
                 .build();
         
-        List<Object[]> results = this.contentRepository.findMatchingContents(context, params.getFormat());
+        List<Object[]> results = this.contentRepository.findMatchingContents(context, format);
 
-        // if no fitting content has been found, send random 
+        // if no fitting content has been found, send null
         if (results == null || results.isEmpty())
-            return this.requestRandomContent(params.getSource(), params.getFormat());
+            return null;
 
         List<MatchingContent> matchingContents = new ArrayList<MatchingContent>();
 
@@ -160,7 +169,7 @@ public class ContentProviderService implements Serializable, IContentProviderSer
 
         if (bestContent.isPresent()) {
             Content content = this.contentRepository.find(bestContent.get().getContentId());
-            this.createContentRequest(params.getSource(), content);
+            this.createContentRequest(source, content);
             return ContentRequestResult.createContentDTO()
                     .format(content.getFormat())
                     .targetPage(content.getTargetUrl())
@@ -169,7 +178,7 @@ public class ContentProviderService implements Serializable, IContentProviderSer
 
         }
 
-        return this.requestRandomContent(params.getSource(), params.getFormat());
+        return null;
     }
 
     /**
@@ -181,7 +190,8 @@ public class ContentProviderService implements Serializable, IContentProviderSer
      * @return the content that has been chosen randomly.
      */
     @Transactional
-    private ContentRequestResult requestRandomContent(
+    @Override
+    public ContentRequestResult requestUntargetedContent(
             String source, ContentFormat format) {
         Optional<Content> randomContent
                 = this.contentRepository.findRandomContent(format);

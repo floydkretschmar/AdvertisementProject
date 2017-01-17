@@ -34,7 +34,7 @@ import lombok.Getter;
 /**
  * Represents the transfer class that only publishes a small subsection of
  * information for content requests.
- * 
+ *
  * Implementation as seen at http://stackoverflow.com/questions/21179098/soap-ws
  * -make-webparam-optional
  *
@@ -42,30 +42,21 @@ import lombok.Getter;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "ContentRequestParameters")
-public class ContentRequestParameters implements Serializable {
+public class RequestContext implements Serializable {
 
     // --------------- Private fields ---------------
-
-    /**
-     * Stores the enum that indicates the actual format of the content.
-     */
-    @Setter
-    @Getter
-    @XmlElement(name = "format", required = true)
-    private ContentFormat format;
-
     /**
      * Stores the age groups that the requested content should cater to.
      */
     @Setter
-    @XmlElement(name = "targetAgeGroups", required = false)
+    @XmlElement(name = "targetAgeGroups")
     private Set<TargetAge> targetAgeGroups;
 
     /**
      * Stores the gender groups that the requested content should cater to.
      */
     @Setter
-    @XmlElement(name = "targetGenderGroups", required = false)
+    @XmlElement(name = "targetGenderGroups")
     private Set<TargetGender> targetGenderGroups;
 
     /**
@@ -73,7 +64,7 @@ public class ContentRequestParameters implements Serializable {
      * to.
      */
     @Setter
-    @XmlElement(name = "targetMaritalStatusGroups", required = false)
+    @XmlElement(name = "targetMaritalStatusGroups")
     private Set<TargetMaritalStatus> targetMaritalStatusGroups;
 
     /**
@@ -81,75 +72,98 @@ public class ContentRequestParameters implements Serializable {
      * to.
      */
     @Setter
-    @XmlElement(name = "targetPurposeOfUseGroups", required = false)
+    @XmlElement(name = "targetPurposeOfUseGroups")
     private Set<TargetPurposeOfUse> targetPurposeOfUseGroups;
 
-    /**
-     * Stores the text that identifies the source of the request.
-     */
-    @Setter
-    @Getter
-    @XmlElement(name = "source", required = true)
-    private String source;
-
     // --------------- Public getter and setter ---------------
-    
-    
+    /**
+     * Gets the value indicating whether or not target ages are defined.
+     *
+     * @return
+     */
+    private boolean hasTargetAges() {
+        return this.targetAgeGroups != null && !this.targetAgeGroups.isEmpty();
+    }
+
+    /**
+     * Gets the value indicating whether or not target ages are defined.
+     *
+     * @return
+     */
+    private boolean hasTargetGenders() {
+        return this.targetGenderGroups != null && !this.targetGenderGroups.isEmpty();
+    }
+
+    /**
+     * Gets the value indicating whether or not target ages are defined.
+     *
+     * @return
+     */
+    private boolean hasTargetMaritalStatus() {
+        return this.targetMaritalStatusGroups != null && !this.targetMaritalStatusGroups.isEmpty();
+    }
+
+    /**
+     * Gets the value indicating whether or not target ages are defined.
+     *
+     * @return
+     */
+    private boolean hasTargetPurposesOfUse() {
+        return this.targetPurposeOfUseGroups != null && !this.targetPurposeOfUseGroups.isEmpty();
+    }
+
     /**
      * Gets the specified target age groups or all target ages if none where
      * specified in the request.
-     * 
-     * @return 
+     *
+     * @return
      */
     public EnumSet<TargetAge> getTargetAgeGroups() {
-        return this.targetAgeGroups.isEmpty()? EnumSet.copyOf(this.targetAgeGroups) 
+        return this.hasTargetAges() ? EnumSet.copyOf(this.targetAgeGroups)
                 : EnumSet.allOf(TargetAge.class);
     }
-    
-    
+
     /**
-     * Gets the specified target gender groups or all target genders if none where
-     * specified in the request.
-     * 
-     * @return 
+     * Gets the specified target gender groups or all target genders if none
+     * where specified in the request.
+     *
+     * @return
      */
     public EnumSet<TargetGender> getTargetGenderGroups() {
-        return this.targetGenderGroups.isEmpty()? EnumSet.copyOf(this.targetGenderGroups) 
+        return this.hasTargetGenders() ? EnumSet.copyOf(this.targetGenderGroups)
                 : EnumSet.allOf(TargetGender.class);
     }
-    
-    
+
     /**
-     * Gets the specified target marital status groups or all target marital status if none where
-     * specified in the request.
-     * 
-     * @return 
+     * Gets the specified target marital status groups or all target marital
+     * status if none where specified in the request.
+     *
+     * @return
      */
     public EnumSet<TargetMaritalStatus> getTargetMaritalStatusGroups() {
-        return this.targetMaritalStatusGroups.isEmpty()? EnumSet.copyOf(this.targetMaritalStatusGroups) 
+        return this.hasTargetMaritalStatus() ? EnumSet.copyOf(this.targetMaritalStatusGroups)
                 : EnumSet.allOf(TargetMaritalStatus.class);
     }
-    
-    
+
     /**
-     * Gets the specified target purpose of use groups or all target purposes of use if none where
-     * specified in the request.
-     * 
-     * @return 
+     * Gets the specified target purpose of use groups or all target purposes of
+     * use if none where specified in the request.
+     *
+     * @return
      */
     public EnumSet<TargetPurposeOfUse> getTargetPurposeOfUseGroups() {
-        return this.targetPurposeOfUseGroups.isEmpty()? EnumSet.copyOf(this.targetPurposeOfUseGroups) 
+        return this.hasTargetPurposesOfUse() ? EnumSet.copyOf(this.targetPurposeOfUseGroups)
                 : EnumSet.allOf(TargetPurposeOfUse.class);
     }
 
-    
     /**
      * Gets the value indicating whether or not the requested content should be
      * targeted at any target group.
-     * @return 
+     *
+     * @return
      */
     public boolean isTargeted() {
-        return this.targetAgeGroups.isEmpty() || this.targetGenderGroups.isEmpty()
-                || this.targetMaritalStatusGroups.isEmpty()|| this.targetPurposeOfUseGroups.isEmpty();
+        return this.hasTargetAges() || this.hasTargetGenders()
+                || this.hasTargetMaritalStatus() || this.hasTargetPurposesOfUse();
     }
 }
