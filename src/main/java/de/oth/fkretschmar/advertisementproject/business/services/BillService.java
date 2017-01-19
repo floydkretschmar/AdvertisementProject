@@ -19,7 +19,6 @@ package de.oth.fkretschmar.advertisementproject.business.services;
 import de.oth.fkretschmar.advertisementproject.business.annotation.PayPalTransaction;
 import de.oth.fkretschmar.advertisementproject.business.annotation.BankTransaction;
 import de.oth.fkretschmar.advertisementproject.business.annotation.BillCreated;
-import de.oth.fkretschmar.advertisementproject.business.annotation.ContentChanged;
 import de.oth.fkretschmar.advertisementproject.business.events.EntityEvent;
 import de.oth.fkretschmar.advertisementproject.business.services.base.ITransactionService;
 import de.oth.fkretschmar.advertisementproject.business.repositories.BillItemRepository;

@@ -176,35 +176,6 @@ public class ApplicationModel implements Serializable  {
     // --------------- Private methods ---------------
     
     /**
-     * Listens to any event that indicates that a bill has been created.
-     * @param billCreatedEvent 
-     */
-    private void billCreatedListener(
-            @Observes @BillCreated EntityEvent<Bill> billCreatedEvent) {
-        ApplicationModel.LOCK.lock();
-
-        try {
-            Campaign eventCampaign = billCreatedEvent.getEntity().getCampaign();
-            
-            if(this.currentUser != null && this.currentUser.getId().equals(eventCampaign.getComissioner().getId())) {
-                Campaign targetCampaign = null;
-                for(Campaign campaign : this.currentUser.getCampaigns()) {
-                    if(campaign.getId().longValue() == eventCampaign.getId().longValue()) {
-                        targetCampaign = campaign;
-                        break;
-                    }
-                }
-                
-                if (targetCampaign != null) {
-                    targetCampaign.addBill(billCreatedEvent.getEntity());
-                }
-            }
-        } finally {
-            ApplicationModel.LOCK.unlock();
-        }
-    }
-    
-    /**
      * Listens to any event that indicates that a content has changed and 
      * replaces all relevant contents 
      * @param contentChangedEvent 
