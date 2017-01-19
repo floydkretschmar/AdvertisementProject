@@ -25,7 +25,6 @@ import de.oth.fkretschmar.advertisementproject.entities.campaign.Campaign;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.Content;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.ContentType;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.PaymentInterval;
-import de.oth.fkretschmar.advertisementproject.entities.user.User;
 import de.oth.fkretschmar.advertisementproject.business.annotation.MessageBundle;
 import de.oth.fkretschmar.advertisementproject.business.services.base.IAccountService;
 import java.io.Serializable;
@@ -34,7 +33,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
-import javax.enterprise.context.SessionScoped;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import lombok.Getter;
@@ -45,7 +44,7 @@ import lombok.Setter;
  * @author fkre
  */
 @Named
-@SessionScoped
+@ViewScoped
 public class NewCampaignModel implements Serializable {
 
     // --------------- Private fields ---------------

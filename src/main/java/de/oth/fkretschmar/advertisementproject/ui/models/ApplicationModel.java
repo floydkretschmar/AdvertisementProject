@@ -30,13 +30,12 @@ import java.io.Serializable;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Function;
+import javax.ejb.Stateful;
 import javax.enterprise.context.SessionScoped;
 import javax.enterprise.event.Observes;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  *
@@ -176,11 +175,41 @@ public class ApplicationModel implements Serializable  {
     // --------------- Private methods ---------------
     
     /**
+     * Listens to any event that indicates that a bill has been created.
+     * 
+     * @param billCreatedEvent the event being fired when a bill has created.
+     */
+    public void billCreatedListener(
+            @Observes @BillCreated EntityEvent<Bill> billCreatedEvent) {
+        ApplicationModel.LOCK.lock();
+
+        try {
+            Campaign eventCampaign = billCreatedEvent.getEntity().getCampaign();
+            
+            if(this.currentUser != null && this.currentUser.getId().equals(eventCampaign.getComissioner().getId())) {
+                Campaign targetCampaign = null;
+                for(Campaign campaign : this.currentUser.getCampaigns()) {
+                    if(campaign.getId().longValue() == eventCampaign.getId().longValue()) {
+                        targetCampaign = campaign;
+                        break;
+                    }
+                }
+                
+                if (targetCampaign != null) {
+                    targetCampaign.addBill(billCreatedEvent.getEntity());
+                }
+            }
+        } finally {
+            ApplicationModel.LOCK.unlock();
+        }
+    }
+    
+    /**
      * Listens to any event that indicates that a content has changed and 
      * replaces all relevant contents 
      * @param contentChangedEvent 
      */
-    private void contentChangedListener(
+    public void contentChangedListener(
             @Observes @ContentChanged EntityEvent<Content> contentChangedEvent) {
         ApplicationModel.LOCK.lock();
 
