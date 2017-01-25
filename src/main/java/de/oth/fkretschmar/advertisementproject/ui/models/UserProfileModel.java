@@ -119,7 +119,7 @@ public class UserProfileModel implements Serializable {
     /**
      * Gets the birthday of the user as a date.
      * 
-     * @return 
+     * @return the birthday.
      */
     public Date getBirthdate() {
         return Date.from(this.currentUserCopy.getBirthdate().atStartOfDay(
@@ -128,7 +128,7 @@ public class UserProfileModel implements Serializable {
     
     /**
      * Sets the birthday of the user as a date.
-     * @param date 
+     * @param date the new birthday.
      */
     public void setBirthdate(Date date) {
         this.currentUserCopy.setBirthdate(date.toInstant().atZone(

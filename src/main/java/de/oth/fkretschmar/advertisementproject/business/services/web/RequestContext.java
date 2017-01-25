@@ -79,7 +79,8 @@ public class RequestContext implements Serializable {
     /**
      * Gets the value indicating whether or not target ages are defined.
      *
-     * @return
+     * @return {@code true} if age groups have been targeted, otherwise 
+     * {@code false}.
      */
     private boolean hasTargetAges() {
         return this.targetAgeGroups != null && !this.targetAgeGroups.isEmpty();
@@ -88,7 +89,8 @@ public class RequestContext implements Serializable {
     /**
      * Gets the value indicating whether or not target ages are defined.
      *
-     * @return
+     * @return {@code true} if gender groups have been targeted, otherwise 
+     * {@code false}.
      */
     private boolean hasTargetGenders() {
         return this.targetGenderGroups != null && !this.targetGenderGroups.isEmpty();
@@ -97,7 +99,8 @@ public class RequestContext implements Serializable {
     /**
      * Gets the value indicating whether or not target ages are defined.
      *
-     * @return
+     * @return {@code true} if marital status groups have been targeted, otherwise 
+     * {@code false}.
      */
     private boolean hasTargetMaritalStatus() {
         return this.targetMaritalStatusGroups != null && !this.targetMaritalStatusGroups.isEmpty();
@@ -106,7 +109,8 @@ public class RequestContext implements Serializable {
     /**
      * Gets the value indicating whether or not target ages are defined.
      *
-     * @return
+     * @return {@code true} if purpose of use groups have been targeted, otherwise 
+     * {@code false}.
      */
     private boolean hasTargetPurposesOfUse() {
         return this.targetPurposeOfUseGroups != null && !this.targetPurposeOfUseGroups.isEmpty();
@@ -116,7 +120,7 @@ public class RequestContext implements Serializable {
      * Gets the specified target age groups or all target ages if none where
      * specified in the request.
      *
-     * @return
+     * @return the list of target ages.
      */
     public EnumSet<TargetAge> getTargetAgeGroups() {
         return this.hasTargetAges() ? EnumSet.copyOf(this.targetAgeGroups)
@@ -127,7 +131,7 @@ public class RequestContext implements Serializable {
      * Gets the specified target gender groups or all target genders if none
      * where specified in the request.
      *
-     * @return
+     * @return the list of target genders.
      */
     public EnumSet<TargetGender> getTargetGenderGroups() {
         return this.hasTargetGenders() ? EnumSet.copyOf(this.targetGenderGroups)
@@ -138,7 +142,7 @@ public class RequestContext implements Serializable {
      * Gets the specified target marital status groups or all target marital
      * status if none where specified in the request.
      *
-     * @return
+     * @return the list of target marital status.
      */
     public EnumSet<TargetMaritalStatus> getTargetMaritalStatusGroups() {
         return this.hasTargetMaritalStatus() ? EnumSet.copyOf(this.targetMaritalStatusGroups)
@@ -149,7 +153,7 @@ public class RequestContext implements Serializable {
      * Gets the specified target purpose of use groups or all target purposes of
      * use if none where specified in the request.
      *
-     * @return
+     * @return the list of target purposes of use.
      */
     public EnumSet<TargetPurposeOfUse> getTargetPurposeOfUseGroups() {
         return this.hasTargetPurposesOfUse() ? EnumSet.copyOf(this.targetPurposeOfUseGroups)
@@ -160,7 +164,8 @@ public class RequestContext implements Serializable {
      * Gets the value indicating whether or not the requested content should be
      * targeted at any target group.
      *
-     * @return
+     * @return {@code true} if there is at least one group targeted, otherwise
+     * {@code false}.
      */
     public boolean isTargeted() {
         return this.hasTargetAges() || this.hasTargetGenders()

@@ -16,23 +16,13 @@
  */
 package de.oth.fkretschmar.advertisementproject.ui.models;
 
-import de.oth.fkretschmar.advertisementproject.business.annotation.BillCreated;
-import de.oth.fkretschmar.advertisementproject.business.annotation.ContentChanged;
-import de.oth.fkretschmar.advertisementproject.business.events.EntityEvent;
 import de.oth.fkretschmar.advertisementproject.business.services.PasswordException;
 import de.oth.fkretschmar.advertisementproject.business.services.UserServiceException;
 import de.oth.fkretschmar.advertisementproject.business.services.base.IUserService;
-import de.oth.fkretschmar.advertisementproject.entities.billing.Bill;
-import de.oth.fkretschmar.advertisementproject.entities.campaign.Campaign;
-import de.oth.fkretschmar.advertisementproject.entities.campaign.Content;
 import de.oth.fkretschmar.advertisementproject.entities.user.User;
 import java.io.Serializable;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Function;
-import javax.ejb.Stateful;
 import javax.enterprise.context.SessionScoped;
-import javax.enterprise.event.Observes;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -43,86 +33,72 @@ import javax.inject.Named;
  */
 @Named
 @SessionScoped
-public class ApplicationModel implements Serializable  {
-
-    // --------------- Private static fields ---------------
-
-    /**
-     * Stores the instance of {@link Lock} used to sychronize the class.
-     */
-    private static final Lock LOCK = new ReentrantLock();
+public class ApplicationModel implements Serializable {
 
     // --------------- Private fields ---------------
-    
     /**
-     * Stores the {@link User} that is currently logged into the system.
+     * Stores the id of the {@link User} that is currently logged into the
+     * system.
      */
-    private User currentUser;
-    
+    private String currentUserId;
+
+    /**
+     * Stores the registry of all logged on users.
+     */
+    @Inject
+    private UserRegistry registry;
+
     /**
      * Stores the repository used to manage {@link User} entities.
      */
     @Inject
     private IUserService userService;
-    
+
     // --------------- Public methods ---------------
-    
     /**
      * Authenticates an user using the specified e-mail and password.
      *
-     * @param   eMail       that identifies the user.
-     * @param   password    that is used to authenticate the user.
-     * @return  {@code true} if the authentification was successfull, otherwise
-     *          {@code false}.
+     * @param eMail that identifies the user.
+     * @param password that is used to authenticate the user.
+     * @return {@code true} if the authentification was successfull, otherwise
+     * {@code false}.
      * @throws PasswordException that indicates an error during the processing
      * of passwords.
      */
     public boolean authenticateUser(String eMail, String password) {
-        ApplicationModel.LOCK.lock();
-        
         try {
             User user = this.userService.authenticateUser(eMail, password.toCharArray());
-            this.currentUser = user;
+            this.registry.addUser(user);
+            this.currentUserId = user.getId();
             return true;
-        }
-        catch (UserServiceException ex) {
+        } catch (UserServiceException ex) {
             return false;
-        } finally {
-            ApplicationModel.LOCK.unlock();
         }
     }
-    
-    
+
     /**
-     * Gets the value indicating whether or not a user is logged into the 
+     * Gets the value indicating whether or not a user is logged into the
      * application.
-     * 
-     * @return  {@code true} if a user is logged in, otherwise {@code false}
+     *
+     * @return {@code true} if a user is logged in, otherwise {@code false}
      */
     public boolean isUserAuthenticated() {
-        return this.currentUser != null;
+        return this.registry.containsUser(this.currentUserId);
     }
-    
-    
+
     /**
      * Logs out the user from the application and redirects to the login page.
-     * 
-     * @return  the navigation point for the login page.
+     *
+     * @return the navigation point for the login page.
      */
     public String logOut() {
-        ApplicationModel.LOCK.lock();
-        
-        try {
-            // cleanup: invalidate session as well as set the user to null
-            FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
-            this.currentUser = null;
-            return "login";
-        } finally {
-            ApplicationModel.LOCK.unlock();
-        }
+        // cleanup: invalidate session as well as remove the user from the 
+        // registry
+        FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+        this.registry.removeUser(this.currentUserId);
+        return "login";
     }
-    
-    
+
     /**
      * Provides thread safe processing of the {@link User} that is currently
      * logged into the system.
@@ -130,113 +106,32 @@ public class ApplicationModel implements Serializable  {
      * @param processCallback The function used to process the current user.
      */
     public void processAndChangeCurrentUser(Function<User, User> processCallback) {
-        ApplicationModel.LOCK.lock();
-
-        try {
-            this.currentUser = processCallback.apply(this.currentUser);
-        } finally {
-            ApplicationModel.LOCK.unlock();
-        }
+        this.registry.processAndChangeUser(this.currentUserId, processCallback);
     }
-    
-    
+
     /**
      * Provides thread safe processing of the {@link User} that is currently
      * logged into the system.
      *
-     * @param <T>   the type of the return value.
+     * @param <T> the type of the return value.
      * @param processCallback The function used to process the current user.
      * @return the return value of the processing.
      */
     public <T> T processCurrentUser(Function<User, T> processCallback) {
-        ApplicationModel.LOCK.lock();
-
-        try {
-            return processCallback.apply(this.currentUser);
-
-        } finally {
-            ApplicationModel.LOCK.unlock();
-        }
+        return this.registry.processCurrentUser(
+                this.currentUserId, processCallback);
     }
-    
-    
+
     /**
      * Gets the value indicating whether or not a user has logged in.
-     * 
-     * @return  {@code true} if a user is logged in, otherwise {@code false}.
+     *
+     * @return {@code true} if a user is logged in, otherwise {@code false}.
      */
     public String redirectFirstPage() {
-        if(this.currentUser != null)
+        if (this.currentUserId != null && this.registry.containsUser(this.currentUserId)) {
             return "overview";
-        
+        }
+
         return null;
-    }
-    
-    // --------------- Private methods ---------------
-    
-    /**
-     * Listens to any event that indicates that a bill has been created.
-     * 
-     * @param billCreatedEvent the event being fired when a bill has created.
-     */
-    public void billCreatedListener(
-            @Observes @BillCreated EntityEvent<Bill> billCreatedEvent) {
-        ApplicationModel.LOCK.lock();
-
-        try {
-            Campaign eventCampaign = billCreatedEvent.getEntity().getCampaign();
-            
-            if(this.currentUser != null && this.currentUser.getId().equals(eventCampaign.getComissioner().getId())) {
-                Campaign targetCampaign = null;
-                for(Campaign campaign : this.currentUser.getCampaigns()) {
-                    if(campaign.getId().longValue() == eventCampaign.getId().longValue()) {
-                        targetCampaign = campaign;
-                        break;
-                    }
-                }
-                
-                if (targetCampaign != null) {
-                    targetCampaign.addBill(billCreatedEvent.getEntity());
-                }
-            }
-        } finally {
-            ApplicationModel.LOCK.unlock();
-        }
-    }
-    
-    /**
-     * Listens to any event that indicates that a content has changed and 
-     * replaces all relevant contents 
-     * @param contentChangedEvent 
-     */
-    public void contentChangedListener(
-            @Observes @ContentChanged EntityEvent<Content> contentChangedEvent) {
-        ApplicationModel.LOCK.lock();
-
-        try {
-            Campaign eventCampaign = contentChangedEvent.getEntity().getCampaign();
-            
-            if(this.currentUser != null && this.currentUser.getId().equals(eventCampaign.getComissioner().getId())) {
-                Campaign targetCampaign = null;
-                for(Campaign campaign : this.currentUser.getCampaigns()) {
-                    if(campaign.getId().longValue() == eventCampaign.getId().longValue()) {
-                        targetCampaign = campaign;
-                        break;
-                    }
-                }
-                
-                if (targetCampaign != null) {
-                    for(Content content : targetCampaign.getContents()) {
-                        if(content.getId().equals(contentChangedEvent.getEntity().getId())) {
-                            targetCampaign.removeContent(content);
-                            targetCampaign.addContent(contentChangedEvent.getEntity());
-                            break;
-                        }
-                    }
-                }
-            }
-        } finally {
-            ApplicationModel.LOCK.unlock();
-        }
     }
 }
