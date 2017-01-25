@@ -349,9 +349,9 @@ public class BillService implements Serializable, IBillService {
                 }
             });
             
-//            for (Bill bill : bills.values()) {
-//                this.billCreatedEventSender.fire(new EntityEvent<Bill>(bill));
-//            }
+            for (Bill bill : bills.values()) {
+                this.billCreatedEventSender.fire(new EntityEvent<Bill>(bill));
+            }
 
             // Set the corresponding bill on the requests so next time around the
             // paid requests are not loaded.
