@@ -27,6 +27,9 @@ import de.oth.fkretschmar.advertisementproject.entities.campaign.TargetGender;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.TargetMaritalStatus;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.TargetPurposeOfUse;
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.EnumSet;
 import java.util.Optional;
 import javax.annotation.PostConstruct;
@@ -46,6 +49,12 @@ public class AdvertisementModel implements Serializable {
 
     // --------------- Private fields ---------------
     /**
+     * Stores the service used to manage the entire application.
+     */
+    @Inject
+    private ApplicationModel applicationModel;
+
+    /**
      * Stores the advertisement content.
      */
     @Getter
@@ -63,17 +72,32 @@ public class AdvertisementModel implements Serializable {
      */
     @PostConstruct
     private void initializeContent() {
-        RequestContext params = new RequestContext();
+        this.content = this.applicationModel.processCurrentUser(user -> {
+            long ageInYears = ChronoUnit.YEARS.between(
+                    user.getBirthdate(), LocalDate.now());
+            RequestContext params = new RequestContext();
 
-        params.setTargetAgeGroups(EnumSet.of(TargetAge.ADULTS));
-        params.setTargetGenderGroups(EnumSet.allOf(TargetGender.class));
-        params.setTargetMaritalStatusGroups(EnumSet.of(
-                TargetMaritalStatus.DIVORCED,
-                TargetMaritalStatus.SINGLE,
-                TargetMaritalStatus.WIDOWED));
-        params.setTargetPurposeOfUseGroups(EnumSet.of(
-                TargetPurposeOfUse.BUSINESS));
-        
-        this.content = this.contentService.requestContent("webvert", ContentFormat.WIDE_SKYSCRAPER, params);
+            // set age group according to the age of the user
+            if (ageInYears < TargetAge.CHILDREN.getUpperAgeBoundy()) {
+                params.setTargetAgeGroups(EnumSet.of(TargetAge.CHILDREN));
+            } else if (ageInYears < TargetAge.YOUTH.getUpperAgeBoundy()) {
+                params.setTargetAgeGroups(EnumSet.of(TargetAge.YOUTH));
+            } else if (ageInYears < TargetAge.ADULTS.getUpperAgeBoundy()) {
+                params.setTargetAgeGroups(EnumSet.of(TargetAge.ADULTS));
+            } else {
+                params.setTargetAgeGroups(EnumSet.of(TargetAge.SENIORS));
+            }
+            
+            // Webvert is a application for business customers, so it is fair to
+            // assume that you are at work when using it.
+            params.setTargetPurposeOfUseGroups(EnumSet.of(
+                    TargetPurposeOfUse.BUSINESS));
+
+            ContentRequestResult receivedContent = this.contentService.requestContent(
+                    "webvert",
+                    ContentFormat.WIDE_SKYSCRAPER,
+                    params);
+            return receivedContent;
+        });
     }
 }

@@ -17,12 +17,14 @@
 package de.oth.fkretschmar.advertisementproject.entities.campaign;
 
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 /**
  * Defines the different age groups that can be targeted with an advertisement.
  * 
  * @author fkre
  */
+@RequiredArgsConstructor
 public enum TargetAge {
     
     // --------------- Enum fields ---------------
@@ -30,22 +32,22 @@ public enum TargetAge {
     /**
      * Indicates that the target is an adult (ages between 25-64 years old).
      */
-    ADULTS(1<<1),
+    ADULTS(1<<1, 64l),
     
     /**
      * Indicates that the target is a child (ages between 0-14 years old).
      */
-    CHILDREN(1<<2),
+    CHILDREN(1<<2, 14l),
     
     /**
      * Indicates that the target is a youth (ages between 65 years and older).
      */
-    SENIORS(1<<3),
+    SENIORS(1<<3, Long.MAX_VALUE),
     
     /**
      * Indicates that the target is a youth (ages between 15-24 years old).
      */
-    YOUTH(1<<4);
+    YOUTH(1<<4, 24l);
     
     // --------------- Private fields ---------------
     
@@ -55,16 +57,12 @@ public enum TargetAge {
     @Getter
     private final int flagValue;
     
-    // --------------- Private constructors ---------------
-    
     /**
-     * Creates a new instance of {@link TargetAge} using the specified value.
-     * 
-     * @param flagValue the value indicating the bit position of the flag.
+     * Stores the long representation of the upper bounry of the age range 
+     * represented by the age group.
      */
-    private TargetAge(int flagValue){
-        this.flagValue = flagValue;
-    }
+    @Getter
+    private final long upperAgeBoundy;
     
     // --------------- Public static methods ---------------
     
