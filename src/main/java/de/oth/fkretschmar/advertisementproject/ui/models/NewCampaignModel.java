@@ -124,7 +124,7 @@ public class NewCampaignModel implements Serializable {
      * @return the user accounts.
      */
     public Collection<Account> getAccounts() {
-        return applicationModel.processCurrentUser(
+        return applicationModel.processCurrentUserAndReturn(
                 user -> user.getAccounts().stream()
                 .sorted((acc1, acc2) -> 
                 {
@@ -184,7 +184,7 @@ public class NewCampaignModel implements Serializable {
      * @param entity the account that will be added.
      */
     public void addNewAccount(Object entity) {
-        this.applicationModel.processAndChangeCurrentUser(
+        this.applicationModel.processCurrentUser(
                 user -> this.accountService.createAccountForUser(
                         user,
                         (Account) entity));
@@ -230,7 +230,7 @@ public class NewCampaignModel implements Serializable {
             return null;
         }
 
-        this.applicationModel.processAndChangeCurrentUser(user
+        this.applicationModel.processCurrentUser(user
                 -> {
             Campaign campaign = Campaign.createCampaign()
                     .interval(this.selectedInterval)
@@ -240,7 +240,7 @@ public class NewCampaignModel implements Serializable {
 
             this.newContents.forEach(content -> campaign.addContent(content));
 
-            return this.campaignService.createCampaignForUser(
+            this.campaignService.createCampaignForUser(
                     user,
                     campaign);
         });

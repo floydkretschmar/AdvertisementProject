@@ -21,6 +21,7 @@ import de.oth.fkretschmar.advertisementproject.business.services.UserServiceExce
 import de.oth.fkretschmar.advertisementproject.business.services.base.IUserService;
 import de.oth.fkretschmar.advertisementproject.entities.user.User;
 import java.io.Serializable;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -68,7 +69,6 @@ public class ApplicationModel implements Serializable {
     public boolean authenticateUser(String eMail, String password) {
         try {
             User user = this.userService.authenticateUser(eMail, password.toCharArray());
-            this.registry.addUser(user);
             this.currentUserId = user.getId();
             return true;
         } catch (UserServiceException ex) {
@@ -83,7 +83,7 @@ public class ApplicationModel implements Serializable {
      * @return {@code true} if a user is logged in, otherwise {@code false}
      */
     public boolean isUserAuthenticated() {
-        return this.registry.containsUser(this.currentUserId);
+        return this.currentUserId != null;
     }
 
     /**
@@ -95,7 +95,6 @@ public class ApplicationModel implements Serializable {
         // cleanup: invalidate session as well as remove the user from the 
         // registry
         FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
-        this.registry.removeUser(this.currentUserId);
         return "login";
     }
 
@@ -105,8 +104,8 @@ public class ApplicationModel implements Serializable {
      *
      * @param processCallback The function used to process the current user.
      */
-    public void processAndChangeCurrentUser(Function<User, User> processCallback) {
-        this.registry.processAndChangeUser(this.currentUserId, processCallback);
+    public void processCurrentUser(Consumer<User> processCallback) {
+        this.registry.processUser(this.currentUserId, processCallback);
     }
 
     /**
@@ -117,8 +116,8 @@ public class ApplicationModel implements Serializable {
      * @param processCallback The function used to process the current user.
      * @return the return value of the processing.
      */
-    public <T> T processCurrentUser(Function<User, T> processCallback) {
-        return this.registry.processCurrentUser(
+    public <T> T processCurrentUserAndReturn(Function<User, T> processCallback) {
+        return this.registry.processUserAndReturn(
                 this.currentUserId, processCallback);
     }
 
@@ -128,7 +127,7 @@ public class ApplicationModel implements Serializable {
      * @return {@code true} if a user is logged in, otherwise {@code false}.
      */
     public String redirectFirstPage() {
-        if (this.currentUserId != null && this.registry.containsUser(this.currentUserId)) {
+        if (this.currentUserId != null) {
             return "overview";
         }
 

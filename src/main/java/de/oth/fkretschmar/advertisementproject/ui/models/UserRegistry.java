@@ -20,6 +20,7 @@ import de.oth.fkretschmar.advertisementproject.business.annotation.BillCreated;
 import de.oth.fkretschmar.advertisementproject.business.annotation.ContentChanged;
 import de.oth.fkretschmar.advertisementproject.business.events.EntityEvent;
 import de.oth.fkretschmar.advertisementproject.business.services.PasswordException;
+import de.oth.fkretschmar.advertisementproject.business.services.base.IUserService;
 import de.oth.fkretschmar.advertisementproject.entities.billing.Bill;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.Campaign;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.Content;
@@ -27,67 +28,44 @@ import de.oth.fkretschmar.advertisementproject.entities.user.User;
 import java.io.Serializable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.function.Consumer;
 import java.util.function.Function;
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.event.Observes;
+import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
+import javax.inject.Named;
 
 /**
  *
  * @author Floyd
  */
-@ApplicationScoped
+@Named
+@ViewScoped
 public class UserRegistry implements Serializable {
 
     // --------------- Private fields ---------------
+    private User currentUser;
+
     /**
-     * Stores all the {@link User} instances that are currently logged into the
-     * system.
+     * Stores the repository used to manage {@link User} entities.
      */
-    private ConcurrentMap<String, User> currentUsers = new ConcurrentHashMap<>();
+    @Inject
+    private IUserService userService;
 
     // --------------- Public methods ---------------
-    /**
-     * Adds an user that will be managed by the registry.
-     *
-     * @param user the new user that will be managed.
-     * @throws PasswordException that indicates an error during the processing
-     * of passwords.
-     */
-    public void addUser(User user) {
-        // use the thread safe atomic puf ot the concurrent map
-        this.currentUsers.putIfAbsent(user.getId(), user);
-    }
-
-    /**
-     * Gets the value indicating whether or not a user is logged into the
-     * application.
-     *
-     * @param userId the id of the user.
-     * @return {@code true} if a user is logged in, otherwise {@code false}
-     */
-    public boolean containsUser(String userId) {
-        return this.currentUsers.containsKey(userId);
-    }
-
+    
     /**
      * Provides thread safe processing of the {@link User} that is currently
      * logged into the system.
      *
      * @param userId the id of the user.
      * @param processCallback The function used to process the current user.
-     * @return {@code true} if a user is logged in, otherwise {@code false}
      */
-    public boolean processAndChangeUser(String userId, Function<User, User> processCallback) {
-        User user = this.currentUsers.getOrDefault(userId, null);
-        if (user == null) {
-            return false;
+    public void processUser(String userId, Consumer<User> processCallback) {
+        if (this.currentUser == null) {
+            this.currentUser = this.userService.find(userId);
         }
 
-        // only lock on the scope of the specified user and not on the entire map
-        synchronized (user) {
-            this.currentUsers.replace(userId, processCallback.apply(user));
-        }
-        return true;
+        processCallback.accept(this.currentUser);
     }
 
     /**
@@ -100,85 +78,10 @@ public class UserRegistry implements Serializable {
      * @return the return value of the processing or null if the specified user
      * does not exist.
      */
-    public <T> T processCurrentUser(String userId, Function<User, T> processCallback) {
-        User user = this.currentUsers.getOrDefault(userId, null);
-        if (user == null) {
-            return null;
+    public <T> T processUserAndReturn(String userId, Function<User, T> processCallback) {
+        if (this.currentUser == null) {
+            this.currentUser = this.userService.find(userId);
         }
-
-        // only lock on the scope of the specified user and not on the entire map
-        synchronized (user) {
-            return processCallback.apply(this.currentUsers.get(userId));
-        }
-    }
-
-    /**
-     * Removes an user from the registry.
-     *
-     * @param userId the id of the user.
-     */
-    public void removeUser(String userId) {
-        // remove of the concurrent map is atomic
-        this.currentUsers.remove(userId);
-    }
-
-    // --------------- Private methods ---------------
-    
-    /**
-     * Listens to any event that indicates that a bill has been created.
-     *
-     * @param billCreatedEvent the event being fired when a bill was created.
-     */
-    public void billCreatedListener(
-            @Observes @BillCreated EntityEvent<Bill> billCreatedEvent) {
-        Campaign eventCampaign = billCreatedEvent.getEntity().getCampaign();
-
-        this.processAndChangeUser(eventCampaign.getComissioner().getId(), (user) -> {
-            Campaign targetCampaign = null;
-            for (Campaign campaign : user.getCampaigns()) {
-                if (campaign.getId().longValue() == eventCampaign.getId().longValue()) {
-                    targetCampaign = campaign;
-                    break;
-                }
-            }
-
-            if (targetCampaign != null) {
-                targetCampaign.addBill(billCreatedEvent.getEntity());
-            }
-            return user;
-        });
-    }
-
-    /**
-     * Listens to any event that indicates that a content has changed and
-     * replaces all relevant contents
-     *
-     * @param contentChangedEvent the event being fired when a content has changed.
-     */
-    public void contentChangedListener(
-            @Observes
-            @ContentChanged EntityEvent<Content> contentChangedEvent) {
-        Campaign eventCampaign = contentChangedEvent.getEntity().getCampaign();
-
-        this.processAndChangeUser(eventCampaign.getComissioner().getId(), (user) -> {
-            Campaign targetCampaign = null;
-            for (Campaign campaign : user.getCampaigns()) {
-                if (campaign.getId().longValue() == eventCampaign.getId().longValue()) {
-                    targetCampaign = campaign;
-                    break;
-                }
-            }
-
-            if (targetCampaign != null) {
-                for (Content content : targetCampaign.getContents()) {
-                    if (content.getId().equals(contentChangedEvent.getEntity().getId())) {
-                        targetCampaign.removeContent(content);
-                        targetCampaign.addContent(contentChangedEvent.getEntity());
-                        break;
-                    }
-                }
-            }
-            return user;
-        });
+        return processCallback.apply(this.currentUser);
     }
 }

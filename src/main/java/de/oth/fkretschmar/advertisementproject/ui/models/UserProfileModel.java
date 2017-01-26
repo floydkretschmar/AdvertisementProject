@@ -154,7 +154,7 @@ public class UserProfileModel implements Serializable {
      */
     @PostConstruct
     public void initialize() {
-        this.currentUserCopy = this.applicationModel.processCurrentUser(user -> 
+        this.currentUserCopy = this.applicationModel.processCurrentUserAndReturn(user -> 
         {
             User copy = User.createUser()
                     .address(Address.createAddress()
@@ -194,9 +194,9 @@ public class UserProfileModel implements Serializable {
      * @return the next navigation point.
      */
     public String saveChanges() {
-        this.applicationModel.processAndChangeCurrentUser(user -> 
+        this.applicationModel.processCurrentUser(user -> 
         {
-            return this.userService.changeUserBasicInformation(user, this.currentUserCopy);
+            this.userService.changeUserBasicInformation(user, this.currentUserCopy);
         });
         this.editing = false;
         return "userProfile";
