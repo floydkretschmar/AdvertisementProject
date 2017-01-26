@@ -18,5 +18,6 @@ Any value defined here will override the pom.xml file value but is only applicab
         <netbeans.hint.license>gpl30</netbeans.hint.license>
         <org-netbeans-modules-projectapi.jsf_2e_language>Facelets</org-netbeans-modules-projectapi.jsf_2e_language>
         <org-netbeans-modules-maven-jaxws._5f_C_5f_TransactionWS>http://im-lamport:8080/BankReichl/TransactionWS?wsdl</org-netbeans-modules-maven-jaxws._5f_C_5f_TransactionWS>
+        <org-netbeans-modules-maven-jaxws.rest_2e_config_2e_type>ide</org-netbeans-modules-maven-jaxws.rest_2e_config_2e_type>
     </properties>
 </project-shared-configuration>

@@ -18,30 +18,26 @@ package de.oth.fkretschmar.advertisementproject.business.services.web;
 
 import de.oth.fkretschmar.advertisementproject.entities.campaign.ContentFormat;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.TargetContext;
-import javax.jws.WebParam;
-import javax.jws.WebService;
-import javax.xml.bind.annotation.XmlElement;
 
 /**
  *
  * @author Admin
  */
-@WebService
 public interface IContentProviderService {
+
+    // --------------- Methods ---------------
 
     /**
      * Retrieves an advertisement content that best matches the provided
-     * {@link TargetContext}.
+     * {@link TargetContext} and format.
      *
      * @param source that requested the content.
      * @param format the format of the content.
-     * @param requestContext the target context of the request.
+     * @param context the target context of the request.
      * @return the best matching content.
      */
     public ContentRequestResult requestContent(
-            @WebParam(name = "source") String source,
-            @WebParam(name = "format") ContentFormat format,
-            @WebParam(name = "context") RequestContext requestContext);
+            String source, ContentFormat format, TargetContext context);
 
     /**
      * Retrieves an advertisement content that best matches the provided
@@ -52,6 +48,5 @@ public interface IContentProviderService {
      * @return the best matching content.
      */
     public ContentRequestResult requestUntargetedContent(
-            @WebParam(name = "source") String source,
-            @WebParam(name = "format") ContentFormat format);
+            String source, ContentFormat format);
 }

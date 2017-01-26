@@ -39,8 +39,8 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.event.Event;
+import javax.enterprise.inject.Default;
 import javax.inject.Inject;
-import javax.jws.WebService;
 import javax.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -55,9 +55,7 @@ import org.joda.money.format.MoneyFormatterBuilder;
  * @author fkre Floyd Kretschmar
  */
 @RequestScoped
-@WebService(
-        serviceName = "ContentProviderService",
-        endpointInterface = "de.oth.fkretschmar.advertisementproject.business.services.web.IContentProviderService")
+@Default
 public class ContentProviderService implements Serializable, IContentProviderService {
 
     // --------------- Private fields ---------------
@@ -100,7 +98,7 @@ public class ContentProviderService implements Serializable, IContentProviderSer
      *
      * @param source that requested the content.
      * @param format the format of the content.
-     * @param requestContext the target context of the request.
+     * @param context the target context of the request.
      * @return the best matching content.
      */
     @Transactional
@@ -108,17 +106,7 @@ public class ContentProviderService implements Serializable, IContentProviderSer
     public ContentRequestResult requestContent(
             String source,
             ContentFormat format,
-            RequestContext requestContext) {
-        // if absolutely no target has been defined -> send untargeted content
-        if (!requestContext.isTargeted())
-            return this.requestUntargetedContent(source, format);
-        
-        TargetContext context = TargetContext.createTargetContext()
-                .targetAges(requestContext.getTargetAgeGroups())
-                .targetGenders(requestContext.getTargetGenderGroups())
-                .targetMaritalStatus(requestContext.getTargetMaritalStatusGroups())
-                .targetPurposeOfUses(requestContext.getTargetPurposeOfUseGroups())
-                .build();
+            TargetContext context) {
         
         List<Object[]> results = this.contentRepository.findMatchingContents(context, format);
 
@@ -211,6 +199,7 @@ public class ContentProviderService implements Serializable, IContentProviderSer
     }
 
     // --------------- Private methods ---------------
+    
     /**
      * Creates a content request for the specified content and source.
      *
@@ -251,6 +240,7 @@ public class ContentProviderService implements Serializable, IContentProviderSer
     }
 
     // --------------- Private classes ---------------
+    
     /**
      * Represents a content that matches the provided {@link TargetContext}.
      */

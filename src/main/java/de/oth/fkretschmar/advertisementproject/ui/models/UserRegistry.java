@@ -127,7 +127,7 @@ public class UserRegistry implements Serializable {
     /**
      * Listens to any event that indicates that a bill has been created.
      *
-     * @param billCreatedEvent the event being fired when a bill has created.
+     * @param billCreatedEvent the event being fired when a bill was created.
      */
     public void billCreatedListener(
             @Observes @BillCreated EntityEvent<Bill> billCreatedEvent) {
@@ -153,7 +153,7 @@ public class UserRegistry implements Serializable {
      * Listens to any event that indicates that a content has changed and
      * replaces all relevant contents
      *
-     * @param contentChangedEvent
+     * @param contentChangedEvent the event being fired when a content has changed.
      */
     public void contentChangedListener(
             @Observes

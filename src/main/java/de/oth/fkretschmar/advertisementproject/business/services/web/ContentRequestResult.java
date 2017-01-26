@@ -23,6 +23,7 @@ import java.io.Serializable;
 import java.net.URL;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import lombok.AccessLevel;
@@ -40,7 +41,7 @@ import lombok.RequiredArgsConstructor;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "ContentRequestResult")
-@RequiredArgsConstructor(access = AccessLevel.PUBLIC)
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor
 public class ContentRequestResult implements Serializable {
 
@@ -49,7 +50,7 @@ public class ContentRequestResult implements Serializable {
      * Stores the enum that indicates the actual format of the content.
      */
     @Getter
-    @XmlElement(name = "format")
+    @XmlAttribute(name = "format")
     @NonNull
     private ContentFormat format;
 
@@ -65,7 +66,7 @@ public class ContentRequestResult implements Serializable {
      * Stores the enum that indicates the actual type of the content.
      */
     @Getter
-    @XmlElement(name = "type")
+    @XmlAttribute(name = "type")
     @NonNull
     private ContentType type;
 
