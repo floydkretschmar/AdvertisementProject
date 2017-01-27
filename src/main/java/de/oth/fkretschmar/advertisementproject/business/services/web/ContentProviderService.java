@@ -26,11 +26,14 @@ import de.oth.fkretschmar.advertisementproject.entities.campaign.Campaign;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.Content;
 import de.oth.fkretschmar.advertisementproject.entities.billing.ContentRequest;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.ContentFormat;
+import de.oth.fkretschmar.advertisementproject.entities.campaign.ContentType;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.TargetContext;
+import de.oth.fkretschmar.advertisementproject.entities.campaign.TextContentValue;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -238,7 +241,7 @@ public class ContentProviderService implements Serializable, IContentProviderSer
                 .requestSource(source).build();
         this.contentRequestRepository.persist(request);
     }
-
+    
     // --------------- Private classes ---------------
     
     /**

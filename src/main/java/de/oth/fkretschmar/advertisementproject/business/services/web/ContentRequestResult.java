@@ -18,6 +18,7 @@ package de.oth.fkretschmar.advertisementproject.business.services.web;
 
 import de.oth.fkretschmar.advertisementproject.entities.campaign.ContentFormat;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.ContentType;
+import de.oth.fkretschmar.advertisementproject.entities.campaign.TextContentValue;
 import de.oth.fkretschmar.advertisementproject.entities.exceptions.BuilderValidationException;
 import java.io.Serializable;
 import java.net.URL;
@@ -27,6 +28,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -42,6 +44,7 @@ import lombok.RequiredArgsConstructor;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "ContentRequestResult")
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor
 @NoArgsConstructor
 public class ContentRequestResult implements Serializable {
 
@@ -53,6 +56,13 @@ public class ContentRequestResult implements Serializable {
     @XmlAttribute(name = "format")
     @NonNull
     private ContentFormat format;
+    
+    /**
+     * Stores the height of the content;
+     */
+    @Getter
+    @XmlAttribute(name = "height")
+    private int height;
 
     /**
      * Stores the URL that redirects to the advertised page.
@@ -69,6 +79,13 @@ public class ContentRequestResult implements Serializable {
     @XmlAttribute(name = "type")
     @NonNull
     private ContentType type;
+    
+    /**
+     * Stores the width of the content;
+     */
+    @Getter
+    @XmlAttribute(name = "width")
+    private int width;
 
     /**
      * Stores the actual value of the content.
@@ -127,15 +144,22 @@ public class ContentRequestResult implements Serializable {
         String serializedValue = "";
 
         if (type == ContentType.IMAGE_URL) {
-            serializedValue = ((URL) value).toExternalForm();
-        } else if (type == ContentType.TEXT) {
-            serializedValue = (String) value;
+            serializedValue = ((URL)value).toExternalForm();
+        }
+        else {
+            TextContentValue textValue = (TextContentValue)value;
+            serializedValue = String.format(
+                    "%s - %s", 
+                    textValue.getTitle(), 
+                    textValue.getDescription());  
         }
 
         return new ContentRequestResult(
                 format,
+                format.getArea().height,
                 targetPage,
                 type,
+                format.getArea().width,
                 serializedValue);
     }
 }

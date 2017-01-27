@@ -99,7 +99,9 @@
                                              width: 100%;
                                              padding: 10px;
                                              min-height: #{advertisementModel.content.format.area.height}px;
-                                             min-width: #{advertisementModel.content.format.area.width}px;">
+                                             min-width: #{advertisementModel.content.format.area.width}px;
+                                             max-height: #{advertisementModel.content.format.area.height}px;
+                                             max-width: #{advertisementModel.content.format.area.width}px;">
                                         <h:outputText value="#{advertisementModel.content.value}" 
                                                       style="padding-top: 16px;"/>
                                     </b:panel>

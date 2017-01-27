@@ -40,5 +40,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             <converter-id>de.oth.fkretschmar.advertisementproject.ui.converters.MoneyConverter</converter-id>
         </converter>
     </tag>
+    <tag>
+        <tag-name>convertTextContent</tag-name>
+        <converter>
+            <converter-id>de.oth.fkretschmar.advertisementproject.ui.converters.TextContentConverter</converter-id>
+        </converter>
+    </tag>
 </facelet-taglib>
 

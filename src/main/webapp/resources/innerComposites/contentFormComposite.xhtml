@@ -5,6 +5,7 @@
       xmlns:b="http://bootsfaces.net/ui"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:o="http://omnifaces.org/ui"
       xmlns:prim="http://primefaces.org/ui">
     <h:head>
 
@@ -17,24 +18,13 @@
     <!-- IMPLEMENTATION -->
     <cc:implementation>
         <b:panelGrid colSpans="12">
+            <o:importConstants type="de.oth.fkretschmar.advertisementproject.entities.campaign.ContentType" />
+
             <h:outputText value="#{labels.MODALCONTENT_OutputText_Name}"
                           class="webvert_bold_lable_layout"/>
             <b:inputText value="#{newContentModel.name}"
                          styleClass="#{component.valid? '' : 'webvert_input_control_invalid' }"
                          required="true"/>
-            <h:outputText value="#{labels.MODALCONTENT_OutputText_Description}"
-                          class="webvert_bold_lable_layout"/>
-            <b:inputTextarea value="#{newContentModel.description}"/>
-            <h:outputText value="#{labels.MODALCONTENT_OutputText_ContentType}"
-                          class="webvert_bold_lable_layout"/>
-            <b:selectOneMenu value="#{newContentModel.selectedContentType}"
-                             binding="#{ct}"
-                             required="true">
-                <f:selectItems value="#{newContentModel.contentTypes}"
-                               var="contentType"
-                               itemValue="#{contentType}"
-                               itemLabel="#{resourcePickerModel.pickContentTypeLabel(contentType)}"/>
-            </b:selectOneMenu>
             <h:outputText value="#{labels.MODALCONTENT_OutputText_ContentFormat}"
                           class="webvert_bold_lable_layout"/>
             <b:selectOneMenu value="#{newContentModel.selectedFormat}"
@@ -44,14 +34,6 @@
                                itemValue="#{format}"
                                itemLabel="#{resourcePickerModel.pickContentFormatLabel(format)}"/>
             </b:selectOneMenu>
-            <h:outputText value="#{labels.MODALCONTENT_OutputText_ContentValue}"
-                          class="webvert_bold_lable_layout"/>
-            <b:inputText value="#{newContentModel.contentValue}"
-                         styleClass="#{component.valid? '' : 'webvert_input_control_invalid' }"
-                         required="true">
-                <f:validator validatorId="contentValueValidator" />
-                <f:attribute name="param" value="#{ct}" /> 
-            </b:inputText>
             <h:outputText value="#{labels.MODALCONTENT_OutputText_TargetPage}"
                           class="webvert_bold_lable_layout"/>
             <b:inputText value="#{newContentModel.targetPage}"
@@ -106,6 +88,48 @@
                 <f:convertNumber integerOnly="true" type="number"/>
                 <f:validator validatorId="greaterZeroValidator" />
             </b:inputText>
+
+
+            <b:tabLinks class="webvert_ca_tab_layout"
+                        style="padding-top: 15px">
+                <b:navCommandLink value="#{labels.MODALCONTENT_Tab_ImageContent}"
+                                  update="@form"
+                                  immediate="true"
+                                  ajax="true"
+                                  active="#{newContentModel.selectedContentType eq ContentType.IMAGE_URL}"
+                                  action="#{newContentModel.setSelectedContentType(ContentType.IMAGE_URL)}"/>
+                <b:navCommandLink value="#{labels.MODALCONTENT_Tab_TextContent}"
+                                  update="@form"
+                                  immediate="true"
+                                  ajax="true"
+                                  active="#{newContentModel.selectedContentType eq ContentType.TEXT}"
+                                  action="#{newContentModel.setSelectedContentType(ContentType.TEXT)}"/>
+            </b:tabLinks>
+
+            <h:outputText value="#{labels.MODALCONTENT_OutputText_ImageContentUrl}"
+                          class="webvert_bold_lable_layout"
+                          rendered="#{newContentModel.selectedContentType eq ContentType.IMAGE_URL}"/>
+            <b:inputText value="#{newContentModel.contentUrl}"
+                         styleClass="#{component.valid? '' : 'webvert_input_control_invalid' }"
+                         required="true"
+                         rendered="#{newContentModel.selectedContentType eq ContentType.IMAGE_URL}">
+                <f:validator validatorId="urlValidator" />
+            </b:inputText>
+
+            <h:outputText value="#{labels.MODALCONTENT_OutputText_TextContentTitle}"
+                          class="webvert_bold_lable_layout"
+                          rendered="#{newContentModel.selectedContentType eq ContentType.TEXT}"/>
+            <b:inputText value="#{newContentModel.contentTitle}"
+                         styleClass="#{component.valid? '' : 'webvert_input_control_invalid' }"
+                         required="true"
+                         rendered="#{newContentModel.selectedContentType eq ContentType.TEXT}">
+            </b:inputText>
+
+            <h:outputText value="#{labels.MODALCONTENT_OutputText_TextContentDescription}"
+                          class="webvert_bold_lable_layout"
+                          rendered="#{newContentModel.selectedContentType eq ContentType.TEXT}"/>
+            <b:inputTextarea value="#{newContentModel.description}"
+                             rendered="#{newContentModel.selectedContentType eq ContentType.TEXT}"/>
 
             <b:row style="margin-bottom: 10px">
                 <b:column span="3" style="padding-right: 0px">

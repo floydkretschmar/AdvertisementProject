@@ -30,18 +30,21 @@
                 </c:when>
                 <c:otherwise>
                     <h:outputText value="#{cc.attrs.content.value}" 
-                                  style="padding-top: 16px"/>
+                                  style="padding-top: 16px">
+                        <converters:convertTextContent/>
+                    </h:outputText>
                 </c:otherwise>
             </c:choose>
         </b:column>
         <b:column span="8">
             <b:row class="webvert_co_lable_row_layout">
                 <b:column span="6">
-                    <h:outputText value="#{labels.DISPLAYCONTENT_OutputText_Description}" 
+                    <h:outputText value="#{labels.DISPLAYCONTENT_OutputText_Name}"
                                   class="webvert_bold_lable_layout"/>
                 </b:column>
                 <b:column span="6">
-                    <h:outputText value="#{cc.attrs.content.description}"/>
+                    <h:outputText value="#{cc.attrs.content.name}">
+                    </h:outputText>
                 </b:column>
             </b:row>
             <b:row class="webvert_co_lable_row_layout">

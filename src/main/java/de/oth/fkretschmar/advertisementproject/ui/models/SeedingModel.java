@@ -34,6 +34,7 @@ import de.oth.fkretschmar.advertisementproject.entities.campaign.TargetContext;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.TargetGender;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.TargetMaritalStatus;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.TargetPurposeOfUse;
+import de.oth.fkretschmar.advertisementproject.entities.campaign.TextContentValue;
 import de.oth.fkretschmar.advertisementproject.entities.user.Address;
 import de.oth.fkretschmar.advertisementproject.entities.user.User;
 import java.net.MalformedURLException;
@@ -84,19 +85,134 @@ public class SeedingModel {
      */
     public String seed() {
         try {
-            // Create Andrea:
             this.createAndrea();
+            
+            this.createMatthew();
         } catch (UserServiceException | MalformedURLException ex) {
             Logger.getLogger(SeedingModel.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             return "login";
         }
     }
-    
+
+    /**
+     * Creates the user Matthew Smith.
+     *
+     * @throws MalformedURLException
+     * @throws UserServiceException
+     */
+    private void createMatthew() throws MalformedURLException, UserServiceException {
+        // Create Address
+        Address matthewAddress = Address.createAddress()
+                .areaCode("312")
+                .city("Chicago")
+                .country("USA")
+                .houseNumber("801")
+                .street("North Clark Street")
+                .build();
+
+        // Create user
+        User matthew = User.createUser()
+                .address(matthewAddress)
+                .birthdate(LocalDate.of(1986, Month.MAY, 16))
+                .company("Chicago Tribune")
+                .eMailAddress("msmith@chicagotrib.com")
+                .firstName("Matthew")
+                .lastName("Smith")
+                .password(PasswordService.generate("matthewpw".toCharArray()))
+                .build();
+
+        this.userService.createUser(matthew);
+
+        // Create accounts and add them to user
+        Account matthewPayPalAccount = PayPalAccount.createPayPalAccount()
+                .name("msmith@chicagotrib.com")
+                .build();
+
+        matthew = this.accountService.createAccountForUser(matthew, matthewPayPalAccount);
+
+        // Create Campaign
+        Campaign tribunalCampaign = Campaign.createCampaign()
+                .interval(PaymentInterval.QUATERLY)
+                .name("Campaign for the Chigaco Tribunal")
+                .paymentAccount(matthewPayPalAccount)
+                .build();
+
+        Content tribunalContent1 = Content.createContent()
+                .name("Tribubal Skyscraper")
+                .contentType(ContentType.TEXT)
+                .context(TargetContext.createTargetContext()
+                        .targetAges(EnumSet.of(TargetAge.ADULTS, TargetAge.SENIORS))
+                        .targetGenders(EnumSet.allOf(TargetGender.class))
+                        .targetMaritalStatus(EnumSet.allOf(TargetMaritalStatus.class))
+                        .targetPurposeOfUses(EnumSet.of(TargetPurposeOfUse.BUSINESS))
+                        .build())
+                .format(ContentFormat.WIDE_SKYSCRAPER)
+                .numberOfRequests(50000)
+                .pricePerRequest(Money.ofMinor(CurrencyUnit.EUR, 10))
+                .targetUrl(new URL("http://www.chicagotribune.com/"))
+                .value(TextContentValue.createTextContentValue()
+                        .description("The Chicago Tribune is one of the oldest "
+                                + "and most venerated newspapers in the US. "
+                                + "Click here to always stay informed...")
+                        .title("TRY OUT THE TRIBUNE NOW!")
+                        .build())
+                .build();
+
+        Content tribunalContent2 = Content.createContent()
+                .name("Tribubal Half page")
+                .contentType(ContentType.TEXT)
+                .context(TargetContext.createTargetContext()
+                        .targetAges(EnumSet.of(TargetAge.ADULTS, TargetAge.SENIORS))
+                        .targetGenders(EnumSet.allOf(TargetGender.class))
+                        .targetMaritalStatus(EnumSet.allOf(TargetMaritalStatus.class))
+                        .targetPurposeOfUses(EnumSet.of(TargetPurposeOfUse.BUSINESS))
+                        .build())
+                .format(ContentFormat.HALF_PAGE)
+                .numberOfRequests(50000)
+                .pricePerRequest(Money.ofMinor(CurrencyUnit.EUR, 15))
+                .targetUrl(new URL("http://www.chicagotribune.com/"))
+                .value(TextContentValue.createTextContentValue()
+                        .description("The Chicago Tribune is one of the oldest "
+                                + "and most venerated newspapers in the US. "
+                                + "Click here to always stay informed...")
+                        .title("TRY OUT THE TRIBUNE NOW!")
+                        .build())
+                .build();
+
+        Content tribunalContent3 = Content.createContent()
+                .name("Tribubal Half page")
+                .contentType(ContentType.TEXT)
+                .context(TargetContext.createTargetContext()
+                        .targetAges(EnumSet.of(TargetAge.ADULTS, TargetAge.SENIORS))
+                        .targetGenders(EnumSet.allOf(TargetGender.class))
+                        .targetMaritalStatus(EnumSet.allOf(TargetMaritalStatus.class))
+                        .targetPurposeOfUses(EnumSet.of(TargetPurposeOfUse.BUSINESS))
+                        .build())
+                .format(ContentFormat.LARGE_RECTANGLE)
+                .numberOfRequests(50000)
+                .pricePerRequest(Money.ofMinor(CurrencyUnit.EUR, 8))
+                .targetUrl(new URL("http://www.chicagotribune.com/"))
+                .value(TextContentValue.createTextContentValue()
+                        .description("The Chicago Tribune is one of the oldest "
+                                + "and most venerated newspapers in the US. "
+                                + "Click here to always stay informed...")
+                        .title("TRY OUT THE TRIBUNE NOW!")
+                        .build())
+                .build();
+        
+        tribunalCampaign.addContent(tribunalContent1);
+        tribunalCampaign.addContent(tribunalContent2);
+        tribunalCampaign.addContent(tribunalContent3);
+
+        this.campaignService.createCampaignForUser(matthew, tribunalCampaign);
+    }
+
     /**
      * Creates the user Andrea Meier.
+     *
      * @throws MalformedURLException
-     * @throws UserServiceException 
+     * @throws UserServiceException
      */
     private void createAndrea() throws MalformedURLException, UserServiceException {
         // Create Address
@@ -149,7 +265,6 @@ public class SeedingModel {
                         .targetMaritalStatus(EnumSet.allOf(TargetMaritalStatus.class))
                         .targetPurposeOfUses(EnumSet.of(TargetPurposeOfUse.PRIVATE))
                         .build())
-                .description("A wide skyscraper ad for chicken mc nuggets.")
                 .format(ContentFormat.WIDE_SKYSCRAPER)
                 .numberOfRequests(50000)
                 .pricePerRequest(Money.ofMinor(CurrencyUnit.EUR, 25))
@@ -166,7 +281,6 @@ public class SeedingModel {
                         .targetMaritalStatus(EnumSet.allOf(TargetMaritalStatus.class))
                         .targetPurposeOfUses(EnumSet.of(TargetPurposeOfUse.PRIVATE))
                         .build())
-                .description("A wide skyscraper ad for oat meal.")
                 .format(ContentFormat.WIDE_SKYSCRAPER)
                 .numberOfRequests(40000)
                 .pricePerRequest(Money.ofMinor(CurrencyUnit.EUR, 20))
@@ -183,7 +297,6 @@ public class SeedingModel {
                         .targetMaritalStatus(EnumSet.allOf(TargetMaritalStatus.class))
                         .targetPurposeOfUses(EnumSet.of(TargetPurposeOfUse.PRIVATE))
                         .build())
-                .description("A leaderboard ad for chicken mc nuggets.")
                 .format(ContentFormat.LEADERBOARD)
                 .numberOfRequests(40000)
                 .pricePerRequest(Money.ofMinor(CurrencyUnit.EUR, 20))
@@ -200,7 +313,6 @@ public class SeedingModel {
                         .targetMaritalStatus(EnumSet.allOf(TargetMaritalStatus.class))
                         .targetPurposeOfUses(EnumSet.of(TargetPurposeOfUse.PRIVATE))
                         .build())
-                .description("A medium rectangle ad for chicken mc nuggets.")
                 .format(ContentFormat.MEDIUM_RECTANGLE)
                 .numberOfRequests(40000)
                 .pricePerRequest(Money.ofMinor(CurrencyUnit.EUR, 20))

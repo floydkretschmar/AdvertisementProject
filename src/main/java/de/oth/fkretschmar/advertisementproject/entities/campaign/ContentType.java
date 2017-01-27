@@ -50,7 +50,7 @@ public enum ContentType {
     /**
      * Indicates that the content of the advertisement is a plain text.
      */
-    TEXT(String.class),
+    TEXT(TextContentValue.class),
     
     /**
      * Indicates that the content of the advertisement has not been defined.

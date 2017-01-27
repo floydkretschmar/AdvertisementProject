@@ -24,6 +24,7 @@ import de.oth.fkretschmar.advertisementproject.entities.campaign.TargetContext;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.TargetGender;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.TargetMaritalStatus;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.TargetPurposeOfUse;
+import de.oth.fkretschmar.advertisementproject.entities.campaign.TextContentValue;
 import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -32,6 +33,7 @@ import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.List;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import lombok.Getter;
 import lombok.Setter;
@@ -43,20 +45,27 @@ import org.joda.money.Money;
  * @author Admin
  */
 @Named
-@RequestScoped
+@ViewScoped
 public class NewContentModel implements Serializable  {
 
     // --------------- Private fields ---------------
 
     /**
-     * Stores the value of the content that will be created.
+     * Stores the title of the text content that will be created.
      */
     @Getter
     @Setter
-    private String contentValue;
+    private String contentTitle;
 
     /**
-     * Stores the description of the content that will be created.
+     * Stores the URL of the image content that will be created.
+     */
+    @Getter
+    @Setter
+    private String contentUrl;
+
+    /**
+     * Stores the description of the text content that will be created.
      */
     @Getter
     @Setter
@@ -232,6 +241,19 @@ public class NewContentModel implements Serializable  {
         this.selectedPurposesOfUse.forEach(purpose -> purposes.add(TargetPurposeOfUse.of(Integer.parseInt(purpose))));
 
         try {
+            Serializable contentValue = null;
+            
+            if (this.selectedContentType == ContentType.IMAGE_URL) {
+                contentValue = new URL(this.contentUrl);
+            }
+            else {
+                contentValue = TextContentValue.createTextContentValue()
+                        .description(this.description)
+                        .title(this.contentTitle)
+                        .build();
+            }
+            
+            
             Content content = Content.createContent()
                     .name(this.name.trim())
                     .contentType(this.selectedContentType)
@@ -240,19 +262,19 @@ public class NewContentModel implements Serializable  {
                             .targetGenders(genders)
                             .targetMaritalStatus(status)
                             .targetPurposeOfUses(purposes).build())
-                    .description(this.description)
                     .format(this.selectedFormat)
                     .numberOfRequests(this.numberOfRequests)
                     .targetUrl(new URL(this.targetPage))
                     .pricePerRequest(Money.ofMinor(
                             CurrencyUnit.EUR, 
                             this.preDecimalPointAmount * 100 + this.postDecimalPointAmount))
-                    .value(this.selectedContentType == ContentType.IMAGE_URL ? new URL(this.contentValue) : this.contentValue)
+                    .value(contentValue)
                     .build();
             
             
             this.name = "";
-            this.contentValue = "";
+            this.contentTitle = "";
+            this.contentUrl = "";
             this.description = "";
             this.numberOfRequests = 0;
             this.postDecimalPointAmount = 0;

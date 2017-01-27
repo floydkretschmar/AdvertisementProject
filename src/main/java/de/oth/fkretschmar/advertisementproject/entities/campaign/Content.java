@@ -108,14 +108,6 @@ public class Content extends AbstractRandomStringKeyedEntity
     private TargetContext context;
 
     /**
-     * Stores a text used to describe the entity.
-     */
-    @Column(name = "DESCRIPTION")
-    @Getter
-    @Setter
-    private String description;
-
-    /**
      * Stores the enum that indicates the actual format of the content.
      */
     @NotNull
@@ -186,8 +178,6 @@ public class Content extends AbstractRandomStringKeyedEntity
      * @param contentType the enum that indicates the actual type of the object.
      * @param context the target context of the specified order row that
      * influinces the price.
-     * @param description the text that gives a short description of the
-     * content.
      * @param format the actual format of the content.
      * @param numberOfRequests the number of contents that have been ordered for
      * the target context.
@@ -200,7 +190,6 @@ public class Content extends AbstractRandomStringKeyedEntity
             String name,
             ContentType contentType,
             TargetContext context,
-            String description,
             ContentFormat format,
             long numberOfRequests,
             Money pricePerRequest,
@@ -208,7 +197,6 @@ public class Content extends AbstractRandomStringKeyedEntity
             Serializable value) {
         this.setValue(value, contentType);
         this.setTargetUrl(targetUrl);
-        this.setDescription(description);
         this.context = context;
         this.format = format;
         this.name = name;
@@ -278,8 +266,6 @@ public class Content extends AbstractRandomStringKeyedEntity
      * @param contentType the enum that indicates the actual type of the object.
      * @param context the target context of the specified order row that
      * influinces the price.
-     * @param description the text that gives a short description of the
-     * content.
      * @param format the actual format of the content.
      * @param numberOfRequests the number of contents that have been ordered for
      * the target context.
@@ -299,7 +285,6 @@ public class Content extends AbstractRandomStringKeyedEntity
             String name,
             ContentType contentType,
             TargetContext context,
-            String description,
             ContentFormat format,
             long numberOfRequests,
             Money pricePerRequest,
@@ -364,7 +349,6 @@ public class Content extends AbstractRandomStringKeyedEntity
                 name,
                 contentType,
                 context,
-                description,
                 format,
                 numberOfRequests,
                 pricePerRequest,
