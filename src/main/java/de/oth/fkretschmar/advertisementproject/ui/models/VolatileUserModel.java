@@ -40,7 +40,7 @@ import javax.inject.Named;
  */
 @Named
 @ViewScoped
-public class UserRegistry implements Serializable {
+public class VolatileUserModel implements Serializable {
 
     // --------------- Private fields ---------------
     private User currentUser;

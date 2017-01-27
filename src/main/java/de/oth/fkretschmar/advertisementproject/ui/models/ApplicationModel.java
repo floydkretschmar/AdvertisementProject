@@ -47,7 +47,7 @@ public class ApplicationModel implements Serializable {
      * Stores the registry of all logged on users.
      */
     @Inject
-    private UserRegistry registry;
+    private VolatileUserModel registry;
 
     /**
      * Stores the repository used to manage {@link User} entities.
