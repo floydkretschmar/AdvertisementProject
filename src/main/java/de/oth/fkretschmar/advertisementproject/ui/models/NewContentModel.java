@@ -61,6 +61,13 @@ public class NewContentModel implements Serializable  {
     @Getter
     @Setter
     private String description;
+    
+    /**
+     * Stores the name of the content given by the comissioner.
+     */
+    @Getter
+    @Setter
+    private String name;
 
     /**
      * Stores the number of times the content that will be created can be
@@ -226,6 +233,7 @@ public class NewContentModel implements Serializable  {
 
         try {
             Content content = Content.createContent()
+                    .name(this.name.trim())
                     .contentType(this.selectedContentType)
                     .context(TargetContext.createTargetContext()
                             .targetAges(ages)
@@ -242,6 +250,8 @@ public class NewContentModel implements Serializable  {
                     .value(this.selectedContentType == ContentType.IMAGE_URL ? new URL(this.contentValue) : this.contentValue)
                     .build();
             
+            
+            this.name = "";
             this.contentValue = "";
             this.description = "";
             this.numberOfRequests = 0;

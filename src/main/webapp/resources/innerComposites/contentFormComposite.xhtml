@@ -17,6 +17,11 @@
     <!-- IMPLEMENTATION -->
     <cc:implementation>
         <b:panelGrid colSpans="12">
+            <h:outputText value="#{labels.MODALCONTENT_OutputText_Name}"
+                          class="webvert_bold_lable_layout"/>
+            <b:inputText value="#{newContentModel.name}"
+                         styleClass="#{component.valid? '' : 'webvert_input_control_invalid' }"
+                         required="true"/>
             <h:outputText value="#{labels.MODALCONTENT_OutputText_Description}"
                           class="webvert_bold_lable_layout"/>
             <b:inputTextarea value="#{newContentModel.description}"/>

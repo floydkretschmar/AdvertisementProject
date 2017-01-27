@@ -31,12 +31,12 @@ public interface IContentService {
      */
     public void createContent(Content content);
     
-    /**
-     * Deletes the specified {@link Content} from the database.
-     * 
-     * @param   content    that will be deleted.
-     */
-    public void deleteContent(Content content);
+//    /**
+//     * Deletes the specified {@link Content} from the database.
+//     * 
+//     * @param   content    that will be deleted.
+//     */
+//    public void deleteContent(Content content);
     
     /**
      * Creates a new {@link Content} and links it to the specified campaign.

@@ -72,18 +72,18 @@ public class ContentService implements Serializable, IContentService {
         this.contentRepository.persist(content);
     }
 
-    /**
-     * Deletes the specified {@link Content} from the database.
-     *
-     * @param content that will be deleted.
-     */
-    @Transactional
-    @Override
-    public void deleteContent(Content content) {
-        this.contextRepository.remove(content.getContext());
-        content.setContext(null);
-        this.contentRepository.remove(content);
-    }
+//    /**
+//     * Deletes the specified {@link Content} from the database.
+//     *
+//     * @param content that will be deleted.
+//     */
+//    @Transactional
+//    @Override
+//    public void deleteContent(Content content) {
+//        this.contextRepository.remove(content.getContext());
+//        content.setContext(null);
+//        this.contentRepository.remove(content);
+//    }
 
     /**
      * Creates a new {@link Content} and links it to the specified campaign.

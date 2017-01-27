@@ -138,7 +138,6 @@ public class CampaignService implements Serializable, ICampaignService {
     public Campaign cancelCampaign(Campaign campaign) {        
         campaign = this.campaignRepository.merge(campaign);
         campaign.setCampaignState(CampaignState.CANCELLED);
-//        this.deleteCampaignContents(campaign);
         return campaign;
     }
     
@@ -154,27 +153,26 @@ public class CampaignService implements Serializable, ICampaignService {
     public Campaign endCampaign(Campaign campaign) {
         campaign = this.campaignRepository.merge(campaign);
         campaign.setCampaignState(CampaignState.ENDED);
-//        this.deleteCampaignContents(campaign);
         return campaign;
     }
 
     // --------------- Private methods ---------------
     
     
-    /**
-     * Deletes all campaign contents form the specified campaign.
-     * @param campaign 
-     */
-    @Transactional
-    private void deleteCampaignContents(Campaign campaign) {        
-        // remove all contents
-        Object[] contents = campaign.getContents().toArray();
-        
-        for (int i = 0; i < contents.length; i++) {
-            if(contents[i] instanceof Content){
-                campaign.removeContent((Content)contents[i]);
-                this.contentService.deleteContent((Content)contents[i]);
-            }
-        }
-    }
+//    /**
+//     * Deletes all campaign contents form the specified campaign.
+//     * @param campaign 
+//     */
+//    @Transactional
+//    private void deleteCampaignContents(Campaign campaign) {        
+//        // remove all contents
+//        Object[] contents = campaign.getContents().toArray();
+//        
+//        for (int i = 0; i < contents.length; i++) {
+//            if(contents[i] instanceof Content){
+//                campaign.removeContent((Content)contents[i]);
+//                this.contentService.deleteContent((Content)contents[i]);
+//            }
+//        }
+//    }
 }
