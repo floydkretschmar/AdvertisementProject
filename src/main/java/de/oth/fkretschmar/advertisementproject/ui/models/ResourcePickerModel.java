@@ -16,9 +16,6 @@
  */
 package de.oth.fkretschmar.advertisementproject.ui.models;
 
-import de.oth.fkretschmar.advertisementproject.entities.billing.Account;
-import de.oth.fkretschmar.advertisementproject.entities.billing.BankAccount;
-import de.oth.fkretschmar.advertisementproject.entities.billing.PayPalAccount;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.ContentFormat;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.ContentType;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.PaymentInterval;
@@ -27,13 +24,10 @@ import de.oth.fkretschmar.advertisementproject.entities.campaign.TargetGender;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.TargetMaritalStatus;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.TargetPurposeOfUse;
 import de.oth.fkretschmar.advertisementproject.business.annotation.EnumBundle;
-import de.oth.fkretschmar.advertisementproject.ui.converters.IConverter;
 import java.io.Serializable;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import lombok.Getter;
-import de.oth.fkretschmar.advertisementproject.business.annotation.MessageBundle;
 import java.util.ResourceBundle;
 
 /**

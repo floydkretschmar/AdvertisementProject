@@ -18,7 +18,6 @@ package de.oth.fkretschmar.advertisementproject.business.services.base;
 
 import de.oth.fkretschmar.advertisementproject.business.services.PasswordException;
 import de.oth.fkretschmar.advertisementproject.business.services.UserServiceException;
-import de.oth.fkretschmar.advertisementproject.entities.billing.Account;
 import de.oth.fkretschmar.advertisementproject.entities.user.Password;
 import de.oth.fkretschmar.advertisementproject.entities.user.User;
 

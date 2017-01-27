@@ -23,7 +23,6 @@ import java.util.ResourceBundle;
 import javax.enterprise.context.Dependent;
 import javax.enterprise.inject.Produces;
 import javax.faces.context.FacesContext;
-import javax.inject.Inject;
 
 /**
  *

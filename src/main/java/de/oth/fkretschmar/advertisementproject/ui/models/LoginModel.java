@@ -20,7 +20,6 @@ import de.oth.fkretschmar.advertisementproject.business.services.PasswordExcepti
 import de.oth.fkretschmar.advertisementproject.business.annotation.MessageBundle;
 import java.io.Serializable;
 import java.util.ResourceBundle;
-import javax.ejb.EJB;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;

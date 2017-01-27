@@ -16,10 +16,8 @@
  */
 package de.oth.fkretschmar.advertisementproject.ui.models;
 
-import de.oth.fkretschmar.advertisementproject.business.services.web.soap.RequestContext;
 import de.oth.fkretschmar.advertisementproject.business.services.web.ContentRequestResult;
 import de.oth.fkretschmar.advertisementproject.business.services.web.IContentProviderService;
-import de.oth.fkretschmar.advertisementproject.business.services.web.rest.RequestContentFormat;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.Content;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.ContentFormat;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.TargetAge;
@@ -29,10 +27,8 @@ import de.oth.fkretschmar.advertisementproject.entities.campaign.TargetMaritalSt
 import de.oth.fkretschmar.advertisementproject.entities.campaign.TargetPurposeOfUse;
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.EnumSet;
-import java.util.Optional;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.inject.Named;

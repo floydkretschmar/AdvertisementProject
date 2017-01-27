@@ -25,7 +25,6 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import lombok.Getter;
-import de.oth.fkretschmar.advertisementproject.business.annotation.MessageBundle;
 
 /**
  * 
