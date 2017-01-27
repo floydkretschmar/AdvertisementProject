@@ -84,7 +84,6 @@ public class User extends AbstractStringKeyedEntity {
      * Stores the address of the user.
      */
     @NotNull
-    @OneToOne
     @Getter
     @Setter
     private Address address;

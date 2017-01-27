@@ -18,6 +18,7 @@ package de.oth.fkretschmar.advertisementproject.entities.user;
 
 
 import de.oth.fkretschmar.advertisementproject.entities.exceptions.BuilderValidationException;
+import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.validation.constraints.NotNull;
@@ -38,7 +39,7 @@ import lombok.ToString;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @ToString
 @Embeddable
-public class Password {
+public class Password implements Serializable {
 
     // --------------- Private fields ---------------
 

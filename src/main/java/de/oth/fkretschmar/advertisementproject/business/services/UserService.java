@@ -17,7 +17,6 @@
 package de.oth.fkretschmar.advertisementproject.business.services;
 
 import de.oth.fkretschmar.advertisementproject.business.repositories.AccountRepository;
-import de.oth.fkretschmar.advertisementproject.business.repositories.AddressRepository;
 import de.oth.fkretschmar.advertisementproject.business.repositories.UserRepository;
 import de.oth.fkretschmar.advertisementproject.business.services.base.IAccountService;
 import de.oth.fkretschmar.advertisementproject.business.services.base.ICampaignService;
@@ -45,11 +44,6 @@ import javax.transaction.Transactional;
 public class UserService implements Serializable, IUserService {
 
     // --------------- Private fields ---------------
-    /**
-     * Stores the repository used to manage {@link Address} entites.
-     */
-    @Inject
-    private AddressRepository addressRepository;
     
     /**
      * Stores the repository used to manage {@link Account} entities.
@@ -143,7 +137,6 @@ public class UserService implements Serializable, IUserService {
         }
 
         user = this.userRepository.merge(user);
-        this.addressRepository.persist(changedUser.getAddress());
 
         user.setAddress(changedUser.getAddress());
         user.setBirthdate(changedUser.getBirthdate());
@@ -199,8 +192,6 @@ public class UserService implements Serializable, IUserService {
                     + " specified e-mail address.");
         }
 
-        final Address address = user.getAddress();
-        this.addressRepository.persist(address);
         this.userRepository.persist(user);
     }
 
@@ -216,10 +207,6 @@ public class UserService implements Serializable, IUserService {
             throw new IllegalArgumentException("The password change failed: "
                     + "the user was not set.");
         }
-
-        // remove address
-        this.addressRepository.remove(user.getAddress());
-        user.setAddress(null);
 
         // remove all contents
         Object[] accounts = user.getAccounts().toArray();
