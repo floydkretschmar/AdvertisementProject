@@ -144,7 +144,7 @@
                                                                       panelClass="webvert_ac_accordion_panel_layout"
                                                                       headerClass="webvert_nc_co_row_layout"
                                                                       accordionClass="webvert_nc_co_accordion_layout"
-                                                                      elements="#{userProfileModel.accounts}"
+                                                                      elements="#{accountModel.sortAccounts(userProfileModel.accounts)}"
                                                                       headerItems="#{userProfileModel.accountTypes}"
                                                                       elementType="#{ElementType.ACCOUNT}"/>
                                 </b:column>

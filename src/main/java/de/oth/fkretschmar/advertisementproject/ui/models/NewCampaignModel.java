@@ -47,6 +47,13 @@ import lombok.Setter;
 public class NewCampaignModel implements Serializable {
 
     // --------------- Private fields ---------------
+
+    /**
+     * Stores the service that manages {@link Account} entities.
+     */
+    @Inject
+    private IAccountService accountService;
+    
     /**
      * Stores the service used to manage the entire application.
      */
@@ -110,12 +117,6 @@ public class NewCampaignModel implements Serializable {
     @Setter
     private PaymentInterval selectedInterval;
 
-    /**
-     * Stores the service that manages {@link Account} entities.
-     */
-    @Inject
-    private IAccountService accountService;
-
     // --------------- Public getter und setter ---------------
     /**
      * Gets all accounts of the user that is currently logged in.
@@ -124,17 +125,7 @@ public class NewCampaignModel implements Serializable {
      */
     public Collection<Account> getAccounts() {
         return applicationModel.processCurrentUserAndReturn(
-                user -> user.getAccounts().stream()
-                .sorted((acc1, acc2) -> 
-                {
-                   if(acc1 instanceof BankAccount) {
-                       return ((BankAccount)acc1).getIban().compareTo(((BankAccount)acc2).getIban());
-                   }
-                   else {
-                       return ((PayPalAccount)acc1).getName().compareTo(((PayPalAccount)acc2).getName());
-                   }
-                })
-                .collect(Collectors.toList()));
+                user -> user.getAccounts());
     }
 
     /**

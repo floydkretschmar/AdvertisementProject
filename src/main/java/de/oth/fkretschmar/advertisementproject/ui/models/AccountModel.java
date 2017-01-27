@@ -21,6 +21,9 @@ import de.oth.fkretschmar.advertisementproject.entities.billing.BankAccount;
 import de.oth.fkretschmar.advertisementproject.entities.billing.PayPalAccount;
 import de.oth.fkretschmar.advertisementproject.ui.converters.IConverter;
 import java.io.Serializable;
+import java.util.AbstractMap.SimpleEntry;
+import java.util.Collection;
+import java.util.stream.Collectors;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -83,5 +86,30 @@ public class AccountModel implements Serializable {
      */
     public boolean isPayPalAccount(Account account) {
         return account instanceof PayPalAccount;
+    }
+    
+    // --------------- Public methods ---------------
+    
+    /**
+     * Sorts the provided list of accounts by IBAN or PayPal name according to 
+     * the account type.
+     *
+     * @param accounts
+     * @return the user accounts.
+     */
+    public Collection<Account> sortAccounts(Collection<Account> accounts) {
+        return accounts.stream()
+                .map((account) -> 
+                {
+                   if(account instanceof BankAccount) {
+                       return new SimpleEntry<>(((BankAccount)account).getIban(), account);
+                   }
+                   else {
+                       return new SimpleEntry<>(((PayPalAccount)account).getName(), account);
+                   }
+                })
+                .sorted((entry1, entry2) -> entry1.getKey().compareTo(entry2.getKey()))
+                .map(entry -> entry.getValue())
+                .collect(Collectors.toList());
     }
 }

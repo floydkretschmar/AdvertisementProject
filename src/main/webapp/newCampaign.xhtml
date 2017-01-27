@@ -73,7 +73,7 @@
                                                      styleClass="#{component.valid? 'accountSelectorClass' : 'webvert_input_control_invalid accountSelectorClass' }"
                                                      required="true">
                                         <f:converter binding="#{accountModel.accountConverter}"/>
-                                        <f:selectItems value="#{newCampaignModel.accounts}" 
+                                        <f:selectItems value="#{accountModel.sortAccounts(newCampaignModel.accounts)}" 
                                                        var="account" 
                                                        itemLabel="#{accountModel.getAccountLabel(account)}"/>
                                     </b:selectOneMenu>
