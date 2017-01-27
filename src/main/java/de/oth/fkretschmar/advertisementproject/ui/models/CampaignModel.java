@@ -68,7 +68,7 @@ public class CampaignModel implements Serializable  {
      * @return the campaigns currently available for the user.
      */
     public Collection<Campaign> getCampaigns() {
-        Collection<Campaign> campaigns = this.applicationModel.processCurrentUserAndReturn(
+        Collection<Campaign> campaigns = this.applicationModel.retrieveDataFromCurrentUser(
                 user -> user.getCampaigns());
 
         if (this.campaignState == null) {
@@ -98,8 +98,8 @@ public class CampaignModel implements Serializable  {
      * @return the next navigation point.
      */
     public String cancelCampaign(Campaign campaign) {
-        this.applicationModel.processCurrentUser(user
-                -> this.campaignService.cancelCampaign(campaign));
+        this.applicationModel.changeCurrentUser(user
+                -> this.campaignService.cancelCampaign(campaign), false);
 
         return "overview";
     }
@@ -143,7 +143,7 @@ public class CampaignModel implements Serializable  {
      * @return the number of campaigns.
      */
     public int getCampaignCountForState(CampaignState campaignState) {
-        return this.applicationModel.processCurrentUserAndReturn(
+        return this.applicationModel.retrieveDataFromCurrentUser(
                 user -> user.getCampaigns()
                         .stream()
                         .filter(campaign -> campaign.getCampaignState() == campaignState)

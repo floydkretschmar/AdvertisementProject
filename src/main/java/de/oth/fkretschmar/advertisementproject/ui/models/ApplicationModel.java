@@ -99,25 +99,27 @@ public class ApplicationModel implements Serializable {
     }
 
     /**
-     * Provides thread safe processing of the {@link User} that is currently
+     * Allows processing and changing of the {@link User} that is currently
      * logged into the system.
      *
      * @param processCallback The function used to process the current user.
+     * @param reloadData that indicates whether or not the data of the user
+     * should be loaded after the change.
      */
-    public void processCurrentUser(Consumer<User> processCallback) {
-        this.registry.processUser(this.currentUserId, processCallback);
+    public void changeCurrentUser(Consumer<User> processCallback, boolean reloadData) {
+        this.registry.changeUser(this.currentUserId, processCallback, reloadData);
     }
 
     /**
-     * Provides thread safe processing of the {@link User} that is currently
+     * Allows data retrieval from the {@link User} that is currently
      * logged into the system.
      *
      * @param <T> the type of the return value.
      * @param processCallback The function used to process the current user.
      * @return the return value of the processing.
      */
-    public <T> T processCurrentUserAndReturn(Function<User, T> processCallback) {
-        return this.registry.processUserAndReturn(
+    public <T> T retrieveDataFromCurrentUser(Function<User, T> processCallback) {
+        return this.registry.retrieveDataFromUser(
                 this.currentUserId, processCallback);
     }
 

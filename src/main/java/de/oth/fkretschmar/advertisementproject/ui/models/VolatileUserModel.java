@@ -45,23 +45,27 @@ public class VolatileUserModel implements Serializable {
     // --------------- Public methods ---------------
     
     /**
-     * Provides thread safe processing of the {@link User} that is currently
-     * logged into the system.
+     * Allows processing and changing of the {@link User} that corresponds to
+     * the user id.
      *
      * @param userId the id of the user.
      * @param processCallback The function used to process the current user.
+     * @param reloadData that indicates whether or not the data of the user
+     * should be loaded after the change.
      */
-    public void processUser(String userId, Consumer<User> processCallback) {
+    public void changeUser(String userId, Consumer<User> processCallback, boolean reloadData) {
         if (this.currentUser == null) {
             this.currentUser = this.userService.find(userId);
         }
 
         processCallback.accept(this.currentUser);
+        // User data definately has changed so reload everything
+        this.currentUser = this.userService.find(userId);
     }
 
     /**
-     * Provides thread safe processing of the {@link User} that is currently
-     * logged into the system.
+     * Allows data retrieval from the {@link User} that corresponds to
+     * the user id.
      *
      * @param <T> the type of the return value.
      * @param userId the id of the user.
@@ -69,7 +73,7 @@ public class VolatileUserModel implements Serializable {
      * @return the return value of the processing or null if the specified user
      * does not exist.
      */
-    public <T> T processUserAndReturn(String userId, Function<User, T> processCallback) {
+    public <T> T retrieveDataFromUser(String userId, Function<User, T> processCallback) {
         if (this.currentUser == null) {
             this.currentUser = this.userService.find(userId);
         }

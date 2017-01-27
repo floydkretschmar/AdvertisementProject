@@ -124,7 +124,7 @@ public class NewCampaignModel implements Serializable {
      * @return the user accounts.
      */
     public Collection<Account> getAccounts() {
-        return applicationModel.processCurrentUserAndReturn(
+        return applicationModel.retrieveDataFromCurrentUser(
                 user -> user.getAccounts());
     }
 
@@ -174,10 +174,10 @@ public class NewCampaignModel implements Serializable {
      * @param entity the account that will be added.
      */
     public void addNewAccount(Object entity) {
-        this.applicationModel.processCurrentUser(
+        this.applicationModel.changeCurrentUser(
                 user -> this.accountService.createAccountForUser(
                         user,
-                        (Account) entity));
+                        (Account) entity), true);
         this.error = false;
         this.errorMessage = "";
     }
@@ -220,7 +220,7 @@ public class NewCampaignModel implements Serializable {
             return null;
         }
 
-        this.applicationModel.processCurrentUser(user
+        this.applicationModel.changeCurrentUser(user
                 -> {
             Campaign campaign = Campaign.createCampaign()
                     .interval(this.selectedInterval)
@@ -233,7 +233,7 @@ public class NewCampaignModel implements Serializable {
             this.campaignService.createCampaignForUser(
                     user,
                     campaign);
-        });
+        }, false);
 
         this.reset();
         return "overview";

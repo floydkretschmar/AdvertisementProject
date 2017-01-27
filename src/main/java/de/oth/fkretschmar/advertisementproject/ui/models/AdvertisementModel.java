@@ -69,7 +69,7 @@ public class AdvertisementModel implements Serializable {
      */
     @PostConstruct
     private void initializeContent() {
-        this.content = this.applicationModel.processCurrentUserAndReturn(user -> {
+        this.content = this.applicationModel.retrieveDataFromCurrentUser(user -> {
             long ageInYears = ChronoUnit.YEARS.between(
                     user.getBirthdate(), LocalDate.now());
 
