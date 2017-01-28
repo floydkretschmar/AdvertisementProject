@@ -21,12 +21,13 @@
     </cc:interface>
 
     <!-- IMPLEMENTATION -->
-    <cc:implementation id="modalAccountComposite">  
+    <cc:implementation id="#{cc.attrs.modalType}Composite">  
         <o:importConstants type="de.oth.fkretschmar.advertisementproject.ui.resources.ModalType" />
-        
-        <b:modal id="modalAccountDialogID" 
+
+        <b:modal id="#{cc.attrs.modalType}Dialog" 
                  title="#{cc.attrs.titel}" 
-                 styleClass="modalPseudoClass #{cc.attrs.modalType}">
+                 styleClass="modalPseudoClass #{cc.attrs.modalType}"
+                 style="#{cc.attrs.modalType eq ModalType.CONTENT? 'min-height: 400px' : ''}}">
             <h:form id="modalForm">
                 <p>
                     <c:choose>
@@ -39,16 +40,26 @@
                     </c:choose>
                 </p>
                 <p style="margin-top: 30px; margin-bottom: 10px">
+                    <b:fetchBeanInfos />
                     <b:button value="#{labels.MODAL_Button_Cancel}" 
                               dismiss="modal" 
                               onclick="return false;"
-                              style="width: 128px"/>
-                    <b:fetchBeanInfos />
+                              style="width: 128px"
+                              rendered="#{(newContentModel.onFirstPage and cc.attrs.modalType eq ModalType.CONTENT) or cc.attrs.modalType eq ModalType.ACCOUNT}"/>
+                    <b:carouselControl direction="right">
+                        <b:commandButton ajax="true"
+                                         value="Previous"
+                                         style="width: 128px; margin-left: 10px"
+                                         rendered="#{(not newContentModel.onFirstPage and cc.attrs.modalType eq ModalType.CONTENT) or cc.attrs.modalType eq ModalType.ACCOUNT}">
+                            <f:ajax listener="#{newContentModel.decrementStepCount}"/>
+                        </b:commandButton>
+                    </b:carouselControl>
                     <b:commandButton value="#{labels.MODAL_Button_Ok}" 
                                      ajax="true"
                                      oncomplete="if(!validationFailed) { $('.#{cc.attrs.modalType}').modal('hide'); }"
                                      class="webvert_primary_button_color"
-                                     style="width: 128px; margin-left: 10px">
+                                     style="width: 128px; margin-left: 10px"
+                                     rendered="#{(newContentModel.onLastPage and cc.attrs.modalType eq ModalType.CONTENT) or cc.attrs.modalType eq ModalType.ACCOUNT}">
                         <c:choose>
                             <c:when test="#{cc.attrs.modalType eq ModalType.ACCOUNT}">
                                 <f:attribute name="entity" value="#{newAccountModel.account}" />
@@ -61,6 +72,18 @@
                                 execute="@form"
                                 render="@form #{cc.attrs.renderOnOk}"/>
                     </b:commandButton>
+
+                    <b:carouselControl direction="left">
+                        <b:commandButton ajax="true"
+                                         value="Next"
+                                         class="webvert_primary_button_color"
+                                         style="width: 128px; margin-left: 10px"
+                                         rendered="#{(not newContentModel.onLastPage and cc.attrs.modalType eq ModalType.CONTENT) or cc.attrs.modalType eq ModalType.ACCOUNT}">
+                            <f:ajax listener="#{newContentModel.incrementStepCount}"
+                                    execute="@form"
+                                    render="@form"/>
+                        </b:commandButton>
+                    </b:carouselControl>
                 </p>
             </h:form>
         </b:modal>

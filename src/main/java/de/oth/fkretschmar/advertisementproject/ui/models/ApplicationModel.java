@@ -16,6 +16,7 @@
  */
 package de.oth.fkretschmar.advertisementproject.ui.models;
 
+import de.oth.fkretschmar.advertisementproject.ui.models.VolatileUserModel;
 import de.oth.fkretschmar.advertisementproject.business.services.PasswordException;
 import de.oth.fkretschmar.advertisementproject.business.services.UserServiceException;
 import de.oth.fkretschmar.advertisementproject.business.services.base.IUserService;

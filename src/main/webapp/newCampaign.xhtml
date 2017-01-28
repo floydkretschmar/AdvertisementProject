@@ -133,7 +133,8 @@
                     </h:form>
                 </b:panel>
 
-                <webvert:ModalComposite modalType="#{ModalType.ACCOUNT}"
+                <webvert:ModalComposite id="content"
+                                        modalType="#{ModalType.ACCOUNT}"
                                         notifiedListener="#{newCampaignModel.addNewAccount}"
                                         titel="#{labels.MODALACCOUNT_Title_CreateANewAccount}"
                                         renderOnOk=":new_campaign_form:**:accountRow :new_campaign_form:**:errorMessage"/>

@@ -18,6 +18,7 @@ package de.oth.fkretschmar.advertisementproject.ui.validators;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import javax.el.ValueExpression;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -47,16 +48,16 @@ public class UrlValidator implements Validator {
             FacesContext context,
             UIComponent component,
             Object value) throws ValidatorException {
-        if (value == null)
-            return;
-        
-        try {
-            URL url = new URL(value.toString());
-        } catch (MalformedURLException ex) {
-            FacesMessage msg = new FacesMessage(
-                    "Validation failed.", "Not an URL");
-            msg.setSeverity(FacesMessage.SEVERITY_ERROR);
-            throw new ValidatorException(msg);
+        boolean validate = (boolean)component.getAttributes().get("validate");
+        if (value != null && validate) {
+            try {
+                URL url = new URL(value.toString());
+            } catch (MalformedURLException ex) {
+                FacesMessage msg = new FacesMessage(
+                        "Validation failed.", "Not an URL");
+                msg.setSeverity(FacesMessage.SEVERITY_ERROR);
+                throw new ValidatorException(msg);
+            }
         }
     }
 

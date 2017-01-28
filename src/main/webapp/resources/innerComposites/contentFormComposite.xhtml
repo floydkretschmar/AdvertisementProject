@@ -17,170 +17,188 @@
 
     <!-- IMPLEMENTATION -->
     <cc:implementation>
-        <b:panelGrid colSpans="12">
-            <o:importConstants type="de.oth.fkretschmar.advertisementproject.entities.campaign.ContentType" />
+        <b:panelGrid colSpans="12" style="min-height: 320px">
+            <b:carousel styleClass="wizardClass"
+                        showControls="false"
+                        showIndicators="false"
+                        wrap="false"
+                        interval="0"
+                        activeIndex="#{newContentModel.stepCounter}">
+                <b:carouselItem id="step0">
+                    <o:importConstants type="de.oth.fkretschmar.advertisementproject.entities.campaign.ContentType" />
 
-            <h:outputText value="#{labels.MODALCONTENT_OutputText_Name}"
-                          class="webvert_bold_lable_layout"/>
-            <b:inputText value="#{newContentModel.name}"
-                         styleClass="#{component.valid? '' : 'webvert_input_control_invalid' }"
-                         required="true"/>
-            <h:outputText value="#{labels.MODALCONTENT_OutputText_ContentFormat}"
-                          class="webvert_bold_lable_layout"/>
-            <b:selectOneMenu value="#{newContentModel.selectedFormat}"
-                             required="true">
-                <f:selectItems value="#{newContentModel.formats}"
-                               var="format"
-                               itemValue="#{format}"
-                               itemLabel="#{resourcePickerModel.pickContentFormatLabel(format)}"/>
-            </b:selectOneMenu>
-            <h:outputText value="#{labels.MODALCONTENT_OutputText_TargetPage}"
-                          class="webvert_bold_lable_layout"/>
-            <b:inputText value="#{newContentModel.targetPage}"
-                         styleClass="#{component.valid? '' : 'webvert_input_control_invalid' }"
-                         tooltip="#{component.valid? '' : 'The value has to be a valid URL.' }"
-                         required="true">
-                <f:validator validatorId="urlValidator" />
-            </b:inputText>
-            <h:outputText value="#{labels.MODALCONTENT_OutputText_PricePerRequest}"
-                          class="webvert_bold_lable_layout"/>
-            <b:row>
-                <b:column span="9" style="padding-right: 0px">
-                    <b:inputText styleClass="#{component.valid? '' : 'webvert_input_control_invalid' }"
-                                 value="#{newContentModel.preDecimalPointAmount}"
-                                 tooltip="#{component.valid? '' : 'The value has to be a number.' }"
-                                 binding="#{preDecimal}" 
-                                 required="true">
-                        <f:validator validatorId="moneyGreaterZeroValidator" />
-                        <f:attribute name="otherPart" value="#{postDecimal.submittedValue}" />
-                        <f:convertNumber integerOnly="true" 
-                                         type="number"
-                                         />
-                        <f:facet name="append">
-                            <h:outputText value=","/>
-                        </f:facet>
+                    <h:outputText value="#{labels.MODALCONTENT_OutputText_Name}"
+                                  class="webvert_bold_lable_layout"/>
+                    <b:inputText value="#{newContentModel.name}"
+                                 styleClass="#{component.valid? '' : 'webvert_input_control_invalid' }"
+                                 required="#{newContentModel.isOnPage(0)}"/>
+                    <h:outputText value="#{labels.MODALCONTENT_OutputText_ContentFormat}"
+                                  class="webvert_bold_lable_layout"/>
+                    <b:selectOneMenu value="#{newContentModel.selectedFormat}"
+                                     required="#{newContentModel.isOnPage(0)}">
+                        <f:selectItems value="#{newContentModel.formats}"
+                                       var="format"
+                                       itemValue="#{format}"
+                                       itemLabel="#{resourcePickerModel.pickContentFormatLabel(format)}"/>
+                    </b:selectOneMenu>
+                    <h:outputText value="#{labels.MODALCONTENT_OutputText_TargetPage}"
+                                  class="webvert_bold_lable_layout"/>
+                    <b:inputText value="#{newContentModel.targetPage}"
+                                 styleClass="#{component.valid? '' : 'webvert_input_control_invalid' }"
+                                 tooltip="#{component.valid? '' : 'The value has to be a valid URL.' }"
+                                 required="#{newContentModel.isOnPage(0)}">
+                        <f:attribute name="validate" value="#{newContentModel.isOnPage(0)}"/>
+                        <f:validator validatorId="urlValidator" />
                     </b:inputText>
-                </b:column>
-                <b:column span="3" style="padding-left: 0px">
+                    <h:outputText value="#{labels.MODALCONTENT_OutputText_PricePerRequest}"
+                                  class="webvert_bold_lable_layout"/>
+                    <b:row>
+                        <b:column span="9" style="padding-right: 0px">
+                            <b:inputText styleClass="#{component.valid? '' : 'webvert_input_control_invalid' }"
+                                         value="#{newContentModel.preDecimalPointAmount}"
+                                         tooltip="#{component.valid? '' : 'The value has to be a number.' }"
+                                         binding="#{preDecimal}" 
+                                         required="#{newContentModel.isOnPage(0)}">
+                                <f:validator validatorId="moneyGreaterZeroValidator" />
+                                <f:attribute name="otherPart" value="#{postDecimal.submittedValue}" />
+                                <f:convertNumber integerOnly="true" 
+                                                 type="number"
+                                                 />
+                                <f:facet name="append">
+                                    <h:outputText value=","/>
+                                </f:facet>
+                            </b:inputText>
+                        </b:column>
+                        <b:column span="3" style="padding-left: 0px">
+                            <b:inputText styleClass="#{component.valid? '' : 'webvert_input_control_invalid' }"
+                                         value="#{newContentModel.postDecimalPointAmount}"
+                                         tooltip="#{component.valid? '' : 'The value has to be a two digit number.' }"
+                                         binding="#{postDecimal}" 
+                                         required="#{newContentModel.isOnPage(0)}">
+                                <f:validator validatorId="moneyGreaterZeroValidator" />
+                                <f:attribute name="otherPart" value="#{preDecimal.submittedValue}" />
+                                <f:convertNumber integerOnly="true" 
+                                                 type="number" 
+                                                 maxIntegerDigits="2"
+                                                 minIntegerDigits="2"/>
+                                <f:facet name="append">
+                                    <h:outputText value="€"
+                                                  id="currencyFacet"/>
+                                </f:facet>
+                            </b:inputText>
+                        </b:column>
+                    </b:row>
+                    <h:outputText value="#{labels.MODALCONTENT_OutputText_NumberOfRequest}"
+                                  class="webvert_bold_lable_layout"/>
                     <b:inputText styleClass="#{component.valid? '' : 'webvert_input_control_invalid' }"
-                                 value="#{newContentModel.postDecimalPointAmount}"
-                                 tooltip="#{component.valid? '' : 'The value has to be a two digit number.' }"
-                                 binding="#{postDecimal}" 
-                                 required="true">
-                        <f:validator validatorId="moneyGreaterZeroValidator" />
-                        <f:attribute name="otherPart" value="#{preDecimal.submittedValue}" />
-                        <f:convertNumber integerOnly="true" 
-                                         type="number" 
-                                         maxIntegerDigits="2"
-                                         minIntegerDigits="2"/>
-                        <f:facet name="append">
-                            <h:outputText value="€"
-                                          id="currencyFacet"/>
-                        </f:facet>
+                                 value="#{newContentModel.numberOfRequests}"
+                                 required="#{newContentModel.isOnPage(0)}">
+                        <f:convertNumber integerOnly="true" type="number"/>
+                        <f:validator validatorId="greaterZeroValidator" />
                     </b:inputText>
-                </b:column>
-            </b:row>
-            <h:outputText value="#{labels.MODALCONTENT_OutputText_NumberOfRequest}"
-                          class="webvert_bold_lable_layout"/>
-            <b:inputText styleClass="#{component.valid? '' : 'webvert_input_control_invalid' }"
-                         value="#{newContentModel.numberOfRequests}"
-                         required="true">
-                <f:convertNumber integerOnly="true" type="number"/>
-                <f:validator validatorId="greaterZeroValidator" />
-            </b:inputText>
+
+                </b:carouselItem>
 
 
-            <b:tabLinks class="webvert_ca_tab_layout"
-                        style="padding-top: 15px">
-                <b:navCommandLink value="#{labels.MODALCONTENT_Tab_ImageContent}"
-                                  update="@form"
-                                  immediate="true"
-                                  ajax="true"
-                                  active="#{newContentModel.selectedContentType eq ContentType.IMAGE_URL}"
-                                  action="#{newContentModel.setSelectedContentType(ContentType.IMAGE_URL)}"/>
-                <b:navCommandLink value="#{labels.MODALCONTENT_Tab_TextContent}"
-                                  update="@form"
-                                  immediate="true"
-                                  ajax="true"
-                                  active="#{newContentModel.selectedContentType eq ContentType.TEXT}"
-                                  action="#{newContentModel.setSelectedContentType(ContentType.TEXT)}"/>
-            </b:tabLinks>
+                <b:carouselItem id="step1">
+                    <b:tabLinks class="webvert_ca_tab_layout"
+                                style="padding-top: 15px">
+                        <b:navCommandLink value="#{labels.MODALCONTENT_Tab_ImageContent}"
+                                          update="@form"
+                                          immediate="true"
+                                          ajax="true"
+                                          active="#{newContentModel.selectedContentType eq ContentType.IMAGE_URL}"
+                                          action="#{newContentModel.setSelectedContentType(ContentType.IMAGE_URL)}"/>
+                        <b:navCommandLink value="#{labels.MODALCONTENT_Tab_TextContent}"
+                                          update="@form"
+                                          immediate="true"
+                                          ajax="true"
+                                          active="#{newContentModel.selectedContentType eq ContentType.TEXT}"
+                                          action="#{newContentModel.setSelectedContentType(ContentType.TEXT)}"/>
+                    </b:tabLinks>
 
-            <h:outputText value="#{labels.MODALCONTENT_OutputText_ImageContentUrl}"
-                          class="webvert_bold_lable_layout"
-                          rendered="#{newContentModel.selectedContentType eq ContentType.IMAGE_URL}"/>
-            <b:inputText value="#{newContentModel.contentUrl}"
-                         styleClass="#{component.valid? '' : 'webvert_input_control_invalid' }"
-                         required="true"
-                         rendered="#{newContentModel.selectedContentType eq ContentType.IMAGE_URL}">
-                <f:validator validatorId="urlValidator" />
-            </b:inputText>
+                    <h:outputText value="#{labels.MODALCONTENT_OutputText_ImageContentUrl}"
+                                  class="webvert_bold_lable_layout"
+                                  rendered="#{newContentModel.selectedContentType eq ContentType.IMAGE_URL}"/>
+                    <b:inputText value="#{newContentModel.contentUrl}"
+                                 styleClass="#{component.valid? '' : 'webvert_input_control_invalid' }"
+                                 required="#{newContentModel.isOnPage(1)}"
+                                 rendered="#{newContentModel.selectedContentType eq ContentType.IMAGE_URL}">
+                        <f:attribute name="validate" value="#{newContentModel.isOnPage(1)}"/>
+                        <f:validator validatorId="urlValidator" />
+                    </b:inputText>
 
-            <h:outputText value="#{labels.MODALCONTENT_OutputText_TextContentTitle}"
-                          class="webvert_bold_lable_layout"
-                          rendered="#{newContentModel.selectedContentType eq ContentType.TEXT}"/>
-            <b:inputText value="#{newContentModel.contentTitle}"
-                         styleClass="#{component.valid? '' : 'webvert_input_control_invalid' }"
-                         required="true"
-                         rendered="#{newContentModel.selectedContentType eq ContentType.TEXT}">
-            </b:inputText>
+                    <h:outputText value="#{labels.MODALCONTENT_OutputText_TextContentTitle}"
+                                  class="webvert_bold_lable_layout"
+                                  rendered="#{newContentModel.selectedContentType eq ContentType.TEXT}"/>
+                    <b:inputText value="#{newContentModel.contentTitle}"
+                                 styleClass="#{component.valid? '' : 'webvert_input_control_invalid' }"
+                                 required="#{newContentModel.isOnPage(1)}"
+                                 rendered="#{newContentModel.selectedContentType eq ContentType.TEXT}">
+                    </b:inputText>
 
-            <h:outputText value="#{labels.MODALCONTENT_OutputText_TextContentDescription}"
-                          class="webvert_bold_lable_layout"
-                          rendered="#{newContentModel.selectedContentType eq ContentType.TEXT}"/>
-            <b:inputTextarea value="#{newContentModel.description}"
-                             rendered="#{newContentModel.selectedContentType eq ContentType.TEXT}"/>
+                    <h:outputText value="#{labels.MODALCONTENT_OutputText_TextContentDescription}"
+                                  class="webvert_bold_lable_layout"
+                                  rendered="#{newContentModel.selectedContentType eq ContentType.TEXT}"/>
+                    <b:inputTextarea value="#{newContentModel.description}"
+                                     rendered="#{newContentModel.selectedContentType eq ContentType.TEXT}"/>
 
-            <b:row style="margin-bottom: 10px">
-                <b:column span="3" style="padding-right: 0px">
-                    <h:outputText value="#{labels.MODALCONTENT_OutputText_TargetAges}"
-                                  class="webvert_bold_lable_layout"/>
-                    <prim:selectManyMenu value="#{newContentModel.selectedAges}" 
-                                         showCheckbox="true"
-                                         required="true">
-                        <f:selectItems value="#{newContentModel.targetAges}"
-                                       var="age" 
-                                       itemValue="#{age.flagValue}" 
-                                       itemLabel="#{resourcePickerModel.pickTargetAgeLabel(age)}"/>
-                    </prim:selectManyMenu>
-                </b:column>
-                <b:column span="3" style="padding-right: 0px">
-                    <h:outputText value="#{labels.MODALCONTENT_OutputText_TargetGenders}"
-                                  class="webvert_bold_lable_layout"/>
-                    <prim:selectManyMenu value="#{newContentModel.selectedGenders}"
-                                         showCheckbox="true"
-                                         required="true">
-                        <f:selectItems value="#{newContentModel.targetGenders}"
-                                       var="gender" 
-                                       itemValue="#{gender.flagValue}" 
-                                       itemLabel="#{resourcePickerModel.pickTargetGenderLabel(gender)}"/>
-                    </prim:selectManyMenu>
-                </b:column>
-                <b:column span="3" style="padding-right: 0px">
-                    <h:outputText value="#{labels.MODALCONTENT_OutputText_TargetedMaritalStatus}"
-                                  class="webvert_bold_lable_layout"/>
-                    <prim:selectManyMenu value="#{newContentModel.selectedMaritalStatus}"
-                                         showCheckbox="true"
-                                         required="true">
-                        <f:selectItems value="#{newContentModel.targetMaritalStatus}"
-                                       var="status" 
-                                       itemValue="#{status.flagValue}" 
-                                       itemLabel="#{resourcePickerModel.pickTargetMaritalStatusLabel(status)}"/>
-                    </prim:selectManyMenu>
-                </b:column>
-                <b:column span="3" style="padding-right: 0px">
-                    <h:outputText value="#{labels.MODALCONTENT_OutputText_TargetPurposesOfUse}"
-                                  class="webvert_bold_lable_layout"/>
-                    <prim:selectManyMenu value="#{newContentModel.selectedPurposesOfUse}"
-                                         showCheckbox="true"
-                                         required="true">
-                        <f:selectItems value="#{newContentModel.targetPurposesOfUse}"
-                                       var="purpose" 
-                                       itemValue="#{purpose.flagValue}" 
-                                       itemLabel="#{resourcePickerModel.pickTargetPurposeOfUseLabel(purpose)}"/>
-                    </prim:selectManyMenu>
-                </b:column>
-            </b:row>
+                </b:carouselItem>
+
+                <b:carouselItem id="step3">
+
+                    <b:row style="margin-bottom: 10px">
+                        <b:column span="3" style="padding-right: 0px">
+                            <h:outputText value="#{labels.MODALCONTENT_OutputText_TargetAges}"
+                                          class="webvert_bold_lable_layout"/>
+                            <prim:selectManyMenu value="#{newContentModel.selectedAges}" 
+                                                 showCheckbox="true"
+                                                 required="#{newContentModel.isOnPage(2)}">
+                                <f:selectItems value="#{newContentModel.targetAges}"
+                                               var="age" 
+                                               itemValue="#{age.flagValue}" 
+                                               itemLabel="#{resourcePickerModel.pickTargetAgeLabel(age)}"/>
+                            </prim:selectManyMenu>
+                        </b:column>
+                        <b:column span="3" style="padding-right: 0px">
+                            <h:outputText value="#{labels.MODALCONTENT_OutputText_TargetGenders}"
+                                          class="webvert_bold_lable_layout"/>
+                            <prim:selectManyMenu value="#{newContentModel.selectedGenders}"
+                                                 showCheckbox="true"
+                                                 required="#{newContentModel.isOnPage(2)}">
+                                <f:selectItems value="#{newContentModel.targetGenders}"
+                                               var="gender" 
+                                               itemValue="#{gender.flagValue}" 
+                                               itemLabel="#{resourcePickerModel.pickTargetGenderLabel(gender)}"/>
+                            </prim:selectManyMenu>
+                        </b:column>
+                        <b:column span="3" style="padding-right: 0px">
+                            <h:outputText value="#{labels.MODALCONTENT_OutputText_TargetedMaritalStatus}"
+                                          class="webvert_bold_lable_layout"/>
+                            <prim:selectManyMenu value="#{newContentModel.selectedMaritalStatus}"
+                                                 showCheckbox="true"
+                                                 required="#{newContentModel.isOnPage(2)}">
+                                <f:selectItems value="#{newContentModel.targetMaritalStatus}"
+                                               var="status" 
+                                               itemValue="#{status.flagValue}" 
+                                               itemLabel="#{resourcePickerModel.pickTargetMaritalStatusLabel(status)}"/>
+                            </prim:selectManyMenu>
+                        </b:column>
+                        <b:column span="3" style="padding-right: 0px">
+                            <h:outputText value="#{labels.MODALCONTENT_OutputText_TargetPurposesOfUse}"
+                                          class="webvert_bold_lable_layout"/>
+                            <prim:selectManyMenu value="#{newContentModel.selectedPurposesOfUse}"
+                                                 showCheckbox="true"
+                                                 required="#{newContentModel.isOnPage(2)}">
+                                <f:selectItems value="#{newContentModel.targetPurposesOfUse}"
+                                               var="purpose" 
+                                               itemValue="#{purpose.flagValue}" 
+                                               itemLabel="#{resourcePickerModel.pickTargetPurposeOfUseLabel(purpose)}"/>
+                            </prim:selectManyMenu>
+                        </b:column>
+                    </b:row>
+                </b:carouselItem>
+            </b:carousel>
         </b:panelGrid>
     </cc:implementation>
 </html>
