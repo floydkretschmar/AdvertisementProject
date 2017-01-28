@@ -13,7 +13,7 @@
     </h:head>
 
     <!-- INTERFACE -->
-    <cc:interface componentType="createEntityContainer">
+    <cc:interface>
         <cc:attribute name="notifiedListener" method-signature="void listener(java.lang.Object)" />
         <cc:attribute name="renderOnOk" />
         <cc:attribute name="modalType" />
@@ -40,50 +40,23 @@
                     </c:choose>
                 </p>
                 <p style="margin-top: 30px; margin-bottom: 10px">
-                    <b:fetchBeanInfos />
-                    <b:button value="#{labels.MODAL_Button_Cancel}" 
-                              dismiss="modal" 
-                              onclick="return false;"
-                              style="width: 128px"
-                              rendered="#{(newContentModel.onFirstPage and cc.attrs.modalType eq ModalType.CONTENT) or cc.attrs.modalType eq ModalType.ACCOUNT}"/>
-                    <b:carouselControl direction="right">
-                        <b:commandButton ajax="true"
-                                         value="Previous"
-                                         style="width: 128px; margin-left: 10px"
-                                         rendered="#{(not newContentModel.onFirstPage and cc.attrs.modalType eq ModalType.CONTENT) or cc.attrs.modalType eq ModalType.ACCOUNT}">
-                            <f:ajax listener="#{newContentModel.decrementStepCount}"/>
-                        </b:commandButton>
-                    </b:carouselControl>
-                    <b:commandButton value="#{labels.MODAL_Button_Ok}" 
-                                     ajax="true"
-                                     oncomplete="if(!validationFailed) { $('.#{cc.attrs.modalType}').modal('hide'); }"
-                                     class="webvert_primary_button_color"
-                                     style="width: 128px; margin-left: 10px"
-                                     rendered="#{(newContentModel.onLastPage and cc.attrs.modalType eq ModalType.CONTENT) or cc.attrs.modalType eq ModalType.ACCOUNT}">
-                        <c:choose>
-                            <c:when test="#{cc.attrs.modalType eq ModalType.ACCOUNT}">
-                                <f:attribute name="entity" value="#{newAccountModel.account}" />
-                            </c:when>
-                            <c:when test="#{cc.attrs.modalType eq ModalType.CONTENT}">
-                                <f:attribute name="entity" value="#{newContentModel.content}" />
-                            </c:when>
-                        </c:choose>
-                        <f:ajax listener="#{cc.notifiedListener}" 
-                                execute="@form"
-                                render="@form #{cc.attrs.renderOnOk}"/>
-                    </b:commandButton>
-
-                    <b:carouselControl direction="left">
-                        <b:commandButton ajax="true"
-                                         value="Next"
-                                         class="webvert_primary_button_color"
-                                         style="width: 128px; margin-left: 10px"
-                                         rendered="#{(not newContentModel.onLastPage and cc.attrs.modalType eq ModalType.CONTENT) or cc.attrs.modalType eq ModalType.ACCOUNT}">
-                            <f:ajax listener="#{newContentModel.incrementStepCount}"
-                                    execute="@form"
-                                    render="@form"/>
-                        </b:commandButton>
-                    </b:carouselControl>
+                    <c:choose>
+                        <c:when test="#{cc.attrs.modalType eq ModalType.ACCOUNT}">
+                            <inner:modalButtonsComposite cancelRendered="true"
+                                                         okRendered="true"
+                                                         createdEntity="#{newAccountModel.account}"
+                                                         modalType="#{cc.attrs.modalType}"
+                                                         renderOnOk="#{cc.attrs.renderOnOk}"
+                                                         notifiedListener="#{cc.attrs.notifiedListener}"/>
+                        </c:when>
+                        <c:when test="#{cc.attrs.modalType eq ModalType.CONTENT}">
+                            <inner:wizardModalButtonsComposite createdEntity="#{newContentModel.content}"
+                                                               modalType="#{cc.attrs.modalType}"
+                                                               renderOnOk="#{cc.attrs.renderOnOk}"
+                                                               pageCount="2"
+                                                               notifiedListener="#{cc.attrs.notifiedListener}"/>
+                        </c:when>
+                    </c:choose>
                 </p>
             </h:form>
         </b:modal>

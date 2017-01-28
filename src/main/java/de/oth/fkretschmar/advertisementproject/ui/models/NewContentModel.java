@@ -32,7 +32,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.List;
-import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import lombok.Getter;
@@ -46,17 +45,9 @@ import org.joda.money.Money;
  */
 @Named
 @ViewScoped
-public class NewContentModel implements Serializable  {
-
-    // --------------- Private static constants ---------------
-    
-    /**
-     * Stores the total number of steps of the creation wizard.
-     */
-    private static final int TOTAL_NUMBER_OF_STEPS = 2;
+public class NewContentModel implements Serializable {
 
     // --------------- Private fields ---------------
-
     /**
      * Stores the title of the text content that will be created.
      */
@@ -77,7 +68,7 @@ public class NewContentModel implements Serializable  {
     @Getter
     @Setter
     private String description;
-    
+
     /**
      * Stores the name of the content given by the comissioner.
      */
@@ -154,13 +145,6 @@ public class NewContentModel implements Serializable  {
     @Getter
     @Setter
     private List<String> selectedPurposesOfUse;
-    
-    /**
-     * Stores the counter that indicates on which step of the creation wizard 
-     * the user is currently on.
-     */
-    @Getter
-    private int stepCounter = 0;
 
     /**
      * Stores the webpage to which the content that will be created, will
@@ -188,11 +172,10 @@ public class NewContentModel implements Serializable  {
 
         return filteredTypes;
     }
-    
-    
+
     /**
      * Gets the list of formats the content can have.
-     * 
+     *
      * @return the formats as a list.
      */
     public List<ContentFormat> getFormats() {
@@ -234,43 +217,12 @@ public class NewContentModel implements Serializable  {
     public TargetPurposeOfUse[] getTargetPurposesOfUse() {
         return TargetPurposeOfUse.values();
     }
-    
-    
-    public boolean isOnPage(int page) {
-        return this.stepCounter == page;
-    }
-    /**
-     * Gets the value indicating whether or not the current page is the first 
-     * page of the wizard.
-     * @return 
-     */
-    public boolean isOnFirstPage() {
-        return this.stepCounter == 0;
-    }
-    
-    /**
-     * Gets the value indicating whether or not the current page is the last 
-     * page of the wizard.
-     * @return 
-     */
-    public boolean isOnLastPage() {
-        return this.stepCounter == NewContentModel.TOTAL_NUMBER_OF_STEPS;
-    }
 
     // --------------- Public methods ---------------
-    
-    
-    /**
-     * Decrements the step count by one.
-     * @param event the event data.
-     */
-    public void decrementStepCount(AjaxBehaviorEvent event) {
-        this.stepCounter--;
-    }
-    
     /**
      * Retrieves the content that is being built by the page.
-     * @return  the newly created content.
+     *
+     * @return the newly created content.
      */
     public Content getContent() {
         EnumSet<TargetAge> ages = EnumSet.noneOf(TargetAge.class);
@@ -287,18 +239,16 @@ public class NewContentModel implements Serializable  {
 
         try {
             Serializable contentValue = null;
-            
+
             if (this.selectedContentType == ContentType.IMAGE_URL) {
                 contentValue = new URL(this.contentUrl);
-            }
-            else {
+            } else {
                 contentValue = TextContentValue.createTextContentValue()
                         .description(this.description)
                         .title(this.contentTitle)
                         .build();
             }
-            
-            
+
             Content content = Content.createContent()
                     .name(this.name.trim())
                     .contentType(this.selectedContentType)
@@ -311,12 +261,11 @@ public class NewContentModel implements Serializable  {
                     .numberOfRequests(this.numberOfRequests)
                     .targetUrl(new URL(this.targetPage))
                     .pricePerRequest(Money.ofMinor(
-                            CurrencyUnit.EUR, 
+                            CurrencyUnit.EUR,
                             this.preDecimalPointAmount * 100 + this.postDecimalPointAmount))
                     .value(contentValue)
                     .build();
-            
-            
+
             this.name = "";
             this.contentTitle = "";
             this.contentUrl = "";
@@ -331,19 +280,10 @@ public class NewContentModel implements Serializable  {
             this.selectedMaritalStatus.clear();
             this.selectedPurposesOfUse.clear();
             this.targetPage = "";
-            this.stepCounter = 0;
-            
+
             return content;
         } catch (MalformedURLException ex) {
             throw new IllegalArgumentException(ex.getMessage());
         }
-    }
-    
-    /**
-     * Increments the step counter by one.
-     * @param event the event data.
-     */
-    public void incrementStepCount(AjaxBehaviorEvent event) {
-        this.stepCounter++;
     }
 }

@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:prim="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:o="http://omnifaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:innerComposites="http://xmlns.jcp.org/jsf/composite/innerComposites">
+    <h:head>
+    </h:head>
+
+    <!-- INTERFACE -->
+    <cc:interface>
+        <cc:attribute name="modalType"/>
+        <cc:attribute name="renderOnOk"/>
+        <cc:attribute name="createdEntity"/>
+        <cc:attribute name="pageCount"/>
+        <cc:attribute name="notifiedListener" method-signature="void listener(java.lang.Object)" />
+    </cc:interface>
+
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+        <b:carouselControl direction="right">
+            <b:commandButton ajax="true"
+                             value="Previous"
+                             style="width: 128px"
+                             rendered="#{not wizardModel.isOnPage(0)}">
+                <f:ajax listener="#{wizardModel.decrementStepCount}"/>
+            </b:commandButton>
+        </b:carouselControl>
+        <innerComposites:modalButtonsComposite okRendered="#{wizardModel.isOnPage(cc.attrs.pageCount)}"
+                                               cancelRendered="#{wizardModel.isOnPage(0)}"
+                                               modalType="#{cc.attrs.modalType}"
+                                               createdEntity="#{cc.attrs.createdEntity}"
+                                               renderOnOk="#{cc.attrs.renderOnOk}"
+                                               notifiedListener="#{cc.attrs.notifiedListener}"/>
+        <b:carouselControl direction="left">
+            <b:commandButton ajax="true"
+                             value="Next"
+                             class="webvert_primary_button_color"
+                             style="width: 128px; margin-left: 10px"
+                             rendered="#{not wizardModel.isOnPage(cc.attrs.pageCount)}">
+                <f:ajax listener="#{wizardModel.incrementStepCount}"
+                        execute="@form"
+                        render="@form"/>
+            </b:commandButton>
+        </b:carouselControl>
+    </cc:implementation>
+</html>

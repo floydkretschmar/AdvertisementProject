@@ -23,7 +23,7 @@
                         showIndicators="false"
                         wrap="false"
                         interval="0"
-                        activeIndex="#{newContentModel.stepCounter}">
+                        activeIndex="#{wizardModel.stepCounter}">
                 <b:carouselItem id="step0">
                     <o:importConstants type="de.oth.fkretschmar.advertisementproject.entities.campaign.ContentType" />
 
@@ -31,11 +31,11 @@
                                   class="webvert_bold_lable_layout"/>
                     <b:inputText value="#{newContentModel.name}"
                                  styleClass="#{component.valid? '' : 'webvert_input_control_invalid' }"
-                                 required="#{newContentModel.isOnPage(0)}"/>
+                                 required="#{wizardModel.isOnPage(0)}"/>
                     <h:outputText value="#{labels.MODALCONTENT_OutputText_ContentFormat}"
                                   class="webvert_bold_lable_layout"/>
                     <b:selectOneMenu value="#{newContentModel.selectedFormat}"
-                                     required="#{newContentModel.isOnPage(0)}">
+                                     required="#{wizardModel.isOnPage(0)}">
                         <f:selectItems value="#{newContentModel.formats}"
                                        var="format"
                                        itemValue="#{format}"
@@ -46,8 +46,8 @@
                     <b:inputText value="#{newContentModel.targetPage}"
                                  styleClass="#{component.valid? '' : 'webvert_input_control_invalid' }"
                                  tooltip="#{component.valid? '' : 'The value has to be a valid URL.' }"
-                                 required="#{newContentModel.isOnPage(0)}">
-                        <f:attribute name="validate" value="#{newContentModel.isOnPage(0)}"/>
+                                 required="#{wizardModel.isOnPage(0)}">
+                        <f:attribute name="validate" value="#{wizardModel.isOnPage(0)}"/>
                         <f:validator validatorId="urlValidator" />
                     </b:inputText>
                     <h:outputText value="#{labels.MODALCONTENT_OutputText_PricePerRequest}"
@@ -58,7 +58,7 @@
                                          value="#{newContentModel.preDecimalPointAmount}"
                                          tooltip="#{component.valid? '' : 'The value has to be a number.' }"
                                          binding="#{preDecimal}" 
-                                         required="#{newContentModel.isOnPage(0)}">
+                                         required="#{wizardModel.isOnPage(0)}">
                                 <f:validator validatorId="moneyGreaterZeroValidator" />
                                 <f:attribute name="otherPart" value="#{postDecimal.submittedValue}" />
                                 <f:convertNumber integerOnly="true" 
@@ -74,7 +74,7 @@
                                          value="#{newContentModel.postDecimalPointAmount}"
                                          tooltip="#{component.valid? '' : 'The value has to be a two digit number.' }"
                                          binding="#{postDecimal}" 
-                                         required="#{newContentModel.isOnPage(0)}">
+                                         required="#{wizardModel.isOnPage(0)}">
                                 <f:validator validatorId="moneyGreaterZeroValidator" />
                                 <f:attribute name="otherPart" value="#{preDecimal.submittedValue}" />
                                 <f:convertNumber integerOnly="true" 
@@ -92,7 +92,7 @@
                                   class="webvert_bold_lable_layout"/>
                     <b:inputText styleClass="#{component.valid? '' : 'webvert_input_control_invalid' }"
                                  value="#{newContentModel.numberOfRequests}"
-                                 required="#{newContentModel.isOnPage(0)}">
+                                 required="#{wizardModel.isOnPage(0)}">
                         <f:convertNumber integerOnly="true" type="number"/>
                         <f:validator validatorId="greaterZeroValidator" />
                     </b:inputText>
@@ -122,9 +122,9 @@
                                   rendered="#{newContentModel.selectedContentType eq ContentType.IMAGE_URL}"/>
                     <b:inputText value="#{newContentModel.contentUrl}"
                                  styleClass="#{component.valid? '' : 'webvert_input_control_invalid' }"
-                                 required="#{newContentModel.isOnPage(1)}"
+                                 required="#{wizardModel.isOnPage(1)}"
                                  rendered="#{newContentModel.selectedContentType eq ContentType.IMAGE_URL}">
-                        <f:attribute name="validate" value="#{newContentModel.isOnPage(1)}"/>
+                        <f:attribute name="validate" value="#{wizardModel.isOnPage(1)}"/>
                         <f:validator validatorId="urlValidator" />
                     </b:inputText>
 
@@ -133,7 +133,7 @@
                                   rendered="#{newContentModel.selectedContentType eq ContentType.TEXT}"/>
                     <b:inputText value="#{newContentModel.contentTitle}"
                                  styleClass="#{component.valid? '' : 'webvert_input_control_invalid' }"
-                                 required="#{newContentModel.isOnPage(1)}"
+                                 required="#{wizardModel.isOnPage(1)}"
                                  rendered="#{newContentModel.selectedContentType eq ContentType.TEXT}">
                     </b:inputText>
 
@@ -153,7 +153,7 @@
                                           class="webvert_bold_lable_layout"/>
                             <prim:selectManyMenu value="#{newContentModel.selectedAges}" 
                                                  showCheckbox="true"
-                                                 required="#{newContentModel.isOnPage(2)}">
+                                                 required="#{wizardModel.isOnPage(2)}">
                                 <f:selectItems value="#{newContentModel.targetAges}"
                                                var="age" 
                                                itemValue="#{age.flagValue}" 
@@ -165,7 +165,7 @@
                                           class="webvert_bold_lable_layout"/>
                             <prim:selectManyMenu value="#{newContentModel.selectedGenders}"
                                                  showCheckbox="true"
-                                                 required="#{newContentModel.isOnPage(2)}">
+                                                 required="#{wizardModel.isOnPage(2)}">
                                 <f:selectItems value="#{newContentModel.targetGenders}"
                                                var="gender" 
                                                itemValue="#{gender.flagValue}" 
@@ -177,7 +177,7 @@
                                           class="webvert_bold_lable_layout"/>
                             <prim:selectManyMenu value="#{newContentModel.selectedMaritalStatus}"
                                                  showCheckbox="true"
-                                                 required="#{newContentModel.isOnPage(2)}">
+                                                 required="#{wizardModel.isOnPage(2)}">
                                 <f:selectItems value="#{newContentModel.targetMaritalStatus}"
                                                var="status" 
                                                itemValue="#{status.flagValue}" 
@@ -189,7 +189,7 @@
                                           class="webvert_bold_lable_layout"/>
                             <prim:selectManyMenu value="#{newContentModel.selectedPurposesOfUse}"
                                                  showCheckbox="true"
-                                                 required="#{newContentModel.isOnPage(2)}">
+                                                 required="#{wizardModel.isOnPage(2)}">
                                 <f:selectItems value="#{newContentModel.targetPurposesOfUse}"
                                                var="purpose" 
                                                itemValue="#{purpose.flagValue}" 
