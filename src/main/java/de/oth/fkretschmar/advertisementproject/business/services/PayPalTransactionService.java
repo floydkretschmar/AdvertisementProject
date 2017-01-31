@@ -16,10 +16,13 @@
  */
 package de.oth.fkretschmar.advertisementproject.business.services;
 
+import de.oth.fkretschmar.advertisementproject.business.services.web.TransactionFailedException;
 import de.oth.fkretschmar.advertisementproject.business.annotation.PayPalTransaction;
 import de.oth.fkretschmar.advertisementproject.business.services.base.ITransactionService;
 import de.oth.fkretschmar.advertisementproject.entities.billing.Account;
+import java.util.logging.Logger;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 import org.joda.money.Money;
 
 /**
@@ -29,6 +32,16 @@ import org.joda.money.Money;
 @PayPalTransaction
 @RequestScoped
 public class PayPalTransactionService implements ITransactionService {
+
+    // --------------- Private fields ---------------
+    
+    /**
+     * Stores the logger to log information for this class.
+     */
+    @Inject
+    private Logger logger;
+
+    // --------------- Public methods ---------------
     
     /**
      * Transfers the specified amount from the sender to the recipient using the
@@ -48,7 +61,7 @@ public class PayPalTransactionService implements ITransactionService {
             Account sender, 
             Account recipient,
             String description) throws TransactionFailedException {
-        System.out.println(
+        this.logger.info(
                 String.format(
                         "Here could be a pay pal transaction of %s amount "
                         + "from the account %s to the account %s.", 

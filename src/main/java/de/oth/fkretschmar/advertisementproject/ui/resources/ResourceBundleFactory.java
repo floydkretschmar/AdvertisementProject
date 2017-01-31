@@ -17,6 +17,7 @@
 package de.oth.fkretschmar.advertisementproject.ui.resources;
 
 import de.oth.fkretschmar.advertisementproject.business.annotation.EnumBundle;
+import de.oth.fkretschmar.advertisementproject.business.annotation.LabelBundle;
 import de.oth.fkretschmar.advertisementproject.business.annotation.MessageBundle;
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
@@ -33,6 +34,21 @@ import javax.faces.context.FacesContext;
  */
 @Dependent
 public class ResourceBundleFactory {
+
+    /**
+     * Injects the resource bundle that stores label translations.
+     *
+     * @return the resource bundle.
+     */
+    @Produces
+    @LabelBundle
+    public ResourceBundle getLabelsBundle() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        return context.getApplication().evaluateExpressionGet(
+                context,
+                "#{labels}",
+                PropertyResourceBundle.class);
+    }
 
     /**
      * Injects the resource bundle that stores message translations.

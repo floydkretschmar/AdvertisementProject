@@ -25,7 +25,7 @@
     <cc:implementation>
         <b:carouselControl direction="right">
             <b:commandButton ajax="true"
-                             value="Previous"
+                             value="#{labels.MODAL_Button_Previous}"
                              style="width: 128px"
                              rendered="#{not wizardModel.isOnPage(0)}">
                 <f:ajax listener="#{wizardModel.decrementStepCount}"/>
@@ -39,7 +39,7 @@
                                                notifiedListener="#{cc.attrs.notifiedListener}"/>
         <b:carouselControl direction="left">
             <b:commandButton ajax="true"
-                             value="Next"
+                             value="#{labels.MODAL_Button_Next}"
                              class="webvert_primary_button_color"
                              style="width: 128px; margin-left: 10px"
                              rendered="#{not wizardModel.isOnPage(cc.attrs.pageCount)}">

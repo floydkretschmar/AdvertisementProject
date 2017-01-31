@@ -14,15 +14,19 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.oth.fkretschmar.advertisementproject.business.services;
+package de.oth.fkretschmar.advertisementproject.business.services.web;
 
+import de.jreichl.service.web.ITransactionWS;
 import de.jreichl.service.web.TransactionFailedException_Exception;
 import de.jreichl.service.web.TransactionWSService;
 import de.oth.fkretschmar.advertisementproject.business.annotation.BankTransaction;
 import de.oth.fkretschmar.advertisementproject.business.services.base.ITransactionService;
 import de.oth.fkretschmar.advertisementproject.entities.billing.Account;
 import de.oth.fkretschmar.advertisementproject.entities.billing.BankAccount;
+import java.util.logging.Logger;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
+import javax.xml.ws.WebServiceException;
 import javax.xml.ws.WebServiceRef;
 import org.joda.money.Money;
 
@@ -34,11 +38,21 @@ import org.joda.money.Money;
 @RequestScoped
 public class BankTransactionService implements ITransactionService {
 
+    // --------------- Private fields ---------------
+    
+    /**
+     * Stores the logger to log information for this class.
+     */
+    @Inject
+    private Logger logger;
+
     /**
      * Stores the transaction service used to execute the transaction.
      */
     @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/im-lamport_8080/BankReichl/TransactionWS.wsdl")
     private TransactionWSService service;
+
+    // --------------- Public methods ---------------
 
     /**
      * Transfers the specified amount from the sender to the recipient using the
@@ -60,14 +74,13 @@ public class BankTransactionService implements ITransactionService {
             String description) throws TransactionFailedException {
         if (sender instanceof BankAccount && recipient instanceof BankAccount) {
             try {
-                    de.jreichl.service.web.ITransactionWS port = service.getTransactionWSPort();
+                    ITransactionWS port = service.getTransactionWSPort();
                     // TODO process result here
                     boolean result = port.transfer(
                             amount.getAmountMinorLong(), 
                             ((BankAccount)sender).getIban(), 
                             ((BankAccount)recipient).getIban(), 
                             description);
-                    System.out.println("Result = "+result);
 
             } catch (TransactionFailedException_Exception ex) {
                 // TODO: find better way of determining the failure reason
@@ -92,6 +105,9 @@ public class BankTransactionService implements ITransactionService {
                             ex.getFaultInfo().getMessage(), 
                             TransactionFailureReason.RECIPIENT_NOT_VALID);
                 }
+            } catch (WebServiceException ex) {
+                this.logger.severe(String.format("The payment \"%s\" failed because the "
+                        + "webservice was unavailable.", description));
             }
         }
 

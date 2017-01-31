@@ -33,6 +33,7 @@ import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.List;
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 import lombok.Getter;
 import lombok.Setter;
@@ -153,6 +154,13 @@ public class NewContentModel implements Serializable {
     @Getter
     @Setter
     private String targetPage;
+    
+    /**
+     * Stores the wizard model that is managing the creation wizard for the 
+     * current content.
+     */
+    @Inject
+    private WizardModel wizardModel;
 
     // --------------- Public getters and setters ---------------
     /**
@@ -281,6 +289,8 @@ public class NewContentModel implements Serializable {
             this.selectedPurposesOfUse.clear();
             this.targetPage = "";
 
+            this.wizardModel.resetWizard();
+            
             return content;
         } catch (MalformedURLException ex) {
             throw new IllegalArgumentException(ex.getMessage());

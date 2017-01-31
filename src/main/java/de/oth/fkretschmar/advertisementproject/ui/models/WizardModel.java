@@ -39,6 +39,15 @@ public class WizardModel implements Serializable {
     private int stepCounter = 0;
 
     // --------------- Public methods ---------------
+    
+    /**
+     * Returns the string representation of the step counter.
+     * @return 
+     */
+    public String getStepCounterAsString() {
+        return Integer.toString(this.stepCounter);
+    }
+    
     /**
      * Gets the value indicating whether or not the current page is the
      * specified page of the wizard.\

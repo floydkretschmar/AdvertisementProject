@@ -14,35 +14,29 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.oth.fkretschmar.advertisementproject.business.services;
-
-import lombok.Getter;
+package de.oth.fkretschmar.advertisementproject.business.services.web;
 
 /**
  *
  * @author Admin
  */
-public class TransactionFailedException extends Exception {
-    
-    // --------------- Private fields ---------------
+public enum TransactionFailureReason {
     
     /**
-     * Stores the reason indicating why the transaction failed.
+     * Indicates that the transaction failed because the recipient account is
+     * not a valid account.
      */
-    @Getter
-    private final TransactionFailureReason reason;
-
-    // --------------- Public constructors ---------------
+    RECIPIENT_NOT_VALID,
     
     /**
-     * Constructs an instance of <code>TransactionFailedException</code> with
-     * the specified detail message and reason.
-     *
-     * @param msg       the detail message.
-     * @param reason    the reason the exception occurred.
+     * Indicates that the transaction failed because the sender account is
+     * not a valid account.
      */
-    public TransactionFailedException(String msg, TransactionFailureReason reason) {
-        super(msg);
-        this.reason = reason;
-    }
+    SENDER_NOT_VALID,
+    
+    /**
+     * Indicates that the transaction failed because the sender account is
+     * out of money.
+     */
+    SENDER_OUT_OF_MONEY;
 }

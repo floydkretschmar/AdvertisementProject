@@ -18,6 +18,13 @@
     <!-- IMPLEMENTATION -->
     <cc:implementation>
         <b:panelGrid colSpans="12" style="min-height: 320px">
+            <h4>#{resourcePickerModel.pickContentWizardHeader(wizardModel.stepCounter)}</h4>
+            <b:progressBar value="#{wizardModel.stepCounterAsString}" 
+                           min="0" 
+                           max="2"
+                           striped="true"
+                           caption=""/>
+            
             <b:carousel styleClass="wizardClass"
                         showControls="false"
                         showIndicators="false"
@@ -32,15 +39,6 @@
                     <b:inputText value="#{newContentModel.name}"
                                  styleClass="#{component.valid? '' : 'webvert_input_control_invalid' }"
                                  required="#{wizardModel.isOnPage(0)}"/>
-                    <h:outputText value="#{labels.MODALCONTENT_OutputText_ContentFormat}"
-                                  class="webvert_bold_lable_layout"/>
-                    <b:selectOneMenu value="#{newContentModel.selectedFormat}"
-                                     required="#{wizardModel.isOnPage(0)}">
-                        <f:selectItems value="#{newContentModel.formats}"
-                                       var="format"
-                                       itemValue="#{format}"
-                                       itemLabel="#{resourcePickerModel.pickContentFormatLabel(format)}"/>
-                    </b:selectOneMenu>
                     <h:outputText value="#{labels.MODALCONTENT_OutputText_TargetPage}"
                                   class="webvert_bold_lable_layout"/>
                     <b:inputText value="#{newContentModel.targetPage}"
@@ -101,6 +99,17 @@
 
 
                 <b:carouselItem id="step1">
+                    
+                    <h:outputText value="#{labels.MODALCONTENT_OutputText_ContentFormat}"
+                                  class="webvert_bold_lable_layout"/>
+                    <b:selectOneMenu value="#{newContentModel.selectedFormat}"
+                                     required="#{wizardModel.isOnPage(0)}">
+                        <f:selectItems value="#{newContentModel.formats}"
+                                       var="format"
+                                       itemValue="#{format}"
+                                       itemLabel="#{resourcePickerModel.pickContentFormatLabel(format)}"/>
+                    </b:selectOneMenu>
+                    
                     <b:tabLinks class="webvert_ca_tab_layout"
                                 style="padding-top: 15px">
                         <b:navCommandLink value="#{labels.MODALCONTENT_Tab_ImageContent}"

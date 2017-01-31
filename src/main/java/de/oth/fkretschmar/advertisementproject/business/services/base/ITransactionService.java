@@ -16,7 +16,7 @@
  */
 package de.oth.fkretschmar.advertisementproject.business.services.base;
 
-import de.oth.fkretschmar.advertisementproject.business.services.TransactionFailedException;
+import de.oth.fkretschmar.advertisementproject.business.services.web.TransactionFailedException;
 import de.oth.fkretschmar.advertisementproject.entities.billing.Account;
 import org.joda.money.Money;
 

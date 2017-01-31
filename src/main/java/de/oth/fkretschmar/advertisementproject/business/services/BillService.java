@@ -16,6 +16,8 @@
  */
 package de.oth.fkretschmar.advertisementproject.business.services;
 
+import de.oth.fkretschmar.advertisementproject.business.services.web.TransactionFailedException;
+import de.oth.fkretschmar.advertisementproject.business.services.web.TransactionFailureReason;
 import de.oth.fkretschmar.advertisementproject.business.annotation.PayPalTransaction;
 import de.oth.fkretschmar.advertisementproject.business.annotation.BankTransaction;
 import de.oth.fkretschmar.advertisementproject.business.annotation.BillCreated;

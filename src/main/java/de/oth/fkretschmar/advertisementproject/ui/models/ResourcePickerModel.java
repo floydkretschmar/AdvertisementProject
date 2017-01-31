@@ -24,6 +24,7 @@ import de.oth.fkretschmar.advertisementproject.entities.campaign.TargetGender;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.TargetMaritalStatus;
 import de.oth.fkretschmar.advertisementproject.entities.campaign.TargetPurposeOfUse;
 import de.oth.fkretschmar.advertisementproject.business.annotation.EnumBundle;
+import de.oth.fkretschmar.advertisementproject.business.annotation.LabelBundle;
 import java.io.Serializable;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -48,6 +49,14 @@ public class ResourcePickerModel implements Serializable {
     @Inject
     @EnumBundle
     private transient ResourceBundle enums;
+    
+    /**
+     * Stores the resource bundle that contains the translation texts for 
+     * labels.
+     */
+    @Inject
+    @LabelBundle
+    private transient ResourceBundle labels;
     
     // --------------- Public methods ---------------
     
@@ -94,6 +103,23 @@ public class ResourcePickerModel implements Serializable {
         }
     }
     
+    
+    /**
+     * Picks the correct label for the corresponding step of the content 
+     * creation wizard.
+     * @param wizardStep the step of the content creation wizard.
+     * @return the fitting label.
+     */
+    public String pickContentWizardHeader(int wizardStep) {
+        switch (wizardStep) {
+            case 1:
+                return this.labels.getString("MODALCONTENT_Header_Step1");
+            case 2:
+                return this.labels.getString("MODALCONTENT_Header_Step2");
+            default:
+                return this.labels.getString("MODALCONTENT_Header_Step0");
+        }
+    }
     
     /**
      * Picks the correct label for the specified payment interval.
