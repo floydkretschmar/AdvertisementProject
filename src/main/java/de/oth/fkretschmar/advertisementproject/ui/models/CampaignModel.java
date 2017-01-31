@@ -33,6 +33,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import lombok.Getter;
 import javax.faces.view.ViewScoped;
+import lombok.Setter;
 
 /**
  *
@@ -59,6 +60,7 @@ public class CampaignModel implements Serializable  {
      * Stores the state for which campaigns are being displayed by this model.
      */
     @Getter
+    @Setter
     private CampaignState campaignState;
 
     // --------------- Public getter und setter ---------------
@@ -79,15 +81,6 @@ public class CampaignModel implements Serializable  {
                 .filter(campaign -> campaign.getCampaignState() == this.campaignState)
                 .sorted((campaign1, campaign2) -> campaign1.getName().compareTo(campaign2.getName()))
                 .collect(Collectors.toList());
-    }
-
-    /**
-     * Sets the campaign state of the campaigns that will be displayed.
-     *
-     * @param campaignState the campaign state.
-     */
-    public void setCampaignState(CampaignState campaignState) {
-        this.campaignState = campaignState;
     }
 
     // --------------- Public methods ---------------
@@ -166,21 +159,5 @@ public class CampaignModel implements Serializable  {
                 .collect(Collectors.toList());
 
         return contentTypes;
-    }
-
-    /**
-     * Retrieves the campaign state for the specified string representation.
-     *
-     * @param campaignStateName the string representation of the campaign state.
-     * @return the campaign state.
-     */
-    private CampaignState getCampaignStateForName(String campaignStateName) {
-        if (campaignStateName.equalsIgnoreCase(CampaignState.RUNNING.name())) {
-            return CampaignState.RUNNING;
-        } else if (campaignStateName.equalsIgnoreCase(CampaignState.CANCELLED.name())) {
-            return CampaignState.CANCELLED;
-        } else {
-            return CampaignState.ENDED;
-        }
     }
 }

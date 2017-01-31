@@ -8,9 +8,12 @@
       xmlns:o="http://omnifaces.org/ui"
       xmlns:converters="http://webvert.com/Converters"
       xmlns:webvert="http://xmlns.jcp.org/jsf/composite/webvert"
-      xmlns:prim="http://primefaces.org/ui">
+      xmlns:prim="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
-        <h:outputStylesheet library="css" name="style.css"/>
+        <f:metadata>
+            <f:viewAction action="#{applicationModel.redirectSessionExpired()}"/>
+        </f:metadata>
     </h:head>
     <h:body>
         <ui:composition template="./resources/templates/PresentationAreaTemplate.xhtml">
@@ -77,7 +80,7 @@
                                                  disabled="#{not userProfileModel.editing}"
                                                  styleClass="#{component.valid? '' : 'webvert_input_control_invalid' }"
                                                  required="true">
-                                        <converters:convertLocalDate pattern="dd.MM.yyyy"/>
+                                        <converters:convertLocalDate/>
                                     </b:inputText>
                                 </b:column>
                                 <b:column span="8">

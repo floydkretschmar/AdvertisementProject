@@ -24,7 +24,7 @@
                            max="2"
                            striped="true"
                            caption=""/>
-            
+
             <b:carousel styleClass="wizardClass"
                         showControls="false"
                         showIndicators="false"
@@ -98,8 +98,8 @@
                 </b:carouselItem>
 
 
-                <b:carouselItem id="step1">
-                    
+                <b:carouselItem id="step2">
+
                     <h:outputText value="#{labels.MODALCONTENT_OutputText_ContentFormat}"
                                   class="webvert_bold_lable_layout"/>
                     <b:selectOneMenu value="#{newContentModel.selectedFormat}"
@@ -109,7 +109,7 @@
                                        itemValue="#{format}"
                                        itemLabel="#{resourcePickerModel.pickContentFormatLabel(format)}"/>
                     </b:selectOneMenu>
-                    
+
                     <b:tabLinks class="webvert_ca_tab_layout"
                                 style="padding-top: 15px">
                         <b:navCommandLink value="#{labels.MODALCONTENT_Tab_ImageContent}"
@@ -150,6 +150,8 @@
                                   class="webvert_bold_lable_layout"
                                   rendered="#{newContentModel.selectedContentType eq ContentType.TEXT}"/>
                     <b:inputTextarea value="#{newContentModel.description}"
+                                     styleClass="#{component.valid? '' : 'webvert_input_control_invalid' }"
+                                     required="#{wizardModel.isOnPage(1)}"
                                      rendered="#{newContentModel.selectedContentType eq ContentType.TEXT}"/>
 
                 </b:carouselItem>

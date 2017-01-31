@@ -154,9 +154,9 @@ public class NewContentModel implements Serializable {
     @Getter
     @Setter
     private String targetPage;
-    
+
     /**
-     * Stores the wizard model that is managing the creation wizard for the 
+     * Stores the wizard model that is managing the creation wizard for the
      * current content.
      */
     @Inject
@@ -273,27 +273,33 @@ public class NewContentModel implements Serializable {
                             this.preDecimalPointAmount * 100 + this.postDecimalPointAmount))
                     .value(contentValue)
                     .build();
+            this.resetModel();
 
-            this.name = "";
-            this.contentTitle = "";
-            this.contentUrl = "";
-            this.description = "";
-            this.numberOfRequests = 0;
-            this.postDecimalPointAmount = 0;
-            this.preDecimalPointAmount = 0;
-            this.selectedAges.clear();
-            this.selectedContentType = ContentType.IMAGE_URL;
-            this.selectedFormat = ContentFormat.HALF_PAGE;
-            this.selectedGenders.clear();
-            this.selectedMaritalStatus.clear();
-            this.selectedPurposesOfUse.clear();
-            this.targetPage = "";
-
-            this.wizardModel.resetWizard();
-            
             return content;
         } catch (MalformedURLException ex) {
             throw new IllegalArgumentException(ex.getMessage());
         }
+    }
+
+    
+    /**
+     * Resets the Model to its original state.
+     */
+    public void resetModel() {
+        this.name = "";
+        this.contentTitle = "";
+        this.contentUrl = "";
+        this.description = "";
+        this.numberOfRequests = 0;
+        this.postDecimalPointAmount = 0;
+        this.preDecimalPointAmount = 0;
+        this.selectedAges.clear();
+        this.selectedContentType = ContentType.IMAGE_URL;
+        this.selectedFormat = ContentFormat.HALF_PAGE;
+        this.selectedGenders.clear();
+        this.selectedMaritalStatus.clear();
+        this.selectedPurposesOfUse.clear();
+        this.targetPage = "";
+        this.wizardModel.resetWizard();
     }
 }

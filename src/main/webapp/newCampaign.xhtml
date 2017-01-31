@@ -10,7 +10,9 @@
       xmlns:webvert="http://xmlns.jcp.org/jsf/composite/webvert"
       xmlns:prim="http://primefaces.org/ui">
     <h:head>
-        <h:outputStylesheet library="css" name="style.css"/>
+        <f:metadata>
+            <f:viewAction action="#{applicationModel.redirectSessionExpired()}"/>
+        </f:metadata>
     </h:head>
     <h:body>
         <ui:composition template="./resources/templates/PresentationAreaTemplate.xhtml">

@@ -92,7 +92,7 @@ public abstract class ExtendedTimeConverter<T extends Temporal> extends DateTime
             Object value) {
 
         if (value == null) {
-            return super.getAsString(context, component, value);
+            return null;
         }
 
         if (this.temporalType.isInstance(value)) {

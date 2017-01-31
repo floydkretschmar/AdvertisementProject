@@ -11,8 +11,9 @@
       xmlns:webvert="http://java.sun.com/jsf/composite/webvert"
       xmlns:prim="http://primefaces.org/ui">
     <h:head>
-        <title>Webvert</title>
-        <h:outputStylesheet library="css" name="style.css"  />
+        <f:metadata>
+            <f:viewAction action="#{applicationModel.redirectSessionExpired()}"/>
+        </f:metadata>
     </h:head>
     <h:body>
         <ui:composition template="./resources/templates/PresentationAreaTemplate.xhtml">

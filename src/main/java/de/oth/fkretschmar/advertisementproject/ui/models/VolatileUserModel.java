@@ -34,6 +34,10 @@ import javax.inject.Named;
 public class VolatileUserModel implements Serializable {
 
     // --------------- Private fields ---------------
+    
+    /**
+     * Stores the current user.
+     */
     private User currentUser;
 
     /**

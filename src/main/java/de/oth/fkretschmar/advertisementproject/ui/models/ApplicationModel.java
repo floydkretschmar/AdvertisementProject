@@ -125,15 +125,27 @@ public class ApplicationModel implements Serializable {
     }
 
     /**
-     * Gets the value indicating whether or not a user has logged in.
-     *
-     * @return {@code true} if a user is logged in, otherwise {@code false}.
+     * Returns the navigation point for the login and register page if a user
+     * has already logged in.
+     * @return the nativgation point.
      */
     public String redirectFirstPage() {
         if (this.currentUserId != null) {
             return "overview";
         }
 
+        return null;
+    }
+    
+    /**
+     * Redirects the user to the login page if the session has expired.
+     * @return the navigation point.
+     */
+    public String redirectSessionExpired() {
+        if (this.currentUserId == null) {
+            return "login";
+        }
+        
         return null;
     }
 }
